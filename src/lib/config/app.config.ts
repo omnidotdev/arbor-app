@@ -3,7 +3,7 @@
  */
 const appConfig = {
   name: "Arbor",
-  description: "A GitHub competitor",
+  description: "A code forge",
 };
 
 export default appConfig;
