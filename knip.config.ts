@@ -21,10 +21,9 @@ const knipConfig: KnipConfig = {
     "src/lib/config/env.config.ts",
     "src/lib/utils.ts",
     "src/components/emails/**",
+    "src/components/ui/**",
   ],
   ignoreDependencies: [
-    "clsx",
-    "tailwind-merge",
     // used by React Email preview server
     "@react-email/preview-server",
     // used by React Email templates

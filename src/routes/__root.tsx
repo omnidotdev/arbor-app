@@ -5,7 +5,11 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 
-import { DefaultCatchBoundary } from "@/components/layout";
+import {
+  DefaultCatchBoundary,
+  Header,
+  ThemeProvider,
+} from "@/components/layout";
 import appConfig from "@/lib/config/app.config";
 import appCss from "@/lib/styles/globals.css?url";
 
@@ -41,19 +45,29 @@ export const Route = createRootRouteWithContext<{
 function RootComponent() {
   return (
     <RootDocument>
-      <Outlet />
+      <Header />
+      <main className="flex-1">
+        <Outlet />
+      </main>
     </RootDocument>
   );
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
-      <body>
-        {children}
+      <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
         <Scripts />
       </body>
     </html>
