@@ -10,18 +10,20 @@ const knipConfig: KnipConfig = {
     "src/router.tsx",
     "src/lib/graphql/graphqlFetch.ts",
   ],
+  // NB: files are reported as unused if they are in the set of project files, but not in the set of files resolved from the entry files. See: https://knip.dev/guides/configuring-project-files
   project: ["src/**/*.{ts,tsx,css}"],
+  // NB: Modified from the default GraphQL Codegen configuration, see: https://knip.dev/reference/plugins/graphql-codegen
   "graphql-codegen": {
     config: ["package.json", "src/lib/graphql/codegen.config.ts"],
   },
+  // used for proper management of Thornberry components, see https://knip.dev/reference/configuration#ignoreexportsusedinfile
   ignoreExportsUsedInFile: true,
   ignore: [
     "src/generated/**",
     "src/routeTree.gen.ts",
-    "src/lib/config/env.config.ts",
-    "src/lib/utils.ts",
     "src/components/emails/**",
     "src/components/ui/**",
+    "src/lib/config/env.config.ts",
   ],
   ignoreDependencies: [
     // used by React Email preview server

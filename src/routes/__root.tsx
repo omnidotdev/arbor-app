@@ -10,7 +10,7 @@ import {
   Header,
   ThemeProvider,
 } from "@/components/layout";
-import appConfig from "@/lib/config/app.config";
+import app from "@/lib/config/app.config";
 import appCss from "@/lib/styles/globals.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
@@ -29,11 +29,11 @@ export const Route = createRootRouteWithContext<{
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: appConfig.name,
+        title: app.name,
       },
       {
         name: "description",
-        content: appConfig.description,
+        content: app.description,
       },
     ],
     links: [{ rel: "stylesheet", href: appCss }],
