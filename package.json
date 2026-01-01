@@ -12,7 +12,7 @@
     "format": "biome format --write",
     "lint": "biome lint --diagnostic-level=error",
     "knip": "knip-bun",
-    "email:preview": "email dev --dir src/components/emails",
+    "email:preview": "email dev --dir src/components/emails --port 3001",
     "prepare": "husky"
   },
   "dependencies": {
