@@ -9,14 +9,37 @@ import { DefaultCatchBoundary, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
 import appCss from "@/lib/styles/globals.css?url";
 import ThemeProvider from "@/providers/ThemeProvider";
+import { fetchSession } from "@/server/functions/auth";
 import { getTheme } from "@/server/functions/theme";
 
 import type { QueryClient } from "@tanstack/react-query";
+import type { Session } from "better-auth/types";
 import type { ReactNode } from "react";
+
+interface ExtendedUser {
+  id: string;
+  email: string;
+  name?: string;
+  image?: string;
+  rowId?: string;
+  identityProviderId?: string;
+  username?: string;
+}
+
+export interface ExtendedSession extends Omit<Session, "user"> {
+  user: ExtendedUser;
+  accessToken?: string;
+}
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
+  session: ExtendedSession | null;
 }>()({
+  beforeLoad: async () => {
+    const { session } = await fetchSession();
+
+    return { session };
+  },
   loader: () => getTheme(),
   head: () => ({
     meta: [

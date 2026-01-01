@@ -1,0 +1,30 @@
+query Organizations($userId: UUID!, $limit: Int) {
+  organizations(
+    filter: { organizationMembers: { some: { userId: { equalTo: $userId } } } }
+    orderBy: NAME_ASC
+    first: $limit
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      avatarUrl
+      tier
+      createdAt
+      updatedAt
+      organizationMembers {
+        totalCount
+      }
+      currentUser: organizationMembers(condition: { userId: $userId }) {
+        nodes {
+          role
+        }
+      }
+      repositories {
+        totalCount
+      }
+    }
+    totalCount
+  }
+}

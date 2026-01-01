@@ -1,0 +1,43 @@
+query Organization($rowId: UUID!, $userId: UUID!) {
+  organization(rowId: $rowId) {
+    rowId
+    name
+    slug
+    description
+    avatarUrl
+    tier
+    createdAt
+    updatedAt
+    organizationMembers {
+      nodes {
+        userId
+        role
+        createdAt
+        user {
+          rowId
+          username
+          name
+          email
+          avatarUrl
+        }
+      }
+      totalCount
+    }
+    currentUser: organizationMembers(condition: { userId: $userId }) {
+      nodes {
+        role
+      }
+    }
+    repositories {
+      nodes {
+        rowId
+        name
+        slug
+        description
+        visibility
+        updatedAt
+      }
+      totalCount
+    }
+  }
+}

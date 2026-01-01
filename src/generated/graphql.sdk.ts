@@ -48,6 +48,65 @@ export type BigIntFilter = {
   notIn?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
+/** A filter to be used against Boolean fields. All fields are combined with a logical ‘and.’ */
+export type BooleanFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+};
+
+/** All input for the create `ExternalDependency` mutation. */
+export type CreateExternalDependencyInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `ExternalDependency` to be created by this mutation. */
+  externalDependency: ExternalDependencyInput;
+};
+
+/** The output of our create `ExternalDependency` mutation. */
+export type CreateExternalDependencyPayload = {
+  __typename?: 'CreateExternalDependencyPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `ExternalDependency` that was created by this mutation. */
+  externalDependency?: Maybe<ExternalDependency>;
+  /** An edge for our `ExternalDependency`. May be used by Relay 1. */
+  externalDependencyEdge?: Maybe<ExternalDependencyEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `ExternalDependency` mutation. */
+export type CreateExternalDependencyPayloadExternalDependencyEdgeArgs = {
+  orderBy?: Array<ExternalDependencyOrderBy>;
+};
+
 /** All input for the create `Organization` mutation. */
 export type CreateOrganizationInput = {
   /**
@@ -180,6 +239,105 @@ export type CreateRepositoryPayloadRepositoryEdgeArgs = {
   orderBy?: Array<RepositoryOrderBy>;
 };
 
+/** All input for the create `RepositoryRelationship` mutation. */
+export type CreateRepositoryRelationshipInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `RepositoryRelationship` to be created by this mutation. */
+  repositoryRelationship: RepositoryRelationshipInput;
+};
+
+/** All input for the create `RepositoryRelationshipMetadatum` mutation. */
+export type CreateRepositoryRelationshipMetadatumInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `RepositoryRelationshipMetadatum` to be created by this mutation. */
+  repositoryRelationshipMetadatum: RepositoryRelationshipMetadatumInput;
+};
+
+/** The output of our create `RepositoryRelationshipMetadatum` mutation. */
+export type CreateRepositoryRelationshipMetadatumPayload = {
+  __typename?: 'CreateRepositoryRelationshipMetadatumPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepositoryRelationshipMetadatum` that was created by this mutation. */
+  repositoryRelationshipMetadatum?: Maybe<RepositoryRelationshipMetadatum>;
+  /** An edge for our `RepositoryRelationshipMetadatum`. May be used by Relay 1. */
+  repositoryRelationshipMetadatumEdge?: Maybe<RepositoryRelationshipMetadatumEdge>;
+};
+
+
+/** The output of our create `RepositoryRelationshipMetadatum` mutation. */
+export type CreateRepositoryRelationshipMetadatumPayloadRepositoryRelationshipMetadatumEdgeArgs = {
+  orderBy?: Array<RepositoryRelationshipMetadatumOrderBy>;
+};
+
+/** The output of our create `RepositoryRelationship` mutation. */
+export type CreateRepositoryRelationshipPayload = {
+  __typename?: 'CreateRepositoryRelationshipPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepositoryRelationship` that was created by this mutation. */
+  repositoryRelationship?: Maybe<RepositoryRelationship>;
+  /** An edge for our `RepositoryRelationship`. May be used by Relay 1. */
+  repositoryRelationshipEdge?: Maybe<RepositoryRelationshipEdge>;
+};
+
+
+/** The output of our create `RepositoryRelationship` mutation. */
+export type CreateRepositoryRelationshipPayloadRepositoryRelationshipEdgeArgs = {
+  orderBy?: Array<RepositoryRelationshipOrderBy>;
+};
+
+/** All input for the create `RepositoryRelationshipType` mutation. */
+export type CreateRepositoryRelationshipTypeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `RepositoryRelationshipType` to be created by this mutation. */
+  repositoryRelationshipType: RepositoryRelationshipTypeInput;
+};
+
+/** The output of our create `RepositoryRelationshipType` mutation. */
+export type CreateRepositoryRelationshipTypePayload = {
+  __typename?: 'CreateRepositoryRelationshipTypePayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepositoryRelationshipType` that was created by this mutation. */
+  repositoryRelationshipType?: Maybe<RepositoryRelationshipType>;
+  /** An edge for our `RepositoryRelationshipType`. May be used by Relay 1. */
+  repositoryRelationshipTypeEdge?: Maybe<RepositoryRelationshipTypeEdge>;
+};
+
+
+/** The output of our create `RepositoryRelationshipType` mutation. */
+export type CreateRepositoryRelationshipTypePayloadRepositoryRelationshipTypeEdgeArgs = {
+  orderBy?: Array<RepositoryRelationshipTypeOrderBy>;
+};
+
 /** All input for the create `User` mutation. */
 export type CreateUserInput = {
   /**
@@ -237,6 +395,50 @@ export type DatetimeFilter = {
   notEqualTo?: InputMaybe<Scalars['Datetime']['input']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['Datetime']['input']>>;
+};
+
+/** All input for the `deleteExternalDependencyById` mutation. */
+export type DeleteExternalDependencyByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `ExternalDependency` to be deleted. */
+  id: Scalars['ID']['input'];
+};
+
+/** All input for the `deleteExternalDependency` mutation. */
+export type DeleteExternalDependencyInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `ExternalDependency` mutation. */
+export type DeleteExternalDependencyPayload = {
+  __typename?: 'DeleteExternalDependencyPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedExternalDependencyId?: Maybe<Scalars['ID']['output']>;
+  /** The `ExternalDependency` that was deleted by this mutation. */
+  externalDependency?: Maybe<ExternalDependency>;
+  /** An edge for our `ExternalDependency`. May be used by Relay 1. */
+  externalDependencyEdge?: Maybe<ExternalDependencyEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `ExternalDependency` mutation. */
+export type DeleteExternalDependencyPayloadExternalDependencyEdgeArgs = {
+  orderBy?: Array<ExternalDependencyOrderBy>;
 };
 
 /** All input for the `deleteOrganizationById` mutation. */
@@ -417,6 +619,138 @@ export type DeleteRepositoryPayloadRepositoryEdgeArgs = {
   orderBy?: Array<RepositoryOrderBy>;
 };
 
+/** All input for the `deleteRepositoryRelationshipById` mutation. */
+export type DeleteRepositoryRelationshipByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `RepositoryRelationship` to be deleted. */
+  id: Scalars['ID']['input'];
+};
+
+/** All input for the `deleteRepositoryRelationship` mutation. */
+export type DeleteRepositoryRelationshipInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** All input for the `deleteRepositoryRelationshipMetadatumById` mutation. */
+export type DeleteRepositoryRelationshipMetadatumByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `RepositoryRelationshipMetadatum` to be deleted. */
+  id: Scalars['ID']['input'];
+};
+
+/** All input for the `deleteRepositoryRelationshipMetadatum` mutation. */
+export type DeleteRepositoryRelationshipMetadatumInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `RepositoryRelationshipMetadatum` mutation. */
+export type DeleteRepositoryRelationshipMetadatumPayload = {
+  __typename?: 'DeleteRepositoryRelationshipMetadatumPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedRepositoryRelationshipMetadatumId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepositoryRelationshipMetadatum` that was deleted by this mutation. */
+  repositoryRelationshipMetadatum?: Maybe<RepositoryRelationshipMetadatum>;
+  /** An edge for our `RepositoryRelationshipMetadatum`. May be used by Relay 1. */
+  repositoryRelationshipMetadatumEdge?: Maybe<RepositoryRelationshipMetadatumEdge>;
+};
+
+
+/** The output of our delete `RepositoryRelationshipMetadatum` mutation. */
+export type DeleteRepositoryRelationshipMetadatumPayloadRepositoryRelationshipMetadatumEdgeArgs = {
+  orderBy?: Array<RepositoryRelationshipMetadatumOrderBy>;
+};
+
+/** The output of our delete `RepositoryRelationship` mutation. */
+export type DeleteRepositoryRelationshipPayload = {
+  __typename?: 'DeleteRepositoryRelationshipPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedRepositoryRelationshipId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepositoryRelationship` that was deleted by this mutation. */
+  repositoryRelationship?: Maybe<RepositoryRelationship>;
+  /** An edge for our `RepositoryRelationship`. May be used by Relay 1. */
+  repositoryRelationshipEdge?: Maybe<RepositoryRelationshipEdge>;
+};
+
+
+/** The output of our delete `RepositoryRelationship` mutation. */
+export type DeleteRepositoryRelationshipPayloadRepositoryRelationshipEdgeArgs = {
+  orderBy?: Array<RepositoryRelationshipOrderBy>;
+};
+
+/** All input for the `deleteRepositoryRelationshipTypeById` mutation. */
+export type DeleteRepositoryRelationshipTypeByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `RepositoryRelationshipType` to be deleted. */
+  id: Scalars['ID']['input'];
+};
+
+/** All input for the `deleteRepositoryRelationshipType` mutation. */
+export type DeleteRepositoryRelationshipTypeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `RepositoryRelationshipType` mutation. */
+export type DeleteRepositoryRelationshipTypePayload = {
+  __typename?: 'DeleteRepositoryRelationshipTypePayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedRepositoryRelationshipTypeId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepositoryRelationshipType` that was deleted by this mutation. */
+  repositoryRelationshipType?: Maybe<RepositoryRelationshipType>;
+  /** An edge for our `RepositoryRelationshipType`. May be used by Relay 1. */
+  repositoryRelationshipTypeEdge?: Maybe<RepositoryRelationshipTypeEdge>;
+};
+
+
+/** The output of our delete `RepositoryRelationshipType` mutation. */
+export type DeleteRepositoryRelationshipTypePayloadRepositoryRelationshipTypeEdgeArgs = {
+  orderBy?: Array<RepositoryRelationshipTypeOrderBy>;
+};
+
 /** All input for the `deleteUserById` mutation. */
 export type DeleteUserByIdInput = {
   /**
@@ -461,6 +795,310 @@ export type DeleteUserPayloadUserEdgeArgs = {
   orderBy?: Array<UserOrderBy>;
 };
 
+export enum DetectionSource {
+  ArborManifest = 'arbor_manifest',
+  CargoToml = 'cargo_toml',
+  GoMod = 'go_mod',
+  GraphqlSchema = 'graphql_schema',
+  Manual = 'manual',
+  Openapi = 'openapi',
+  PackageJson = 'package_json'
+}
+
+/** A filter to be used against DetectionSource fields. All fields are combined with a logical ‘and.’ */
+export type DetectionSourceFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<DetectionSource>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<DetectionSource>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<DetectionSource>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<DetectionSource>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<DetectionSource>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<DetectionSource>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<DetectionSource>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<DetectionSource>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<DetectionSource>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<DetectionSource>>;
+};
+
+export type ExternalDependency = Node & {
+  __typename?: 'ExternalDependency';
+  createdAt: Scalars['Datetime']['output'];
+  detectionSource: DetectionSource;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  packageManager: Scalars['String']['output'];
+  packageName: Scalars['String']['output'];
+  /** Reads a single `Repository` that is related to this `ExternalDependency`. */
+  repository?: Maybe<Repository>;
+  repositoryId: Scalars['UUID']['output'];
+  rowId: Scalars['UUID']['output'];
+  versionConstraint?: Maybe<Scalars['String']['output']>;
+};
+
+export type ExternalDependencyAggregates = {
+  __typename?: 'ExternalDependencyAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<ExternalDependencyDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/** A filter to be used against aggregates of `ExternalDependency` object types. */
+export type ExternalDependencyAggregatesFilter = {
+  /** Distinct count aggregate over matching `ExternalDependency` objects. */
+  distinctCount?: InputMaybe<ExternalDependencyDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `ExternalDependency` object to be included within the aggregate. */
+  filter?: InputMaybe<ExternalDependencyFilter>;
+};
+
+/**
+ * A condition to be used against `ExternalDependency` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type ExternalDependencyCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `detectionSource` field. */
+  detectionSource?: InputMaybe<DetectionSource>;
+  /** Checks for equality with the object’s `packageManager` field. */
+  packageManager?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `packageName` field. */
+  packageName?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `versionConstraint` field. */
+  versionConstraint?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A connection to a list of `ExternalDependency` values. */
+export type ExternalDependencyConnection = {
+  __typename?: 'ExternalDependencyConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<ExternalDependencyAggregates>;
+  /** A list of edges which contains the `ExternalDependency` and cursor to aid in pagination. */
+  edges: Array<ExternalDependencyEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<ExternalDependencyAggregates>>;
+  /** A list of `ExternalDependency` objects. */
+  nodes: Array<ExternalDependency>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `ExternalDependency` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `ExternalDependency` values. */
+export type ExternalDependencyConnectionGroupedAggregatesArgs = {
+  groupBy: Array<ExternalDependencyGroupBy>;
+  having?: InputMaybe<ExternalDependencyHavingInput>;
+};
+
+export type ExternalDependencyDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  detectionSource?: InputMaybe<BigIntFilter>;
+  packageManager?: InputMaybe<BigIntFilter>;
+  packageName?: InputMaybe<BigIntFilter>;
+  repositoryId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  versionConstraint?: InputMaybe<BigIntFilter>;
+};
+
+export type ExternalDependencyDistinctCountAggregates = {
+  __typename?: 'ExternalDependencyDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of detectionSource across the matching connection */
+  detectionSource?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of packageManager across the matching connection */
+  packageManager?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of packageName across the matching connection */
+  packageName?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of repositoryId across the matching connection */
+  repositoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of versionConstraint across the matching connection */
+  versionConstraint?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `ExternalDependency` edge in the connection. */
+export type ExternalDependencyEdge = {
+  __typename?: 'ExternalDependencyEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `ExternalDependency` at the end of the edge. */
+  node: ExternalDependency;
+};
+
+/** A filter to be used against `ExternalDependency` object types. All fields are combined with a logical ‘and.’ */
+export type ExternalDependencyFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<ExternalDependencyFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `detectionSource` field. */
+  detectionSource?: InputMaybe<DetectionSourceFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<ExternalDependencyFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<ExternalDependencyFilter>>;
+  /** Filter by the object’s `packageManager` field. */
+  packageManager?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `packageName` field. */
+  packageName?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repository` relation. */
+  repository?: InputMaybe<RepositoryFilter>;
+  /** Filter by the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `versionConstraint` field. */
+  versionConstraint?: InputMaybe<StringFilter>;
+};
+
+/** Grouping methods for `ExternalDependency` for usage during aggregation. */
+export enum ExternalDependencyGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  DetectionSource = 'DETECTION_SOURCE',
+  PackageManager = 'PACKAGE_MANAGER',
+  PackageName = 'PACKAGE_NAME',
+  RepositoryId = 'REPOSITORY_ID',
+  VersionConstraint = 'VERSION_CONSTRAINT'
+}
+
+export type ExternalDependencyHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ExternalDependencyHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `ExternalDependency` aggregates. */
+export type ExternalDependencyHavingInput = {
+  AND?: InputMaybe<Array<ExternalDependencyHavingInput>>;
+  OR?: InputMaybe<Array<ExternalDependencyHavingInput>>;
+  average?: InputMaybe<ExternalDependencyHavingAverageInput>;
+  distinctCount?: InputMaybe<ExternalDependencyHavingDistinctCountInput>;
+  max?: InputMaybe<ExternalDependencyHavingMaxInput>;
+  min?: InputMaybe<ExternalDependencyHavingMinInput>;
+  stddevPopulation?: InputMaybe<ExternalDependencyHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<ExternalDependencyHavingStddevSampleInput>;
+  sum?: InputMaybe<ExternalDependencyHavingSumInput>;
+  variancePopulation?: InputMaybe<ExternalDependencyHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<ExternalDependencyHavingVarianceSampleInput>;
+};
+
+export type ExternalDependencyHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ExternalDependencyHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ExternalDependencyHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ExternalDependencyHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ExternalDependencyHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ExternalDependencyHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ExternalDependencyHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `ExternalDependency` */
+export type ExternalDependencyInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  detectionSource?: InputMaybe<DetectionSource>;
+  packageManager: Scalars['String']['input'];
+  packageName: Scalars['String']['input'];
+  repositoryId: Scalars['UUID']['input'];
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  versionConstraint?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Methods to use when ordering `ExternalDependency`. */
+export enum ExternalDependencyOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  Natural = 'NATURAL',
+  PackageManagerAsc = 'PACKAGE_MANAGER_ASC',
+  PackageManagerDesc = 'PACKAGE_MANAGER_DESC',
+  PackageNameAsc = 'PACKAGE_NAME_ASC',
+  PackageNameDesc = 'PACKAGE_NAME_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepositoryIdAsc = 'REPOSITORY_ID_ASC',
+  RepositoryIdDesc = 'REPOSITORY_ID_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  VersionConstraintAsc = 'VERSION_CONSTRAINT_ASC',
+  VersionConstraintDesc = 'VERSION_CONSTRAINT_DESC'
+}
+
+/** Represents an update to a `ExternalDependency`. Fields that are set will be updated. */
+export type ExternalDependencyPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  detectionSource?: InputMaybe<DetectionSource>;
+  packageManager?: InputMaybe<Scalars['String']['input']>;
+  packageName?: InputMaybe<Scalars['String']['input']>;
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  versionConstraint?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A filter to be used against Float fields. All fields are combined with a logical ‘and.’ */
+export type FloatFilter = {
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Scalars['Float']['input']>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Scalars['Float']['input']>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Included in the specified list. */
+  in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Scalars['Float']['input']>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Scalars['Float']['input']>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  /** Not included in the specified list. */
+  notIn?: InputMaybe<Array<Scalars['Float']['input']>>;
+};
+
 export type HavingDatetimeFilter = {
   equalTo?: InputMaybe<Scalars['Datetime']['input']>;
   greaterThan?: InputMaybe<Scalars['Datetime']['input']>;
@@ -470,9 +1108,20 @@ export type HavingDatetimeFilter = {
   notEqualTo?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
+export type HavingFloatFilter = {
+  equalTo?: InputMaybe<Scalars['Float']['input']>;
+  greaterThan?: InputMaybe<Scalars['Float']['input']>;
+  greaterThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  lessThan?: InputMaybe<Scalars['Float']['input']>;
+  lessThanOrEqualTo?: InputMaybe<Scalars['Float']['input']>;
+  notEqualTo?: InputMaybe<Scalars['Float']['input']>;
+};
+
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Creates a single `ExternalDependency`. */
+  createExternalDependency?: Maybe<CreateExternalDependencyPayload>;
   /** Creates a single `Organization`. */
   createOrganization?: Maybe<CreateOrganizationPayload>;
   /** Creates a single `OrganizationMember`. */
@@ -481,8 +1130,18 @@ export type Mutation = {
   createRepository?: Maybe<CreateRepositoryPayload>;
   /** Creates a single `RepositoryCollaborator`. */
   createRepositoryCollaborator?: Maybe<CreateRepositoryCollaboratorPayload>;
+  /** Creates a single `RepositoryRelationship`. */
+  createRepositoryRelationship?: Maybe<CreateRepositoryRelationshipPayload>;
+  /** Creates a single `RepositoryRelationshipMetadatum`. */
+  createRepositoryRelationshipMetadatum?: Maybe<CreateRepositoryRelationshipMetadatumPayload>;
+  /** Creates a single `RepositoryRelationshipType`. */
+  createRepositoryRelationshipType?: Maybe<CreateRepositoryRelationshipTypePayload>;
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>;
+  /** Deletes a single `ExternalDependency` using a unique key. */
+  deleteExternalDependency?: Maybe<DeleteExternalDependencyPayload>;
+  /** Deletes a single `ExternalDependency` using its globally unique id. */
+  deleteExternalDependencyById?: Maybe<DeleteExternalDependencyPayload>;
   /** Deletes a single `Organization` using a unique key. */
   deleteOrganization?: Maybe<DeleteOrganizationPayload>;
   /** Deletes a single `Organization` using its globally unique id. */
@@ -499,10 +1158,26 @@ export type Mutation = {
   deleteRepositoryCollaborator?: Maybe<DeleteRepositoryCollaboratorPayload>;
   /** Deletes a single `RepositoryCollaborator` using its globally unique id. */
   deleteRepositoryCollaboratorById?: Maybe<DeleteRepositoryCollaboratorPayload>;
+  /** Deletes a single `RepositoryRelationship` using a unique key. */
+  deleteRepositoryRelationship?: Maybe<DeleteRepositoryRelationshipPayload>;
+  /** Deletes a single `RepositoryRelationship` using its globally unique id. */
+  deleteRepositoryRelationshipById?: Maybe<DeleteRepositoryRelationshipPayload>;
+  /** Deletes a single `RepositoryRelationshipMetadatum` using a unique key. */
+  deleteRepositoryRelationshipMetadatum?: Maybe<DeleteRepositoryRelationshipMetadatumPayload>;
+  /** Deletes a single `RepositoryRelationshipMetadatum` using its globally unique id. */
+  deleteRepositoryRelationshipMetadatumById?: Maybe<DeleteRepositoryRelationshipMetadatumPayload>;
+  /** Deletes a single `RepositoryRelationshipType` using a unique key. */
+  deleteRepositoryRelationshipType?: Maybe<DeleteRepositoryRelationshipTypePayload>;
+  /** Deletes a single `RepositoryRelationshipType` using its globally unique id. */
+  deleteRepositoryRelationshipTypeById?: Maybe<DeleteRepositoryRelationshipTypePayload>;
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>;
   /** Deletes a single `User` using its globally unique id. */
   deleteUserById?: Maybe<DeleteUserPayload>;
+  /** Updates a single `ExternalDependency` using a unique key and a patch. */
+  updateExternalDependency?: Maybe<UpdateExternalDependencyPayload>;
+  /** Updates a single `ExternalDependency` using its globally unique id and a patch. */
+  updateExternalDependencyById?: Maybe<UpdateExternalDependencyPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
   updateOrganization?: Maybe<UpdateOrganizationPayload>;
   /** Updates a single `Organization` using its globally unique id and a patch. */
@@ -519,10 +1194,28 @@ export type Mutation = {
   updateRepositoryCollaborator?: Maybe<UpdateRepositoryCollaboratorPayload>;
   /** Updates a single `RepositoryCollaborator` using its globally unique id and a patch. */
   updateRepositoryCollaboratorById?: Maybe<UpdateRepositoryCollaboratorPayload>;
+  /** Updates a single `RepositoryRelationship` using a unique key and a patch. */
+  updateRepositoryRelationship?: Maybe<UpdateRepositoryRelationshipPayload>;
+  /** Updates a single `RepositoryRelationship` using its globally unique id and a patch. */
+  updateRepositoryRelationshipById?: Maybe<UpdateRepositoryRelationshipPayload>;
+  /** Updates a single `RepositoryRelationshipMetadatum` using a unique key and a patch. */
+  updateRepositoryRelationshipMetadatum?: Maybe<UpdateRepositoryRelationshipMetadatumPayload>;
+  /** Updates a single `RepositoryRelationshipMetadatum` using its globally unique id and a patch. */
+  updateRepositoryRelationshipMetadatumById?: Maybe<UpdateRepositoryRelationshipMetadatumPayload>;
+  /** Updates a single `RepositoryRelationshipType` using a unique key and a patch. */
+  updateRepositoryRelationshipType?: Maybe<UpdateRepositoryRelationshipTypePayload>;
+  /** Updates a single `RepositoryRelationshipType` using its globally unique id and a patch. */
+  updateRepositoryRelationshipTypeById?: Maybe<UpdateRepositoryRelationshipTypePayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
   /** Updates a single `User` using its globally unique id and a patch. */
   updateUserById?: Maybe<UpdateUserPayload>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateExternalDependencyArgs = {
+  input: CreateExternalDependencyInput;
 };
 
 
@@ -551,8 +1244,38 @@ export type MutationCreateRepositoryCollaboratorArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateRepositoryRelationshipArgs = {
+  input: CreateRepositoryRelationshipInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateRepositoryRelationshipMetadatumArgs = {
+  input: CreateRepositoryRelationshipMetadatumInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateRepositoryRelationshipTypeArgs = {
+  input: CreateRepositoryRelationshipTypeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteExternalDependencyArgs = {
+  input: DeleteExternalDependencyInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteExternalDependencyByIdArgs = {
+  input: DeleteExternalDependencyByIdInput;
 };
 
 
@@ -605,6 +1328,42 @@ export type MutationDeleteRepositoryCollaboratorByIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteRepositoryRelationshipArgs = {
+  input: DeleteRepositoryRelationshipInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteRepositoryRelationshipByIdArgs = {
+  input: DeleteRepositoryRelationshipByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteRepositoryRelationshipMetadatumArgs = {
+  input: DeleteRepositoryRelationshipMetadatumInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteRepositoryRelationshipMetadatumByIdArgs = {
+  input: DeleteRepositoryRelationshipMetadatumByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteRepositoryRelationshipTypeArgs = {
+  input: DeleteRepositoryRelationshipTypeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteRepositoryRelationshipTypeByIdArgs = {
+  input: DeleteRepositoryRelationshipTypeByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteUserArgs = {
   input: DeleteUserInput;
 };
@@ -613,6 +1372,18 @@ export type MutationDeleteUserArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteUserByIdArgs = {
   input: DeleteUserByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateExternalDependencyArgs = {
+  input: UpdateExternalDependencyInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateExternalDependencyByIdArgs = {
+  input: UpdateExternalDependencyByIdInput;
 };
 
 
@@ -665,6 +1436,42 @@ export type MutationUpdateRepositoryCollaboratorByIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRepositoryRelationshipArgs = {
+  input: UpdateRepositoryRelationshipInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRepositoryRelationshipByIdArgs = {
+  input: UpdateRepositoryRelationshipByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRepositoryRelationshipMetadatumArgs = {
+  input: UpdateRepositoryRelationshipMetadatumInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRepositoryRelationshipMetadatumByIdArgs = {
+  input: UpdateRepositoryRelationshipMetadatumByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRepositoryRelationshipTypeArgs = {
+  input: UpdateRepositoryRelationshipTypeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateRepositoryRelationshipTypeByIdArgs = {
+  input: UpdateRepositoryRelationshipTypeByIdInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
@@ -693,6 +1500,8 @@ export type Organization = Node & {
   organizationMembers: OrganizationMemberConnection;
   /** Reads and enables pagination through a set of `Repository`. */
   repositories: RepositoryConnection;
+  /** Reads and enables pagination through a set of `RepositoryRelationshipType`. */
+  repositoryRelationshipTypes: RepositoryRelationshipTypeConnection;
   rowId: Scalars['UUID']['output'];
   slug: Scalars['String']['output'];
   stripeCustomerId?: Maybe<Scalars['String']['output']>;
@@ -723,6 +1532,18 @@ export type OrganizationRepositoriesArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<RepositoryOrderBy>>;
+};
+
+
+export type OrganizationRepositoryRelationshipTypesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<RepositoryRelationshipTypeCondition>;
+  filter?: InputMaybe<RepositoryRelationshipTypeFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<RepositoryRelationshipTypeOrderBy>>;
 };
 
 export type OrganizationAggregates = {
@@ -840,6 +1661,10 @@ export type OrganizationFilter = {
   repositories?: InputMaybe<OrganizationToManyRepositoryFilter>;
   /** Some related `repositories` exist. */
   repositoriesExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `repositoryRelationshipTypes` relation. */
+  repositoryRelationshipTypes?: InputMaybe<OrganizationToManyRepositoryRelationshipTypeFilter>;
+  /** Some related `repositoryRelationshipTypes` exist. */
+  repositoryRelationshipTypesExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `rowId` field. */
   rowId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `slug` field. */
@@ -1223,6 +2048,20 @@ export enum OrganizationOrderBy {
   RepositoriesDistinctCountUpdatedAtDesc = 'REPOSITORIES_DISTINCT_COUNT_UPDATED_AT_DESC',
   RepositoriesDistinctCountVisibilityAsc = 'REPOSITORIES_DISTINCT_COUNT_VISIBILITY_ASC',
   RepositoriesDistinctCountVisibilityDesc = 'REPOSITORIES_DISTINCT_COUNT_VISIBILITY_DESC',
+  RepositoryRelationshipTypesCountAsc = 'REPOSITORY_RELATIONSHIP_TYPES_COUNT_ASC',
+  RepositoryRelationshipTypesCountDesc = 'REPOSITORY_RELATIONSHIP_TYPES_COUNT_DESC',
+  RepositoryRelationshipTypesDistinctCountCreatedAtAsc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_CREATED_AT_ASC',
+  RepositoryRelationshipTypesDistinctCountCreatedAtDesc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_CREATED_AT_DESC',
+  RepositoryRelationshipTypesDistinctCountDescriptionAsc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_DESCRIPTION_ASC',
+  RepositoryRelationshipTypesDistinctCountDescriptionDesc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_DESCRIPTION_DESC',
+  RepositoryRelationshipTypesDistinctCountIsDirectedAsc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_IS_DIRECTED_ASC',
+  RepositoryRelationshipTypesDistinctCountIsDirectedDesc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_IS_DIRECTED_DESC',
+  RepositoryRelationshipTypesDistinctCountNameAsc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_NAME_ASC',
+  RepositoryRelationshipTypesDistinctCountNameDesc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_NAME_DESC',
+  RepositoryRelationshipTypesDistinctCountOrganizationIdAsc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_ORGANIZATION_ID_ASC',
+  RepositoryRelationshipTypesDistinctCountOrganizationIdDesc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_ORGANIZATION_ID_DESC',
+  RepositoryRelationshipTypesDistinctCountRowIdAsc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_ROW_ID_ASC',
+  RepositoryRelationshipTypesDistinctCountRowIdDesc = 'REPOSITORY_RELATIONSHIP_TYPES_DISTINCT_COUNT_ROW_ID_DESC',
   RowIdAsc = 'ROW_ID_ASC',
   RowIdDesc = 'ROW_ID_DESC',
   SlugAsc = 'SLUG_ASC',
@@ -1273,6 +2112,18 @@ export type OrganizationToManyRepositoryFilter = {
   some?: InputMaybe<RepositoryFilter>;
 };
 
+/** A filter to be used against many `RepositoryRelationshipType` object types. All fields are combined with a logical ‘and.’ */
+export type OrganizationToManyRepositoryRelationshipTypeFilter = {
+  /** Aggregates across related `RepositoryRelationshipType` match the filter criteria. */
+  aggregates?: InputMaybe<RepositoryRelationshipTypeAggregatesFilter>;
+  /** Every related `RepositoryRelationshipType` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<RepositoryRelationshipTypeFilter>;
+  /** No related `RepositoryRelationshipType` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<RepositoryRelationshipTypeFilter>;
+  /** Some related `RepositoryRelationshipType` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<RepositoryRelationshipTypeFilter>;
+};
+
 /** Information about pagination in a connection. */
 export type PageInfo = {
   __typename?: 'PageInfo';
@@ -1321,6 +2172,12 @@ export type PermissionFilter = {
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
   __typename?: 'Query';
+  /** Reads and enables pagination through a set of `ExternalDependency`. */
+  externalDependencies?: Maybe<ExternalDependencyConnection>;
+  /** Get a single `ExternalDependency`. */
+  externalDependency?: Maybe<ExternalDependency>;
+  /** Reads a single `ExternalDependency` using its globally unique `ID`. */
+  externalDependencyById?: Maybe<ExternalDependency>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   id: Scalars['ID']['output'];
   /** Fetches an object given its globally unique `ID`. */
@@ -1356,6 +2213,24 @@ export type Query = Node & {
   repositoryCollaboratorById?: Maybe<RepositoryCollaborator>;
   /** Reads and enables pagination through a set of `RepositoryCollaborator`. */
   repositoryCollaborators?: Maybe<RepositoryCollaboratorConnection>;
+  /** Get a single `RepositoryRelationship`. */
+  repositoryRelationship?: Maybe<RepositoryRelationship>;
+  /** Reads a single `RepositoryRelationship` using its globally unique `ID`. */
+  repositoryRelationshipById?: Maybe<RepositoryRelationship>;
+  /** Reads and enables pagination through a set of `RepositoryRelationshipMetadatum`. */
+  repositoryRelationshipMetadata?: Maybe<RepositoryRelationshipMetadatumConnection>;
+  /** Get a single `RepositoryRelationshipMetadatum`. */
+  repositoryRelationshipMetadatum?: Maybe<RepositoryRelationshipMetadatum>;
+  /** Reads a single `RepositoryRelationshipMetadatum` using its globally unique `ID`. */
+  repositoryRelationshipMetadatumById?: Maybe<RepositoryRelationshipMetadatum>;
+  /** Get a single `RepositoryRelationshipType`. */
+  repositoryRelationshipType?: Maybe<RepositoryRelationshipType>;
+  /** Reads a single `RepositoryRelationshipType` using its globally unique `ID`. */
+  repositoryRelationshipTypeById?: Maybe<RepositoryRelationshipType>;
+  /** Reads and enables pagination through a set of `RepositoryRelationshipType`. */
+  repositoryRelationshipTypes?: Maybe<RepositoryRelationshipTypeConnection>;
+  /** Reads and enables pagination through a set of `RepositoryRelationship`. */
+  repositoryRelationships?: Maybe<RepositoryRelationshipConnection>;
   /** Get a single `User`. */
   user?: Maybe<User>;
   /** Get a single `User`. */
@@ -1368,6 +2243,31 @@ export type Query = Node & {
   userByUsername?: Maybe<User>;
   /** Reads and enables pagination through a set of `User`. */
   users?: Maybe<UserConnection>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryExternalDependenciesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<ExternalDependencyCondition>;
+  filter?: InputMaybe<ExternalDependencyFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ExternalDependencyOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryExternalDependencyArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryExternalDependencyByIdArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -1486,6 +2386,81 @@ export type QueryRepositoryCollaboratorsArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryRepositoryRelationshipArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepositoryRelationshipByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepositoryRelationshipMetadataArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<RepositoryRelationshipMetadatumCondition>;
+  filter?: InputMaybe<RepositoryRelationshipMetadatumFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<RepositoryRelationshipMetadatumOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepositoryRelationshipMetadatumArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepositoryRelationshipMetadatumByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepositoryRelationshipTypeArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepositoryRelationshipTypeByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepositoryRelationshipTypesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<RepositoryRelationshipTypeCondition>;
+  filter?: InputMaybe<RepositoryRelationshipTypeFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<RepositoryRelationshipTypeOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepositoryRelationshipsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<RepositoryRelationshipCondition>;
+  filter?: InputMaybe<RepositoryRelationshipFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<RepositoryRelationshipOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryUserArgs = {
   rowId: Scalars['UUID']['input'];
 };
@@ -1532,6 +2507,8 @@ export type Repository = Node & {
   createdAt: Scalars['Datetime']['output'];
   defaultBranch: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
+  /** Reads and enables pagination through a set of `ExternalDependency`. */
+  externalDependencies: ExternalDependencyConnection;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
@@ -1543,10 +2520,26 @@ export type Repository = Node & {
   ownerId: Scalars['UUID']['output'];
   /** Reads and enables pagination through a set of `RepositoryCollaborator`. */
   repositoryCollaborators: RepositoryCollaboratorConnection;
+  /** Reads and enables pagination through a set of `RepositoryRelationship`. */
+  repositoryRelationshipsBySourceRepositoryId: RepositoryRelationshipConnection;
+  /** Reads and enables pagination through a set of `RepositoryRelationship`. */
+  repositoryRelationshipsByTargetRepositoryId: RepositoryRelationshipConnection;
   rowId: Scalars['UUID']['output'];
   slug: Scalars['String']['output'];
   updatedAt: Scalars['Datetime']['output'];
   visibility: Visibility;
+};
+
+
+export type RepositoryExternalDependenciesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<ExternalDependencyCondition>;
+  filter?: InputMaybe<ExternalDependencyFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ExternalDependencyOrderBy>>;
 };
 
 
@@ -1559,6 +2552,30 @@ export type RepositoryRepositoryCollaboratorsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<RepositoryCollaboratorOrderBy>>;
+};
+
+
+export type RepositoryRepositoryRelationshipsBySourceRepositoryIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<RepositoryRelationshipCondition>;
+  filter?: InputMaybe<RepositoryRelationshipFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<RepositoryRelationshipOrderBy>>;
+};
+
+
+export type RepositoryRepositoryRelationshipsByTargetRepositoryIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<RepositoryRelationshipCondition>;
+  filter?: InputMaybe<RepositoryRelationshipFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<RepositoryRelationshipOrderBy>>;
 };
 
 export type RepositoryAggregates = {
@@ -1917,6 +2934,10 @@ export type RepositoryFilter = {
   defaultBranch?: InputMaybe<StringFilter>;
   /** Filter by the object’s `description` field. */
   description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `externalDependencies` relation. */
+  externalDependencies?: InputMaybe<RepositoryToManyExternalDependencyFilter>;
+  /** Some related `externalDependencies` exist. */
+  externalDependenciesExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `name` field. */
   name?: InputMaybe<StringFilter>;
   /** Negates the expression. */
@@ -1937,6 +2958,14 @@ export type RepositoryFilter = {
   repositoryCollaborators?: InputMaybe<RepositoryToManyRepositoryCollaboratorFilter>;
   /** Some related `repositoryCollaborators` exist. */
   repositoryCollaboratorsExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `repositoryRelationshipsBySourceRepositoryId` relation. */
+  repositoryRelationshipsBySourceRepositoryId?: InputMaybe<RepositoryToManyRepositoryRelationshipFilter>;
+  /** Some related `repositoryRelationshipsBySourceRepositoryId` exist. */
+  repositoryRelationshipsBySourceRepositoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `repositoryRelationshipsByTargetRepositoryId` relation. */
+  repositoryRelationshipsByTargetRepositoryId?: InputMaybe<RepositoryToManyRepositoryRelationshipFilter>;
+  /** Some related `repositoryRelationshipsByTargetRepositoryId` exist. */
+  repositoryRelationshipsByTargetRepositoryIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `rowId` field. */
   rowId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `slug` field. */
@@ -2046,6 +3075,22 @@ export enum RepositoryOrderBy {
   DefaultBranchDesc = 'DEFAULT_BRANCH_DESC',
   DescriptionAsc = 'DESCRIPTION_ASC',
   DescriptionDesc = 'DESCRIPTION_DESC',
+  ExternalDependenciesCountAsc = 'EXTERNAL_DEPENDENCIES_COUNT_ASC',
+  ExternalDependenciesCountDesc = 'EXTERNAL_DEPENDENCIES_COUNT_DESC',
+  ExternalDependenciesDistinctCountCreatedAtAsc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_CREATED_AT_ASC',
+  ExternalDependenciesDistinctCountCreatedAtDesc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_CREATED_AT_DESC',
+  ExternalDependenciesDistinctCountDetectionSourceAsc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_DETECTION_SOURCE_ASC',
+  ExternalDependenciesDistinctCountDetectionSourceDesc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_DETECTION_SOURCE_DESC',
+  ExternalDependenciesDistinctCountPackageManagerAsc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_PACKAGE_MANAGER_ASC',
+  ExternalDependenciesDistinctCountPackageManagerDesc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_PACKAGE_MANAGER_DESC',
+  ExternalDependenciesDistinctCountPackageNameAsc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_PACKAGE_NAME_ASC',
+  ExternalDependenciesDistinctCountPackageNameDesc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_PACKAGE_NAME_DESC',
+  ExternalDependenciesDistinctCountRepositoryIdAsc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  ExternalDependenciesDistinctCountRepositoryIdDesc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  ExternalDependenciesDistinctCountRowIdAsc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_ROW_ID_ASC',
+  ExternalDependenciesDistinctCountRowIdDesc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_ROW_ID_DESC',
+  ExternalDependenciesDistinctCountVersionConstraintAsc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_VERSION_CONSTRAINT_ASC',
+  ExternalDependenciesDistinctCountVersionConstraintDesc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_VERSION_CONSTRAINT_DESC',
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
@@ -2067,6 +3112,82 @@ export enum RepositoryOrderBy {
   RepositoryCollaboratorsDistinctCountUpdatedAtDesc = 'REPOSITORY_COLLABORATORS_DISTINCT_COUNT_UPDATED_AT_DESC',
   RepositoryCollaboratorsDistinctCountUserIdAsc = 'REPOSITORY_COLLABORATORS_DISTINCT_COUNT_USER_ID_ASC',
   RepositoryCollaboratorsDistinctCountUserIdDesc = 'REPOSITORY_COLLABORATORS_DISTINCT_COUNT_USER_ID_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdAverageConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_AVERAGE_CONFIDENCE_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdAverageConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_AVERAGE_CONFIDENCE_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdCountAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_COUNT_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdCountDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_COUNT_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountBranchAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_BRANCH_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountBranchDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_BRANCH_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_CONFIDENCE_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_CONFIDENCE_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountCreatedAtAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountCreatedAtDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountDetectionSourceAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_DETECTION_SOURCE_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountDetectionSourceDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_DETECTION_SOURCE_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountRelationshipTypeIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_RELATIONSHIP_TYPE_ID_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountRelationshipTypeIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_RELATIONSHIP_TYPE_ID_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountRowIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_ROW_ID_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountRowIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_ROW_ID_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountSourceRepositoryIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_SOURCE_REPOSITORY_ID_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountSourceRepositoryIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_SOURCE_REPOSITORY_ID_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountTargetRepositoryIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_TARGET_REPOSITORY_ID_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountTargetRepositoryIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_TARGET_REPOSITORY_ID_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountUpdatedAtAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountUpdatedAtDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountVersionConstraintAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_VERSION_CONSTRAINT_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdDistinctCountVersionConstraintDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_DISTINCT_COUNT_VERSION_CONSTRAINT_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdMaxConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_MAX_CONFIDENCE_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdMaxConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_MAX_CONFIDENCE_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdMinConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_MIN_CONFIDENCE_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdMinConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_MIN_CONFIDENCE_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdStddevPopulationConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_STDDEV_POPULATION_CONFIDENCE_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdStddevPopulationConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_STDDEV_POPULATION_CONFIDENCE_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdStddevSampleConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_STDDEV_SAMPLE_CONFIDENCE_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdStddevSampleConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_STDDEV_SAMPLE_CONFIDENCE_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdSumConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_SUM_CONFIDENCE_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdSumConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_SUM_CONFIDENCE_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdVariancePopulationConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_VARIANCE_POPULATION_CONFIDENCE_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdVariancePopulationConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_VARIANCE_POPULATION_CONFIDENCE_DESC',
+  RepositoryRelationshipsBySourceRepositoryIdVarianceSampleConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_VARIANCE_SAMPLE_CONFIDENCE_ASC',
+  RepositoryRelationshipsBySourceRepositoryIdVarianceSampleConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_SOURCE_REPOSITORY_ID_VARIANCE_SAMPLE_CONFIDENCE_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdAverageConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_AVERAGE_CONFIDENCE_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdAverageConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_AVERAGE_CONFIDENCE_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdCountAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_COUNT_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdCountDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_COUNT_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountBranchAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_BRANCH_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountBranchDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_BRANCH_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_CONFIDENCE_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_CONFIDENCE_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountCreatedAtAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountCreatedAtDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountDetectionSourceAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_DETECTION_SOURCE_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountDetectionSourceDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_DETECTION_SOURCE_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountRelationshipTypeIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_RELATIONSHIP_TYPE_ID_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountRelationshipTypeIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_RELATIONSHIP_TYPE_ID_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountRowIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_ROW_ID_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountRowIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_ROW_ID_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountSourceRepositoryIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_SOURCE_REPOSITORY_ID_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountSourceRepositoryIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_SOURCE_REPOSITORY_ID_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountTargetRepositoryIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_TARGET_REPOSITORY_ID_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountTargetRepositoryIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_TARGET_REPOSITORY_ID_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountUpdatedAtAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountUpdatedAtDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountVersionConstraintAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_VERSION_CONSTRAINT_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdDistinctCountVersionConstraintDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_DISTINCT_COUNT_VERSION_CONSTRAINT_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdMaxConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_MAX_CONFIDENCE_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdMaxConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_MAX_CONFIDENCE_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdMinConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_MIN_CONFIDENCE_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdMinConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_MIN_CONFIDENCE_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdStddevPopulationConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_STDDEV_POPULATION_CONFIDENCE_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdStddevPopulationConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_STDDEV_POPULATION_CONFIDENCE_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdStddevSampleConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_STDDEV_SAMPLE_CONFIDENCE_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdStddevSampleConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_STDDEV_SAMPLE_CONFIDENCE_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdSumConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_SUM_CONFIDENCE_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdSumConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_SUM_CONFIDENCE_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdVariancePopulationConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_VARIANCE_POPULATION_CONFIDENCE_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdVariancePopulationConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_VARIANCE_POPULATION_CONFIDENCE_DESC',
+  RepositoryRelationshipsByTargetRepositoryIdVarianceSampleConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_VARIANCE_SAMPLE_CONFIDENCE_ASC',
+  RepositoryRelationshipsByTargetRepositoryIdVarianceSampleConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_TARGET_REPOSITORY_ID_VARIANCE_SAMPLE_CONFIDENCE_DESC',
   RowIdAsc = 'ROW_ID_ASC',
   RowIdDesc = 'ROW_ID_DESC',
   SlugAsc = 'SLUG_ASC',
@@ -2091,6 +3212,1000 @@ export type RepositoryPatch = {
   visibility?: InputMaybe<Visibility>;
 };
 
+export type RepositoryRelationship = Node & {
+  __typename?: 'RepositoryRelationship';
+  branch?: Maybe<Scalars['String']['output']>;
+  confidence: Scalars['Float']['output'];
+  createdAt: Scalars['Datetime']['output'];
+  detectionSource: DetectionSource;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  /** Reads a single `RepositoryRelationshipType` that is related to this `RepositoryRelationship`. */
+  relationshipType?: Maybe<RepositoryRelationshipType>;
+  relationshipTypeId: Scalars['UUID']['output'];
+  /** Reads and enables pagination through a set of `RepositoryRelationshipMetadatum`. */
+  repositoryRelationshipMetadataByRelationshipId: RepositoryRelationshipMetadatumConnection;
+  rowId: Scalars['UUID']['output'];
+  /** Reads a single `Repository` that is related to this `RepositoryRelationship`. */
+  sourceRepository?: Maybe<Repository>;
+  sourceRepositoryId: Scalars['UUID']['output'];
+  /** Reads a single `Repository` that is related to this `RepositoryRelationship`. */
+  targetRepository?: Maybe<Repository>;
+  targetRepositoryId: Scalars['UUID']['output'];
+  updatedAt: Scalars['Datetime']['output'];
+  versionConstraint?: Maybe<Scalars['String']['output']>;
+};
+
+
+export type RepositoryRelationshipRepositoryRelationshipMetadataByRelationshipIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<RepositoryRelationshipMetadatumCondition>;
+  filter?: InputMaybe<RepositoryRelationshipMetadatumFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<RepositoryRelationshipMetadatumOrderBy>>;
+};
+
+export type RepositoryRelationshipAggregates = {
+  __typename?: 'RepositoryRelationshipAggregates';
+  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  average?: Maybe<RepositoryRelationshipAverageAggregates>;
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<RepositoryRelationshipDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  max?: Maybe<RepositoryRelationshipMaxAggregates>;
+  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  min?: Maybe<RepositoryRelationshipMinAggregates>;
+  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevPopulation?: Maybe<RepositoryRelationshipStddevPopulationAggregates>;
+  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevSample?: Maybe<RepositoryRelationshipStddevSampleAggregates>;
+  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  sum?: Maybe<RepositoryRelationshipSumAggregates>;
+  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  variancePopulation?: Maybe<RepositoryRelationshipVariancePopulationAggregates>;
+  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  varianceSample?: Maybe<RepositoryRelationshipVarianceSampleAggregates>;
+};
+
+/** A filter to be used against aggregates of `RepositoryRelationship` object types. */
+export type RepositoryRelationshipAggregatesFilter = {
+  /** Mean average aggregate over matching `RepositoryRelationship` objects. */
+  average?: InputMaybe<RepositoryRelationshipAverageAggregateFilter>;
+  /** Distinct count aggregate over matching `RepositoryRelationship` objects. */
+  distinctCount?: InputMaybe<RepositoryRelationshipDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `RepositoryRelationship` object to be included within the aggregate. */
+  filter?: InputMaybe<RepositoryRelationshipFilter>;
+  /** Maximum aggregate over matching `RepositoryRelationship` objects. */
+  max?: InputMaybe<RepositoryRelationshipMaxAggregateFilter>;
+  /** Minimum aggregate over matching `RepositoryRelationship` objects. */
+  min?: InputMaybe<RepositoryRelationshipMinAggregateFilter>;
+  /** Population standard deviation aggregate over matching `RepositoryRelationship` objects. */
+  stddevPopulation?: InputMaybe<RepositoryRelationshipStddevPopulationAggregateFilter>;
+  /** Sample standard deviation aggregate over matching `RepositoryRelationship` objects. */
+  stddevSample?: InputMaybe<RepositoryRelationshipStddevSampleAggregateFilter>;
+  /** Sum aggregate over matching `RepositoryRelationship` objects. */
+  sum?: InputMaybe<RepositoryRelationshipSumAggregateFilter>;
+  /** Population variance aggregate over matching `RepositoryRelationship` objects. */
+  variancePopulation?: InputMaybe<RepositoryRelationshipVariancePopulationAggregateFilter>;
+  /** Sample variance aggregate over matching `RepositoryRelationship` objects. */
+  varianceSample?: InputMaybe<RepositoryRelationshipVarianceSampleAggregateFilter>;
+};
+
+export type RepositoryRelationshipAverageAggregateFilter = {
+  confidence?: InputMaybe<FloatFilter>;
+};
+
+export type RepositoryRelationshipAverageAggregates = {
+  __typename?: 'RepositoryRelationshipAverageAggregates';
+  /** Mean average of confidence across the matching connection */
+  confidence?: Maybe<Scalars['Float']['output']>;
+};
+
+/**
+ * A condition to be used against `RepositoryRelationship` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export type RepositoryRelationshipCondition = {
+  /** Checks for equality with the object’s `branch` field. */
+  branch?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `confidence` field. */
+  confidence?: InputMaybe<Scalars['Float']['input']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `detectionSource` field. */
+  detectionSource?: InputMaybe<DetectionSource>;
+  /** Checks for equality with the object’s `relationshipTypeId` field. */
+  relationshipTypeId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `sourceRepositoryId` field. */
+  sourceRepositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `targetRepositoryId` field. */
+  targetRepositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `versionConstraint` field. */
+  versionConstraint?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A connection to a list of `RepositoryRelationship` values. */
+export type RepositoryRelationshipConnection = {
+  __typename?: 'RepositoryRelationshipConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<RepositoryRelationshipAggregates>;
+  /** A list of edges which contains the `RepositoryRelationship` and cursor to aid in pagination. */
+  edges: Array<RepositoryRelationshipEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<RepositoryRelationshipAggregates>>;
+  /** A list of `RepositoryRelationship` objects. */
+  nodes: Array<RepositoryRelationship>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `RepositoryRelationship` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `RepositoryRelationship` values. */
+export type RepositoryRelationshipConnectionGroupedAggregatesArgs = {
+  groupBy: Array<RepositoryRelationshipGroupBy>;
+  having?: InputMaybe<RepositoryRelationshipHavingInput>;
+};
+
+export type RepositoryRelationshipDistinctCountAggregateFilter = {
+  branch?: InputMaybe<BigIntFilter>;
+  confidence?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
+  detectionSource?: InputMaybe<BigIntFilter>;
+  relationshipTypeId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  sourceRepositoryId?: InputMaybe<BigIntFilter>;
+  targetRepositoryId?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+  versionConstraint?: InputMaybe<BigIntFilter>;
+};
+
+export type RepositoryRelationshipDistinctCountAggregates = {
+  __typename?: 'RepositoryRelationshipDistinctCountAggregates';
+  /** Distinct count of branch across the matching connection */
+  branch?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of confidence across the matching connection */
+  confidence?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of detectionSource across the matching connection */
+  detectionSource?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of relationshipTypeId across the matching connection */
+  relationshipTypeId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of sourceRepositoryId across the matching connection */
+  sourceRepositoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of targetRepositoryId across the matching connection */
+  targetRepositoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of versionConstraint across the matching connection */
+  versionConstraint?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `RepositoryRelationship` edge in the connection. */
+export type RepositoryRelationshipEdge = {
+  __typename?: 'RepositoryRelationshipEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `RepositoryRelationship` at the end of the edge. */
+  node: RepositoryRelationship;
+};
+
+/** A filter to be used against `RepositoryRelationship` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryRelationshipFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepositoryRelationshipFilter>>;
+  /** Filter by the object’s `branch` field. */
+  branch?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `confidence` field. */
+  confidence?: InputMaybe<FloatFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `detectionSource` field. */
+  detectionSource?: InputMaybe<DetectionSourceFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepositoryRelationshipFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepositoryRelationshipFilter>>;
+  /** Filter by the object’s `relationshipType` relation. */
+  relationshipType?: InputMaybe<RepositoryRelationshipTypeFilter>;
+  /** Filter by the object’s `relationshipTypeId` field. */
+  relationshipTypeId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `repositoryRelationshipMetadataByRelationshipId` relation. */
+  repositoryRelationshipMetadataByRelationshipId?: InputMaybe<RepositoryRelationshipToManyRepositoryRelationshipMetadatumFilter>;
+  /** Some related `repositoryRelationshipMetadataByRelationshipId` exist. */
+  repositoryRelationshipMetadataByRelationshipIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `sourceRepository` relation. */
+  sourceRepository?: InputMaybe<RepositoryFilter>;
+  /** Filter by the object’s `sourceRepositoryId` field. */
+  sourceRepositoryId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `targetRepository` relation. */
+  targetRepository?: InputMaybe<RepositoryFilter>;
+  /** Filter by the object’s `targetRepositoryId` field. */
+  targetRepositoryId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `versionConstraint` field. */
+  versionConstraint?: InputMaybe<StringFilter>;
+};
+
+/** Grouping methods for `RepositoryRelationship` for usage during aggregation. */
+export enum RepositoryRelationshipGroupBy {
+  Branch = 'BRANCH',
+  Confidence = 'CONFIDENCE',
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  DetectionSource = 'DETECTION_SOURCE',
+  RelationshipTypeId = 'RELATIONSHIP_TYPE_ID',
+  SourceRepositoryId = 'SOURCE_REPOSITORY_ID',
+  TargetRepositoryId = 'TARGET_REPOSITORY_ID',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR',
+  VersionConstraint = 'VERSION_CONSTRAINT'
+}
+
+export type RepositoryRelationshipHavingAverageInput = {
+  confidence?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipHavingDistinctCountInput = {
+  confidence?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `RepositoryRelationship` aggregates. */
+export type RepositoryRelationshipHavingInput = {
+  AND?: InputMaybe<Array<RepositoryRelationshipHavingInput>>;
+  OR?: InputMaybe<Array<RepositoryRelationshipHavingInput>>;
+  average?: InputMaybe<RepositoryRelationshipHavingAverageInput>;
+  distinctCount?: InputMaybe<RepositoryRelationshipHavingDistinctCountInput>;
+  max?: InputMaybe<RepositoryRelationshipHavingMaxInput>;
+  min?: InputMaybe<RepositoryRelationshipHavingMinInput>;
+  stddevPopulation?: InputMaybe<RepositoryRelationshipHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<RepositoryRelationshipHavingStddevSampleInput>;
+  sum?: InputMaybe<RepositoryRelationshipHavingSumInput>;
+  variancePopulation?: InputMaybe<RepositoryRelationshipHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<RepositoryRelationshipHavingVarianceSampleInput>;
+};
+
+export type RepositoryRelationshipHavingMaxInput = {
+  confidence?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipHavingMinInput = {
+  confidence?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipHavingStddevPopulationInput = {
+  confidence?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipHavingStddevSampleInput = {
+  confidence?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipHavingSumInput = {
+  confidence?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipHavingVariancePopulationInput = {
+  confidence?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipHavingVarianceSampleInput = {
+  confidence?: InputMaybe<HavingFloatFilter>;
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `RepositoryRelationship` */
+export type RepositoryRelationshipInput = {
+  branch?: InputMaybe<Scalars['String']['input']>;
+  confidence?: InputMaybe<Scalars['Float']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  detectionSource?: InputMaybe<DetectionSource>;
+  relationshipTypeId: Scalars['UUID']['input'];
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  sourceRepositoryId: Scalars['UUID']['input'];
+  targetRepositoryId: Scalars['UUID']['input'];
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  versionConstraint?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type RepositoryRelationshipMaxAggregateFilter = {
+  confidence?: InputMaybe<FloatFilter>;
+};
+
+export type RepositoryRelationshipMaxAggregates = {
+  __typename?: 'RepositoryRelationshipMaxAggregates';
+  /** Maximum of confidence across the matching connection */
+  confidence?: Maybe<Scalars['Float']['output']>;
+};
+
+export type RepositoryRelationshipMetadatum = Node & {
+  __typename?: 'RepositoryRelationshipMetadatum';
+  createdAt: Scalars['Datetime']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  key: Scalars['String']['output'];
+  /** Reads a single `RepositoryRelationship` that is related to this `RepositoryRelationshipMetadatum`. */
+  relationship?: Maybe<RepositoryRelationship>;
+  relationshipId: Scalars['UUID']['output'];
+  rowId: Scalars['UUID']['output'];
+  value: Scalars['String']['output'];
+};
+
+export type RepositoryRelationshipMetadatumAggregates = {
+  __typename?: 'RepositoryRelationshipMetadatumAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<RepositoryRelationshipMetadatumDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/** A filter to be used against aggregates of `RepositoryRelationshipMetadatum` object types. */
+export type RepositoryRelationshipMetadatumAggregatesFilter = {
+  /** Distinct count aggregate over matching `RepositoryRelationshipMetadatum` objects. */
+  distinctCount?: InputMaybe<RepositoryRelationshipMetadatumDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `RepositoryRelationshipMetadatum` object to be included within the aggregate. */
+  filter?: InputMaybe<RepositoryRelationshipMetadatumFilter>;
+};
+
+/**
+ * A condition to be used against `RepositoryRelationshipMetadatum` object types.
+ * All fields are tested for equality and combined with a logical ‘and.’
+ */
+export type RepositoryRelationshipMetadatumCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `key` field. */
+  key?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `relationshipId` field. */
+  relationshipId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `value` field. */
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A connection to a list of `RepositoryRelationshipMetadatum` values. */
+export type RepositoryRelationshipMetadatumConnection = {
+  __typename?: 'RepositoryRelationshipMetadatumConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<RepositoryRelationshipMetadatumAggregates>;
+  /** A list of edges which contains the `RepositoryRelationshipMetadatum` and cursor to aid in pagination. */
+  edges: Array<RepositoryRelationshipMetadatumEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<RepositoryRelationshipMetadatumAggregates>>;
+  /** A list of `RepositoryRelationshipMetadatum` objects. */
+  nodes: Array<RepositoryRelationshipMetadatum>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `RepositoryRelationshipMetadatum` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `RepositoryRelationshipMetadatum` values. */
+export type RepositoryRelationshipMetadatumConnectionGroupedAggregatesArgs = {
+  groupBy: Array<RepositoryRelationshipMetadatumGroupBy>;
+  having?: InputMaybe<RepositoryRelationshipMetadatumHavingInput>;
+};
+
+export type RepositoryRelationshipMetadatumDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  key?: InputMaybe<BigIntFilter>;
+  relationshipId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  value?: InputMaybe<BigIntFilter>;
+};
+
+export type RepositoryRelationshipMetadatumDistinctCountAggregates = {
+  __typename?: 'RepositoryRelationshipMetadatumDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of key across the matching connection */
+  key?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of relationshipId across the matching connection */
+  relationshipId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of value across the matching connection */
+  value?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `RepositoryRelationshipMetadatum` edge in the connection. */
+export type RepositoryRelationshipMetadatumEdge = {
+  __typename?: 'RepositoryRelationshipMetadatumEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `RepositoryRelationshipMetadatum` at the end of the edge. */
+  node: RepositoryRelationshipMetadatum;
+};
+
+/** A filter to be used against `RepositoryRelationshipMetadatum` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryRelationshipMetadatumFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepositoryRelationshipMetadatumFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `key` field. */
+  key?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepositoryRelationshipMetadatumFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepositoryRelationshipMetadatumFilter>>;
+  /** Filter by the object’s `relationship` relation. */
+  relationship?: InputMaybe<RepositoryRelationshipFilter>;
+  /** Filter by the object’s `relationshipId` field. */
+  relationshipId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `value` field. */
+  value?: InputMaybe<StringFilter>;
+};
+
+/** Grouping methods for `RepositoryRelationshipMetadatum` for usage during aggregation. */
+export enum RepositoryRelationshipMetadatumGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  Key = 'KEY',
+  RelationshipId = 'RELATIONSHIP_ID',
+  Value = 'VALUE'
+}
+
+export type RepositoryRelationshipMetadatumHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipMetadatumHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `RepositoryRelationshipMetadatum` aggregates. */
+export type RepositoryRelationshipMetadatumHavingInput = {
+  AND?: InputMaybe<Array<RepositoryRelationshipMetadatumHavingInput>>;
+  OR?: InputMaybe<Array<RepositoryRelationshipMetadatumHavingInput>>;
+  average?: InputMaybe<RepositoryRelationshipMetadatumHavingAverageInput>;
+  distinctCount?: InputMaybe<RepositoryRelationshipMetadatumHavingDistinctCountInput>;
+  max?: InputMaybe<RepositoryRelationshipMetadatumHavingMaxInput>;
+  min?: InputMaybe<RepositoryRelationshipMetadatumHavingMinInput>;
+  stddevPopulation?: InputMaybe<RepositoryRelationshipMetadatumHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<RepositoryRelationshipMetadatumHavingStddevSampleInput>;
+  sum?: InputMaybe<RepositoryRelationshipMetadatumHavingSumInput>;
+  variancePopulation?: InputMaybe<RepositoryRelationshipMetadatumHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<RepositoryRelationshipMetadatumHavingVarianceSampleInput>;
+};
+
+export type RepositoryRelationshipMetadatumHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipMetadatumHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipMetadatumHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipMetadatumHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipMetadatumHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipMetadatumHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipMetadatumHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `RepositoryRelationshipMetadatum` */
+export type RepositoryRelationshipMetadatumInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  key: Scalars['String']['input'];
+  relationshipId: Scalars['UUID']['input'];
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  value: Scalars['String']['input'];
+};
+
+/** Methods to use when ordering `RepositoryRelationshipMetadatum`. */
+export enum RepositoryRelationshipMetadatumOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  KeyAsc = 'KEY_ASC',
+  KeyDesc = 'KEY_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RelationshipIdAsc = 'RELATIONSHIP_ID_ASC',
+  RelationshipIdDesc = 'RELATIONSHIP_ID_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  ValueAsc = 'VALUE_ASC',
+  ValueDesc = 'VALUE_DESC'
+}
+
+/** Represents an update to a `RepositoryRelationshipMetadatum`. Fields that are set will be updated. */
+export type RepositoryRelationshipMetadatumPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  key?: InputMaybe<Scalars['String']['input']>;
+  relationshipId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type RepositoryRelationshipMinAggregateFilter = {
+  confidence?: InputMaybe<FloatFilter>;
+};
+
+export type RepositoryRelationshipMinAggregates = {
+  __typename?: 'RepositoryRelationshipMinAggregates';
+  /** Minimum of confidence across the matching connection */
+  confidence?: Maybe<Scalars['Float']['output']>;
+};
+
+/** Methods to use when ordering `RepositoryRelationship`. */
+export enum RepositoryRelationshipOrderBy {
+  BranchAsc = 'BRANCH_ASC',
+  BranchDesc = 'BRANCH_DESC',
+  ConfidenceAsc = 'CONFIDENCE_ASC',
+  ConfidenceDesc = 'CONFIDENCE_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RelationshipTypeIdAsc = 'RELATIONSHIP_TYPE_ID_ASC',
+  RelationshipTypeIdDesc = 'RELATIONSHIP_TYPE_ID_DESC',
+  RepositoryRelationshipMetadataByRelationshipIdCountAsc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_COUNT_ASC',
+  RepositoryRelationshipMetadataByRelationshipIdCountDesc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_COUNT_DESC',
+  RepositoryRelationshipMetadataByRelationshipIdDistinctCountCreatedAtAsc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  RepositoryRelationshipMetadataByRelationshipIdDistinctCountCreatedAtDesc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  RepositoryRelationshipMetadataByRelationshipIdDistinctCountKeyAsc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_DISTINCT_COUNT_KEY_ASC',
+  RepositoryRelationshipMetadataByRelationshipIdDistinctCountKeyDesc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_DISTINCT_COUNT_KEY_DESC',
+  RepositoryRelationshipMetadataByRelationshipIdDistinctCountRelationshipIdAsc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_DISTINCT_COUNT_RELATIONSHIP_ID_ASC',
+  RepositoryRelationshipMetadataByRelationshipIdDistinctCountRelationshipIdDesc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_DISTINCT_COUNT_RELATIONSHIP_ID_DESC',
+  RepositoryRelationshipMetadataByRelationshipIdDistinctCountRowIdAsc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_DISTINCT_COUNT_ROW_ID_ASC',
+  RepositoryRelationshipMetadataByRelationshipIdDistinctCountRowIdDesc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_DISTINCT_COUNT_ROW_ID_DESC',
+  RepositoryRelationshipMetadataByRelationshipIdDistinctCountValueAsc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_DISTINCT_COUNT_VALUE_ASC',
+  RepositoryRelationshipMetadataByRelationshipIdDistinctCountValueDesc = 'REPOSITORY_RELATIONSHIP_METADATA_BY_RELATIONSHIP_ID_DISTINCT_COUNT_VALUE_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  SourceRepositoryIdAsc = 'SOURCE_REPOSITORY_ID_ASC',
+  SourceRepositoryIdDesc = 'SOURCE_REPOSITORY_ID_DESC',
+  TargetRepositoryIdAsc = 'TARGET_REPOSITORY_ID_ASC',
+  TargetRepositoryIdDesc = 'TARGET_REPOSITORY_ID_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
+  VersionConstraintAsc = 'VERSION_CONSTRAINT_ASC',
+  VersionConstraintDesc = 'VERSION_CONSTRAINT_DESC'
+}
+
+/** Represents an update to a `RepositoryRelationship`. Fields that are set will be updated. */
+export type RepositoryRelationshipPatch = {
+  branch?: InputMaybe<Scalars['String']['input']>;
+  confidence?: InputMaybe<Scalars['Float']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  detectionSource?: InputMaybe<DetectionSource>;
+  relationshipTypeId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  sourceRepositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  targetRepositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  versionConstraint?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type RepositoryRelationshipStddevPopulationAggregateFilter = {
+  confidence?: InputMaybe<FloatFilter>;
+};
+
+export type RepositoryRelationshipStddevPopulationAggregates = {
+  __typename?: 'RepositoryRelationshipStddevPopulationAggregates';
+  /** Population standard deviation of confidence across the matching connection */
+  confidence?: Maybe<Scalars['Float']['output']>;
+};
+
+export type RepositoryRelationshipStddevSampleAggregateFilter = {
+  confidence?: InputMaybe<FloatFilter>;
+};
+
+export type RepositoryRelationshipStddevSampleAggregates = {
+  __typename?: 'RepositoryRelationshipStddevSampleAggregates';
+  /** Sample standard deviation of confidence across the matching connection */
+  confidence?: Maybe<Scalars['Float']['output']>;
+};
+
+export type RepositoryRelationshipSumAggregateFilter = {
+  confidence?: InputMaybe<FloatFilter>;
+};
+
+export type RepositoryRelationshipSumAggregates = {
+  __typename?: 'RepositoryRelationshipSumAggregates';
+  /** Sum of confidence across the matching connection */
+  confidence: Scalars['Float']['output'];
+};
+
+/** A filter to be used against many `RepositoryRelationshipMetadatum` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryRelationshipToManyRepositoryRelationshipMetadatumFilter = {
+  /** Aggregates across related `RepositoryRelationshipMetadatum` match the filter criteria. */
+  aggregates?: InputMaybe<RepositoryRelationshipMetadatumAggregatesFilter>;
+  /** Every related `RepositoryRelationshipMetadatum` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<RepositoryRelationshipMetadatumFilter>;
+  /** No related `RepositoryRelationshipMetadatum` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<RepositoryRelationshipMetadatumFilter>;
+  /** Some related `RepositoryRelationshipMetadatum` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<RepositoryRelationshipMetadatumFilter>;
+};
+
+export type RepositoryRelationshipType = Node & {
+  __typename?: 'RepositoryRelationshipType';
+  createdAt: Scalars['Datetime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  isDirected: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  /** Reads a single `Organization` that is related to this `RepositoryRelationshipType`. */
+  organization?: Maybe<Organization>;
+  organizationId?: Maybe<Scalars['UUID']['output']>;
+  /** Reads and enables pagination through a set of `RepositoryRelationship`. */
+  repositoryRelationshipsByRelationshipTypeId: RepositoryRelationshipConnection;
+  rowId: Scalars['UUID']['output'];
+};
+
+
+export type RepositoryRelationshipTypeRepositoryRelationshipsByRelationshipTypeIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<RepositoryRelationshipCondition>;
+  filter?: InputMaybe<RepositoryRelationshipFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<RepositoryRelationshipOrderBy>>;
+};
+
+export type RepositoryRelationshipTypeAggregates = {
+  __typename?: 'RepositoryRelationshipTypeAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<RepositoryRelationshipTypeDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/** A filter to be used against aggregates of `RepositoryRelationshipType` object types. */
+export type RepositoryRelationshipTypeAggregatesFilter = {
+  /** Distinct count aggregate over matching `RepositoryRelationshipType` objects. */
+  distinctCount?: InputMaybe<RepositoryRelationshipTypeDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `RepositoryRelationshipType` object to be included within the aggregate. */
+  filter?: InputMaybe<RepositoryRelationshipTypeFilter>;
+};
+
+/**
+ * A condition to be used against `RepositoryRelationshipType` object types. All
+ * fields are tested for equality and combined with a logical ‘and.’
+ */
+export type RepositoryRelationshipTypeCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `isDirected` field. */
+  isDirected?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `organizationId` field. */
+  organizationId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+/** A connection to a list of `RepositoryRelationshipType` values. */
+export type RepositoryRelationshipTypeConnection = {
+  __typename?: 'RepositoryRelationshipTypeConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<RepositoryRelationshipTypeAggregates>;
+  /** A list of edges which contains the `RepositoryRelationshipType` and cursor to aid in pagination. */
+  edges: Array<RepositoryRelationshipTypeEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<RepositoryRelationshipTypeAggregates>>;
+  /** A list of `RepositoryRelationshipType` objects. */
+  nodes: Array<RepositoryRelationshipType>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `RepositoryRelationshipType` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `RepositoryRelationshipType` values. */
+export type RepositoryRelationshipTypeConnectionGroupedAggregatesArgs = {
+  groupBy: Array<RepositoryRelationshipTypeGroupBy>;
+  having?: InputMaybe<RepositoryRelationshipTypeHavingInput>;
+};
+
+export type RepositoryRelationshipTypeDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  description?: InputMaybe<BigIntFilter>;
+  isDirected?: InputMaybe<BigIntFilter>;
+  name?: InputMaybe<BigIntFilter>;
+  organizationId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+};
+
+export type RepositoryRelationshipTypeDistinctCountAggregates = {
+  __typename?: 'RepositoryRelationshipTypeDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of description across the matching connection */
+  description?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of isDirected across the matching connection */
+  isDirected?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of name across the matching connection */
+  name?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of organizationId across the matching connection */
+  organizationId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `RepositoryRelationshipType` edge in the connection. */
+export type RepositoryRelationshipTypeEdge = {
+  __typename?: 'RepositoryRelationshipTypeEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `RepositoryRelationshipType` at the end of the edge. */
+  node: RepositoryRelationshipType;
+};
+
+/** A filter to be used against `RepositoryRelationshipType` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryRelationshipTypeFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<RepositoryRelationshipTypeFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `isDirected` field. */
+  isDirected?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<RepositoryRelationshipTypeFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<RepositoryRelationshipTypeFilter>>;
+  /** Filter by the object’s `organization` relation. */
+  organization?: InputMaybe<OrganizationFilter>;
+  /** A related `organization` exists. */
+  organizationExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `organizationId` field. */
+  organizationId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `repositoryRelationshipsByRelationshipTypeId` relation. */
+  repositoryRelationshipsByRelationshipTypeId?: InputMaybe<RepositoryRelationshipTypeToManyRepositoryRelationshipFilter>;
+  /** Some related `repositoryRelationshipsByRelationshipTypeId` exist. */
+  repositoryRelationshipsByRelationshipTypeIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+};
+
+/** Grouping methods for `RepositoryRelationshipType` for usage during aggregation. */
+export enum RepositoryRelationshipTypeGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  Description = 'DESCRIPTION',
+  IsDirected = 'IS_DIRECTED',
+  Name = 'NAME',
+  OrganizationId = 'ORGANIZATION_ID'
+}
+
+export type RepositoryRelationshipTypeHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipTypeHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `RepositoryRelationshipType` aggregates. */
+export type RepositoryRelationshipTypeHavingInput = {
+  AND?: InputMaybe<Array<RepositoryRelationshipTypeHavingInput>>;
+  OR?: InputMaybe<Array<RepositoryRelationshipTypeHavingInput>>;
+  average?: InputMaybe<RepositoryRelationshipTypeHavingAverageInput>;
+  distinctCount?: InputMaybe<RepositoryRelationshipTypeHavingDistinctCountInput>;
+  max?: InputMaybe<RepositoryRelationshipTypeHavingMaxInput>;
+  min?: InputMaybe<RepositoryRelationshipTypeHavingMinInput>;
+  stddevPopulation?: InputMaybe<RepositoryRelationshipTypeHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<RepositoryRelationshipTypeHavingStddevSampleInput>;
+  sum?: InputMaybe<RepositoryRelationshipTypeHavingSumInput>;
+  variancePopulation?: InputMaybe<RepositoryRelationshipTypeHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<RepositoryRelationshipTypeHavingVarianceSampleInput>;
+};
+
+export type RepositoryRelationshipTypeHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipTypeHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipTypeHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipTypeHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipTypeHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipTypeHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type RepositoryRelationshipTypeHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `RepositoryRelationshipType` */
+export type RepositoryRelationshipTypeInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  isDirected?: InputMaybe<Scalars['Boolean']['input']>;
+  name: Scalars['String']['input'];
+  organizationId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+/** Methods to use when ordering `RepositoryRelationshipType`. */
+export enum RepositoryRelationshipTypeOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  IsDirectedAsc = 'IS_DIRECTED_ASC',
+  IsDirectedDesc = 'IS_DIRECTED_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  OrganizationIdAsc = 'ORGANIZATION_ID_ASC',
+  OrganizationIdDesc = 'ORGANIZATION_ID_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdAverageConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_AVERAGE_CONFIDENCE_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdAverageConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_AVERAGE_CONFIDENCE_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdCountAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_COUNT_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdCountDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_COUNT_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountBranchAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_BRANCH_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountBranchDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_BRANCH_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_CONFIDENCE_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_CONFIDENCE_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountCreatedAtAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountCreatedAtDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountDetectionSourceAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_DETECTION_SOURCE_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountDetectionSourceDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_DETECTION_SOURCE_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountRelationshipTypeIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_RELATIONSHIP_TYPE_ID_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountRelationshipTypeIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_RELATIONSHIP_TYPE_ID_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountRowIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_ROW_ID_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountRowIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_ROW_ID_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountSourceRepositoryIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_SOURCE_REPOSITORY_ID_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountSourceRepositoryIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_SOURCE_REPOSITORY_ID_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountTargetRepositoryIdAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_TARGET_REPOSITORY_ID_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountTargetRepositoryIdDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_TARGET_REPOSITORY_ID_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountUpdatedAtAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountUpdatedAtDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountVersionConstraintAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_VERSION_CONSTRAINT_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdDistinctCountVersionConstraintDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_DISTINCT_COUNT_VERSION_CONSTRAINT_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdMaxConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_MAX_CONFIDENCE_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdMaxConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_MAX_CONFIDENCE_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdMinConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_MIN_CONFIDENCE_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdMinConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_MIN_CONFIDENCE_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdStddevPopulationConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_STDDEV_POPULATION_CONFIDENCE_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdStddevPopulationConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_STDDEV_POPULATION_CONFIDENCE_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdStddevSampleConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_STDDEV_SAMPLE_CONFIDENCE_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdStddevSampleConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_STDDEV_SAMPLE_CONFIDENCE_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdSumConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_SUM_CONFIDENCE_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdSumConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_SUM_CONFIDENCE_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdVariancePopulationConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_VARIANCE_POPULATION_CONFIDENCE_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdVariancePopulationConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_VARIANCE_POPULATION_CONFIDENCE_DESC',
+  RepositoryRelationshipsByRelationshipTypeIdVarianceSampleConfidenceAsc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_VARIANCE_SAMPLE_CONFIDENCE_ASC',
+  RepositoryRelationshipsByRelationshipTypeIdVarianceSampleConfidenceDesc = 'REPOSITORY_RELATIONSHIPS_BY_RELATIONSHIP_TYPE_ID_VARIANCE_SAMPLE_CONFIDENCE_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC'
+}
+
+/** Represents an update to a `RepositoryRelationshipType`. Fields that are set will be updated. */
+export type RepositoryRelationshipTypePatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  isDirected?: InputMaybe<Scalars['Boolean']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  organizationId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+/** A filter to be used against many `RepositoryRelationship` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryRelationshipTypeToManyRepositoryRelationshipFilter = {
+  /** Aggregates across related `RepositoryRelationship` match the filter criteria. */
+  aggregates?: InputMaybe<RepositoryRelationshipAggregatesFilter>;
+  /** Every related `RepositoryRelationship` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<RepositoryRelationshipFilter>;
+  /** No related `RepositoryRelationship` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<RepositoryRelationshipFilter>;
+  /** Some related `RepositoryRelationship` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<RepositoryRelationshipFilter>;
+};
+
+export type RepositoryRelationshipVariancePopulationAggregateFilter = {
+  confidence?: InputMaybe<FloatFilter>;
+};
+
+export type RepositoryRelationshipVariancePopulationAggregates = {
+  __typename?: 'RepositoryRelationshipVariancePopulationAggregates';
+  /** Population variance of confidence across the matching connection */
+  confidence?: Maybe<Scalars['Float']['output']>;
+};
+
+export type RepositoryRelationshipVarianceSampleAggregateFilter = {
+  confidence?: InputMaybe<FloatFilter>;
+};
+
+export type RepositoryRelationshipVarianceSampleAggregates = {
+  __typename?: 'RepositoryRelationshipVarianceSampleAggregates';
+  /** Sample variance of confidence across the matching connection */
+  confidence?: Maybe<Scalars['Float']['output']>;
+};
+
+/** A filter to be used against many `ExternalDependency` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryToManyExternalDependencyFilter = {
+  /** Aggregates across related `ExternalDependency` match the filter criteria. */
+  aggregates?: InputMaybe<ExternalDependencyAggregatesFilter>;
+  /** Every related `ExternalDependency` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<ExternalDependencyFilter>;
+  /** No related `ExternalDependency` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<ExternalDependencyFilter>;
+  /** Some related `ExternalDependency` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<ExternalDependencyFilter>;
+};
+
 /** A filter to be used against many `RepositoryCollaborator` object types. All fields are combined with a logical ‘and.’ */
 export type RepositoryToManyRepositoryCollaboratorFilter = {
   /** Aggregates across related `RepositoryCollaborator` match the filter criteria. */
@@ -2101,6 +4216,18 @@ export type RepositoryToManyRepositoryCollaboratorFilter = {
   none?: InputMaybe<RepositoryCollaboratorFilter>;
   /** Some related `RepositoryCollaborator` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<RepositoryCollaboratorFilter>;
+};
+
+/** A filter to be used against many `RepositoryRelationship` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryToManyRepositoryRelationshipFilter = {
+  /** Aggregates across related `RepositoryRelationship` match the filter criteria. */
+  aggregates?: InputMaybe<RepositoryRelationshipAggregatesFilter>;
+  /** Every related `RepositoryRelationship` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<RepositoryRelationshipFilter>;
+  /** No related `RepositoryRelationship` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<RepositoryRelationshipFilter>;
+  /** Some related `RepositoryRelationship` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<RepositoryRelationshipFilter>;
 };
 
 export enum Role {
@@ -2269,6 +4396,53 @@ export type UuidFilter = {
   notEqualTo?: InputMaybe<Scalars['UUID']['input']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['UUID']['input']>>;
+};
+
+/** All input for the `updateExternalDependencyById` mutation. */
+export type UpdateExternalDependencyByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `ExternalDependency` to be updated. */
+  id: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `ExternalDependency` being updated. */
+  patch: ExternalDependencyPatch;
+};
+
+/** All input for the `updateExternalDependency` mutation. */
+export type UpdateExternalDependencyInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `ExternalDependency` being updated. */
+  patch: ExternalDependencyPatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `ExternalDependency` mutation. */
+export type UpdateExternalDependencyPayload = {
+  __typename?: 'UpdateExternalDependencyPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `ExternalDependency` that was updated by this mutation. */
+  externalDependency?: Maybe<ExternalDependency>;
+  /** An edge for our `ExternalDependency`. May be used by Relay 1. */
+  externalDependencyEdge?: Maybe<ExternalDependencyEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `ExternalDependency` mutation. */
+export type UpdateExternalDependencyPayloadExternalDependencyEdgeArgs = {
+  orderBy?: Array<ExternalDependencyOrderBy>;
 };
 
 /** All input for the `updateOrganizationById` mutation. */
@@ -2459,6 +4633,147 @@ export type UpdateRepositoryPayload = {
 /** The output of our update `Repository` mutation. */
 export type UpdateRepositoryPayloadRepositoryEdgeArgs = {
   orderBy?: Array<RepositoryOrderBy>;
+};
+
+/** All input for the `updateRepositoryRelationshipById` mutation. */
+export type UpdateRepositoryRelationshipByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `RepositoryRelationship` to be updated. */
+  id: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `RepositoryRelationship` being updated. */
+  patch: RepositoryRelationshipPatch;
+};
+
+/** All input for the `updateRepositoryRelationship` mutation. */
+export type UpdateRepositoryRelationshipInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `RepositoryRelationship` being updated. */
+  patch: RepositoryRelationshipPatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** All input for the `updateRepositoryRelationshipMetadatumById` mutation. */
+export type UpdateRepositoryRelationshipMetadatumByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `RepositoryRelationshipMetadatum` to be updated. */
+  id: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `RepositoryRelationshipMetadatum` being updated. */
+  patch: RepositoryRelationshipMetadatumPatch;
+};
+
+/** All input for the `updateRepositoryRelationshipMetadatum` mutation. */
+export type UpdateRepositoryRelationshipMetadatumInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `RepositoryRelationshipMetadatum` being updated. */
+  patch: RepositoryRelationshipMetadatumPatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `RepositoryRelationshipMetadatum` mutation. */
+export type UpdateRepositoryRelationshipMetadatumPayload = {
+  __typename?: 'UpdateRepositoryRelationshipMetadatumPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepositoryRelationshipMetadatum` that was updated by this mutation. */
+  repositoryRelationshipMetadatum?: Maybe<RepositoryRelationshipMetadatum>;
+  /** An edge for our `RepositoryRelationshipMetadatum`. May be used by Relay 1. */
+  repositoryRelationshipMetadatumEdge?: Maybe<RepositoryRelationshipMetadatumEdge>;
+};
+
+
+/** The output of our update `RepositoryRelationshipMetadatum` mutation. */
+export type UpdateRepositoryRelationshipMetadatumPayloadRepositoryRelationshipMetadatumEdgeArgs = {
+  orderBy?: Array<RepositoryRelationshipMetadatumOrderBy>;
+};
+
+/** The output of our update `RepositoryRelationship` mutation. */
+export type UpdateRepositoryRelationshipPayload = {
+  __typename?: 'UpdateRepositoryRelationshipPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepositoryRelationship` that was updated by this mutation. */
+  repositoryRelationship?: Maybe<RepositoryRelationship>;
+  /** An edge for our `RepositoryRelationship`. May be used by Relay 1. */
+  repositoryRelationshipEdge?: Maybe<RepositoryRelationshipEdge>;
+};
+
+
+/** The output of our update `RepositoryRelationship` mutation. */
+export type UpdateRepositoryRelationshipPayloadRepositoryRelationshipEdgeArgs = {
+  orderBy?: Array<RepositoryRelationshipOrderBy>;
+};
+
+/** All input for the `updateRepositoryRelationshipTypeById` mutation. */
+export type UpdateRepositoryRelationshipTypeByIdInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The globally unique `ID` which will identify a single `RepositoryRelationshipType` to be updated. */
+  id: Scalars['ID']['input'];
+  /** An object where the defined keys will be set on the `RepositoryRelationshipType` being updated. */
+  patch: RepositoryRelationshipTypePatch;
+};
+
+/** All input for the `updateRepositoryRelationshipType` mutation. */
+export type UpdateRepositoryRelationshipTypeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `RepositoryRelationshipType` being updated. */
+  patch: RepositoryRelationshipTypePatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `RepositoryRelationshipType` mutation. */
+export type UpdateRepositoryRelationshipTypePayload = {
+  __typename?: 'UpdateRepositoryRelationshipTypePayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `RepositoryRelationshipType` that was updated by this mutation. */
+  repositoryRelationshipType?: Maybe<RepositoryRelationshipType>;
+  /** An edge for our `RepositoryRelationshipType`. May be used by Relay 1. */
+  repositoryRelationshipTypeEdge?: Maybe<RepositoryRelationshipTypeEdge>;
+};
+
+
+/** The output of our update `RepositoryRelationshipType` mutation. */
+export type UpdateRepositoryRelationshipTypePayloadRepositoryRelationshipTypeEdgeArgs = {
+  orderBy?: Array<RepositoryRelationshipTypeOrderBy>;
 };
 
 /** All input for the `updateUserById` mutation. */
@@ -2926,7 +5241,331 @@ export type VisibilityFilter = {
   notIn?: InputMaybe<Array<Visibility>>;
 };
 
+export type CreateOrganizationMutationVariables = Exact<{
+  input: CreateOrganizationInput;
+}>;
 
+
+export type CreateOrganizationMutation = { __typename?: 'Mutation', createOrganization?: { __typename?: 'CreateOrganizationPayload', organization?: { __typename?: 'Organization', rowId: string, name: string, slug: string, description?: string | null, avatarUrl?: string | null, tier: Tier, createdAt: Date } | null } | null };
+
+export type CreateRepositoryMutationVariables = Exact<{
+  input: CreateRepositoryInput;
+}>;
+
+
+export type CreateRepositoryMutation = { __typename?: 'Mutation', createRepository?: { __typename?: 'CreateRepositoryPayload', repository?: { __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner?: { __typename?: 'User', rowId: string, username: string } | null, organization?: { __typename?: 'Organization', rowId: string, name: string, slug: string } | null } | null } | null };
+
+export type DeleteRepositoryMutationVariables = Exact<{
+  input: DeleteRepositoryInput;
+}>;
+
+
+export type DeleteRepositoryMutation = { __typename?: 'Mutation', deleteRepository?: { __typename?: 'DeleteRepositoryPayload', repository?: { __typename?: 'Repository', rowId: string } | null } | null };
+
+export type RepositoryGraphQueryVariables = Exact<{
+  userId: Scalars['UUID']['input'];
+  organizationId?: InputMaybe<Scalars['UUID']['input']>;
+}>;
+
+
+export type RepositoryGraphQuery = { __typename?: 'Query', repositories?: { __typename?: 'RepositoryConnection', nodes: Array<{ __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, owner?: { __typename?: 'User', rowId: string, username: string } | null, organization?: { __typename?: 'Organization', rowId: string, name: string, slug: string } | null, outgoingRelationships: { __typename?: 'RepositoryRelationshipConnection', nodes: Array<{ __typename?: 'RepositoryRelationship', rowId: string, confidence: number, versionConstraint?: string | null, targetRepository?: { __typename?: 'Repository', rowId: string, name: string, slug: string, owner?: { __typename?: 'User', username: string } | null, organization?: { __typename?: 'Organization', slug: string } | null } | null, relationshipType?: { __typename?: 'RepositoryRelationshipType', rowId: string, name: string, isDirected: boolean } | null }> } }> } | null, repositoryRelationshipTypes?: { __typename?: 'RepositoryRelationshipTypeConnection', nodes: Array<{ __typename?: 'RepositoryRelationshipType', rowId: string, name: string, description?: string | null, isDirected: boolean }> } | null };
+
+export type OrganizationQueryVariables = Exact<{
+  rowId: Scalars['UUID']['input'];
+  userId: Scalars['UUID']['input'];
+}>;
+
+
+export type OrganizationQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', rowId: string, name: string, slug: string, description?: string | null, avatarUrl?: string | null, tier: Tier, createdAt: Date, updatedAt: Date, organizationMembers: { __typename?: 'OrganizationMemberConnection', totalCount: number, nodes: Array<{ __typename?: 'OrganizationMember', userId: string, role: Role, createdAt: Date, user?: { __typename?: 'User', rowId: string, username: string, name: string, email: string, avatarUrl?: string | null } | null }> }, currentUser: { __typename?: 'OrganizationMemberConnection', nodes: Array<{ __typename?: 'OrganizationMember', role: Role }> }, repositories: { __typename?: 'RepositoryConnection', totalCount: number, nodes: Array<{ __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, updatedAt: Date }> } } | null };
+
+export type OrganizationsQueryVariables = Exact<{
+  userId: Scalars['UUID']['input'];
+  limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type OrganizationsQuery = { __typename?: 'Query', organizations?: { __typename?: 'OrganizationConnection', totalCount: number, nodes: Array<{ __typename?: 'Organization', rowId: string, name: string, slug: string, description?: string | null, avatarUrl?: string | null, tier: Tier, createdAt: Date, updatedAt: Date, organizationMembers: { __typename?: 'OrganizationMemberConnection', totalCount: number }, currentUser: { __typename?: 'OrganizationMemberConnection', nodes: Array<{ __typename?: 'OrganizationMember', role: Role }> }, repositories: { __typename?: 'RepositoryConnection', totalCount: number } }> } | null };
+
+export type RepositoriesQueryVariables = Exact<{
+  userId: Scalars['UUID']['input'];
+  limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type RepositoriesQuery = { __typename?: 'Query', repositories?: { __typename?: 'RepositoryConnection', totalCount: number, nodes: Array<{ __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner?: { __typename?: 'User', rowId: string, username: string, avatarUrl?: string | null } | null, organization?: { __typename?: 'Organization', rowId: string, name: string, slug: string, avatarUrl?: string | null } | null }> } | null };
+
+export type RepositoryQueryVariables = Exact<{
+  rowId: Scalars['UUID']['input'];
+}>;
+
+
+export type RepositoryQuery = { __typename?: 'Query', repository?: { __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner?: { __typename?: 'User', rowId: string, username: string, avatarUrl?: string | null } | null, organization?: { __typename?: 'Organization', rowId: string, name: string, slug: string, avatarUrl?: string | null } | null, repositoryCollaborators: { __typename?: 'RepositoryCollaboratorConnection', nodes: Array<{ __typename?: 'RepositoryCollaborator', userId: string, permission: Permission, user?: { __typename?: 'User', rowId: string, username: string, avatarUrl?: string | null } | null }> } } | null };
+
+export type UserByIdentityProviderIdQueryVariables = Exact<{
+  identityProviderId: Scalars['UUID']['input'];
+}>;
+
+
+export type UserByIdentityProviderIdQuery = { __typename?: 'Query', userByIdentityProviderId?: { __typename?: 'User', rowId: string } | null };
+
+
+export const CreateOrganizationDocument = gql`
+    mutation CreateOrganization($input: CreateOrganizationInput!) {
+  createOrganization(input: $input) {
+    organization {
+      rowId
+      name
+      slug
+      description
+      avatarUrl
+      tier
+      createdAt
+    }
+  }
+}
+    `;
+export const CreateRepositoryDocument = gql`
+    mutation CreateRepository($input: CreateRepositoryInput!) {
+  createRepository(input: $input) {
+    repository {
+      rowId
+      name
+      slug
+      description
+      visibility
+      defaultBranch
+      createdAt
+      updatedAt
+      owner {
+        rowId
+        username
+      }
+      organization {
+        rowId
+        name
+        slug
+      }
+    }
+  }
+}
+    `;
+export const DeleteRepositoryDocument = gql`
+    mutation DeleteRepository($input: DeleteRepositoryInput!) {
+  deleteRepository(input: $input) {
+    repository {
+      rowId
+    }
+  }
+}
+    `;
+export const RepositoryGraphDocument = gql`
+    query RepositoryGraph($userId: UUID!, $organizationId: UUID) {
+  repositories(
+    filter: {or: [{ownerId: {equalTo: $userId}}, {repositoryCollaborators: {some: {userId: {equalTo: $userId}}}}, {organizationId: {equalTo: $organizationId}}]}
+    orderBy: NAME_ASC
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      owner {
+        rowId
+        username
+      }
+      organization {
+        rowId
+        name
+        slug
+      }
+      outgoingRelationships: repositoryRelationshipsBySourceRepositoryId {
+        nodes {
+          rowId
+          confidence
+          versionConstraint
+          targetRepository {
+            rowId
+            name
+            slug
+            owner {
+              username
+            }
+            organization {
+              slug
+            }
+          }
+          relationshipType {
+            rowId
+            name
+            isDirected
+          }
+        }
+      }
+    }
+  }
+  repositoryRelationshipTypes(orderBy: NAME_ASC) {
+    nodes {
+      rowId
+      name
+      description
+      isDirected
+    }
+  }
+}
+    `;
+export const OrganizationDocument = gql`
+    query Organization($rowId: UUID!, $userId: UUID!) {
+  organization(rowId: $rowId) {
+    rowId
+    name
+    slug
+    description
+    avatarUrl
+    tier
+    createdAt
+    updatedAt
+    organizationMembers {
+      nodes {
+        userId
+        role
+        createdAt
+        user {
+          rowId
+          username
+          name
+          email
+          avatarUrl
+        }
+      }
+      totalCount
+    }
+    currentUser: organizationMembers(condition: {userId: $userId}) {
+      nodes {
+        role
+      }
+    }
+    repositories {
+      nodes {
+        rowId
+        name
+        slug
+        description
+        visibility
+        updatedAt
+      }
+      totalCount
+    }
+  }
+}
+    `;
+export const OrganizationsDocument = gql`
+    query Organizations($userId: UUID!, $limit: Int) {
+  organizations(
+    filter: {organizationMembers: {some: {userId: {equalTo: $userId}}}}
+    orderBy: NAME_ASC
+    first: $limit
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      avatarUrl
+      tier
+      createdAt
+      updatedAt
+      organizationMembers {
+        totalCount
+      }
+      currentUser: organizationMembers(condition: {userId: $userId}) {
+        nodes {
+          role
+        }
+      }
+      repositories {
+        totalCount
+      }
+    }
+    totalCount
+  }
+}
+    `;
+export const RepositoriesDocument = gql`
+    query Repositories($userId: UUID!, $limit: Int) {
+  repositories(
+    filter: {or: [{ownerId: {equalTo: $userId}}, {repositoryCollaborators: {some: {userId: {equalTo: $userId}}}}]}
+    orderBy: UPDATED_AT_DESC
+    first: $limit
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      defaultBranch
+      createdAt
+      updatedAt
+      owner {
+        rowId
+        username
+        avatarUrl
+      }
+      organization {
+        rowId
+        name
+        slug
+        avatarUrl
+      }
+    }
+    totalCount
+  }
+}
+    `;
+export const RepositoryDocument = gql`
+    query Repository($rowId: UUID!) {
+  repository(rowId: $rowId) {
+    rowId
+    name
+    slug
+    description
+    visibility
+    defaultBranch
+    createdAt
+    updatedAt
+    owner {
+      rowId
+      username
+      avatarUrl
+    }
+    organization {
+      rowId
+      name
+      slug
+      avatarUrl
+    }
+    repositoryCollaborators {
+      nodes {
+        userId
+        permission
+        user {
+          rowId
+          username
+          avatarUrl
+        }
+      }
+    }
+  }
+}
+    `;
+export const UserByIdentityProviderIdDocument = gql`
+    query UserByIdentityProviderId($identityProviderId: UUID!) {
+  userByIdentityProviderId(identityProviderId: $identityProviderId) {
+    rowId
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -2935,7 +5574,33 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-
+    CreateOrganization(variables: CreateOrganizationMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreateOrganizationMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateOrganizationMutation>({ document: CreateOrganizationDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CreateOrganization', 'mutation', variables);
+    },
+    CreateRepository(variables: CreateRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreateRepositoryMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateRepositoryMutation>({ document: CreateRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CreateRepository', 'mutation', variables);
+    },
+    DeleteRepository(variables: DeleteRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<DeleteRepositoryMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeleteRepositoryMutation>({ document: DeleteRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'DeleteRepository', 'mutation', variables);
+    },
+    RepositoryGraph(variables: RepositoryGraphQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryGraphQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RepositoryGraphQuery>({ document: RepositoryGraphDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RepositoryGraph', 'query', variables);
+    },
+    Organization(variables: OrganizationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<OrganizationQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<OrganizationQuery>({ document: OrganizationDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Organization', 'query', variables);
+    },
+    Organizations(variables: OrganizationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<OrganizationsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<OrganizationsQuery>({ document: OrganizationsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Organizations', 'query', variables);
+    },
+    Repositories(variables: RepositoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoriesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RepositoriesQuery>({ document: RepositoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Repositories', 'query', variables);
+    },
+    Repository(variables: RepositoryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RepositoryQuery>({ document: RepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Repository', 'query', variables);
+    },
+    UserByIdentityProviderId(variables: UserByIdentityProviderIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UserByIdentityProviderIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UserByIdentityProviderIdQuery>({ document: UserByIdentityProviderIdDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'UserByIdentityProviderId', 'query', variables);
+    }
   };
 }
 export type Sdk = ReturnType<typeof getSdk>;

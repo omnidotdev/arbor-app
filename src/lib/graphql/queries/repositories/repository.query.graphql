@@ -1,0 +1,34 @@
+query Repository($rowId: UUID!) {
+  repository(rowId: $rowId) {
+    rowId
+    name
+    slug
+    description
+    visibility
+    defaultBranch
+    createdAt
+    updatedAt
+    owner {
+      rowId
+      username
+      avatarUrl
+    }
+    organization {
+      rowId
+      name
+      slug
+      avatarUrl
+    }
+    repositoryCollaborators {
+      nodes {
+        userId
+        permission
+        user {
+          rowId
+          username
+          avatarUrl
+        }
+      }
+    }
+  }
+}

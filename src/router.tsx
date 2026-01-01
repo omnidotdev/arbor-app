@@ -53,7 +53,7 @@ export function getRouter() {
 
   const router = createTanStackRouter({
     routeTree,
-    context: { queryClient },
+    context: { queryClient, session: null },
     defaultPreload: "intent",
     // delegate caching to React Query instead of router's built-in cache
     defaultPreloadStaleTime: 0,

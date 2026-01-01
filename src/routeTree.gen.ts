@@ -9,19 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RepositoriesRouteImport } from './routes/repositories'
-import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as RepositoriesOwnerRepoRouteImport } from './routes/repositories/$owner/$repo'
+import { Route as AuthGraphRouteImport } from './routes/_auth/graph'
+import { Route as AuthRepositoriesIndexRouteImport } from './routes/_auth/repositories/index'
+import { Route as AuthOrganizationsIndexRouteImport } from './routes/_auth/organizations/index'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AuthOrganizationsOrgSlugIndexRouteImport } from './routes/_auth/organizations/$orgSlug/index'
+import { Route as AuthRepositoriesOwnerRepoRouteImport } from './routes/_auth/repositories/$owner.$repo'
 
-const RepositoriesRoute = RepositoriesRouteImport.update({
-  id: '/repositories',
-  path: '/repositories',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProjectsRoute = ProjectsRouteImport.update({
-  id: '/projects',
-  path: '/projects',
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -29,64 +27,112 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RepositoriesOwnerRepoRoute = RepositoriesOwnerRepoRouteImport.update({
-  id: '/$owner/$repo',
-  path: '/$owner/$repo',
-  getParentRoute: () => RepositoriesRoute,
+const AuthGraphRoute = AuthGraphRouteImport.update({
+  id: '/graph',
+  path: '/graph',
+  getParentRoute: () => AuthRoute,
 } as any)
+const AuthRepositoriesIndexRoute = AuthRepositoriesIndexRouteImport.update({
+  id: '/repositories/',
+  path: '/repositories/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthOrganizationsIndexRoute = AuthOrganizationsIndexRouteImport.update({
+  id: '/organizations/',
+  path: '/organizations/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthOrganizationsOrgSlugIndexRoute =
+  AuthOrganizationsOrgSlugIndexRouteImport.update({
+    id: '/organizations/$orgSlug/',
+    path: '/organizations/$orgSlug/',
+    getParentRoute: () => AuthRoute,
+  } as any)
+const AuthRepositoriesOwnerRepoRoute =
+  AuthRepositoriesOwnerRepoRouteImport.update({
+    id: '/repositories/$owner/$repo',
+    path: '/repositories/$owner/$repo',
+    getParentRoute: () => AuthRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/projects': typeof ProjectsRoute
-  '/repositories': typeof RepositoriesRouteWithChildren
-  '/repositories/$owner/$repo': typeof RepositoriesOwnerRepoRoute
+  '/graph': typeof AuthGraphRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/organizations': typeof AuthOrganizationsIndexRoute
+  '/repositories': typeof AuthRepositoriesIndexRoute
+  '/repositories/$owner/$repo': typeof AuthRepositoriesOwnerRepoRoute
+  '/organizations/$orgSlug': typeof AuthOrganizationsOrgSlugIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/projects': typeof ProjectsRoute
-  '/repositories': typeof RepositoriesRouteWithChildren
-  '/repositories/$owner/$repo': typeof RepositoriesOwnerRepoRoute
+  '/graph': typeof AuthGraphRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/organizations': typeof AuthOrganizationsIndexRoute
+  '/repositories': typeof AuthRepositoriesIndexRoute
+  '/repositories/$owner/$repo': typeof AuthRepositoriesOwnerRepoRoute
+  '/organizations/$orgSlug': typeof AuthOrganizationsOrgSlugIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/projects': typeof ProjectsRoute
-  '/repositories': typeof RepositoriesRouteWithChildren
-  '/repositories/$owner/$repo': typeof RepositoriesOwnerRepoRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/_auth/graph': typeof AuthGraphRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_auth/organizations/': typeof AuthOrganizationsIndexRoute
+  '/_auth/repositories/': typeof AuthRepositoriesIndexRoute
+  '/_auth/repositories/$owner/$repo': typeof AuthRepositoriesOwnerRepoRoute
+  '/_auth/organizations/$orgSlug/': typeof AuthOrganizationsOrgSlugIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/projects' | '/repositories' | '/repositories/$owner/$repo'
+  fullPaths:
+    | '/'
+    | '/graph'
+    | '/api/auth/$'
+    | '/organizations'
+    | '/repositories'
+    | '/repositories/$owner/$repo'
+    | '/organizations/$orgSlug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/projects' | '/repositories' | '/repositories/$owner/$repo'
+  to:
+    | '/'
+    | '/graph'
+    | '/api/auth/$'
+    | '/organizations'
+    | '/repositories'
+    | '/repositories/$owner/$repo'
+    | '/organizations/$orgSlug'
   id:
     | '__root__'
     | '/'
-    | '/projects'
-    | '/repositories'
-    | '/repositories/$owner/$repo'
+    | '/_auth'
+    | '/_auth/graph'
+    | '/api/auth/$'
+    | '/_auth/organizations/'
+    | '/_auth/repositories/'
+    | '/_auth/repositories/$owner/$repo'
+    | '/_auth/organizations/$orgSlug/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ProjectsRoute: typeof ProjectsRoute
-  RepositoriesRoute: typeof RepositoriesRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/repositories': {
-      id: '/repositories'
-      path: '/repositories'
-      fullPath: '/repositories'
-      preLoaderRoute: typeof RepositoriesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects': {
-      id: '/projects'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof ProjectsRouteImport
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -96,42 +142,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/repositories/$owner/$repo': {
-      id: '/repositories/$owner/$repo'
-      path: '/$owner/$repo'
+    '/_auth/graph': {
+      id: '/_auth/graph'
+      path: '/graph'
+      fullPath: '/graph'
+      preLoaderRoute: typeof AuthGraphRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/repositories/': {
+      id: '/_auth/repositories/'
+      path: '/repositories'
+      fullPath: '/repositories'
+      preLoaderRoute: typeof AuthRepositoriesIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/organizations/': {
+      id: '/_auth/organizations/'
+      path: '/organizations'
+      fullPath: '/organizations'
+      preLoaderRoute: typeof AuthOrganizationsIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth/organizations/$orgSlug/': {
+      id: '/_auth/organizations/$orgSlug/'
+      path: '/organizations/$orgSlug'
+      fullPath: '/organizations/$orgSlug'
+      preLoaderRoute: typeof AuthOrganizationsOrgSlugIndexRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/repositories/$owner/$repo': {
+      id: '/_auth/repositories/$owner/$repo'
+      path: '/repositories/$owner/$repo'
       fullPath: '/repositories/$owner/$repo'
-      preLoaderRoute: typeof RepositoriesOwnerRepoRouteImport
-      parentRoute: typeof RepositoriesRoute
+      preLoaderRoute: typeof AuthRepositoriesOwnerRepoRouteImport
+      parentRoute: typeof AuthRoute
     }
   }
 }
 
-interface RepositoriesRouteChildren {
-  RepositoriesOwnerRepoRoute: typeof RepositoriesOwnerRepoRoute
+interface AuthRouteChildren {
+  AuthGraphRoute: typeof AuthGraphRoute
+  AuthOrganizationsIndexRoute: typeof AuthOrganizationsIndexRoute
+  AuthRepositoriesIndexRoute: typeof AuthRepositoriesIndexRoute
+  AuthRepositoriesOwnerRepoRoute: typeof AuthRepositoriesOwnerRepoRoute
+  AuthOrganizationsOrgSlugIndexRoute: typeof AuthOrganizationsOrgSlugIndexRoute
 }
 
-const RepositoriesRouteChildren: RepositoriesRouteChildren = {
-  RepositoriesOwnerRepoRoute: RepositoriesOwnerRepoRoute,
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthGraphRoute: AuthGraphRoute,
+  AuthOrganizationsIndexRoute: AuthOrganizationsIndexRoute,
+  AuthRepositoriesIndexRoute: AuthRepositoriesIndexRoute,
+  AuthRepositoriesOwnerRepoRoute: AuthRepositoriesOwnerRepoRoute,
+  AuthOrganizationsOrgSlugIndexRoute: AuthOrganizationsOrgSlugIndexRoute,
 }
 
-const RepositoriesRouteWithChildren = RepositoriesRoute._addFileChildren(
-  RepositoriesRouteChildren,
-)
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ProjectsRoute: ProjectsRoute,
-  RepositoriesRoute: RepositoriesRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

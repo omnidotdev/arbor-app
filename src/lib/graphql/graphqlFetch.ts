@@ -2,6 +2,7 @@ import { parse } from "graphql";
 import { GraphQLClient, gql } from "graphql-request";
 
 import { API_GRAPHQL_URL } from "@/lib/config/env.config";
+import { fetchSession } from "@/server/functions/auth";
 
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
 import type { Variables } from "graphql-request";
@@ -22,22 +23,22 @@ export const graphqlFetch =
     options?: (HeadersInit & FetchOptions) | FetchOptions,
   ) =>
   async (): Promise<TData> => {
-    // TODO: add session fetching for auth token
-    // const { session } = await fetchSession();
+    const { session } = await fetchSession();
 
     const { cache, ...restOptions } = options || {};
 
     const client = new GraphQLClient(API_GRAPHQL_URL!, {
       headers: {
         "Content-Type": "application/json",
-        // TODO: add auth token
-        // Authorization: `Bearer ${session?.accessToken ?? ""}`,
+        Authorization: `Bearer ${session?.accessToken ?? ""}`,
         ...restOptions,
       },
       cache,
     });
 
-    const document: TypedDocumentNode<TData, Variables> = parse(gql`${query}`);
+    const document: TypedDocumentNode<TData, Variables> = parse(gql`
+      ${query}
+    `);
 
     return client.request({
       document,
