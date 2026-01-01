@@ -5,13 +5,11 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 
-import {
-  DefaultCatchBoundary,
-  Header,
-  ThemeProvider,
-} from "@/components/layout";
+import { DefaultCatchBoundary, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
 import appCss from "@/lib/styles/globals.css?url";
+import ThemeProvider from "@/providers/ThemeProvider";
+import { getTheme } from "@/server/functions/theme";
 
 import type { QueryClient } from "@tanstack/react-query";
 import type { ReactNode } from "react";
@@ -19,6 +17,7 @@ import type { ReactNode } from "react";
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
 }>()({
+  loader: () => getTheme(),
   head: () => ({
     meta: [
       {
@@ -54,20 +53,15 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
+  const theme = Route.useLoaderData();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className={theme}>
       <head>
         <HeadContent />
       </head>
       <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
         <Scripts />
       </body>
     </html>
