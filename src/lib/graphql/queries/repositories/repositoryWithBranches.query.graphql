@@ -1,0 +1,57 @@
+query RepositoryWithBranches($ownerSlug: String!, $repoSlug: String!) {
+  repositories(
+    filter: {
+      slug: { equalTo: $repoSlug }
+      or: [
+        { owner: { username: { equalTo: $ownerSlug } } }
+        { organization: { slug: { equalTo: $ownerSlug } } }
+      ]
+    }
+    first: 1
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      defaultBranch
+      createdAt
+      updatedAt
+      owner {
+        rowId
+        username
+        avatarUrl
+      }
+      organization {
+        rowId
+        name
+        slug
+        avatarUrl
+      }
+      refs(refPrefix: "refs/heads/") {
+        nodes {
+          id
+          name
+          prefix
+          target {
+            ... on Commit {
+              oid
+            }
+          }
+        }
+        totalCount
+      }
+      defaultBranchRef {
+        id
+        name
+        prefix
+        target {
+          ... on Commit {
+            oid
+          }
+        }
+      }
+    }
+  }
+}

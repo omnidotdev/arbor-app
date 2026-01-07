@@ -19,7 +19,7 @@ function Home() {
 
   return (
     <div className="flex min-h-[calc(100vh-3.5rem)] flex-col pt-12">
-      <div className="container flex-1 items-center px-6 md:grid md:grid-cols-2 md:gap-6 md:py-10">
+      <div className="container mx-auto max-w-7xl flex-1 items-center px-6 md:grid md:grid-cols-2 md:gap-6 md:py-10">
         <div className="flex flex-col justify-center space-y-6">
           <div className="space-y-4">
             <h1 className="font-bold text-3xl tracking-tighter sm:text-5xl xl:text-6xl/none">

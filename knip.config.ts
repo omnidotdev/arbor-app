@@ -24,6 +24,8 @@ const knipConfig: KnipConfig = {
     "src/components/emails/**",
     "src/components/ui/**",
     "src/lib/config/env.config.ts",
+    // WIP: Pull request components not yet integrated
+    "src/components/pullRequest/**",
   ],
   ignoreDependencies: [
     // used by React Email preview server

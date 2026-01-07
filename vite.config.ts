@@ -17,8 +17,8 @@ const viteConfig = defineConfig(({ command }) => ({
     host: "0.0.0.0",
   },
   plugins: [
-    devtools(),
     // NB: command is `serve` in development, `build` in production
+    command === "serve" && devtools(),
     command === "serve" && mkcert(),
     tailwindcss(),
     tsConfigPaths({ projects: ["./tsconfig.json"] }),

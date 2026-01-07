@@ -74,6 +74,28 @@ export const mockDeleteRepositoryMutation = (resolver: GraphQLResponseResolver<T
  * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
  * @see https://mswjs.io/docs/basics/response-resolver
  * @example
+ * mockUpdateRepositoryMutation(
+ *   ({ query, variables }) => {
+ *     const { input } = variables;
+ *     return HttpResponse.json({
+ *       data: { updateRepository }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockUpdateRepositoryMutation = (resolver: GraphQLResponseResolver<Types.UpdateRepositoryMutation, Types.UpdateRepositoryMutationVariables>, options?: RequestHandlerOptions) =>
+  graphql.mutation<Types.UpdateRepositoryMutation, Types.UpdateRepositoryMutationVariables>(
+    'UpdateRepository',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
  * mockRepositoryGraphQuery(
  *   ({ query, variables }) => {
  *     const { userId, organizationId } = variables;
@@ -175,6 +197,28 @@ export const mockRepositoriesQuery = (resolver: GraphQLResponseResolver<Types.Re
 export const mockRepositoryQuery = (resolver: GraphQLResponseResolver<Types.RepositoryQuery, Types.RepositoryQueryVariables>, options?: RequestHandlerOptions) =>
   graphql.query<Types.RepositoryQuery, Types.RepositoryQueryVariables>(
     'Repository',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
+ * mockRepositoryWithBranchesQuery(
+ *   ({ query, variables }) => {
+ *     const { ownerSlug, repoSlug } = variables;
+ *     return HttpResponse.json({
+ *       data: { repositories }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockRepositoryWithBranchesQuery = (resolver: GraphQLResponseResolver<Types.RepositoryWithBranchesQuery, Types.RepositoryWithBranchesQueryVariables>, options?: RequestHandlerOptions) =>
+  graphql.query<Types.RepositoryWithBranchesQuery, Types.RepositoryWithBranchesQueryVariables>(
+    'RepositoryWithBranches',
     resolver,
     options
   )

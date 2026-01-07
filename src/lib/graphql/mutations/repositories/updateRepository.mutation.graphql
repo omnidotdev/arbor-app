@@ -1,0 +1,23 @@
+mutation UpdateRepository($input: UpdateRepositoryInput!) {
+  updateRepository(input: $input) {
+    repository {
+      rowId
+      name
+      slug
+      description
+      visibility
+      defaultBranch
+      createdAt
+      updatedAt
+      owner {
+        rowId
+        username
+      }
+      organization {
+        rowId
+        name
+        slug
+      }
+    }
+  }
+}

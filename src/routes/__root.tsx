@@ -7,6 +7,7 @@ import {
 
 import { DefaultCatchBoundary, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
+import { isDevEnv } from "@/lib/config/env.config";
 import appCss from "@/lib/styles/globals.css?url";
 import ThemeProvider from "@/providers/ThemeProvider";
 import { fetchSession } from "@/server/functions/auth";
@@ -36,6 +37,8 @@ export const Route = createRootRouteWithContext<{
   session: ExtendedSession | null;
 }>()({
   beforeLoad: async () => {
+    // Skip auth in production (coming soon page)
+    if (!isDevEnv) return { session: null };
     const { session } = await fetchSession();
 
     return { session };
@@ -51,20 +54,45 @@ export const Route = createRootRouteWithContext<{
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: app.name,
+        title: isDevEnv ? app.name : "Arbor",
       },
       {
         name: "description",
-        content: app.description,
+        content: isDevEnv ? app.description : "Coming soon",
       },
     ],
-    links: [{ rel: "stylesheet", href: appCss }],
+    links: [
+      { rel: "stylesheet", href: appCss },
+      {
+        rel: "icon",
+        href: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌳</text></svg>",
+      },
+    ],
   }),
   errorComponent: DefaultCatchBoundary,
   component: RootComponent,
 });
 
+function ComingSoon() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-900 to-emerald-800">
+      <div className="text-center">
+        <div className="text-9xl">🌳</div>
+      </div>
+    </div>
+  );
+}
+
 function RootComponent() {
+  // Show coming soon page in production
+  if (!isDevEnv) {
+    return (
+      <RootDocument>
+        <ComingSoon />
+      </RootDocument>
+    );
+  }
+
   return (
     <RootDocument>
       <Header />

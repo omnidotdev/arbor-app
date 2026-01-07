@@ -1,5 +1,9 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   GitBranch,
   Globe,
@@ -8,22 +12,48 @@ import {
   Network,
   Plus,
   Search,
+  X,
 } from "lucide-react";
 import { useState } from "react";
+import { z } from "zod";
 
 import { GraphView } from "@/components/graph";
+import {
+  CreateRepositoryDialog,
+  DeleteRepositoryDialog,
+} from "@/components/repository";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRepositoriesQuery } from "@/generated/graphql";
+import {
+  useDeleteRepositoryMutation,
+  useOrganizationsQuery,
+  useRepositoriesQuery,
+} from "@/generated/graphql";
+import { graphqlFetch } from "@/lib/graphql/graphqlFetch";
+
+const searchSchema = z.object({
+  owner: z.string().optional(),
+});
 
 export const Route = createFileRoute("/_auth/repositories/")({
+  validateSearch: searchSchema,
   component: RepositoriesPage,
 });
 
 function RepositoriesPage() {
   const { session } = Route.useRouteContext();
+  const { owner: ownerFilter } = Route.useSearch();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [viewType, setViewType] = useState<"list" | "graph">("list");
+  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<{
+    rowId: string;
+    name: string;
+    owner: string;
+  } | null>(null);
 
   const { data } = useSuspenseQuery({
     queryKey: useRepositoriesQuery.getKey({
@@ -36,9 +66,124 @@ function RepositoriesPage() {
     }),
   });
 
+  const { data: orgsData } = useSuspenseQuery({
+    queryKey: useOrganizationsQuery.getKey({
+      userId: session!.user.rowId!,
+      limit: 50,
+    }),
+    queryFn: useOrganizationsQuery.fetcher({
+      userId: session!.user.rowId!,
+      limit: 50,
+    }),
+  });
+
+  const organizations =
+    orgsData?.organizations?.nodes?.map((org) => ({
+      rowId: org.rowId,
+      name: org.name,
+      slug: org.slug,
+    })) ?? [];
+
+  const createMutation = useMutation({
+    mutationKey: ["CreateRepositoryWithGit"],
+    mutationFn: (input: {
+      name: string;
+      description: string;
+      visibility: "public" | "private";
+      organizationId?: string;
+    }) =>
+      graphqlFetch<
+        {
+          createRepositoryWithGit: {
+            rowId: string | null;
+            slug: string | null;
+            ownerUsername: string | null;
+            organizationSlug: string | null;
+            error: string | null;
+          };
+        },
+        {
+          input: {
+            name: string;
+            slug: string;
+            description: string | null;
+            visibility: "public" | "private";
+            organizationId: string | null;
+          };
+        }
+      >(
+        `mutation CreateRepositoryWithGit($input: CreateRepositoryWithGitInput!) {
+          createRepositoryWithGit(input: $input) {
+            rowId
+            slug
+            ownerUsername
+            organizationSlug
+            error
+          }
+        }`,
+        {
+          input: {
+            name: input.name,
+            slug: input.name
+              .toLowerCase()
+              .replace(/[^a-z0-9-]/g, "-")
+              .replace(/-+/g, "-")
+              .replace(/^-|-$/g, ""),
+            description: input.description || null,
+            visibility: input.visibility,
+            organizationId: input.organizationId || null,
+          },
+        },
+      )(),
+    onSuccess: (result) => {
+      queryClient.invalidateQueries({
+        queryKey: useRepositoriesQuery.getKey({
+          userId: session!.user.rowId!,
+          limit: 100,
+        }),
+      });
+      setIsCreateDialogOpen(false);
+
+      const data = result.createRepositoryWithGit;
+      if (data?.slug) {
+        const owner = data.organizationSlug ?? data.ownerUsername ?? "";
+        navigate({
+          to: "/repositories/$owner/$repo",
+          params: { owner, repo: data.slug },
+        });
+      }
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationKey: useDeleteRepositoryMutation.getKey(),
+    mutationFn: (rowId: string) =>
+      useDeleteRepositoryMutation.fetcher({
+        input: { rowId },
+      })(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: useRepositoriesQuery.getKey({
+          userId: session!.user.rowId!,
+          limit: 100,
+        }),
+      });
+      setDeleteTarget(null);
+    },
+  });
+
   const repositories = data?.repositories?.nodes ?? [];
 
   const filteredRepositories = repositories.filter((repo) => {
+    // Filter by owner if specified in URL
+    if (ownerFilter) {
+      const repoOwner = repo.organization?.slug ?? repo.owner?.username ?? "";
+      if (repoOwner.toLowerCase() !== ownerFilter.toLowerCase()) {
+        return false;
+      }
+    }
+
+    // Filter by search query
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
     return (
@@ -59,7 +204,24 @@ function RepositoriesPage() {
   return (
     <div className="container mx-auto max-w-5xl px-6 py-6">
       <div className="mb-6 space-y-4">
-        <h1 className="font-bold text-3xl">Your Repositories</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="font-bold text-3xl">
+            {ownerFilter
+              ? `${ownerFilter}'s Repositories`
+              : "Your Repositories"}
+          </h1>
+          {ownerFilter && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate({ to: "/repositories" })}
+              className="text-muted-foreground"
+            >
+              <X className="mr-1 h-4 w-4" />
+              Clear filter
+            </Button>
+          )}
+        </div>
         <div className="flex items-center space-x-4">
           <div className="flex-1">
             <div className="relative">
@@ -90,7 +252,7 @@ function RepositoriesPage() {
               Graph View
             </Button>
           </div>
-          <Button>
+          <Button onClick={() => setIsCreateDialogOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             New Repository
           </Button>
@@ -110,7 +272,10 @@ function RepositoriesPage() {
               <p className="mt-2 text-muted-foreground text-sm">
                 Create your first repository to get started.
               </p>
-              <Button className="mt-4">
+              <Button
+                className="mt-4"
+                onClick={() => setIsCreateDialogOpen(true)}
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Create Repository
               </Button>
@@ -153,6 +318,21 @@ function RepositoriesPage() {
                       </p>
                     )}
                   </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-muted-foreground hover:text-destructive"
+                    onClick={() =>
+                      setDeleteTarget({
+                        rowId: repo.rowId,
+                        name: repo.name,
+                        owner:
+                          repo.organization?.slug ?? repo.owner?.username ?? "",
+                      })
+                    }
+                  >
+                    Delete
+                  </Button>
                 </div>
                 <div className="mt-4 flex items-center space-x-4 text-muted-foreground text-sm">
                   <div className="flex items-center">
@@ -165,6 +345,25 @@ function RepositoriesPage() {
             ))
           )}
         </div>
+      )}
+
+      <CreateRepositoryDialog
+        isOpen={isCreateDialogOpen}
+        onClose={() => setIsCreateDialogOpen(false)}
+        onCreate={(data) => createMutation.mutate(data)}
+        organizations={organizations}
+        isCreating={createMutation.isPending}
+      />
+
+      {deleteTarget && (
+        <DeleteRepositoryDialog
+          isOpen={!!deleteTarget}
+          onClose={() => setDeleteTarget(null)}
+          onDelete={() => deleteMutation.mutate(deleteTarget.rowId)}
+          repositoryName={deleteTarget.name}
+          ownerName={deleteTarget.owner}
+          isDeleting={deleteMutation.isPending}
+        />
       )}
     </div>
   );
