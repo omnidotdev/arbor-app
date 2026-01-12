@@ -75,7 +75,7 @@ export const Route = createRootRouteWithContext<{
 
 function ComingSoon() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-emerald-900 to-emerald-800">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-emerald-900 to-emerald-800">
       <div className="text-center">
         <div className="text-9xl">🌳</div>
       </div>
