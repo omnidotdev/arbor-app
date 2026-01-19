@@ -4,10 +4,11 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
 
 import { DefaultCatchBoundary, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
-import { isDevEnv } from "@/lib/config/env.config";
+import { FLAGS, buildFlagContext, getBooleanFlag } from "@/lib/flags";
 import appCss from "@/lib/styles/globals.css?url";
 import ThemeProvider from "@/providers/ThemeProvider";
 import { fetchSession } from "@/server/functions/auth";
@@ -32,16 +33,24 @@ export interface ExtendedSession extends Omit<Session, "user"> {
   accessToken?: string;
 }
 
+const fetchMaintenanceMode = createServerFn({ method: "GET" }).handler(
+  async ({ context }) => {
+    const session = (context as { session?: ExtendedSession }).session;
+    const userContext = buildFlagContext(session ?? undefined);
+    return getBooleanFlag(FLAGS.MAINTENANCE, false, userContext);
+  },
+);
+
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   session: ExtendedSession | null;
+  isMaintenanceMode: boolean;
 }>()({
   beforeLoad: async () => {
-    // Skip auth in production (coming soon page)
-    if (!isDevEnv) return { session: null };
     const { session } = await fetchSession();
+    const isMaintenanceMode = await fetchMaintenanceMode({ context: { session } });
 
-    return { session };
+    return { session, isMaintenanceMode };
   },
   loader: () => getTheme(),
   head: () => ({
@@ -54,11 +63,11 @@ export const Route = createRootRouteWithContext<{
         content: "width=device-width, initial-scale=1",
       },
       {
-        title: isDevEnv ? app.name : "Arbor",
+        title: app.name,
       },
       {
         name: "description",
-        content: isDevEnv ? app.description : "Coming soon",
+        content: app.description,
       },
     ],
     links: [
@@ -73,22 +82,27 @@ export const Route = createRootRouteWithContext<{
   component: RootComponent,
 });
 
-function ComingSoon() {
+function MaintenancePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-emerald-900 to-emerald-800">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-emerald-900 to-emerald-800 p-8 text-white">
       <div className="text-center">
-        <div className="text-9xl">🌳</div>
+        <div className="mb-6 text-9xl">🌳</div>
+        <h1 className="mb-4 text-4xl font-bold">Out on a Limb</h1>
+        <p className="max-w-md text-lg text-emerald-200">
+          We're pruning and growing. Arbor will branch back soon.
+        </p>
       </div>
     </div>
   );
 }
 
 function RootComponent() {
-  // Show coming soon page in production
-  if (!isDevEnv) {
+  const { isMaintenanceMode } = Route.useRouteContext();
+
+  if (isMaintenanceMode) {
     return (
       <RootDocument>
-        <ComingSoon />
+        <MaintenancePage />
       </RootDocument>
     );
   }
