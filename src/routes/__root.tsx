@@ -48,7 +48,9 @@ export const Route = createRootRouteWithContext<{
 }>()({
   beforeLoad: async () => {
     const { session } = await fetchSession();
-    const isMaintenanceMode = await fetchMaintenanceMode({ context: { session } });
+    const isMaintenanceMode = await fetchMaintenanceMode({
+      context: { session },
+    });
 
     return { session, isMaintenanceMode };
   },
@@ -87,8 +89,8 @@ function MaintenancePage() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-emerald-900 to-emerald-800 p-8 text-white">
       <div className="text-center">
         <div className="mb-6 text-9xl">🌳</div>
-        <h1 className="mb-4 text-4xl font-bold">Out on a Limb</h1>
-        <p className="max-w-md text-lg text-emerald-200">
+        <h1 className="mb-4 font-bold text-4xl">Out on a Limb</h1>
+        <p className="max-w-md text-emerald-200 text-lg">
           We're pruning and growing. Arbor will branch back soon.
         </p>
       </div>
