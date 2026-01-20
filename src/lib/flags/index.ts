@@ -3,7 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { isEnabled } from "./client";
 
 export const FLAGS = {
-  MAINTENANCE: "arbor-maintenance",
+  MAINTENANCE: "arbor-app-maintenance-mode",
 } as const;
 
 /**
