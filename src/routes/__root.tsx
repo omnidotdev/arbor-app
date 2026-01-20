@@ -3,6 +3,7 @@ import {
   Outlet,
   Scripts,
   createRootRouteWithContext,
+  useRouteContext,
 } from "@tanstack/react-router";
 
 import { DefaultCatchBoundary, Header } from "@/components/layout";
@@ -88,7 +89,7 @@ function MaintenancePage() {
 }
 
 function RootComponent() {
-  const { isMaintenanceMode } = Route.useRouteContext();
+  const { isMaintenanceMode } = useRouteContext({ from: "__root__" });
 
   if (isMaintenanceMode) {
     return (
