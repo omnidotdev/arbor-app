@@ -16,7 +16,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@growthbook/growthbook": "^1.6.0",
+    "unleash-client": "^6.3.0",
     "@radix-ui/react-slot": "^1.2.4",
     "@react-email/components": "^1.0.2",
     "@tanstack/react-query": "^5.90.12",

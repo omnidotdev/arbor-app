@@ -4,11 +4,10 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
 
 import { DefaultCatchBoundary, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
-import { FLAGS, buildFlagContext, getBooleanFlag } from "@/lib/flags";
+import { fetchMaintenanceMode } from "@/lib/flags";
 import appCss from "@/lib/styles/globals.css?url";
 import ThemeProvider from "@/providers/ThemeProvider";
 import { fetchSession } from "@/server/functions/auth";
@@ -33,14 +32,6 @@ export interface ExtendedSession extends Omit<Session, "user"> {
   accessToken?: string;
 }
 
-const fetchMaintenanceMode = createServerFn({ method: "GET" }).handler(
-  async ({ context }) => {
-    const session = (context as { session?: ExtendedSession }).session;
-    const userContext = buildFlagContext(session ?? undefined);
-    return getBooleanFlag(FLAGS.MAINTENANCE, false, userContext);
-  },
-);
-
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   session: ExtendedSession | null;
@@ -48,9 +39,7 @@ export const Route = createRootRouteWithContext<{
 }>()({
   beforeLoad: async () => {
     const { session } = await fetchSession();
-    const isMaintenanceMode = await fetchMaintenanceMode({
-      context: { session },
-    });
+    const { isMaintenanceMode } = await fetchMaintenanceMode();
 
     return { session, isMaintenanceMode };
   },
