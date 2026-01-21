@@ -2,11 +2,9 @@ mutation CreateOrganization($input: CreateOrganizationInput!) {
   createOrganization(input: $input) {
     organization {
       rowId
-      name
-      slug
+      idpOrganizationId
       description
       avatarUrl
-      tier
       createdAt
     }
   }

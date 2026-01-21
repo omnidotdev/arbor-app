@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Building2, GitBranch, Plus, Search, Users } from "lucide-react";
+import { Building2, GitBranch, Plus, Search } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -12,18 +12,11 @@ export const Route = createFileRoute("/_auth/organizations/")({
 });
 
 function OrganizationsPage() {
-  const { session } = Route.useRouteContext();
   const [searchQuery, setSearchQuery] = useState("");
 
   const { data } = useSuspenseQuery({
-    queryKey: useOrganizationsQuery.getKey({
-      userId: session!.user.rowId!,
-      limit: 100,
-    }),
-    queryFn: useOrganizationsQuery.fetcher({
-      userId: session!.user.rowId!,
-      limit: 100,
-    }),
+    queryKey: useOrganizationsQuery.getKey({ limit: 100 }),
+    queryFn: useOrganizationsQuery.fetcher({ limit: 100 }),
   });
 
   const organizations = data?.organizations?.nodes ?? [];
@@ -32,28 +25,10 @@ function OrganizationsPage() {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
     return (
-      org.name.toLowerCase().includes(query) ||
-      org.slug.toLowerCase().includes(query) ||
+      org.idpOrganizationId.toLowerCase().includes(query) ||
       org.description?.toLowerCase().includes(query)
     );
   });
-
-  const getRoleBadge = (role: string | undefined) => {
-    if (!role) return null;
-    const colors: Record<string, string> = {
-      owner:
-        "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200",
-      admin: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
-      member: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200",
-    };
-    return (
-      <span
-        className={`rounded-full px-2 py-0.5 font-medium text-xs ${colors[role] || colors.member}`}
-      >
-        {role}
-      </span>
-    );
-  };
 
   return (
     <div className="container mx-auto max-w-5xl px-6 py-6">
@@ -99,7 +74,7 @@ function OrganizationsPage() {
                   {org.avatarUrl ? (
                     <img
                       src={org.avatarUrl}
-                      alt={org.name}
+                      alt={org.idpOrganizationId}
                       className="h-12 w-12 rounded-lg"
                     />
                   ) : (
@@ -111,12 +86,11 @@ function OrganizationsPage() {
                     <div className="flex items-center gap-2">
                       <Link
                         to="/organizations/$orgSlug"
-                        params={{ orgSlug: org.slug }}
+                        params={{ orgSlug: org.idpOrganizationId }}
                         className="font-semibold text-xl hover:underline"
                       >
-                        {org.name}
+                        {org.idpOrganizationId}
                       </Link>
-                      {getRoleBadge(org.currentUser?.nodes[0]?.role)}
                     </div>
                     {org.description && (
                       <p className="text-muted-foreground text-sm">
@@ -128,15 +102,8 @@ function OrganizationsPage() {
               </div>
               <div className="mt-4 flex items-center space-x-4 text-muted-foreground text-sm">
                 <div className="flex items-center">
-                  <Users className="mr-1 h-4 w-4" />
-                  {org.organizationMembers?.totalCount ?? 0} members
-                </div>
-                <div className="flex items-center">
                   <GitBranch className="mr-1 h-4 w-4" />
                   {org.repositories?.totalCount ?? 0} repositories
-                </div>
-                <div className="rounded-full bg-muted px-2 py-0.5 text-xs">
-                  {org.tier}
                 </div>
               </div>
             </div>

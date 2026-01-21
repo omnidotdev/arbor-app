@@ -15,8 +15,7 @@ query Repository($rowId: UUID!) {
     }
     organization {
       rowId
-      name
-      slug
+      idpOrganizationId
       avatarUrl
     }
     repositoryCollaborators {

@@ -1,18 +1,22 @@
+const env = { ...import.meta.env, ...process.env };
+
 /**
  * Environment variables.
  */
 export const {
   // core
   VITE_BASE_URL: BASE_URL,
-  VITE_API_BASE_URL: API_BASE_URL,
-  VITE_AUTH_BASE_URL: AUTH_BASE_URL,
   // auth (server-side secrets)
   AUTH_CLIENT_ID,
   AUTH_CLIENT_SECRET,
   // feature flags
   VITE_FLAGS_API_HOST: FLAGS_API_HOST,
   VITE_FLAGS_CLIENT_KEY: FLAGS_CLIENT_KEY,
-} = { ...import.meta.env, ...process.env };
+} = env;
+
+// Server-side URLs - prefer non-VITE versions for server functions
+export const API_BASE_URL = env.API_BASE_URL || env.VITE_API_BASE_URL;
+export const AUTH_BASE_URL = env.AUTH_BASE_URL || env.VITE_AUTH_BASE_URL;
 
 export const API_GRAPHQL_URL = `${API_BASE_URL}/graphql`;
 export const AUTH_ISSUER_URL = `${AUTH_BASE_URL}/api/auth`;

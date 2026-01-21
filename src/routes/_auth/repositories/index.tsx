@@ -67,21 +67,15 @@ function RepositoriesPage() {
   });
 
   const { data: orgsData } = useSuspenseQuery({
-    queryKey: useOrganizationsQuery.getKey({
-      userId: session!.user.rowId!,
-      limit: 50,
-    }),
-    queryFn: useOrganizationsQuery.fetcher({
-      userId: session!.user.rowId!,
-      limit: 50,
-    }),
+    queryKey: useOrganizationsQuery.getKey({ limit: 50 }),
+    queryFn: useOrganizationsQuery.fetcher({ limit: 50 }),
   });
 
   const organizations =
     orgsData?.organizations?.nodes?.map((org) => ({
       rowId: org.rowId,
-      name: org.name,
-      slug: org.slug,
+      name: org.idpOrganizationId,
+      slug: org.idpOrganizationId,
     })) ?? [];
 
   const createMutation = useMutation({
@@ -177,7 +171,8 @@ function RepositoriesPage() {
   const filteredRepositories = repositories.filter((repo) => {
     // Filter by owner if specified in URL
     if (ownerFilter) {
-      const repoOwner = repo.organization?.slug ?? repo.owner?.username ?? "";
+      const repoOwner =
+        repo.organization?.idpOrganizationId ?? repo.owner?.username ?? "";
       if (repoOwner.toLowerCase() !== ownerFilter.toLowerCase()) {
         return false;
       }
@@ -290,15 +285,16 @@ function RepositoriesPage() {
                         to="/repositories/$owner/$repo"
                         params={{
                           owner:
-                            repo.organization?.slug ??
+                            repo.organization?.idpOrganizationId ??
                             repo.owner?.username ??
                             "",
                           repo: repo.slug,
                         }}
                         className="font-semibold text-xl hover:underline"
                       >
-                        {repo.organization?.slug ?? repo.owner?.username}/
-                        {repo.name}
+                        {repo.organization?.idpOrganizationId ??
+                          repo.owner?.username}
+                        /{repo.name}
                       </Link>
                       {repo.visibility === "private" ? (
                         <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-muted-foreground text-xs">
@@ -327,7 +323,9 @@ function RepositoriesPage() {
                         rowId: repo.rowId,
                         name: repo.name,
                         owner:
-                          repo.organization?.slug ?? repo.owner?.username ?? "",
+                          repo.organization?.idpOrganizationId ??
+                          repo.owner?.username ??
+                          "",
                       })
                     }
                   >

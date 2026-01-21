@@ -1,4 +1,9 @@
-import { Link, createFileRoute, useRouteContext } from "@tanstack/react-router";
+import {
+  Link,
+  createFileRoute,
+  redirect,
+  useRouteContext,
+} from "@tanstack/react-router";
 import { Building2, GitBranch, Network, Users } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -6,6 +11,10 @@ import signIn from "@/lib/auth/signIn";
 import { BASE_URL } from "@/lib/config/env.config";
 
 export const Route = createFileRoute("/")({
+  beforeLoad: ({ context: { session } }) => {
+    // redirect authenticated users to the main app
+    if (session?.user?.rowId) throw redirect({ to: "/repositories" });
+  },
   component: Home,
 });
 
@@ -14,7 +23,7 @@ function Home() {
   const isAuthenticated = !!session?.user?.rowId;
 
   const handleSignIn = () => {
-    signIn({ redirectUrl: `${BASE_URL}/repositories` });
+    signIn({ redirectUrl: BASE_URL });
   };
 
   return (

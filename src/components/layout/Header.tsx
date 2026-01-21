@@ -18,7 +18,7 @@ export function Header() {
   const isAuthenticated = !!session?.user?.rowId;
 
   const handleSignIn = () => {
-    signIn({ redirectUrl: `${BASE_URL}/repositories` });
+    signIn({ redirectUrl: BASE_URL });
   };
 
   const handleSignOut = () => {

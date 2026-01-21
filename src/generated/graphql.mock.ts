@@ -120,7 +120,7 @@ export const mockRepositoryGraphQuery = (resolver: GraphQLResponseResolver<Types
  * @example
  * mockOrganizationQuery(
  *   ({ query, variables }) => {
- *     const { rowId, userId } = variables;
+ *     const { rowId } = variables;
  *     return HttpResponse.json({
  *       data: { organization }
  *     })
@@ -142,7 +142,7 @@ export const mockOrganizationQuery = (resolver: GraphQLResponseResolver<Types.Or
  * @example
  * mockOrganizationsQuery(
  *   ({ query, variables }) => {
- *     const { userId, limit } = variables;
+ *     const { limit } = variables;
  *     return HttpResponse.json({
  *       data: { organizations }
  *     })
@@ -228,19 +228,18 @@ export const mockRepositoryWithBranchesQuery = (resolver: GraphQLResponseResolve
  * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
  * @see https://mswjs.io/docs/basics/response-resolver
  * @example
- * mockUserByIdentityProviderIdQuery(
+ * mockObserverQuery(
  *   ({ query, variables }) => {
- *     const { identityProviderId } = variables;
  *     return HttpResponse.json({
- *       data: { userByIdentityProviderId }
+ *       data: { observer }
  *     })
  *   },
  *   requestOptions
  * )
  */
-export const mockUserByIdentityProviderIdQuery = (resolver: GraphQLResponseResolver<Types.UserByIdentityProviderIdQuery, Types.UserByIdentityProviderIdQueryVariables>, options?: RequestHandlerOptions) =>
-  graphql.query<Types.UserByIdentityProviderIdQuery, Types.UserByIdentityProviderIdQueryVariables>(
-    'UserByIdentityProviderId',
+export const mockObserverQuery = (resolver: GraphQLResponseResolver<Types.ObserverQuery, Types.ObserverQueryVariables>, options?: RequestHandlerOptions) =>
+  graphql.query<Types.ObserverQuery, Types.ObserverQueryVariables>(
+    'Observer',
     resolver,
     options
   )

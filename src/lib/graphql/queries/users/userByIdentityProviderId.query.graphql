@@ -1,5 +1,0 @@
-query UserByIdentityProviderId($identityProviderId: UUID!) {
-  userByIdentityProviderId(identityProviderId: $identityProviderId) {
-    rowId
-  }
-}

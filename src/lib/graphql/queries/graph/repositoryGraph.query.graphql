@@ -21,8 +21,7 @@ query RepositoryGraph($userId: UUID!, $organizationId: UUID) {
       }
       organization {
         rowId
-        name
-        slug
+        idpOrganizationId
       }
       outgoingRelationships: repositoryRelationshipsBySourceRepositoryId {
         nodes {
@@ -37,7 +36,7 @@ query RepositoryGraph($userId: UUID!, $organizationId: UUID) {
               username
             }
             organization {
-              slug
+              idpOrganizationId
             }
           }
           relationshipType {

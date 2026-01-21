@@ -1,33 +1,11 @@
-query Organization($rowId: UUID!, $userId: UUID!) {
+query Organization($rowId: UUID!) {
   organization(rowId: $rowId) {
     rowId
-    name
-    slug
+    idpOrganizationId
     description
     avatarUrl
-    tier
     createdAt
     updatedAt
-    organizationMembers {
-      nodes {
-        userId
-        role
-        createdAt
-        user {
-          rowId
-          username
-          name
-          email
-          avatarUrl
-        }
-      }
-      totalCount
-    }
-    currentUser: organizationMembers(condition: { userId: $userId }) {
-      nodes {
-        role
-      }
-    }
     repositories {
       nodes {
         rowId

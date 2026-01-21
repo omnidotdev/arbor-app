@@ -2,10 +2,7 @@ query RepositoryWithBranches($ownerSlug: String!, $repoSlug: String!) {
   repositories(
     filter: {
       slug: { equalTo: $repoSlug }
-      or: [
-        { owner: { username: { equalTo: $ownerSlug } } }
-        { organization: { slug: { equalTo: $ownerSlug } } }
-      ]
+      owner: { username: { equalTo: $ownerSlug } }
     }
     first: 1
   ) {
@@ -25,8 +22,7 @@ query RepositoryWithBranches($ownerSlug: String!, $repoSlug: String!) {
       }
       organization {
         rowId
-        name
-        slug
+        idpOrganizationId
         avatarUrl
       }
       refs(refPrefix: "refs/heads/") {
