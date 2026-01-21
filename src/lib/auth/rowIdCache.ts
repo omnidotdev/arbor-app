@@ -80,21 +80,21 @@ export async function decryptCache(
 }
 
 /**
- * Fetch rowId from GraphQL API using the observer query.
- * The observer query returns the current authenticated user directly from context,
- * bypassing Postgraphile's default auth restrictions.
+ * Fetch rowId from GraphQL API.
  */
 export async function fetchRowIdFromApi(
   accessToken: string,
-  _identityProviderId: string,
+  identityProviderId: string,
 ): Promise<string | null> {
   try {
     const graphqlClient = new GraphQLClient(API_GRAPHQL_URL!, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     const sdk = getSdk(graphqlClient);
-    const { observer } = await sdk.Observer();
-    return observer?.rowId ?? null;
+    const { userByIdentityProviderId } = await sdk.UserByIdentityProviderId({
+      identityProviderId,
+    });
+    return userByIdentityProviderId?.rowId ?? null;
   } catch (error) {
     console.error("[rowIdCache] Failed to fetch rowId:", error);
     return null;

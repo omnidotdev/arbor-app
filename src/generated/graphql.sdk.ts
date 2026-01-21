@@ -8018,6 +8018,13 @@ export type ObserverQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ObserverQuery = { __typename?: 'Query', observer?: { __typename?: 'Observer', rowId: string } | null };
 
+export type UserByIdentityProviderIdQueryVariables = Exact<{
+  identityProviderId: Scalars['UUID']['input'];
+}>;
+
+
+export type UserByIdentityProviderIdQuery = { __typename?: 'Query', userByIdentityProviderId?: { __typename?: 'User', rowId: string, email: string, name: string, avatarUrl?: string | null, createdAt: Date } | null };
+
 
 export const CreateOrganizationDocument = gql`
     mutation CreateOrganization($input: CreateOrganizationInput!) {
@@ -8310,6 +8317,17 @@ export const ObserverDocument = gql`
   }
 }
     `;
+export const UserByIdentityProviderIdDocument = gql`
+    query UserByIdentityProviderId($identityProviderId: UUID!) {
+  userByIdentityProviderId(identityProviderId: $identityProviderId) {
+    rowId
+    email
+    name
+    avatarUrl
+    createdAt
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
 
@@ -8350,6 +8368,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Observer(variables?: ObserverQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<ObserverQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<ObserverQuery>({ document: ObserverDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Observer', 'query', variables);
+    },
+    UserByIdentityProviderId(variables: UserByIdentityProviderIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UserByIdentityProviderIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<UserByIdentityProviderIdQuery>({ document: UserByIdentityProviderIdDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'UserByIdentityProviderId', 'query', variables);
     }
   };
 }

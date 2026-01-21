@@ -8017,6 +8017,13 @@ export type ObserverQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ObserverQuery = { __typename?: 'Query', observer?: { __typename?: 'Observer', rowId: string } | null };
 
+export type UserByIdentityProviderIdQueryVariables = Exact<{
+  identityProviderId: Scalars['UUID']['input'];
+}>;
+
+
+export type UserByIdentityProviderIdQuery = { __typename?: 'Query', userByIdentityProviderId?: { __typename?: 'User', rowId: string, email: string, name: string, avatarUrl?: string | null, createdAt: Date } | null };
+
 
 
 export const CreateOrganizationDocument = `
@@ -8959,3 +8966,96 @@ useSuspenseInfiniteObserverQuery.getKey = (variables?: ObserverQueryVariables) =
 
 
 useObserverQuery.fetcher = (variables?: ObserverQueryVariables, options?: RequestInit['headers']) => graphqlFetch<ObserverQuery, ObserverQueryVariables>(ObserverDocument, variables, options);
+
+export const UserByIdentityProviderIdDocument = `
+    query UserByIdentityProviderId($identityProviderId: UUID!) {
+  userByIdentityProviderId(identityProviderId: $identityProviderId) {
+    rowId
+    email
+    name
+    avatarUrl
+    createdAt
+  }
+}
+    `;
+
+export const useUserByIdentityProviderIdQuery = <
+      TData = UserByIdentityProviderIdQuery,
+      TError = unknown
+    >(
+      variables: UserByIdentityProviderIdQueryVariables,
+      options?: Omit<UseQueryOptions<UserByIdentityProviderIdQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<UserByIdentityProviderIdQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<UserByIdentityProviderIdQuery, TError, TData>(
+      {
+    queryKey: ['UserByIdentityProviderId', variables],
+    queryFn: graphqlFetch<UserByIdentityProviderIdQuery, UserByIdentityProviderIdQueryVariables>(UserByIdentityProviderIdDocument, variables),
+    ...options
+  }
+    )};
+
+useUserByIdentityProviderIdQuery.getKey = (variables: UserByIdentityProviderIdQueryVariables) => ['UserByIdentityProviderId', variables];
+
+export const useSuspenseUserByIdentityProviderIdQuery = <
+      TData = UserByIdentityProviderIdQuery,
+      TError = unknown
+    >(
+      variables: UserByIdentityProviderIdQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<UserByIdentityProviderIdQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<UserByIdentityProviderIdQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<UserByIdentityProviderIdQuery, TError, TData>(
+      {
+    queryKey: ['UserByIdentityProviderIdSuspense', variables],
+    queryFn: graphqlFetch<UserByIdentityProviderIdQuery, UserByIdentityProviderIdQueryVariables>(UserByIdentityProviderIdDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseUserByIdentityProviderIdQuery.getKey = (variables: UserByIdentityProviderIdQueryVariables) => ['UserByIdentityProviderIdSuspense', variables];
+
+export const useInfiniteUserByIdentityProviderIdQuery = <
+      TData = InfiniteData<UserByIdentityProviderIdQuery>,
+      TError = unknown
+    >(
+      variables: UserByIdentityProviderIdQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<UserByIdentityProviderIdQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<UserByIdentityProviderIdQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<UserByIdentityProviderIdQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['UserByIdentityProviderId.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<UserByIdentityProviderIdQuery, UserByIdentityProviderIdQueryVariables>(UserByIdentityProviderIdDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteUserByIdentityProviderIdQuery.getKey = (variables: UserByIdentityProviderIdQueryVariables) => ['UserByIdentityProviderId.infinite', variables];
+
+export const useSuspenseInfiniteUserByIdentityProviderIdQuery = <
+      TData = InfiniteData<UserByIdentityProviderIdQuery>,
+      TError = unknown
+    >(
+      variables: UserByIdentityProviderIdQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<UserByIdentityProviderIdQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<UserByIdentityProviderIdQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<UserByIdentityProviderIdQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['UserByIdentityProviderId.infiniteSuspense', variables],
+      queryFn: (metaData) => graphqlFetch<UserByIdentityProviderIdQuery, UserByIdentityProviderIdQueryVariables>(UserByIdentityProviderIdDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteUserByIdentityProviderIdQuery.getKey = (variables: UserByIdentityProviderIdQueryVariables) => ['UserByIdentityProviderId.infiniteSuspense', variables];
+
+
+useUserByIdentityProviderIdQuery.fetcher = (variables: UserByIdentityProviderIdQueryVariables, options?: RequestInit['headers']) => graphqlFetch<UserByIdentityProviderIdQuery, UserByIdentityProviderIdQueryVariables>(UserByIdentityProviderIdDocument, variables, options);
