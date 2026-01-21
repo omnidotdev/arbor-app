@@ -40,7 +40,12 @@ export const Route = createRootRouteWithContext<{
 }>()({
   beforeLoad: async () => {
     const { session } = await fetchSession();
-    const { isMaintenanceMode } = await fetchMaintenanceMode();
+    const { isMaintenanceMode } = await fetchMaintenanceMode({
+      data: {
+        userId: session?.user?.id,
+        email: session?.user?.email,
+      },
+    });
 
     return { session, isMaintenanceMode };
   },
