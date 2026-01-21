@@ -9,6 +9,7 @@ import {
 import { DefaultCatchBoundary, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
 import { fetchMaintenanceMode } from "@/lib/flags";
+import { setAccessToken } from "@/lib/graphql/graphqlClientFactory";
 import appCss from "@/lib/styles/globals.css?url";
 import ThemeProvider from "@/providers/ThemeProvider";
 import { fetchSession } from "@/server/functions/auth";
@@ -94,7 +95,12 @@ function MaintenancePage() {
 }
 
 function RootComponent() {
-  const { isMaintenanceMode } = useRouteContext({ from: "__root__" });
+  const { isMaintenanceMode, session } = useRouteContext({ from: "__root__" });
+
+  // Sync access token to GraphQL client for client-side requests
+  if (session?.accessToken) {
+    setAccessToken(session.accessToken);
+  }
 
   if (isMaintenanceMode) {
     return (
