@@ -1,3 +1,5 @@
+import { TanStackDevtools } from "@tanstack/react-devtools";
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import {
   HeadContent,
   Outlet,
@@ -5,6 +7,7 @@ import {
   createRootRouteWithContext,
   useRouteContext,
 } from "@tanstack/react-router";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 import { DefaultCatchBoundary, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
@@ -130,6 +133,22 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       </head>
       <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
         <ThemeProvider theme={theme}>{children}</ThemeProvider>
+
+        {/* dev tools (only included in development) */}
+        <TanStackDevtools
+          plugins={[
+            {
+              name: "Router",
+              render: <TanStackRouterDevtoolsPanel />,
+              defaultOpen: true,
+            },
+            {
+              name: "Query",
+              render: <ReactQueryDevtoolsPanel />,
+            },
+          ]}
+        />
+
         <Scripts />
       </body>
     </html>

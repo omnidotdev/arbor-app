@@ -2,6 +2,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Arbor Theme: Forest + Amethyst
+ * Primary: Emerald (green forest tones, hue ~145)
+ * Secondary: Amethyst (purple gemstone, hue ~295)
+ * Nature-inspired with gemstone accents
+ */
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -25,49 +32,146 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Emerald (Forest Green) palette */
+  --color-emerald-50: var(--emerald-50);
+  --color-emerald-100: var(--emerald-100);
+  --color-emerald-200: var(--emerald-200);
+  --color-emerald-300: var(--emerald-300);
+  --color-emerald-400: var(--emerald-400);
+  --color-emerald-500: var(--emerald-500);
+  --color-emerald-600: var(--emerald-600);
+  --color-emerald-700: var(--emerald-700);
+  --color-emerald-800: var(--emerald-800);
+  --color-emerald-900: var(--emerald-900);
+  --color-emerald-950: var(--emerald-950);
+
+  /* Amethyst (Purple) palette */
+  --color-amethyst-50: var(--amethyst-50);
+  --color-amethyst-100: var(--amethyst-100);
+  --color-amethyst-200: var(--amethyst-200);
+  --color-amethyst-300: var(--amethyst-300);
+  --color-amethyst-400: var(--amethyst-400);
+  --color-amethyst-500: var(--amethyst-500);
+  --color-amethyst-600: var(--amethyst-600);
+  --color-amethyst-700: var(--amethyst-700);
+  --color-amethyst-800: var(--amethyst-800);
+  --color-amethyst-900: var(--amethyst-900);
+  --color-amethyst-950: var(--amethyst-950);
+
+  /* Chart colors */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  /* Emerald (Forest Green) - Primary gemstone */
+  --emerald-50: oklch(0.98 0.02 145);
+  --emerald-100: oklch(0.95 0.05 145);
+  --emerald-200: oklch(0.9 0.08 145);
+  --emerald-300: oklch(0.82 0.12 145);
+  --emerald-400: oklch(0.72 0.16 145);
+  --emerald-500: oklch(0.62 0.17 145);
+  --emerald-600: oklch(0.52 0.15 145);
+  --emerald-700: oklch(0.44 0.13 145);
+  --emerald-800: oklch(0.36 0.1 145);
+  --emerald-900: oklch(0.28 0.08 145);
+  --emerald-950: oklch(0.18 0.05 145);
+
+  /* Amethyst (Purple) - Secondary gemstone */
+  --amethyst-50: oklch(0.98 0.02 295);
+  --amethyst-100: oklch(0.94 0.05 295);
+  --amethyst-200: oklch(0.88 0.09 295);
+  --amethyst-300: oklch(0.8 0.14 295);
+  --amethyst-400: oklch(0.7 0.18 295);
+  --amethyst-500: oklch(0.6 0.2 295);
+  --amethyst-600: oklch(0.5 0.18 295);
+  --amethyst-700: oklch(0.42 0.15 295);
+  --amethyst-800: oklch(0.34 0.12 295);
+  --amethyst-900: oklch(0.26 0.09 295);
+  --amethyst-950: oklch(0.18 0.06 295);
+
+  /* Base forest tones */
+  --base-50: oklch(0.98 0.005 145);
+  --base-100: oklch(0.96 0.008 145);
+  --base-200: oklch(0.92 0.01 145);
+  --base-800: oklch(0.25 0.02 145);
+  --base-900: oklch(0.18 0.02 145);
+  --base-950: oklch(0.12 0.015 145);
+
+  /* Light mode semantic tokens */
+  --background: oklch(0.995 0.002 145);
+  --foreground: oklch(0.15 0.02 145);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.15 0.02 145);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.15 0.02 145);
+  --primary: var(--emerald-600);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: var(--amethyst-100);
+  --secondary-foreground: var(--amethyst-800);
+  --muted: var(--base-100);
+  --muted-foreground: oklch(0.5 0.02 145);
+  --accent: var(--emerald-100);
+  --accent-foreground: var(--emerald-800);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --border: oklch(0.9 0.01 145);
+  --input: oklch(0.9 0.01 145);
+  --ring: var(--emerald-500);
   --radius: 0.625rem;
+
+  /* Chart colors - forest/amethyst inspired */
+  --chart-1: var(--emerald-500);
+  --chart-2: var(--amethyst-500);
+  --chart-3: oklch(0.65 0.15 170);
+  --chart-4: oklch(0.6 0.16 320);
+  --chart-5: oklch(0.7 0.12 120);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  /* Dark mode semantic tokens - deep forest night */
+  --background: oklch(0.12 0.015 145);
+  --foreground: oklch(0.95 0.01 145);
+  --card: oklch(0.15 0.02 145);
+  --card-foreground: oklch(0.95 0.01 145);
+  --popover: oklch(0.15 0.02 145);
+  --popover-foreground: oklch(0.95 0.01 145);
+  --primary: var(--emerald-400);
+  --primary-foreground: oklch(0.12 0.02 145);
+  --secondary: var(--amethyst-900);
+  --secondary-foreground: var(--amethyst-200);
+  --muted: oklch(0.2 0.02 145);
+  --muted-foreground: oklch(0.65 0.02 145);
+  --accent: var(--emerald-900);
+  --accent-foreground: var(--emerald-200);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.556 0 0);
+  --border: oklch(0.25 0.02 145);
+  --input: oklch(0.25 0.02 145);
+  --ring: var(--emerald-400);
+
+  /* Dark mode chart colors */
+  --chart-1: var(--emerald-400);
+  --chart-2: var(--amethyst-400);
+  --chart-3: oklch(0.7 0.14 170);
+  --chart-4: oklch(0.65 0.15 320);
+  --chart-5: oklch(0.75 0.11 120);
+}
+
+:root {
+  /* Glow effects - emerald themed */
+  --glow-color: oklch(0.62 0.17 145 / 0.15);
+  --glow-color-strong: oklch(0.62 0.17 145 / 0.25);
+  --glow-sm: 0 0 8px var(--glow-color), 0 0 2px var(--glow-color-strong);
+  --glow-md: 0 0 12px var(--glow-color), 0 0 4px var(--glow-color-strong);
+  --glow-lg: 0 0 20px var(--glow-color), 0 0 6px var(--glow-color-strong);
+}
+
+.dark {
+  --glow-color: oklch(0.72 0.16 145 / 0.2);
+  --glow-color-strong: oklch(0.72 0.16 145 / 0.35);
 }
 
 @layer base {
@@ -76,5 +180,142 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Gemstone button - Emerald (primary) */
+  .btn-gem {
+    background: linear-gradient(
+      to bottom,
+      oklch(0.58 0.16 145) 0%,
+      oklch(0.48 0.14 145) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 0 oklch(1 0 0 / 0.15),
+      inset 0 -1px 0 0 oklch(0 0 0 / 0.15),
+      0 1px 3px 0 oklch(0.4 0.15 145 / 0.3),
+      0 1px 2px -1px oklch(0 0 0 / 0.1);
+    border: 1px solid oklch(0.45 0.12 145 / 0.4);
+    color: oklch(0.99 0 0);
+    transition: all 0.2s ease;
+  }
+
+  .btn-gem:hover {
+    background: linear-gradient(
+      to bottom,
+      oklch(0.62 0.17 145) 0%,
+      oklch(0.52 0.15 145) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 0 oklch(1 0 0 / 0.2),
+      inset 0 -1px 0 0 oklch(0 0 0 / 0.1),
+      var(--glow-sm),
+      0 2px 4px 0 oklch(0.4 0.15 145 / 0.25);
+  }
+
+  .btn-gem:active {
+    background: linear-gradient(
+      to bottom,
+      oklch(0.46 0.13 145) 0%,
+      oklch(0.5 0.14 145) 100%
+    );
+    box-shadow:
+      inset 0 1px 3px 0 oklch(0 0 0 / 0.2),
+      0 1px 2px 0 oklch(0 0 0 / 0.05);
+  }
+
+  /* Dark mode emerald button */
+  .dark .btn-gem {
+    background: linear-gradient(
+      to bottom,
+      oklch(0.72 0.16 145) 0%,
+      oklch(0.58 0.15 145) 100%
+    );
+    border-color: oklch(0.55 0.14 145 / 0.5);
+    color: oklch(0.12 0.02 145);
+  }
+
+  .dark .btn-gem:hover {
+    background: linear-gradient(
+      to bottom,
+      oklch(0.76 0.17 145) 0%,
+      oklch(0.62 0.16 145) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 0 oklch(1 0 0 / 0.25),
+      inset 0 -1px 0 0 oklch(0 0 0 / 0.1),
+      var(--glow-md),
+      0 2px 6px 0 oklch(0 0 0 / 0.3);
+  }
+
+  /* Gemstone button - Destructive (ruby) */
+  .btn-gem-destructive {
+    background: linear-gradient(
+      to bottom,
+      oklch(0.58 0.2 25) 0%,
+      oklch(0.48 0.18 25) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 0 oklch(1 0 0 / 0.15),
+      inset 0 -1px 0 0 oklch(0 0 0 / 0.15),
+      0 1px 3px 0 oklch(0.4 0.18 25 / 0.3),
+      0 1px 2px -1px oklch(0 0 0 / 0.1);
+    border: 1px solid oklch(0.45 0.15 25 / 0.4);
+    color: oklch(0.99 0 0);
+    transition: all 0.2s ease;
+  }
+
+  .btn-gem-destructive:hover {
+    background: linear-gradient(
+      to bottom,
+      oklch(0.62 0.22 25) 0%,
+      oklch(0.52 0.2 25) 100%
+    );
+    box-shadow:
+      inset 0 1px 0 0 oklch(1 0 0 / 0.2),
+      inset 0 -1px 0 0 oklch(0 0 0 / 0.1),
+      0 0 8px oklch(0.55 0.2 25 / 0.2),
+      0 0 2px oklch(0.55 0.2 25 / 0.3),
+      0 2px 4px 0 oklch(0.4 0.18 25 / 0.25);
+  }
+
+  .btn-gem-destructive:active {
+    background: linear-gradient(
+      to bottom,
+      oklch(0.46 0.16 25) 0%,
+      oklch(0.5 0.17 25) 100%
+    );
+    box-shadow:
+      inset 0 1px 3px 0 oklch(0 0 0 / 0.2),
+      0 1px 2px 0 oklch(0 0 0 / 0.05);
+  }
+
+  .dark .btn-gem-destructive {
+    background: linear-gradient(
+      to bottom,
+      oklch(0.65 0.2 25) 0%,
+      oklch(0.55 0.18 25) 100%
+    );
+    border-color: oklch(0.5 0.16 25 / 0.5);
+  }
+
+  .dark .btn-gem-destructive:hover {
+    background: linear-gradient(
+      to bottom,
+      oklch(0.7 0.22 25) 0%,
+      oklch(0.6 0.2 25) 100%
+    );
+  }
+
+  /* Glow utilities */
+  .glow-sm {
+    box-shadow: var(--glow-sm);
+  }
+  .glow {
+    box-shadow: var(--glow-md);
+  }
+  .glow-lg {
+    box-shadow: var(--glow-lg);
   }
 }

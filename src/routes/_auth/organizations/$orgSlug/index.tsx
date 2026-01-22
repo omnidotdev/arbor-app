@@ -1,5 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Building2, GitBranch, Settings, Users } from "lucide-react";
+import {
+  Building2,
+  ExternalLink,
+  GitBranch,
+  MessageSquare,
+  Moon,
+  Network,
+  Settings,
+  Sparkles,
+  Users,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
@@ -62,6 +72,88 @@ function OrganizationDetailPage() {
           <Button className="mt-4" variant="outline" size="sm">
             Settings
           </Button>
+        </div>
+      </div>
+
+      <div className="mt-8">
+        <div className="mb-4 flex items-center gap-2">
+          <h2 className="font-semibold text-lg">Integrations</h2>
+          <span className="rounded-full bg-muted px-2 py-0.5 text-muted-foreground text-xs">
+            Coming Soon
+          </span>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <a
+            href="https://runa.omni.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group rounded-lg border border-dashed bg-card/50 p-4 transition-colors hover:border-solid hover:bg-card"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Moon className="h-5 w-5 text-muted-foreground" />
+                <h3 className="font-semibold">Runa</h3>
+              </div>
+              <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+            </div>
+            <p className="mt-2 text-muted-foreground text-sm">
+              Project management for repositories with kanban boards and sprints
+            </p>
+          </a>
+
+          <a
+            href="https://backfeed.omni.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group rounded-lg border border-dashed bg-card/50 p-4 transition-colors hover:border-solid hover:bg-card"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5 text-muted-foreground" />
+                <h3 className="font-semibold">Backfeed</h3>
+              </div>
+              <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+            </div>
+            <p className="mt-2 text-muted-foreground text-sm">
+              Issues and discussions for repositories
+            </p>
+          </a>
+
+          <a
+            href="https://eden.omni.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group rounded-lg border border-dashed bg-card/50 p-4 transition-colors hover:border-solid hover:bg-card"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-muted-foreground" />
+                <h3 className="font-semibold">Eden</h3>
+              </div>
+              <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+            </div>
+            <p className="mt-2 text-muted-foreground text-sm">
+              Automated onboarding preflight checks from repository config
+            </p>
+          </a>
+
+          <a
+            href="https://weaver.omni.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group rounded-lg border border-dashed bg-card/50 p-4 transition-colors hover:border-solid hover:bg-card"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Network className="h-5 w-5 text-muted-foreground" />
+                <h3 className="font-semibold">Weaver</h3>
+              </div>
+              <ExternalLink className="h-4 w-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+            </div>
+            <p className="mt-2 text-muted-foreground text-sm">
+              Visual polyrepo management powered by Arbor repositories
+            </p>
+          </a>
         </div>
       </div>
     </div>

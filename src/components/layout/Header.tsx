@@ -1,7 +1,7 @@
 "use client";
 
 import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
-import { LogIn, LogOut, SearchIcon, TreePine, UserCircle } from "lucide-react";
+import { LogIn, LogOut, TreePine, UserCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import signIn from "@/lib/auth/signIn";
@@ -75,11 +75,6 @@ export function Header() {
         </div>
         <div className="flex-1" />
         <div className="flex items-center justify-end space-x-2">
-          {isAuthenticated && (
-            <Button variant="ghost" size="icon">
-              <SearchIcon className="h-5 w-5" />
-            </Button>
-          )}
           <ModeToggle />
           {isAuthenticated ? (
             <div className="flex items-center space-x-2">
