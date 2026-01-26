@@ -1,11 +1,20 @@
 "use client";
 
 import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
-import { LogIn, LogOut, TreePine, UserCircle } from "lucide-react";
+import {
+  BookOpen,
+  LogIn,
+  LogOut,
+  MessageSquare,
+  TreePine,
+  UserCircle,
+} from "lucide-react";
+import { RiDiscordLine as DiscordIcon } from "react-icons/ri";
 
 import { Button } from "@/components/ui/button";
 import signIn from "@/lib/auth/signIn";
 import signOut from "@/lib/auth/signOut";
+import app from "@/lib/config/app.config";
 import { BASE_URL } from "@/lib/config/env.config";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "./ModeToggle";
@@ -75,6 +84,36 @@ export function Header() {
         </div>
         <div className="flex-1" />
         <div className="flex items-center justify-end space-x-2">
+          <a
+            href={app.links.docs}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Docs"
+          >
+            <Button variant="ghost" size="icon">
+              <BookOpen className="h-5 w-5" />
+            </Button>
+          </a>
+          <a
+            href={app.links.feedback}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Provide Feedback"
+          >
+            <Button variant="ghost" size="icon">
+              <MessageSquare className="h-5 w-5" />
+            </Button>
+          </a>
+          <a
+            href={app.organization.discord}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Join Omni Discord"
+          >
+            <Button variant="ghost" size="icon">
+              <DiscordIcon className="h-5 w-5" />
+            </Button>
+          </a>
           <ModeToggle />
           {isAuthenticated ? (
             <div className="flex items-center space-x-2">

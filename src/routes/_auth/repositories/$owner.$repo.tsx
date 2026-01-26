@@ -114,11 +114,11 @@ function RepositoryDetailPage() {
   const currentPath = window.location.pathname;
   const basePath = `/repositories/${owner}/${repo}`;
   const isChildRoute =
-    currentPath !== basePath && currentPath.startsWith(basePath + "/");
+    currentPath !== basePath && currentPath.startsWith(`${basePath}/`);
 
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [_showDeleteDialog, _setShowDeleteDialog] = useState(false);
 
-  const deleteMutation = useMutation({
+  const _deleteMutation = useMutation({
     mutationKey: useDeleteRepositoryMutation.getKey(),
     mutationFn: (rowId: string) =>
       useDeleteRepositoryMutation.fetcher({
@@ -157,7 +157,7 @@ function RepositoryDetailPage() {
   const currentEntry = treeQuery.data?.find(
     (e) => e.path === path?.split("/").pop(),
   );
-  const isFile = path && currentEntry?.type === "blob";
+  const _isFile = path && currentEntry?.type === "blob";
 
   // For file viewing, we fetch the blob whenever a path is specified
   // This runs in parallel with tree fetch - if path is a file, tree will be empty but blob will succeed
