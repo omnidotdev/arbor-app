@@ -11,6 +11,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
 import { DefaultCatchBoundary, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
+import { isDevEnv } from "@/lib/config/env.config";
 import { fetchMaintenanceMode } from "@/lib/flags";
 import { setAccessToken } from "@/lib/graphql/graphqlClientFactory";
 import appCss from "@/lib/styles/globals.css?url";
@@ -135,19 +136,21 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <ThemeProvider theme={theme}>{children}</ThemeProvider>
 
         {/* dev tools (only included in development) */}
-        <TanStackDevtools
-          plugins={[
-            {
-              name: "Router",
-              render: <TanStackRouterDevtoolsPanel />,
-              defaultOpen: true,
-            },
-            {
-              name: "Query",
-              render: <ReactQueryDevtoolsPanel />,
-            },
-          ]}
-        />
+        {isDevEnv && (
+          <TanStackDevtools
+            plugins={[
+              {
+                name: "Router",
+                render: <TanStackRouterDevtoolsPanel />,
+                defaultOpen: true,
+              },
+              {
+                name: "Query",
+                render: <ReactQueryDevtoolsPanel />,
+              },
+            ]}
+          />
+        )}
 
         <Scripts />
       </body>
