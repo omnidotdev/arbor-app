@@ -9,6 +9,8 @@ const knipConfig: KnipConfig = {
     "src/routes/**/*.{ts,tsx}",
     "src/router.tsx",
     "src/lib/graphql/graphqlFetch.ts",
+    "src/lib/providers/billing/index.ts",
+    "src/server/functions/*.ts",
   ],
   // NB: files are reported as unused if they are in the set of project files, but not in the set of files resolved from the entry files. See: https://knip.dev/guides/configuring-project-files
   project: ["src/**/*.{ts,tsx,css}"],
@@ -26,12 +28,21 @@ const knipConfig: KnipConfig = {
     "src/lib/config/env.config.ts",
     // WIP: Pull request components not yet integrated
     "src/components/pullRequest/**",
+    // used by billing provider
+    "src/lib/payments.ts",
+    "src/lib/util/**",
+    "src/lib/options/**",
+    "src/server/middleware.ts",
+    // WIP: Pricing components
+    "src/components/pricing/**",
   ],
   ignoreDependencies: [
     // used by React Email preview server
     "@react-email/preview-server",
     // used by React Email templates
     "@react-email/components",
+    // TODO: add react-icons as dependency
+    "react-icons",
   ],
   tags: ["-knipignore"],
 };
