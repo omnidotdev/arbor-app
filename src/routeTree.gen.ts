@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthGraphRouteImport } from './routes/_auth/graph'
@@ -23,11 +22,6 @@ import { Route as AuthRepositoriesOwnerRepoBranchesRouteImport } from './routes/
 import { Route as AuthRepositoriesOwnerRepoPullsIndexRouteImport } from './routes/_auth/repositories/$owner.$repo/pulls/index'
 import { Route as AuthRepositoriesOwnerRepoPullsNewRouteImport } from './routes/_auth/repositories/$owner.$repo/pulls/new'
 
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
@@ -96,7 +90,6 @@ const AuthRepositoriesOwnerRepoPullsNewRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/pricing': typeof PricingRoute
   '/graph': typeof AuthGraphRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/organizations': typeof AuthOrganizationsIndexRoute
@@ -110,7 +103,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/pricing': typeof PricingRoute
   '/graph': typeof AuthGraphRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/organizations': typeof AuthOrganizationsIndexRoute
@@ -126,7 +118,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
-  '/pricing': typeof PricingRoute
   '/_auth/graph': typeof AuthGraphRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_auth/organizations/': typeof AuthOrganizationsIndexRoute
@@ -142,7 +133,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/pricing'
     | '/graph'
     | '/api/auth/$'
     | '/organizations'
@@ -156,7 +146,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/pricing'
     | '/graph'
     | '/api/auth/$'
     | '/organizations'
@@ -171,7 +160,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_auth'
-    | '/pricing'
     | '/_auth/graph'
     | '/api/auth/$'
     | '/_auth/organizations/'
@@ -187,19 +175,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
-  PricingRoute: typeof PricingRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_auth': {
       id: '/_auth'
       path: ''
@@ -332,7 +312,6 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
-  PricingRoute: PricingRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
