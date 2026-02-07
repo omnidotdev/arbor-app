@@ -30,4 +30,3 @@ export const AUTH_ISSUER_URL = `${AUTH_BASE_URL}/api/auth`;
 export const isDevEnv = import.meta.env.DEV;
 export const isProdEnv = import.meta.env.PROD;
 export const isSelfHosted = SELF_HOSTED === "true";
-
