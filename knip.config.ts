@@ -28,8 +28,6 @@ const knipConfig: KnipConfig = {
     "src/lib/config/env.config.ts",
     // WIP: Pull request components not yet integrated
     "src/components/pullRequest/**",
-    // used by billing provider
-    "src/lib/payments.ts",
     "src/lib/util/**",
     "src/lib/options/**",
     "src/server/middleware.ts",
@@ -37,6 +35,8 @@ const knipConfig: KnipConfig = {
     "src/components/pricing/**",
   ],
   ignoreDependencies: [
+    // GitHub dep not resolvable by knip
+    "@omnidotdev/providers",
     // used by React Email preview server
     "@react-email/preview-server",
     // used by React Email templates

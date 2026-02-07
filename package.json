@@ -36,7 +36,7 @@
     "react-dom": "^19.2.3",
     "reactflow": "^11.11.4",
     "shiki": "^3.20.0",
-    "stripe": "^20.3.0",
+    "@omnidotdev/providers": "github:omnidotdev/providers",
     "tailwind-merge": "^3.4.0",
     "unleash-client": "^6.3.0",
     "zod": "^3.24.4"

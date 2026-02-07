@@ -31,11 +31,3 @@ export const isDevEnv = import.meta.env.DEV;
 export const isProdEnv = import.meta.env.PROD;
 export const isSelfHosted = SELF_HOSTED === "true";
 
-/**
- * Billing provider to use.
- * - "local" for self-hosted (all features unlocked)
- * - "aether" for SaaS (billing service)
- */
-export const billingProvider: "local" | "aether" = isSelfHosted
-  ? "local"
-  : "aether";
