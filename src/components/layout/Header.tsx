@@ -3,6 +3,7 @@
 import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
 import {
   BookOpen,
+  ExternalLink,
   LogIn,
   LogOut,
   MessageSquare,
@@ -29,7 +30,7 @@ import { Button } from "@/components/ui/button";
 import signIn from "@/lib/auth/signIn";
 import signOut from "@/lib/auth/signOut";
 import app from "@/lib/config/app.config";
-import { BASE_URL } from "@/lib/config/env.config";
+import { BASE_URL, CONSOLE_URL } from "@/lib/config/env.config";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "./ModeToggle";
 
@@ -145,6 +146,18 @@ export function Header() {
                   {session.user.name || session.user.email}
                 </span>
               </div>
+              {CONSOLE_URL && (
+                <a
+                  href={CONSOLE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Manage account"
+                >
+                  <Button variant="ghost" size="icon">
+                    <ExternalLink className="h-5 w-5" />
+                  </Button>
+                </a>
+              )}
               <Button variant="ghost" size="icon" onClick={handleSignOut}>
                 <LogOut className="h-5 w-5" />
               </Button>

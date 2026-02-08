@@ -25,6 +25,7 @@ export const SELF_HOSTED = env.SELF_HOSTED || env.VITE_SELF_HOSTED;
 
 export const API_GRAPHQL_URL = `${API_BASE_URL}/graphql`;
 export const AUTH_ISSUER_URL = `${AUTH_BASE_URL}/api/auth`;
+export const CONSOLE_URL = import.meta.env.VITE_CONSOLE_URL;
 
 // environment helpers
 export const isDevEnv = import.meta.env.DEV;
