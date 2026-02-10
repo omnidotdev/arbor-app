@@ -61,6 +61,7 @@ const auth = betterAuth({
           ],
           accessType: "offline",
           pkce: true,
+          prompt: "login",
           // Map OIDC standard claims to Better Auth user fields
           mapProfileToUser: (profile) => ({
             name: profile.name,
