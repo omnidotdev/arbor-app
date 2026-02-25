@@ -27,3 +27,4 @@ certificates
 !.env.production
 !.env.test
 !.env.local.template
+tsconfig.tsbuildinfo
