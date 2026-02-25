@@ -201,7 +201,9 @@ function AccordionItem({
         )}
       </Button>
       {isOpen && (
-        <div className="pb-4 text-left text-muted-foreground">{item.answer}</div>
+        <div className="pb-4 text-left text-muted-foreground">
+          {item.answer}
+        </div>
       )}
     </div>
   );

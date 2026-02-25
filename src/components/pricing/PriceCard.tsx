@@ -1,6 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate, useRouteContext, useSearch } from "@tanstack/react-router";
-import { BuildingIcon, CheckIcon, PlusIcon, ChevronDownIcon } from "lucide-react";
+import {
+  useNavigate,
+  useRouteContext,
+  useSearch,
+} from "@tanstack/react-router";
+import {
+  BuildingIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  PlusIcon,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import CreateWorkspaceModal from "@/components/pricing/CreateWorkspaceModal";
@@ -293,7 +302,9 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
                     className="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent focus:bg-accent focus:outline-none"
                   >
                     <PlusIcon size={16} className="text-muted-foreground" />
-                    <span className="font-medium text-sm">New organization</span>
+                    <span className="font-medium text-sm">
+                      New organization
+                    </span>
                   </button>
                 </div>
               )}
