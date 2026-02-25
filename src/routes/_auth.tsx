@@ -1,4 +1,9 @@
+import { createEventsProvider } from "@omnidotdev/providers";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
+
+import { EventsProvider } from "@/providers/EventsProvider";
+
+const eventsProvider = createEventsProvider({});
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: async ({ context: { session } }) => {
@@ -18,8 +23,10 @@ export const Route = createFileRoute("/_auth")({
 
 function AuthenticatedLayout() {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Outlet />
-    </div>
+    <EventsProvider provider={eventsProvider}>
+      <div className="flex min-h-screen flex-col">
+        <Outlet />
+      </div>
+    </EventsProvider>
   );
 }
