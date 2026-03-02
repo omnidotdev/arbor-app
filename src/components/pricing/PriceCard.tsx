@@ -44,13 +44,16 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const TIER_ORDER = ["free", "basic", "team"] as const;
+  const getTierIndex = (t: string | null): number =>
+    TIER_ORDER.indexOf((t ?? "free") as (typeof TIER_ORDER)[number]);
+
   const tier = price.metadata?.tier as string;
   const isTeamTier = tier === "team";
   const isFreeTier = tier === "free";
-  const isBasicTier = tier === "basic";
 
   // Helper to get tier from subscription
-  const getOrgTier = (orgId: string): string | null => {
+  const getOrgTier = (orgId: string): string => {
     const subscription = orgSubscriptions[orgId];
     if (!subscription) return "free";
     // Product name is like "Arbor Basic" or "Arbor Team"
@@ -60,18 +63,14 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
     return "free";
   };
 
-  // Filter organizations that can upgrade to this tier
-  const upgradeableOrgs =
-    session?.organizations?.filter((org) => {
-      const orgTier = getOrgTier(org.id);
-      // Free tier card: no upgrades shown (use "Get Started" flow)
-      if (isFreeTier) return false;
-      // Basic tier card: only show free orgs
-      if (isBasicTier) return orgTier === "free";
-      // Team tier card: show free and basic orgs
-      if (isTeamTier) return orgTier === "free" || orgTier === "basic";
-      return false;
-    }) ?? [];
+  // Categorize organizations by their upgrade eligibility for this tier
+  const allOrgs = session?.organizations ?? [];
+  const upgradeableOrgs = allOrgs.filter(
+    (org) => getTierIndex(getOrgTier(org.id)) < getTierIndex(tier),
+  );
+  const nonUpgradeableOrgs = allOrgs.filter(
+    (org) => getTierIndex(getOrgTier(org.id)) >= getTierIndex(tier),
+  );
 
   // Show dropdown if authenticated, has upgradeable orgs or can create new, paid tier, SaaS
   const showDropdown =
@@ -268,10 +267,10 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
 
               {isMenuOpen && (
                 <div className="absolute top-full left-0 z-50 mt-1 w-full rounded-md border bg-popover p-1 shadow-md">
-                  {upgradeableOrgs.length > 0 && (
+                  {allOrgs.length > 0 && (
                     <>
                       <div className="p-2 font-medium text-muted-foreground text-sm">
-                        Upgrade existing organization
+                        Your organizations
                       </div>
                       {upgradeableOrgs.map((org) => (
                         <button
@@ -287,15 +286,39 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
                           <span className="flex-1 truncate font-medium text-sm">
                             {org.name}
                           </span>
+                          <span className="rounded bg-primary/10 px-1.5 py-0.5 text-primary text-xs">
+                            Upgrade
+                          </span>
                         </button>
                       ))}
+                      {nonUpgradeableOrgs.map((org) => {
+                        const orgTier = getOrgTier(org.id);
+                        const isSameTier = orgTier === tier;
+
+                        return (
+                          <div
+                            key={org.id}
+                            className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm opacity-60"
+                          >
+                            <BuildingIcon
+                              size={16}
+                              className="text-muted-foreground"
+                            />
+                            <span className="flex-1 truncate font-medium text-sm">
+                              {org.name}
+                            </span>
+                            <span className="rounded bg-muted px-1.5 py-0.5 text-muted-foreground text-xs">
+                              {isSameTier
+                                ? "Current plan"
+                                : capitalizeFirstLetter(orgTier)}
+                            </span>
+                          </div>
+                        );
+                      })}
                       <div className="my-1 h-px bg-border" />
                     </>
                   )}
 
-                  <div className="p-2 font-medium text-muted-foreground text-sm">
-                    Create new organization
-                  </div>
                   <button
                     type="button"
                     onClick={() => handleWorkspaceSelect("create-new")}
