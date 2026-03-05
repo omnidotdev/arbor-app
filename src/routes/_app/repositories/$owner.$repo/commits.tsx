@@ -11,12 +11,12 @@ const searchSchema = z.object({
   ref: z.string().optional(),
 });
 
-export const Route = createFileRoute(
-  "/_auth/repositories/$owner/$repo/commits",
-)({
-  validateSearch: searchSchema,
-  component: CommitsPage,
-});
+export const Route = createFileRoute("/_app/repositories/$owner/$repo/commits")(
+  {
+    validateSearch: searchSchema,
+    component: CommitsPage,
+  },
+);
 
 interface Branch {
   name: string;

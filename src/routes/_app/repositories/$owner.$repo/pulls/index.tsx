@@ -1,15 +1,39 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { GitBranch, GitCommit, GitFork, GitPullRequest } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import {
+  GitBranch,
+  GitCommit,
+  GitFork,
+  GitPullRequest,
+  Plus,
+} from "lucide-react";
+import { useState } from "react";
+import { z } from "zod";
 
-import { CreatePullRequestForm } from "@/components/pullRequest";
+import { PullRequestList } from "@/components/pullRequest";
+import { Button } from "@/components/ui/button";
 import { graphqlFetch } from "@/lib/graphql/graphqlFetch";
 
-export const Route = createFileRoute(
-  "/_auth/repositories/$owner/$repo/pulls/new",
-)({
-  component: NewPullRequestPage,
+const searchSchema = z.object({
+  state: z.enum(["open", "closed", "merged", "all"]).optional(),
 });
+
+export const Route = createFileRoute("/_app/repositories/$owner/$repo/pulls/")({
+  validateSearch: searchSchema,
+  component: PullRequestsPage,
+});
+
+interface PullRequest {
+  id: string;
+  number: number;
+  title: string;
+  state: "open" | "closed" | "merged" | "draft";
+  authorName: string;
+  sourceBranch: string;
+  targetBranch: string;
+  createdAt: string;
+  commentCount?: number;
+}
 
 interface Branch {
   name: string;
@@ -70,6 +94,15 @@ const REPOSITORY_WITH_BRANCHES_QUERY = `
   }
 `;
 
+async function fetchPullRequests(
+  _owner: string,
+  _repo: string,
+  _state?: string,
+): Promise<PullRequest[]> {
+  // For now, return empty array as pull requests GraphQL schema needs to be implemented
+  return [];
+}
+
 async function fetchBranches(owner: string, repo: string): Promise<Branch[]> {
   const data = await graphqlFetch<
     RepositoryWithBranchesResponse,
@@ -89,63 +122,27 @@ async function fetchBranches(owner: string, repo: string): Promise<Branch[]> {
   }));
 }
 
-async function createPullRequest(
-  _owner: string,
-  _repo: string,
-  _data: {
-    title: string;
-    description: string;
-    sourceBranch: string;
-    targetBranch: string;
-  },
-): Promise<{ id: string; number: number }> {
-  // For now, this is a placeholder - actual GraphQL mutation would be used
-  throw new Error("Pull request creation not yet implemented");
-}
-
-function NewPullRequestPage() {
+function PullRequestsPage() {
   const { owner, repo } = Route.useParams();
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  const { state = "open" } = Route.useSearch();
+  const [currentFilter, setCurrentFilter] = useState(state);
 
   const branchesQuery = useQuery({
     queryKey: ["branches", owner, repo],
     queryFn: () => fetchBranches(owner, repo),
   });
 
+  const pullRequestsQuery = useQuery({
+    queryKey: ["pullRequests", owner, repo, currentFilter],
+    queryFn: () => fetchPullRequests(owner, repo, currentFilter),
+  });
+
   const branches = branchesQuery.data ?? [];
   const defaultBranch =
     branches.find((b) => b.isDefault)?.name ?? branches[0]?.name ?? "master";
 
-  const createMutation = useMutation({
-    mutationFn: (data: {
-      title: string;
-      description: string;
-      sourceBranch: string;
-      targetBranch: string;
-    }) => createPullRequest(owner, repo, data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["pullRequests", owner, repo],
-      });
-      navigate({
-        to: "/repositories/$owner/$repo/pulls",
-        params: { owner, repo },
-      });
-    },
-  });
-
-  const handleSubmit = (data: {
-    title: string;
-    description: string;
-    sourceBranch: string;
-    targetBranch: string;
-  }) => {
-    createMutation.mutate(data);
-  };
-
   return (
-    <div className="container mx-auto max-w-4xl px-6 py-6">
+    <div className="container mx-auto max-w-6xl px-6 py-6">
       {/* Header */}
       <div className="mb-6">
         <h1 className="font-bold text-2xl">
@@ -204,52 +201,38 @@ function NewPullRequestPage() {
         </Link>
       </div>
 
-      {/* Page title */}
-      <div className="mb-6">
-        <h2 className="font-semibold text-xl">Open a pull request</h2>
-        <p className="mt-1 text-muted-foreground">
-          Compare changes between branches and create a pull request for review.
-        </p>
+      {/* Filters and actions */}
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex gap-2">
+          {(["open", "closed", "merged", "all"] as const).map((filterState) => (
+            <Button
+              key={filterState}
+              variant={currentFilter === filterState ? "default" : "outline"}
+              size="sm"
+              onClick={() => setCurrentFilter(filterState)}
+            >
+              {filterState.charAt(0).toUpperCase() + filterState.slice(1)}
+            </Button>
+          ))}
+        </div>
+        <Button asChild>
+          <Link
+            to="/repositories/$owner/$repo/pulls/new"
+            params={{ owner, repo }}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            New pull request
+          </Link>
+        </Button>
       </div>
 
-      {/* Form */}
-      {branchesQuery.isLoading ? (
-        <div className="space-y-4">
-          <div className="h-20 animate-pulse rounded-lg bg-muted" />
-          <div className="h-12 animate-pulse rounded bg-muted" />
-          <div className="h-32 animate-pulse rounded bg-muted" />
-        </div>
-      ) : branches.length < 2 ? (
-        <div className="rounded-lg border p-8 text-center">
-          <GitBranch className="mx-auto h-12 w-12 text-muted-foreground" />
-          <h3 className="mt-4 font-medium">Need at least two branches</h3>
-          <p className="mt-1 text-muted-foreground text-sm">
-            Create another branch to compare changes and open a pull request.
-          </p>
-          <Link
-            to="/repositories/$owner/$repo/branches"
-            params={{ owner, repo }}
-            className="mt-4 inline-block text-blue-600 text-sm hover:underline dark:text-blue-400"
-          >
-            Manage branches
-          </Link>
-        </div>
-      ) : (
-        <CreatePullRequestForm
-          branches={branches}
-          defaultBranch={defaultBranch}
-          onSubmit={handleSubmit}
-          isSubmitting={createMutation.isPending}
-        />
-      )}
-
-      {createMutation.isError && (
-        <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400">
-          {createMutation.error instanceof Error
-            ? createMutation.error.message
-            : "Failed to create pull request"}
-        </div>
-      )}
+      {/* Pull request list */}
+      <PullRequestList
+        pullRequests={pullRequestsQuery.data ?? []}
+        owner={owner}
+        repo={repo}
+        isLoading={pullRequestsQuery.isLoading}
+      />
     </div>
   );
 }

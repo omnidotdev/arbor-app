@@ -15,7 +15,7 @@ import { API_BASE_URL } from "@/lib/config/env.config";
 import { graphqlFetch } from "@/lib/graphql/graphqlFetch";
 
 export const Route = createFileRoute(
-  "/_auth/repositories/$owner/$repo/branches",
+  "/_app/repositories/$owner/$repo/branches",
 )({
   component: BranchesPage,
 });

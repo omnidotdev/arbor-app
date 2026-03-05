@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useOrganizationsQuery } from "@/generated/graphql";
 
-export const Route = createFileRoute("/_auth/organizations/")({
+export const Route = createFileRoute("/_app/organizations/")({
   component: OrganizationsPage,
 });
 

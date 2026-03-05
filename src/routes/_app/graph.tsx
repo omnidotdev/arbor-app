@@ -7,7 +7,7 @@ import { GraphView } from "@/components/graph";
 import { Button } from "@/components/ui/button";
 import { useRepositoryGraphQuery } from "@/generated/graphql";
 
-export const Route = createFileRoute("/_auth/graph")({
+export const Route = createFileRoute("/_app/graph")({
   component: GraphPage,
 });
 

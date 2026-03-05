@@ -12,7 +12,7 @@ const eventsProvider = {
   },
 };
 
-export const Route = createFileRoute("/_auth")({
+export const Route = createFileRoute("/_app")({
   beforeLoad: async ({ context: { session } }) => {
     // redirect unauthenticated users to the landing page
     if (!session?.user) throw redirect({ to: "/" });

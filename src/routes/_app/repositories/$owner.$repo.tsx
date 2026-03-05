@@ -34,7 +34,7 @@ const searchSchema = z.object({
   path: z.string().optional(),
 });
 
-export const Route = createFileRoute("/_auth/repositories/$owner/$repo")({
+export const Route = createFileRoute("/_app/repositories/$owner/$repo")({
   validateSearch: searchSchema,
   component: RepositoryDetailPage,
 });

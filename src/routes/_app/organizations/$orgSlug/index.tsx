@@ -13,7 +13,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/_auth/organizations/$orgSlug/")({
+export const Route = createFileRoute("/_app/organizations/$orgSlug/")({
   component: OrganizationDetailPage,
 });
 
