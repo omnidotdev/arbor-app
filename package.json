@@ -33,6 +33,8 @@
     "react-diff-viewer-continued": "^3.4.0",
     "react-dom": "^19.2.3",
     "reactflow": "^11.11.4",
+    "satori": "^0.25.0",
+    "sharp": "^0.34.5",
     "shiki": "^3.20.0",
     "tailwind-merge": "^3.4.0",
     "unleash-client": "^6.3.0",

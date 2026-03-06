@@ -10,26 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthGraphRouteImport } from './routes/_auth/graph'
-import { Route as AuthRepositoriesIndexRouteImport } from './routes/_auth/repositories/index'
-import { Route as AuthOrganizationsIndexRouteImport } from './routes/_auth/organizations/index'
+import { Route as AppGraphRouteImport } from './routes/_app/graph'
+import { Route as AppRepositoriesIndexRouteImport } from './routes/_app/repositories/index'
+import { Route as AppOrganizationsIndexRouteImport } from './routes/_app/organizations/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as AuthOrganizationsOrgSlugIndexRouteImport } from './routes/_auth/organizations/$orgSlug/index'
-import { Route as AuthRepositoriesOwnerRepoRouteImport } from './routes/_auth/repositories/$owner.$repo'
-import { Route as AuthRepositoriesOwnerRepoCommitsRouteImport } from './routes/_auth/repositories/$owner.$repo/commits'
-import { Route as AuthRepositoriesOwnerRepoBranchesRouteImport } from './routes/_auth/repositories/$owner.$repo/branches'
-import { Route as AuthRepositoriesOwnerRepoPullsIndexRouteImport } from './routes/_auth/repositories/$owner.$repo/pulls/index'
-import { Route as AuthRepositoriesOwnerRepoPullsNewRouteImport } from './routes/_auth/repositories/$owner.$repo/pulls/new'
+import { Route as AppOrganizationsOrgSlugIndexRouteImport } from './routes/_app/organizations/$orgSlug/index'
+import { Route as AppRepositoriesOwnerRepoRouteImport } from './routes/_app/repositories/$owner.$repo'
+import { Route as ApiOgRepoOwnerRepoRouteImport } from './routes/api/og/repo.$owner.$repo'
+import { Route as AppRepositoriesOwnerRepoCommitsRouteImport } from './routes/_app/repositories/$owner.$repo/commits'
+import { Route as AppRepositoriesOwnerRepoBranchesRouteImport } from './routes/_app/repositories/$owner.$repo/branches'
+import { Route as AppRepositoriesOwnerRepoPullsIndexRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/index'
+import { Route as AppRepositoriesOwnerRepoPullsNewRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/new'
 
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/_auth',
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -37,106 +38,114 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthGraphRoute = AuthGraphRouteImport.update({
+const AppGraphRoute = AppGraphRouteImport.update({
   id: '/graph',
   path: '/graph',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => AppRoute,
 } as any)
-const AuthRepositoriesIndexRoute = AuthRepositoriesIndexRouteImport.update({
+const AppRepositoriesIndexRoute = AppRepositoriesIndexRouteImport.update({
   id: '/repositories/',
   path: '/repositories/',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => AppRoute,
 } as any)
-const AuthOrganizationsIndexRoute = AuthOrganizationsIndexRouteImport.update({
+const AppOrganizationsIndexRoute = AppOrganizationsIndexRouteImport.update({
   id: '/organizations/',
   path: '/organizations/',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => AppRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthOrganizationsOrgSlugIndexRoute =
-  AuthOrganizationsOrgSlugIndexRouteImport.update({
+const AppOrganizationsOrgSlugIndexRoute =
+  AppOrganizationsOrgSlugIndexRouteImport.update({
     id: '/organizations/$orgSlug/',
     path: '/organizations/$orgSlug/',
-    getParentRoute: () => AuthRoute,
+    getParentRoute: () => AppRoute,
   } as any)
-const AuthRepositoriesOwnerRepoRoute =
-  AuthRepositoriesOwnerRepoRouteImport.update({
+const AppRepositoriesOwnerRepoRoute =
+  AppRepositoriesOwnerRepoRouteImport.update({
     id: '/repositories/$owner/$repo',
     path: '/repositories/$owner/$repo',
-    getParentRoute: () => AuthRoute,
+    getParentRoute: () => AppRoute,
   } as any)
-const AuthRepositoriesOwnerRepoCommitsRoute =
-  AuthRepositoriesOwnerRepoCommitsRouteImport.update({
+const ApiOgRepoOwnerRepoRoute = ApiOgRepoOwnerRepoRouteImport.update({
+  id: '/api/og/repo/$owner/$repo',
+  path: '/api/og/repo/$owner/$repo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRepositoriesOwnerRepoCommitsRoute =
+  AppRepositoriesOwnerRepoCommitsRouteImport.update({
     id: '/commits',
     path: '/commits',
-    getParentRoute: () => AuthRepositoriesOwnerRepoRoute,
+    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
   } as any)
-const AuthRepositoriesOwnerRepoBranchesRoute =
-  AuthRepositoriesOwnerRepoBranchesRouteImport.update({
+const AppRepositoriesOwnerRepoBranchesRoute =
+  AppRepositoriesOwnerRepoBranchesRouteImport.update({
     id: '/branches',
     path: '/branches',
-    getParentRoute: () => AuthRepositoriesOwnerRepoRoute,
+    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
   } as any)
-const AuthRepositoriesOwnerRepoPullsIndexRoute =
-  AuthRepositoriesOwnerRepoPullsIndexRouteImport.update({
+const AppRepositoriesOwnerRepoPullsIndexRoute =
+  AppRepositoriesOwnerRepoPullsIndexRouteImport.update({
     id: '/pulls/',
     path: '/pulls/',
-    getParentRoute: () => AuthRepositoriesOwnerRepoRoute,
+    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
   } as any)
-const AuthRepositoriesOwnerRepoPullsNewRoute =
-  AuthRepositoriesOwnerRepoPullsNewRouteImport.update({
+const AppRepositoriesOwnerRepoPullsNewRoute =
+  AppRepositoriesOwnerRepoPullsNewRouteImport.update({
     id: '/pulls/new',
     path: '/pulls/new',
-    getParentRoute: () => AuthRepositoriesOwnerRepoRoute,
+    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/pricing': typeof PricingRoute
-  '/graph': typeof AuthGraphRoute
+  '/graph': typeof AppGraphRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/organizations': typeof AuthOrganizationsIndexRoute
-  '/repositories': typeof AuthRepositoriesIndexRoute
-  '/repositories/$owner/$repo': typeof AuthRepositoriesOwnerRepoRouteWithChildren
-  '/organizations/$orgSlug': typeof AuthOrganizationsOrgSlugIndexRoute
-  '/repositories/$owner/$repo/branches': typeof AuthRepositoriesOwnerRepoBranchesRoute
-  '/repositories/$owner/$repo/commits': typeof AuthRepositoriesOwnerRepoCommitsRoute
-  '/repositories/$owner/$repo/pulls/new': typeof AuthRepositoriesOwnerRepoPullsNewRoute
-  '/repositories/$owner/$repo/pulls': typeof AuthRepositoriesOwnerRepoPullsIndexRoute
+  '/organizations': typeof AppOrganizationsIndexRoute
+  '/repositories': typeof AppRepositoriesIndexRoute
+  '/repositories/$owner/$repo': typeof AppRepositoriesOwnerRepoRouteWithChildren
+  '/organizations/$orgSlug': typeof AppOrganizationsOrgSlugIndexRoute
+  '/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
+  '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
+  '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
+  '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
+  '/repositories/$owner/$repo/pulls': typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/pricing': typeof PricingRoute
-  '/graph': typeof AuthGraphRoute
+  '/graph': typeof AppGraphRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/organizations': typeof AuthOrganizationsIndexRoute
-  '/repositories': typeof AuthRepositoriesIndexRoute
-  '/repositories/$owner/$repo': typeof AuthRepositoriesOwnerRepoRouteWithChildren
-  '/organizations/$orgSlug': typeof AuthOrganizationsOrgSlugIndexRoute
-  '/repositories/$owner/$repo/branches': typeof AuthRepositoriesOwnerRepoBranchesRoute
-  '/repositories/$owner/$repo/commits': typeof AuthRepositoriesOwnerRepoCommitsRoute
-  '/repositories/$owner/$repo/pulls/new': typeof AuthRepositoriesOwnerRepoPullsNewRoute
-  '/repositories/$owner/$repo/pulls': typeof AuthRepositoriesOwnerRepoPullsIndexRoute
+  '/organizations': typeof AppOrganizationsIndexRoute
+  '/repositories': typeof AppRepositoriesIndexRoute
+  '/repositories/$owner/$repo': typeof AppRepositoriesOwnerRepoRouteWithChildren
+  '/organizations/$orgSlug': typeof AppOrganizationsOrgSlugIndexRoute
+  '/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
+  '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
+  '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
+  '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
+  '/repositories/$owner/$repo/pulls': typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_auth': typeof AuthRouteWithChildren
+  '/_app': typeof AppRouteWithChildren
   '/pricing': typeof PricingRoute
-  '/_auth/graph': typeof AuthGraphRoute
+  '/_app/graph': typeof AppGraphRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/_auth/organizations/': typeof AuthOrganizationsIndexRoute
-  '/_auth/repositories/': typeof AuthRepositoriesIndexRoute
-  '/_auth/repositories/$owner/$repo': typeof AuthRepositoriesOwnerRepoRouteWithChildren
-  '/_auth/organizations/$orgSlug/': typeof AuthOrganizationsOrgSlugIndexRoute
-  '/_auth/repositories/$owner/$repo/branches': typeof AuthRepositoriesOwnerRepoBranchesRoute
-  '/_auth/repositories/$owner/$repo/commits': typeof AuthRepositoriesOwnerRepoCommitsRoute
-  '/_auth/repositories/$owner/$repo/pulls/new': typeof AuthRepositoriesOwnerRepoPullsNewRoute
-  '/_auth/repositories/$owner/$repo/pulls/': typeof AuthRepositoriesOwnerRepoPullsIndexRoute
+  '/_app/organizations/': typeof AppOrganizationsIndexRoute
+  '/_app/repositories/': typeof AppRepositoriesIndexRoute
+  '/_app/repositories/$owner/$repo': typeof AppRepositoriesOwnerRepoRouteWithChildren
+  '/_app/organizations/$orgSlug/': typeof AppOrganizationsOrgSlugIndexRoute
+  '/_app/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
+  '/_app/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
+  '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
+  '/_app/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
+  '/_app/repositories/$owner/$repo/pulls/': typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -151,6 +160,7 @@ export interface FileRouteTypes {
     | '/organizations/$orgSlug'
     | '/repositories/$owner/$repo/branches'
     | '/repositories/$owner/$repo/commits'
+    | '/api/og/repo/$owner/$repo'
     | '/repositories/$owner/$repo/pulls/new'
     | '/repositories/$owner/$repo/pulls'
   fileRoutesByTo: FileRoutesByTo
@@ -165,30 +175,33 @@ export interface FileRouteTypes {
     | '/organizations/$orgSlug'
     | '/repositories/$owner/$repo/branches'
     | '/repositories/$owner/$repo/commits'
+    | '/api/og/repo/$owner/$repo'
     | '/repositories/$owner/$repo/pulls/new'
     | '/repositories/$owner/$repo/pulls'
   id:
     | '__root__'
     | '/'
-    | '/_auth'
+    | '/_app'
     | '/pricing'
-    | '/_auth/graph'
+    | '/_app/graph'
     | '/api/auth/$'
-    | '/_auth/organizations/'
-    | '/_auth/repositories/'
-    | '/_auth/repositories/$owner/$repo'
-    | '/_auth/organizations/$orgSlug/'
-    | '/_auth/repositories/$owner/$repo/branches'
-    | '/_auth/repositories/$owner/$repo/commits'
-    | '/_auth/repositories/$owner/$repo/pulls/new'
-    | '/_auth/repositories/$owner/$repo/pulls/'
+    | '/_app/organizations/'
+    | '/_app/repositories/'
+    | '/_app/repositories/$owner/$repo'
+    | '/_app/organizations/$orgSlug/'
+    | '/_app/repositories/$owner/$repo/branches'
+    | '/_app/repositories/$owner/$repo/commits'
+    | '/api/og/repo/$owner/$repo'
+    | '/_app/repositories/$owner/$repo/pulls/new'
+    | '/_app/repositories/$owner/$repo/pulls/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthRoute: typeof AuthRouteWithChildren
+  AppRoute: typeof AppRouteWithChildren
   PricingRoute: typeof PricingRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiOgRepoOwnerRepoRoute: typeof ApiOgRepoOwnerRepoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -200,11 +213,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_auth': {
-      id: '/_auth'
+    '/_app': {
+      id: '/_app'
       path: ''
       fullPath: ''
-      preLoaderRoute: typeof AuthRouteImport
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -214,26 +227,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_auth/graph': {
-      id: '/_auth/graph'
+    '/_app/graph': {
+      id: '/_app/graph'
       path: '/graph'
       fullPath: '/graph'
-      preLoaderRoute: typeof AuthGraphRouteImport
-      parentRoute: typeof AuthRoute
+      preLoaderRoute: typeof AppGraphRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/_auth/repositories/': {
-      id: '/_auth/repositories/'
+    '/_app/repositories/': {
+      id: '/_app/repositories/'
       path: '/repositories'
       fullPath: '/repositories'
-      preLoaderRoute: typeof AuthRepositoriesIndexRouteImport
-      parentRoute: typeof AuthRoute
+      preLoaderRoute: typeof AppRepositoriesIndexRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/_auth/organizations/': {
-      id: '/_auth/organizations/'
+    '/_app/organizations/': {
+      id: '/_app/organizations/'
       path: '/organizations'
       fullPath: '/organizations'
-      preLoaderRoute: typeof AuthOrganizationsIndexRouteImport
-      parentRoute: typeof AuthRoute
+      preLoaderRoute: typeof AppOrganizationsIndexRouteImport
+      parentRoute: typeof AppRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -242,98 +255,105 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_auth/organizations/$orgSlug/': {
-      id: '/_auth/organizations/$orgSlug/'
+    '/_app/organizations/$orgSlug/': {
+      id: '/_app/organizations/$orgSlug/'
       path: '/organizations/$orgSlug'
       fullPath: '/organizations/$orgSlug'
-      preLoaderRoute: typeof AuthOrganizationsOrgSlugIndexRouteImport
-      parentRoute: typeof AuthRoute
+      preLoaderRoute: typeof AppOrganizationsOrgSlugIndexRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/_auth/repositories/$owner/$repo': {
-      id: '/_auth/repositories/$owner/$repo'
+    '/_app/repositories/$owner/$repo': {
+      id: '/_app/repositories/$owner/$repo'
       path: '/repositories/$owner/$repo'
       fullPath: '/repositories/$owner/$repo'
-      preLoaderRoute: typeof AuthRepositoriesOwnerRepoRouteImport
-      parentRoute: typeof AuthRoute
+      preLoaderRoute: typeof AppRepositoriesOwnerRepoRouteImport
+      parentRoute: typeof AppRoute
     }
-    '/_auth/repositories/$owner/$repo/commits': {
-      id: '/_auth/repositories/$owner/$repo/commits'
+    '/api/og/repo/$owner/$repo': {
+      id: '/api/og/repo/$owner/$repo'
+      path: '/api/og/repo/$owner/$repo'
+      fullPath: '/api/og/repo/$owner/$repo'
+      preLoaderRoute: typeof ApiOgRepoOwnerRepoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/repositories/$owner/$repo/commits': {
+      id: '/_app/repositories/$owner/$repo/commits'
       path: '/commits'
       fullPath: '/repositories/$owner/$repo/commits'
-      preLoaderRoute: typeof AuthRepositoriesOwnerRepoCommitsRouteImport
-      parentRoute: typeof AuthRepositoriesOwnerRepoRoute
+      preLoaderRoute: typeof AppRepositoriesOwnerRepoCommitsRouteImport
+      parentRoute: typeof AppRepositoriesOwnerRepoRoute
     }
-    '/_auth/repositories/$owner/$repo/branches': {
-      id: '/_auth/repositories/$owner/$repo/branches'
+    '/_app/repositories/$owner/$repo/branches': {
+      id: '/_app/repositories/$owner/$repo/branches'
       path: '/branches'
       fullPath: '/repositories/$owner/$repo/branches'
-      preLoaderRoute: typeof AuthRepositoriesOwnerRepoBranchesRouteImport
-      parentRoute: typeof AuthRepositoriesOwnerRepoRoute
+      preLoaderRoute: typeof AppRepositoriesOwnerRepoBranchesRouteImport
+      parentRoute: typeof AppRepositoriesOwnerRepoRoute
     }
-    '/_auth/repositories/$owner/$repo/pulls/': {
-      id: '/_auth/repositories/$owner/$repo/pulls/'
+    '/_app/repositories/$owner/$repo/pulls/': {
+      id: '/_app/repositories/$owner/$repo/pulls/'
       path: '/pulls'
       fullPath: '/repositories/$owner/$repo/pulls'
-      preLoaderRoute: typeof AuthRepositoriesOwnerRepoPullsIndexRouteImport
-      parentRoute: typeof AuthRepositoriesOwnerRepoRoute
+      preLoaderRoute: typeof AppRepositoriesOwnerRepoPullsIndexRouteImport
+      parentRoute: typeof AppRepositoriesOwnerRepoRoute
     }
-    '/_auth/repositories/$owner/$repo/pulls/new': {
-      id: '/_auth/repositories/$owner/$repo/pulls/new'
+    '/_app/repositories/$owner/$repo/pulls/new': {
+      id: '/_app/repositories/$owner/$repo/pulls/new'
       path: '/pulls/new'
       fullPath: '/repositories/$owner/$repo/pulls/new'
-      preLoaderRoute: typeof AuthRepositoriesOwnerRepoPullsNewRouteImport
-      parentRoute: typeof AuthRepositoriesOwnerRepoRoute
+      preLoaderRoute: typeof AppRepositoriesOwnerRepoPullsNewRouteImport
+      parentRoute: typeof AppRepositoriesOwnerRepoRoute
     }
   }
 }
 
-interface AuthRepositoriesOwnerRepoRouteChildren {
-  AuthRepositoriesOwnerRepoBranchesRoute: typeof AuthRepositoriesOwnerRepoBranchesRoute
-  AuthRepositoriesOwnerRepoCommitsRoute: typeof AuthRepositoriesOwnerRepoCommitsRoute
-  AuthRepositoriesOwnerRepoPullsNewRoute: typeof AuthRepositoriesOwnerRepoPullsNewRoute
-  AuthRepositoriesOwnerRepoPullsIndexRoute: typeof AuthRepositoriesOwnerRepoPullsIndexRoute
+interface AppRepositoriesOwnerRepoRouteChildren {
+  AppRepositoriesOwnerRepoBranchesRoute: typeof AppRepositoriesOwnerRepoBranchesRoute
+  AppRepositoriesOwnerRepoCommitsRoute: typeof AppRepositoriesOwnerRepoCommitsRoute
+  AppRepositoriesOwnerRepoPullsNewRoute: typeof AppRepositoriesOwnerRepoPullsNewRoute
+  AppRepositoriesOwnerRepoPullsIndexRoute: typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
 
-const AuthRepositoriesOwnerRepoRouteChildren: AuthRepositoriesOwnerRepoRouteChildren =
+const AppRepositoriesOwnerRepoRouteChildren: AppRepositoriesOwnerRepoRouteChildren =
   {
-    AuthRepositoriesOwnerRepoBranchesRoute:
-      AuthRepositoriesOwnerRepoBranchesRoute,
-    AuthRepositoriesOwnerRepoCommitsRoute:
-      AuthRepositoriesOwnerRepoCommitsRoute,
-    AuthRepositoriesOwnerRepoPullsNewRoute:
-      AuthRepositoriesOwnerRepoPullsNewRoute,
-    AuthRepositoriesOwnerRepoPullsIndexRoute:
-      AuthRepositoriesOwnerRepoPullsIndexRoute,
+    AppRepositoriesOwnerRepoBranchesRoute:
+      AppRepositoriesOwnerRepoBranchesRoute,
+    AppRepositoriesOwnerRepoCommitsRoute: AppRepositoriesOwnerRepoCommitsRoute,
+    AppRepositoriesOwnerRepoPullsNewRoute:
+      AppRepositoriesOwnerRepoPullsNewRoute,
+    AppRepositoriesOwnerRepoPullsIndexRoute:
+      AppRepositoriesOwnerRepoPullsIndexRoute,
   }
 
-const AuthRepositoriesOwnerRepoRouteWithChildren =
-  AuthRepositoriesOwnerRepoRoute._addFileChildren(
-    AuthRepositoriesOwnerRepoRouteChildren,
+const AppRepositoriesOwnerRepoRouteWithChildren =
+  AppRepositoriesOwnerRepoRoute._addFileChildren(
+    AppRepositoriesOwnerRepoRouteChildren,
   )
 
-interface AuthRouteChildren {
-  AuthGraphRoute: typeof AuthGraphRoute
-  AuthOrganizationsIndexRoute: typeof AuthOrganizationsIndexRoute
-  AuthRepositoriesIndexRoute: typeof AuthRepositoriesIndexRoute
-  AuthRepositoriesOwnerRepoRoute: typeof AuthRepositoriesOwnerRepoRouteWithChildren
-  AuthOrganizationsOrgSlugIndexRoute: typeof AuthOrganizationsOrgSlugIndexRoute
+interface AppRouteChildren {
+  AppGraphRoute: typeof AppGraphRoute
+  AppOrganizationsIndexRoute: typeof AppOrganizationsIndexRoute
+  AppRepositoriesIndexRoute: typeof AppRepositoriesIndexRoute
+  AppRepositoriesOwnerRepoRoute: typeof AppRepositoriesOwnerRepoRouteWithChildren
+  AppOrganizationsOrgSlugIndexRoute: typeof AppOrganizationsOrgSlugIndexRoute
 }
 
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthGraphRoute: AuthGraphRoute,
-  AuthOrganizationsIndexRoute: AuthOrganizationsIndexRoute,
-  AuthRepositoriesIndexRoute: AuthRepositoriesIndexRoute,
-  AuthRepositoriesOwnerRepoRoute: AuthRepositoriesOwnerRepoRouteWithChildren,
-  AuthOrganizationsOrgSlugIndexRoute: AuthOrganizationsOrgSlugIndexRoute,
+const AppRouteChildren: AppRouteChildren = {
+  AppGraphRoute: AppGraphRoute,
+  AppOrganizationsIndexRoute: AppOrganizationsIndexRoute,
+  AppRepositoriesIndexRoute: AppRepositoriesIndexRoute,
+  AppRepositoriesOwnerRepoRoute: AppRepositoriesOwnerRepoRouteWithChildren,
+  AppOrganizationsOrgSlugIndexRoute: AppOrganizationsOrgSlugIndexRoute,
 }
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthRoute: AuthRouteWithChildren,
+  AppRoute: AppRouteWithChildren,
   PricingRoute: PricingRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiOgRepoOwnerRepoRoute: ApiOgRepoOwnerRepoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

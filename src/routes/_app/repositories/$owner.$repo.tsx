@@ -27,7 +27,8 @@ import {
   useDeleteRepositoryMutation,
   useRepositoriesQuery,
 } from "@/generated/graphql";
-import { API_BASE_URL } from "@/lib/config/env.config";
+import { API_BASE_URL, BASE_URL } from "@/lib/config/env.config";
+import createMetaTags from "@/lib/util/createMetaTags";
 
 const searchSchema = z.object({
   ref: z.string().optional(),
@@ -36,6 +37,16 @@ const searchSchema = z.object({
 
 export const Route = createFileRoute("/_app/repositories/$owner/$repo")({
   validateSearch: searchSchema,
+  head: ({ params }) => ({
+    meta: [
+      ...createMetaTags({
+        title: `${params.owner}/${params.repo}`,
+        description: `Repository on Arbor`,
+        image: `${BASE_URL}/api/og/repo/${params.owner}/${params.repo}`,
+        url: `${BASE_URL}/repositories/${params.owner}/${params.repo}`,
+      }),
+    ],
+  }),
   component: RepositoryDetailPage,
 });
 
