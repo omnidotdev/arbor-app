@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import {
@@ -36,6 +37,26 @@ interface ExtendedUser {
 export interface ExtendedSession extends Omit<Session, "user"> {
   user: ExtendedUser;
   accessToken?: string;
+}
+
+/** Parse exp claim from a JWT without verifying signature */
+function getTokenExpMs(token: string): number | null {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    return (payload.exp as number) * 1000;
+  } catch {
+    return null;
+  }
+}
+
+/** Fetch a fresh access token from the server session */
+async function refreshAccessToken(): Promise<string | undefined> {
+  try {
+    const { session } = await fetchSession();
+    return session?.accessToken;
+  } catch {
+    return undefined;
+  }
 }
 
 export const Route = createRootRouteWithContext<{
@@ -101,10 +122,37 @@ function MaintenancePage() {
 function RootComponent() {
   const { isMaintenanceMode, session } = useRouteContext({ from: "__root__" });
 
+  const [currentToken, setCurrentToken] = useState(session?.accessToken);
+
   // Sync access token to GraphQL client for client-side requests
-  if (session?.accessToken) {
-    setAccessToken(session.accessToken);
-  }
+  useEffect(() => {
+    const token = currentToken ?? session?.accessToken;
+    if (token) {
+      setAccessToken(token);
+    }
+  }, [currentToken, session?.accessToken]);
+
+  // Proactively refresh the token before it expires
+  useEffect(() => {
+    const token = currentToken ?? session?.accessToken;
+    if (!token) return;
+
+    const expMs = getTokenExpMs(token);
+    if (!expMs) return;
+
+    // Refresh 60s before expiry
+    const refreshAt = expMs - Date.now() - 60_000;
+    if (refreshAt <= 0) {
+      refreshAccessToken().then(setCurrentToken);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      refreshAccessToken().then(setCurrentToken);
+    }, refreshAt);
+
+    return () => clearTimeout(timer);
+  }, [currentToken, session?.accessToken]);
 
   if (isMaintenanceMode) {
     return (
