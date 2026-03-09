@@ -44,7 +44,7 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const TIER_ORDER = ["free", "basic", "team"] as const;
+  const TIER_ORDER = ["free", "pro", "team"] as const;
   const getTierIndex = (t: string | null): number =>
     TIER_ORDER.indexOf((t ?? "free") as (typeof TIER_ORDER)[number]);
 
@@ -56,10 +56,10 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
   const getOrgTier = (orgId: string): string => {
     const subscription = orgSubscriptions[orgId];
     if (!subscription) return "free";
-    // Product name is like "Arbor Basic" or "Arbor Team"
+    // Product name is like "Arbor Pro" or "Arbor Team"
     const productName = subscription.product?.name?.toLowerCase() ?? "";
     if (productName.includes("team")) return "team";
-    if (productName.includes("basic")) return "basic";
+    if (productName.includes("pro")) return "pro";
     return "free";
   };
 

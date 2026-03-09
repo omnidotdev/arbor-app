@@ -55,7 +55,7 @@ const faqItems = [
 ];
 
 const searchSchema = z.object({
-  tier: z.enum(["free", "basic", "team"]).optional(),
+  tier: z.enum(["free", "pro", "team"]).optional(),
 });
 
 export const Route = createFileRoute("/pricing")({
