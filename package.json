@@ -16,7 +16,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@omnidotdev/providers": "github:omnidotdev/providers#160708d",
+    "@omnidotdev/providers": "github:omnidotdev/providers#c82b8ad",
     "@radix-ui/react-slot": "^1.2.4",
     "@react-email/components": "^1.0.2",
     "@tanstack/react-query": "^5.90.12",
