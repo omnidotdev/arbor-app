@@ -1,4 +1,7 @@
-import { ensureFreshAccessToken, extractOrgClaims } from "@omnidotdev/providers/auth";
+import {
+  ensureFreshAccessToken,
+  extractOrgClaims,
+} from "@omnidotdev/providers/auth";
 import { setCookie } from "@tanstack/react-start/server";
 import { GraphQLClient } from "graphql-request";
 
