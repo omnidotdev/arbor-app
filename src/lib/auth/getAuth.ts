@@ -1,4 +1,4 @@
-import { ensureFreshAccessToken, extractOrgClaims } from "@omnidotdev/providers";
+import { ensureFreshAccessToken, extractOrgClaims } from "@omnidotdev/providers/auth";
 import { setCookie } from "@tanstack/react-start/server";
 import { GraphQLClient } from "graphql-request";
 
@@ -7,9 +7,9 @@ import auth from "@/lib/auth/auth";
 import { authCache, oidc } from "@/lib/auth/authCache";
 import { API_GRAPHQL_URL } from "@/lib/config/env.config";
 
-import type { OrganizationClaim } from "@omnidotdev/providers";
+import type { OrganizationClaim } from "@omnidotdev/providers/auth";
 
-export type { OrganizationClaim } from "@omnidotdev/providers";
+export type { OrganizationClaim } from "@omnidotdev/providers/auth";
 
 /**
  * Fetch rowId from GraphQL API by identity provider ID.
