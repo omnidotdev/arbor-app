@@ -33,16 +33,15 @@ const knipConfig: KnipConfig = {
     "src/server/middleware.ts",
     // WIP: Pricing components
     "src/components/pricing/**",
+    // WIP: Invite infrastructure (ready for members page)
+    "src/lib/hooks/useOrganizationMembers.ts",
+    "src/lib/validation/invitation.ts",
   ],
   ignoreDependencies: [
-    // GitHub dep not resolvable by knip
-    "@omnidotdev/providers",
     // used by React Email preview server
     "@react-email/preview-server",
     // used by React Email templates
     "@react-email/components",
-    // TODO: add react-icons as dependency
-    "react-icons",
   ],
   tags: ["-knipignore"],
 };
