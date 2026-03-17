@@ -96,6 +96,7 @@ const resendOrganizationInvitationSchema = z.object({
 /**
  * Resend an invitation (active or expired).
  * Gatekeeper's `cancelPendingInvitationsOnReInvite` auto-cancels the old one
+ * @knipignore
  */
 export const resendOrganizationInvitation = createServerFn({ method: "POST" })
   .inputValidator((data) => resendOrganizationInvitationSchema.parse(data))
