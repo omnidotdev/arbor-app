@@ -1,18 +1,33 @@
-import { Link } from "@tanstack/react-router";
+import type { PropsWithChildren } from "react";
 
 /**
- * Not found (404) component.
+ * 404 not found.
  */
-function NotFound() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4">
-      <h1 className="mb-4 font-bold text-4xl">404</h1>
-      <p className="mb-4 text-muted-foreground">Page not found</p>
-      <Link to="/" className="text-primary underline">
-        Go home
-      </Link>
+const NotFound = ({ children }: PropsWithChildren) => (
+  <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4 p-2">
+    <div className="text-6xl">🌳</div>
+
+    <div className="text-muted-foreground">
+      {children || <p>Page Not Found</p>}
     </div>
-  );
-}
+
+    <p className="flex flex-wrap items-center gap-2">
+      <button
+        type="button"
+        onClick={() => window.history.back()}
+        className="rounded-lg border border-border bg-card px-4 py-2 font-medium text-foreground text-sm transition-colors hover:bg-accent"
+      >
+        Go back
+      </button>
+
+      <a
+        href="/"
+        className="rounded-lg bg-primary px-4 py-2 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
+      >
+        Go Home
+      </a>
+    </p>
+  </div>
+);
 
 export default NotFound;
