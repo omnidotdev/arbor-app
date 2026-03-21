@@ -1,4 +1,8 @@
-const env = { ...import.meta.env, ...process.env };
+// Build-time vars take precedence to prevent SSR hydration mismatch
+const env =
+  typeof window === "undefined"
+    ? { ...process.env, ...import.meta.env }
+    : import.meta.env;
 
 /**
  * Environment variables.
