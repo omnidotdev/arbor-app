@@ -23,7 +23,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import signIn from "@/lib/auth/signIn";
-import { BASE_URL, isSelfHosted } from "@/lib/config/env.config";
+import { BASE_URL, hasBilling } from "@/lib/config/env.config";
 import capitalizeFirstLetter from "@/lib/util/capitalizeFirstLetter";
 import { cn } from "@/lib/utils";
 import { createCheckoutWithWorkspace } from "@/server/functions/subscriptions";
@@ -72,11 +72,11 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
     (org) => getTierIndex(getOrgTier(org.id)) >= getTierIndex(tier),
   );
 
-  // Show dropdown if authenticated, has upgradeable orgs or can create new, paid tier, SaaS
+  // Show dropdown if authenticated, has upgradeable orgs or can create new, paid tier, billing enabled
   const showDropdown =
     !!session &&
     !isFreeTier &&
-    !isSelfHosted &&
+    hasBilling &&
     !!session.organizations?.length;
 
   // Check if this card's tier matches the URL param (for post-sign-in auto-open)
@@ -165,8 +165,8 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
       return;
     }
 
-    // Self-hosted mode - no billing, just go to repositories
-    if (isSelfHosted) {
+    // No billing configured - just go to repositories
+    if (!hasBilling) {
       navigate({ to: "/repositories" });
       return;
     }
