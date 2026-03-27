@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useSessionRefresh } from "@omnidotdev/providers/react";
 import { TanStackDevtools } from "@tanstack/react-devtools";
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
 import {
@@ -9,6 +9,7 @@ import {
   useRouteContext,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { useEffect, useState } from "react";
 
 import { DefaultCatchBoundary, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
@@ -120,6 +121,9 @@ function MaintenancePage() {
 }
 
 function RootComponent() {
+  // Keep the OAuth access token fresh while the user is idle
+  useSessionRefresh(fetchSession);
+
   const { isMaintenanceMode, session } = useRouteContext({ from: "__root__" });
 
   const [currentToken, setCurrentToken] = useState(session?.accessToken);
