@@ -8,10 +8,12 @@ import {
   AUTH_BASE_URL,
   AUTH_CLIENT_ID,
   AUTH_CLIENT_SECRET,
+  AUTH_INTERNAL_URL,
   BASE_URL,
 } from "@/lib/config/env.config";
 
 import type { OrganizationClaim } from "@omnidotdev/providers/auth";
+import { createOmniOAuthConfig } from "@omnidotdev/providers/auth";
 
 const { AUTH_SECRET } = process.env;
 
@@ -52,29 +54,12 @@ const auth = betterAuth({
   plugins: [
     genericOAuth({
       config: [
-        {
-          providerId: "omni",
-          clientId: AUTH_CLIENT_ID,
-          clientSecret: AUTH_CLIENT_SECRET,
-          discoveryUrl: `${AUTH_BASE_URL}/.well-known/openid-configuration`,
-          scopes: [
-            "openid",
-            "profile",
-            "email",
-            "offline_access",
-            "organization",
-          ],
-          accessType: "offline",
-          pkce: true,
-          prompt: "login",
-          // Map OIDC standard claims to Better Auth user fields
-          mapProfileToUser: (profile) => ({
-            name: profile.name,
-            email: profile.email,
-            emailVerified: profile.email_verified,
-            image: profile.picture,
-          }),
-        },
+        createOmniOAuthConfig({
+          clientId: AUTH_CLIENT_ID!,
+          clientSecret: AUTH_CLIENT_SECRET!,
+          authBaseUrl: AUTH_BASE_URL!,
+          authInternalUrl: AUTH_INTERNAL_URL!,
+        }),
       ],
     }),
     customSession(async ({ user, session }) => {

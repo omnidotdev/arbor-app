@@ -74,10 +74,7 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
 
   // Show dropdown if authenticated, has upgradeable orgs or can create new, paid tier, billing enabled
   const showDropdown =
-    !!session &&
-    !isFreeTier &&
-    hasBilling &&
-    !!session.organizations?.length;
+    !!session && !isFreeTier && hasBilling && !!session.organizations?.length;
 
   // Check if this card's tier matches the URL param (for post-sign-in auto-open)
   const shouldAutoOpen = search.tier === tier && !!session;
