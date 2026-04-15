@@ -95,7 +95,8 @@ const resendOrganizationInvitationSchema = z.object({
 
 /**
  * Resend an invitation (active or expired).
- * Gatekeeper's `cancelPendingInvitationsOnReInvite` auto-cancels the old one
+ * Gatekeeper's `cancelPendingInvitationsOnReInvite` auto-cancels the old one.
+ * Membership validation is handled by Gatekeeper
  * @knipignore
  */
 export const resendOrganizationInvitation = createServerFn({ method: "POST" })
@@ -106,19 +107,6 @@ export const resendOrganizationInvitation = createServerFn({ method: "POST" })
 
     if (!accessToken) {
       throw new Error("No access token available");
-    }
-
-    const membersResponse = await gatekeeperOrg.listMembers(
-      data.organizationId,
-      accessToken,
-    );
-
-    const isExistingMember = membersResponse.data.some(
-      (m) => m.user.email.toLowerCase() === data.email.toLowerCase(),
-    );
-
-    if (isExistingMember) {
-      throw new Error("This email is already a member of the organization");
     }
 
     return gatekeeperOrg.inviteMember(data, accessToken);
