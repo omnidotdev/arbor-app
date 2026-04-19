@@ -1,5 +1,6 @@
 {
   "name": "@omnidotdev/arbor-app",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "concurrently --kill-others --names \"GRAPHQL-CODEGEN,CLIENT\" -c \"bgBlue.bold,bgMagenta.bold\" \"bun run graphql:generate:watch\" \"bun dev:vite\"",
@@ -16,7 +17,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@omnidotdev/providers": "github:omnidotdev/providers#72baa55",
+    "@omnidotdev/providers": "github:omnidotdev/providers#29a3fe6",
     "@radix-ui/react-slot": "^1.2.4",
     "@react-email/components": "^1.0.2",
     "@tanstack/react-query": "^5.90.12",
