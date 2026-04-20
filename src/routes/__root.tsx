@@ -22,6 +22,7 @@ import { fetchSession } from "@/server/functions/auth";
 import { getTheme } from "@/server/functions/theme";
 
 import type { QueryClient } from "@tanstack/react-query";
+import type { OrganizationClaim } from "@omnidotdev/providers/auth";
 import type { Session } from "better-auth/types";
 import type { ReactNode } from "react";
 
@@ -38,6 +39,7 @@ interface ExtendedUser {
 export interface ExtendedSession extends Omit<Session, "user"> {
   user: ExtendedUser;
   accessToken?: string;
+  organizations: OrganizationClaim[];
 }
 
 /** Parse exp claim from a JWT without verifying signature */
@@ -67,14 +69,15 @@ export const Route = createRootRouteWithContext<{
 }>()({
   beforeLoad: async () => {
     const { session } = await fetchSession();
+    const typedSession = session as ExtendedSession | null;
     const { isMaintenanceMode } = await fetchMaintenanceMode({
       data: {
-        userId: session?.user?.id,
-        email: session?.user?.email,
+        userId: typedSession?.user?.id,
+        email: typedSession?.user?.email,
       },
     });
 
-    return { session, isMaintenanceMode };
+    return { session: typedSession, isMaintenanceMode };
   },
   loader: () => getTheme(),
   head: () => ({
