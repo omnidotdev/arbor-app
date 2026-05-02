@@ -103,8 +103,8 @@ export const getCreateSubscriptionUrl = createServerFn({ method: "POST" })
     return billing.createCheckoutSession({
       priceId: data.priceId,
       successUrl: data.successUrl,
-      customerEmail: context.session.user.email!,
-      customerName: context.session.user.name ?? undefined,
+      customerEmail: context.session.user.email as string,
+      customerName: (context.session.user.name as string) ?? undefined,
       metadata: {
         externalId: context.session.user.identityProviderId!,
         app_id: app.name.toLowerCase(),

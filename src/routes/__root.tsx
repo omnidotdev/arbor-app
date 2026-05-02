@@ -21,8 +21,8 @@ import ThemeProvider from "@/providers/ThemeProvider";
 import { fetchSession } from "@/server/functions/auth";
 import { getTheme } from "@/server/functions/theme";
 
-import type { QueryClient } from "@tanstack/react-query";
 import type { OrganizationClaim } from "@omnidotdev/providers/auth";
+import type { QueryClient } from "@tanstack/react-query";
 import type { Session } from "better-auth/types";
 import type { ReactNode } from "react";
 
