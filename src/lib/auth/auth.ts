@@ -72,7 +72,7 @@ const auth = betterAuth({
       if (cachedValue) {
         const cached = await authCache.decrypt(cachedValue);
         if (cached) {
-          rowId = cached.rowId;
+          rowId = cached.rowId ?? null;
           identityProviderId = cached.identityProviderId;
           organizations = cached.organizations;
         }

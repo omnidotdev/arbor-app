@@ -11,7 +11,6 @@ import {
   BASE_URL,
 } from "@/lib/config/env.config";
 
-// @ts-expect-error BA 1.5 widens user index type to `unknown`, incompatible with TanStack `{}`
 export const fetchSession = createServerFn().handler(async () => {
   const request = getRequest();
 
