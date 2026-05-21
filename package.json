@@ -31,7 +31,7 @@
     "graphql-request": "^7.4.0",
     "lucide-react": "^0.562.0",
     "react": "^19.2.3",
-    "react-diff-viewer-continued": "^3.4.0",
+    "react-diff-viewer-continued": "^4.0.0",
     "react-dom": "^19.2.3",
     "reactflow": "^11.11.4",
     "satori": "^0.25.0",
