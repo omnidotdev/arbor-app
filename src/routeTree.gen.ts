@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiHealthzRouteImport } from './routes/api/healthz'
 import { Route as AppGraphRouteImport } from './routes/_app/graph'
 import { Route as AppRepositoriesIndexRouteImport } from './routes/_app/repositories/index'
 import { Route as AppOrganizationsIndexRouteImport } from './routes/_app/organizations/index'
@@ -36,6 +37,11 @@ const AppRoute = AppRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHealthzRoute = ApiHealthzRouteImport.update({
+  id: '/api/healthz',
+  path: '/api/healthz',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppGraphRoute = AppGraphRouteImport.update({
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/pricing': typeof PricingRoute
   '/graph': typeof AppGraphRoute
+  '/api/healthz': typeof ApiHealthzRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/organizations': typeof AppOrganizationsIndexRoute
   '/repositories': typeof AppRepositoriesIndexRoute
@@ -119,6 +126,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/pricing': typeof PricingRoute
   '/graph': typeof AppGraphRoute
+  '/api/healthz': typeof ApiHealthzRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/organizations': typeof AppOrganizationsIndexRoute
   '/repositories': typeof AppRepositoriesIndexRoute
@@ -136,6 +144,7 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/pricing': typeof PricingRoute
   '/_app/graph': typeof AppGraphRoute
+  '/api/healthz': typeof ApiHealthzRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_app/organizations/': typeof AppOrganizationsIndexRoute
   '/_app/repositories/': typeof AppRepositoriesIndexRoute
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/'
     | '/pricing'
     | '/graph'
+    | '/api/healthz'
     | '/api/auth/$'
     | '/organizations'
     | '/repositories'
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/'
     | '/pricing'
     | '/graph'
+    | '/api/healthz'
     | '/api/auth/$'
     | '/organizations'
     | '/repositories'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/_app'
     | '/pricing'
     | '/_app/graph'
+    | '/api/healthz'
     | '/api/auth/$'
     | '/_app/organizations/'
     | '/_app/repositories/'
@@ -200,6 +212,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   PricingRoute: typeof PricingRoute
+  ApiHealthzRoute: typeof ApiHealthzRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiOgRepoOwnerRepoRoute: typeof ApiOgRepoOwnerRepoRoute
 }
@@ -225,6 +238,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/healthz': {
+      id: '/api/healthz'
+      path: '/api/healthz'
+      fullPath: '/api/healthz'
+      preLoaderRoute: typeof ApiHealthzRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/graph': {
@@ -352,6 +372,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   PricingRoute: PricingRoute,
+  ApiHealthzRoute: ApiHealthzRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiOgRepoOwnerRepoRoute: ApiOgRepoOwnerRepoRoute,
 }
