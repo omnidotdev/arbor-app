@@ -36,7 +36,7 @@
     "reactflow": "^11.11.4",
     "satori": "^0.25.0",
     "sharp": "^0.34.5",
-    "shiki": "^3.20.0",
+    "shiki": "^4.0.0",
     "tailwind-merge": "^3.4.0",
     "unleash-client": "^6.3.0",
     "zod": "^3.24.4"
