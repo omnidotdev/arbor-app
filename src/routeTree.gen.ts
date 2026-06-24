@@ -112,15 +112,15 @@ export interface FileRoutesByFullPath {
   '/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/organizations': typeof AppOrganizationsIndexRoute
-  '/repositories': typeof AppRepositoriesIndexRoute
+  '/organizations/': typeof AppOrganizationsIndexRoute
+  '/repositories/': typeof AppRepositoriesIndexRoute
   '/repositories/$owner/$repo': typeof AppRepositoriesOwnerRepoRouteWithChildren
-  '/organizations/$orgSlug': typeof AppOrganizationsOrgSlugIndexRoute
+  '/organizations/$orgSlug/': typeof AppOrganizationsOrgSlugIndexRoute
   '/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
   '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
   '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
-  '/repositories/$owner/$repo/pulls': typeof AppRepositoriesOwnerRepoPullsIndexRoute
+  '/repositories/$owner/$repo/pulls/': typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -164,15 +164,15 @@ export interface FileRouteTypes {
     | '/graph'
     | '/api/healthz'
     | '/api/auth/$'
-    | '/organizations'
-    | '/repositories'
+    | '/organizations/'
+    | '/repositories/'
     | '/repositories/$owner/$repo'
-    | '/organizations/$orgSlug'
+    | '/organizations/$orgSlug/'
     | '/repositories/$owner/$repo/branches'
     | '/repositories/$owner/$repo/commits'
     | '/api/og/repo/$owner/$repo'
     | '/repositories/$owner/$repo/pulls/new'
-    | '/repositories/$owner/$repo/pulls'
+    | '/repositories/$owner/$repo/pulls/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -229,7 +229,7 @@ declare module '@tanstack/react-router' {
     '/_app': {
       id: '/_app'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -257,14 +257,14 @@ declare module '@tanstack/react-router' {
     '/_app/repositories/': {
       id: '/_app/repositories/'
       path: '/repositories'
-      fullPath: '/repositories'
+      fullPath: '/repositories/'
       preLoaderRoute: typeof AppRepositoriesIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/organizations/': {
       id: '/_app/organizations/'
       path: '/organizations'
-      fullPath: '/organizations'
+      fullPath: '/organizations/'
       preLoaderRoute: typeof AppOrganizationsIndexRouteImport
       parentRoute: typeof AppRoute
     }
@@ -278,7 +278,7 @@ declare module '@tanstack/react-router' {
     '/_app/organizations/$orgSlug/': {
       id: '/_app/organizations/$orgSlug/'
       path: '/organizations/$orgSlug'
-      fullPath: '/organizations/$orgSlug'
+      fullPath: '/organizations/$orgSlug/'
       preLoaderRoute: typeof AppOrganizationsOrgSlugIndexRouteImport
       parentRoute: typeof AppRoute
     }
@@ -313,7 +313,7 @@ declare module '@tanstack/react-router' {
     '/_app/repositories/$owner/$repo/pulls/': {
       id: '/_app/repositories/$owner/$repo/pulls/'
       path: '/pulls'
-      fullPath: '/repositories/$owner/$repo/pulls'
+      fullPath: '/repositories/$owner/$repo/pulls/'
       preLoaderRoute: typeof AppRepositoriesOwnerRepoPullsIndexRouteImport
       parentRoute: typeof AppRepositoriesOwnerRepoRoute
     }

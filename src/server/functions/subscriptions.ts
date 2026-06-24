@@ -53,7 +53,7 @@ const requireAccessToken = (accessToken: string | undefined): string => {
  */
 export const getSubscription = createServerFn()
   .middleware([authMiddleware])
-  .inputValidator((data) => organizationSchema.parse(data))
+  .validator((data) => organizationSchema.parse(data))
   .handler(async ({ data, context }) => {
     return billing.getSubscription(
       "organization",
@@ -68,7 +68,7 @@ export const getSubscription = createServerFn()
  */
 export const revokeSubscription = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator((data) => organizationSchema.parse(data))
+  .validator((data) => organizationSchema.parse(data))
   .handler(async ({ data, context }) => {
     return billing.cancelSubscription(
       "organization",
@@ -82,7 +82,7 @@ export const revokeSubscription = createServerFn({ method: "POST" })
  */
 export const getBillingPortalUrl = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator((data) => billingPortalSchema.parse(data))
+  .validator((data) => billingPortalSchema.parse(data))
   .handler(async ({ data, context }) => {
     return billing.getBillingPortalUrl(
       "organization",
@@ -98,7 +98,7 @@ export const getBillingPortalUrl = createServerFn({ method: "POST" })
  */
 export const getCreateSubscriptionUrl = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator((data) => createSubscriptionSchema.parse(data))
+  .validator((data) => createSubscriptionSchema.parse(data))
   .handler(async ({ data, context }) => {
     return billing.createCheckoutSession({
       priceId: data.priceId,
@@ -119,7 +119,7 @@ export const getCreateSubscriptionUrl = createServerFn({ method: "POST" })
  */
 export const renewSubscription = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator((data) => organizationSchema.parse(data))
+  .validator((data) => organizationSchema.parse(data))
   .handler(async ({ data, context }) => {
     return billing.renewSubscription(
       "organization",
@@ -134,7 +134,7 @@ export const renewSubscription = createServerFn({ method: "POST" })
  */
 export const createCheckoutWithWorkspace = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator((data) => checkoutWithWorkspaceSchema.parse(data))
+  .validator((data) => checkoutWithWorkspaceSchema.parse(data))
   .handler(async ({ data, context }) => {
     return billing.createCheckoutWithWorkspace({
       appId: app.name.toLowerCase(),

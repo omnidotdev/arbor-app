@@ -13,7 +13,7 @@ export const FLAGS = {
  * Accepts optional user context for admin bypass (@omni.dev users).
  */
 export const fetchMaintenanceMode = createServerFn({ method: "GET" })
-  .inputValidator((data: FlagContext | undefined) => data)
+  .validator((data: FlagContext | undefined) => data)
   .handler(async ({ data: context }) => {
     const isMaintenanceMode = await isEnabled(
       FLAGS.MAINTENANCE,

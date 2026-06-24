@@ -95,11 +95,10 @@ const getInviteTimeInfo = (
   };
 };
 
+export type { InviteTimeInfo, ValidateInvitationParams, ValidationResult };
 export {
   formatRelativeTime,
   getInviteTimeInfo,
   isInvitationExpired,
   validateInvitation,
 };
-
-export type { InviteTimeInfo, ValidateInvitationParams, ValidationResult };

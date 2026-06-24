@@ -6,7 +6,7 @@
 
 import { createBillingProvider } from "@omnidotdev/providers/billing";
 
-import { BILLING_BASE_URL } from "@/lib/config/env.config";
+import { BILLING_BASE_URL, hasBilling } from "@/lib/config/env.config";
 
 export type {
   BillingProvider,
@@ -17,10 +17,17 @@ export type {
   Subscription,
 } from "@omnidotdev/providers/billing";
 
-const billing = createBillingProvider({
-  provider: "aether",
-  baseUrl: BILLING_BASE_URL,
-  appId: "arbor",
-});
+// Degrade gracefully when billing is not configured. The Aether provider throws
+// at construction if baseUrl is missing, and this module is bundled into the
+// client (the pricing route imports it), so a missing BILLING_BASE_URL would
+// crash the route at load. The noop provider returns empty/null for reads and
+// rejects writes with a clear "Billing is not configured" signal instead
+const billing = hasBilling
+  ? createBillingProvider({
+      provider: "aether",
+      baseUrl: BILLING_BASE_URL,
+      appId: "arbor",
+    })
+  : createBillingProvider({ provider: "noop" });
 
 export default billing;

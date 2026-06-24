@@ -24,9 +24,11 @@ export const FREE_PRICE: Price = {
     name: "Free",
     description: "Start for free",
     marketing_features: [
-      { name: "3 public repositories" },
-      { name: "1 private repository" },
-      { name: "2 collaborators per repository" },
+      { name: "Unlimited private repositories" },
+      { name: "Basic graph visualization" },
+      { name: "Up to 5 collaborators per repository" },
+      { name: "1 GB storage" },
+      { name: "Community support" },
     ],
   },
 };

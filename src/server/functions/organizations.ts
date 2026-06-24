@@ -20,7 +20,7 @@ const getOrganizationBySlugSchema = z.object({
  * @knipignore
  */
 export const createOrganization = createServerFn({ method: "POST" })
-  .inputValidator((data) => createOrganizationSchema.parse(data))
+  .validator((data) => createOrganizationSchema.parse(data))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const accessToken = context.session.accessToken;
@@ -37,7 +37,7 @@ export const createOrganization = createServerFn({ method: "POST" })
  * Used when JWT claims are stale and don't include a newly created org
  */
 export const getOrganizationBySlug = createServerFn({ method: "GET" })
-  .inputValidator((data) => getOrganizationBySlugSchema.parse(data))
+  .validator((data) => getOrganizationBySlugSchema.parse(data))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const accessToken = context.session.accessToken;
@@ -54,7 +54,7 @@ export const getOrganizationBySlug = createServerFn({ method: "GET" })
  * Used for public access when no JWT is available
  */
 export const fetchOrganizationBySlug = createServerFn()
-  .inputValidator((data) => getOrganizationBySlugSchema.parse(data))
+  .validator((data) => getOrganizationBySlugSchema.parse(data))
   .handler(async ({ data }) => {
     try {
       return await gatekeeperOrg.fetchOrganizationBySlug(data.slug);
@@ -75,7 +75,7 @@ const inviteOrganizationMemberSchema = z.object({
  * Runs server-side to avoid CORS issues with the IDP's Better Auth endpoint
  */
 export const inviteOrganizationMember = createServerFn({ method: "POST" })
-  .inputValidator((data) => inviteOrganizationMemberSchema.parse(data))
+  .validator((data) => inviteOrganizationMemberSchema.parse(data))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const accessToken = context.session.accessToken;
@@ -100,7 +100,7 @@ const resendOrganizationInvitationSchema = z.object({
  * @knipignore
  */
 export const resendOrganizationInvitation = createServerFn({ method: "POST" })
-  .inputValidator((data) => resendOrganizationInvitationSchema.parse(data))
+  .validator((data) => resendOrganizationInvitationSchema.parse(data))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const accessToken = context.session.accessToken;
@@ -121,7 +121,7 @@ const listOrganizationInvitationsSchema = z.object({
  * Runs server-side to avoid CORS issues with the IDP's Better Auth endpoint
  */
 export const listOrganizationInvitations = createServerFn({ method: "GET" })
-  .inputValidator((data) => listOrganizationInvitationsSchema.parse(data))
+  .validator((data) => listOrganizationInvitationsSchema.parse(data))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const accessToken = context.session.accessToken;
@@ -142,7 +142,7 @@ const cancelOrganizationInvitationSchema = z.object({
  * Runs server-side to avoid CORS issues with the IDP's Better Auth endpoint
  */
 export const cancelOrganizationInvitation = createServerFn({ method: "POST" })
-  .inputValidator((data) => cancelOrganizationInvitationSchema.parse(data))
+  .validator((data) => cancelOrganizationInvitationSchema.parse(data))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const accessToken = context.session.accessToken;
@@ -164,7 +164,7 @@ const listOrganizationMembersSchema = z.object({
  * Accepts accessToken in data for flexibility
  */
 export const listOrganizationMembers = createServerFn({ method: "GET" })
-  .inputValidator((data) => listOrganizationMembersSchema.parse(data))
+  .validator((data) => listOrganizationMembersSchema.parse(data))
   .handler(async ({ data }) => {
     return gatekeeperOrg.listMembers(data.organizationId, data.accessToken);
   });
@@ -180,7 +180,7 @@ const updateOrganizationMemberRoleSchema = z.object({
  * Runs server-side to avoid CORS issues with the IDP's Better Auth endpoint
  */
 export const updateOrganizationMemberRole = createServerFn({ method: "POST" })
-  .inputValidator((data) => updateOrganizationMemberRoleSchema.parse(data))
+  .validator((data) => updateOrganizationMemberRoleSchema.parse(data))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const accessToken = context.session.accessToken;
@@ -202,7 +202,7 @@ const removeOrganizationMemberSchema = z.object({
  * Runs server-side to avoid CORS issues with the IDP's Better Auth endpoint
  */
 export const removeOrganizationMember = createServerFn({ method: "POST" })
-  .inputValidator((data) => removeOrganizationMemberSchema.parse(data))
+  .validator((data) => removeOrganizationMemberSchema.parse(data))
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const accessToken = context.session.accessToken;

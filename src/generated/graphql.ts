@@ -1,13 +1,13 @@
 // @ts-nocheck
+/** Internal type. DO NOT USE DIRECTLY. */
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+/** Internal type. DO NOT USE DIRECTLY. */
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+import { DocumentTypeDecoration } from '@graphql-typed-document-node/core';
 import { useMutation, useQuery, useSuspenseQuery, useInfiniteQuery, useSuspenseInfiniteQuery, UseMutationOptions, UseQueryOptions, UseSuspenseQueryOptions, UseInfiniteQueryOptions, InfiniteData, UseSuspenseInfiniteQueryOptions } from '@tanstack/react-query';
 import { graphqlFetch } from '@/lib/graphql/graphqlFetch';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -15,407 +15,11 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  BigFloat: { input: any; output: any; }
+  BigFloat: { input: unknown; output: unknown; }
   BigInt: { input: string; output: string; }
   Cursor: { input: string; output: string; }
   Datetime: { input: Date; output: Date; }
-  JSON: { input: any; output: any; }
   UUID: { input: string; output: string; }
-};
-
-export enum AuditEventType {
-  Authentication = 'authentication',
-  CircuitBreaker = 'circuit_breaker',
-  PermissionCheck = 'permission_check',
-  PermissionDenied = 'permission_denied',
-  ResourceCreate = 'resource_create',
-  ResourceDelete = 'resource_delete',
-  ResourceUpdate = 'resource_update'
-}
-
-/** A filter to be used against AuditEventType fields. All fields are combined with a logical ‘and.’ */
-export type AuditEventTypeFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<AuditEventType>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<AuditEventType>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<AuditEventType>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<AuditEventType>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<AuditEventType>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<AuditEventType>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<AuditEventType>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<AuditEventType>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<AuditEventType>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<AuditEventType>>;
-};
-
-export type AuditLog = Node & {
-  __typename?: 'AuditLog';
-  action?: Maybe<Scalars['String']['output']>;
-  allowed?: Maybe<Scalars['Boolean']['output']>;
-  createdAt: Scalars['Datetime']['output'];
-  durationMs?: Maybe<Scalars['Int']['output']>;
-  eventType: AuditEventType;
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  id: Scalars['ID']['output'];
-  idpUserId?: Maybe<Scalars['UUID']['output']>;
-  ipAddress?: Maybe<Scalars['String']['output']>;
-  metadata?: Maybe<Scalars['JSON']['output']>;
-  resourceId?: Maybe<Scalars['UUID']['output']>;
-  resourceType?: Maybe<Scalars['String']['output']>;
-  rowId: Scalars['UUID']['output'];
-  userAgent?: Maybe<Scalars['String']['output']>;
-  userId?: Maybe<Scalars['UUID']['output']>;
-};
-
-export type AuditLogAggregates = {
-  __typename?: 'AuditLogAggregates';
-  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  average?: Maybe<AuditLogAverageAggregates>;
-  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  distinctCount?: Maybe<AuditLogDistinctCountAggregates>;
-  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  max?: Maybe<AuditLogMaxAggregates>;
-  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  min?: Maybe<AuditLogMinAggregates>;
-  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  stddevPopulation?: Maybe<AuditLogStddevPopulationAggregates>;
-  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  stddevSample?: Maybe<AuditLogStddevSampleAggregates>;
-  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  sum?: Maybe<AuditLogSumAggregates>;
-  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  variancePopulation?: Maybe<AuditLogVariancePopulationAggregates>;
-  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  varianceSample?: Maybe<AuditLogVarianceSampleAggregates>;
-};
-
-export type AuditLogAverageAggregates = {
-  __typename?: 'AuditLogAverageAggregates';
-  /** Mean average of durationMs across the matching connection */
-  durationMs?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-/**
- * A condition to be used against `AuditLog` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
- */
-export type AuditLogCondition = {
-  /** Checks for equality with the object’s `action` field. */
-  action?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `allowed` field. */
-  allowed?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `durationMs` field. */
-  durationMs?: InputMaybe<Scalars['Int']['input']>;
-  /** Checks for equality with the object’s `eventType` field. */
-  eventType?: InputMaybe<AuditEventType>;
-  /** Checks for equality with the object’s `idpUserId` field. */
-  idpUserId?: InputMaybe<Scalars['UUID']['input']>;
-  /** Checks for equality with the object’s `ipAddress` field. */
-  ipAddress?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `resourceId` field. */
-  resourceId?: InputMaybe<Scalars['UUID']['input']>;
-  /** Checks for equality with the object’s `resourceType` field. */
-  resourceType?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `rowId` field. */
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  /** Checks for equality with the object’s `userAgent` field. */
-  userAgent?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `userId` field. */
-  userId?: InputMaybe<Scalars['UUID']['input']>;
-};
-
-/** A connection to a list of `AuditLog` values. */
-export type AuditLogConnection = {
-  __typename?: 'AuditLogConnection';
-  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  aggregates?: Maybe<AuditLogAggregates>;
-  /** A list of edges which contains the `AuditLog` and cursor to aid in pagination. */
-  edges: Array<AuditLogEdge>;
-  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  groupedAggregates?: Maybe<Array<AuditLogAggregates>>;
-  /** A list of `AuditLog` objects. */
-  nodes: Array<AuditLog>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `AuditLog` you could get from the connection. */
-  totalCount: Scalars['Int']['output'];
-};
-
-
-/** A connection to a list of `AuditLog` values. */
-export type AuditLogConnectionGroupedAggregatesArgs = {
-  groupBy: Array<AuditLogGroupBy>;
-  having?: InputMaybe<AuditLogHavingInput>;
-};
-
-export type AuditLogDistinctCountAggregates = {
-  __typename?: 'AuditLogDistinctCountAggregates';
-  /** Distinct count of action across the matching connection */
-  action?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of allowed across the matching connection */
-  allowed?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of createdAt across the matching connection */
-  createdAt?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of durationMs across the matching connection */
-  durationMs?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of eventType across the matching connection */
-  eventType?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of idpUserId across the matching connection */
-  idpUserId?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of ipAddress across the matching connection */
-  ipAddress?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of metadata across the matching connection */
-  metadata?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of resourceId across the matching connection */
-  resourceId?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of resourceType across the matching connection */
-  resourceType?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of rowId across the matching connection */
-  rowId?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of userAgent across the matching connection */
-  userAgent?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of userId across the matching connection */
-  userId?: Maybe<Scalars['BigInt']['output']>;
-};
-
-/** A `AuditLog` edge in the connection. */
-export type AuditLogEdge = {
-  __typename?: 'AuditLogEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']['output']>;
-  /** The `AuditLog` at the end of the edge. */
-  node: AuditLog;
-};
-
-/** A filter to be used against `AuditLog` object types. All fields are combined with a logical ‘and.’ */
-export type AuditLogFilter = {
-  /** Filter by the object’s `action` field. */
-  action?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `allowed` field. */
-  allowed?: InputMaybe<BooleanFilter>;
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<AuditLogFilter>>;
-  /** Filter by the object’s `createdAt` field. */
-  createdAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `durationMs` field. */
-  durationMs?: InputMaybe<IntFilter>;
-  /** Filter by the object’s `eventType` field. */
-  eventType?: InputMaybe<AuditEventTypeFilter>;
-  /** Filter by the object’s `idpUserId` field. */
-  idpUserId?: InputMaybe<UuidFilter>;
-  /** Filter by the object’s `ipAddress` field. */
-  ipAddress?: InputMaybe<StringFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<AuditLogFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<AuditLogFilter>>;
-  /** Filter by the object’s `resourceId` field. */
-  resourceId?: InputMaybe<UuidFilter>;
-  /** Filter by the object’s `resourceType` field. */
-  resourceType?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `rowId` field. */
-  rowId?: InputMaybe<UuidFilter>;
-  /** Filter by the object’s `userAgent` field. */
-  userAgent?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `userId` field. */
-  userId?: InputMaybe<UuidFilter>;
-};
-
-/** Grouping methods for `AuditLog` for usage during aggregation. */
-export enum AuditLogGroupBy {
-  Action = 'ACTION',
-  Allowed = 'ALLOWED',
-  CreatedAt = 'CREATED_AT',
-  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
-  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
-  DurationMs = 'DURATION_MS',
-  EventType = 'EVENT_TYPE',
-  IdpUserId = 'IDP_USER_ID',
-  IpAddress = 'IP_ADDRESS',
-  Metadata = 'METADATA',
-  ResourceId = 'RESOURCE_ID',
-  ResourceType = 'RESOURCE_TYPE',
-  UserAgent = 'USER_AGENT',
-  UserId = 'USER_ID'
-}
-
-export type AuditLogHavingAverageInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  durationMs?: InputMaybe<HavingIntFilter>;
-};
-
-export type AuditLogHavingDistinctCountInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  durationMs?: InputMaybe<HavingIntFilter>;
-};
-
-/** Conditions for `AuditLog` aggregates. */
-export type AuditLogHavingInput = {
-  AND?: InputMaybe<Array<AuditLogHavingInput>>;
-  OR?: InputMaybe<Array<AuditLogHavingInput>>;
-  average?: InputMaybe<AuditLogHavingAverageInput>;
-  distinctCount?: InputMaybe<AuditLogHavingDistinctCountInput>;
-  max?: InputMaybe<AuditLogHavingMaxInput>;
-  min?: InputMaybe<AuditLogHavingMinInput>;
-  stddevPopulation?: InputMaybe<AuditLogHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<AuditLogHavingStddevSampleInput>;
-  sum?: InputMaybe<AuditLogHavingSumInput>;
-  variancePopulation?: InputMaybe<AuditLogHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<AuditLogHavingVarianceSampleInput>;
-};
-
-export type AuditLogHavingMaxInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  durationMs?: InputMaybe<HavingIntFilter>;
-};
-
-export type AuditLogHavingMinInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  durationMs?: InputMaybe<HavingIntFilter>;
-};
-
-export type AuditLogHavingStddevPopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  durationMs?: InputMaybe<HavingIntFilter>;
-};
-
-export type AuditLogHavingStddevSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  durationMs?: InputMaybe<HavingIntFilter>;
-};
-
-export type AuditLogHavingSumInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  durationMs?: InputMaybe<HavingIntFilter>;
-};
-
-export type AuditLogHavingVariancePopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  durationMs?: InputMaybe<HavingIntFilter>;
-};
-
-export type AuditLogHavingVarianceSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  durationMs?: InputMaybe<HavingIntFilter>;
-};
-
-/** An input for mutations affecting `AuditLog` */
-export type AuditLogInput = {
-  action?: InputMaybe<Scalars['String']['input']>;
-  allowed?: InputMaybe<Scalars['Boolean']['input']>;
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  durationMs?: InputMaybe<Scalars['Int']['input']>;
-  eventType: AuditEventType;
-  idpUserId?: InputMaybe<Scalars['UUID']['input']>;
-  ipAddress?: InputMaybe<Scalars['String']['input']>;
-  metadata?: InputMaybe<Scalars['JSON']['input']>;
-  resourceId?: InputMaybe<Scalars['UUID']['input']>;
-  resourceType?: InputMaybe<Scalars['String']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  userAgent?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['UUID']['input']>;
-};
-
-export type AuditLogMaxAggregates = {
-  __typename?: 'AuditLogMaxAggregates';
-  /** Maximum of durationMs across the matching connection */
-  durationMs?: Maybe<Scalars['Int']['output']>;
-};
-
-export type AuditLogMinAggregates = {
-  __typename?: 'AuditLogMinAggregates';
-  /** Minimum of durationMs across the matching connection */
-  durationMs?: Maybe<Scalars['Int']['output']>;
-};
-
-/** Methods to use when ordering `AuditLog`. */
-export enum AuditLogOrderBy {
-  ActionAsc = 'ACTION_ASC',
-  ActionDesc = 'ACTION_DESC',
-  AllowedAsc = 'ALLOWED_ASC',
-  AllowedDesc = 'ALLOWED_DESC',
-  CreatedAtAsc = 'CREATED_AT_ASC',
-  CreatedAtDesc = 'CREATED_AT_DESC',
-  DurationMsAsc = 'DURATION_MS_ASC',
-  DurationMsDesc = 'DURATION_MS_DESC',
-  IdpUserIdAsc = 'IDP_USER_ID_ASC',
-  IdpUserIdDesc = 'IDP_USER_ID_DESC',
-  IpAddressAsc = 'IP_ADDRESS_ASC',
-  IpAddressDesc = 'IP_ADDRESS_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
-  ResourceIdAsc = 'RESOURCE_ID_ASC',
-  ResourceIdDesc = 'RESOURCE_ID_DESC',
-  ResourceTypeAsc = 'RESOURCE_TYPE_ASC',
-  ResourceTypeDesc = 'RESOURCE_TYPE_DESC',
-  RowIdAsc = 'ROW_ID_ASC',
-  RowIdDesc = 'ROW_ID_DESC',
-  UserAgentAsc = 'USER_AGENT_ASC',
-  UserAgentDesc = 'USER_AGENT_DESC',
-  UserIdAsc = 'USER_ID_ASC',
-  UserIdDesc = 'USER_ID_DESC'
-}
-
-/** Represents an update to a `AuditLog`. Fields that are set will be updated. */
-export type AuditLogPatch = {
-  action?: InputMaybe<Scalars['String']['input']>;
-  allowed?: InputMaybe<Scalars['Boolean']['input']>;
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  durationMs?: InputMaybe<Scalars['Int']['input']>;
-  eventType?: InputMaybe<AuditEventType>;
-  idpUserId?: InputMaybe<Scalars['UUID']['input']>;
-  ipAddress?: InputMaybe<Scalars['String']['input']>;
-  metadata?: InputMaybe<Scalars['JSON']['input']>;
-  resourceId?: InputMaybe<Scalars['UUID']['input']>;
-  resourceType?: InputMaybe<Scalars['String']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  userAgent?: InputMaybe<Scalars['String']['input']>;
-  userId?: InputMaybe<Scalars['UUID']['input']>;
-};
-
-export type AuditLogStddevPopulationAggregates = {
-  __typename?: 'AuditLogStddevPopulationAggregates';
-  /** Population standard deviation of durationMs across the matching connection */
-  durationMs?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-export type AuditLogStddevSampleAggregates = {
-  __typename?: 'AuditLogStddevSampleAggregates';
-  /** Sample standard deviation of durationMs across the matching connection */
-  durationMs?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-export type AuditLogSumAggregates = {
-  __typename?: 'AuditLogSumAggregates';
-  /** Sum of durationMs across the matching connection */
-  durationMs: Scalars['BigInt']['output'];
-};
-
-export type AuditLogVariancePopulationAggregates = {
-  __typename?: 'AuditLogVariancePopulationAggregates';
-  /** Population variance of durationMs across the matching connection */
-  durationMs?: Maybe<Scalars['BigFloat']['output']>;
-};
-
-export type AuditLogVarianceSampleAggregates = {
-  __typename?: 'AuditLogVarianceSampleAggregates';
-  /** Sample variance of durationMs across the matching connection */
-  durationMs?: Maybe<Scalars['BigFloat']['output']>;
 };
 
 /** A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’ */
@@ -540,39 +144,6 @@ export type CommitHistoryArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   path?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** All input for the create `AuditLog` mutation. */
-export type CreateAuditLogInput = {
-  /** The `AuditLog` to be created by this mutation. */
-  auditLog: AuditLogInput;
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** The output of our create `AuditLog` mutation. */
-export type CreateAuditLogPayload = {
-  __typename?: 'CreateAuditLogPayload';
-  /** The `AuditLog` that was created by this mutation. */
-  auditLog?: Maybe<AuditLog>;
-  /** An edge for our `AuditLog`. May be used by Relay 1. */
-  auditLogEdge?: Maybe<AuditLogEdge>;
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our create `AuditLog` mutation. */
-export type CreateAuditLogPayloadAuditLogEdgeArgs = {
-  orderBy?: Array<AuditLogOrderBy>;
 };
 
 /** All input for the create `ExternalDependency` mutation. */
@@ -1012,50 +583,6 @@ export type DatetimeFilter = {
   notEqualTo?: InputMaybe<Scalars['Datetime']['input']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['Datetime']['input']>>;
-};
-
-/** All input for the `deleteAuditLogById` mutation. */
-export type DeleteAuditLogByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `AuditLog` to be deleted. */
-  id: Scalars['ID']['input'];
-};
-
-/** All input for the `deleteAuditLog` mutation. */
-export type DeleteAuditLogInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  rowId: Scalars['UUID']['input'];
-};
-
-/** The output of our delete `AuditLog` mutation. */
-export type DeleteAuditLogPayload = {
-  __typename?: 'DeleteAuditLogPayload';
-  /** The `AuditLog` that was deleted by this mutation. */
-  auditLog?: Maybe<AuditLog>;
-  /** An edge for our `AuditLog`. May be used by Relay 1. */
-  auditLogEdge?: Maybe<AuditLogEdge>;
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  deletedAuditLogId?: Maybe<Scalars['ID']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our delete `AuditLog` mutation. */
-export type DeleteAuditLogPayloadAuditLogEdgeArgs = {
-  orderBy?: Array<AuditLogOrderBy>;
 };
 
 /** All input for the `deleteExternalDependencyById` mutation. */
@@ -1560,46 +1087,10 @@ export type DeleteUserPayloadUserEdgeArgs = {
   orderBy?: Array<UserOrderBy>;
 };
 
-export enum DetectionSource {
-  ArborManifest = 'arbor_manifest',
-  CargoToml = 'cargo_toml',
-  GoMod = 'go_mod',
-  GraphqlSchema = 'graphql_schema',
-  Manual = 'manual',
-  Openapi = 'openapi',
-  PackageJson = 'package_json'
-}
-
-/** A filter to be used against DetectionSource fields. All fields are combined with a logical ‘and.’ */
-export type DetectionSourceFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<DetectionSource>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<DetectionSource>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<DetectionSource>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<DetectionSource>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<DetectionSource>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<DetectionSource>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<DetectionSource>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<DetectionSource>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<DetectionSource>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<DetectionSource>>;
-};
-
 export type ExternalDependency = Node & {
   __typename?: 'ExternalDependency';
   createdAt: Scalars['Datetime']['output'];
-  detectionSource: DetectionSource;
+  detectionSource: Scalars['String']['output'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   id: Scalars['ID']['output'];
   packageManager: Scalars['String']['output'];
@@ -1634,7 +1125,7 @@ export type ExternalDependencyCondition = {
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `detectionSource` field. */
-  detectionSource?: InputMaybe<DetectionSource>;
+  detectionSource?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `packageManager` field. */
   packageManager?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `packageName` field. */
@@ -1715,7 +1206,7 @@ export type ExternalDependencyFilter = {
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `detectionSource` field. */
-  detectionSource?: InputMaybe<DetectionSourceFilter>;
+  detectionSource?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<ExternalDependencyFilter>;
   /** Checks for any expressions in this list. */
@@ -1800,7 +1291,7 @@ export type ExternalDependencyHavingVarianceSampleInput = {
 /** An input for mutations affecting `ExternalDependency` */
 export type ExternalDependencyInput = {
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  detectionSource?: InputMaybe<DetectionSource>;
+  detectionSource?: InputMaybe<Scalars['String']['input']>;
   packageManager: Scalars['String']['input'];
   packageName: Scalars['String']['input'];
   repositoryId: Scalars['UUID']['input'];
@@ -1812,6 +1303,8 @@ export type ExternalDependencyInput = {
 export enum ExternalDependencyOrderBy {
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
+  DetectionSourceAsc = 'DETECTION_SOURCE_ASC',
+  DetectionSourceDesc = 'DETECTION_SOURCE_DESC',
   Natural = 'NATURAL',
   PackageManagerAsc = 'PACKAGE_MANAGER_ASC',
   PackageManagerDesc = 'PACKAGE_MANAGER_DESC',
@@ -1830,7 +1323,7 @@ export enum ExternalDependencyOrderBy {
 /** Represents an update to a `ExternalDependency`. Fields that are set will be updated. */
 export type ExternalDependencyPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  detectionSource?: InputMaybe<DetectionSource>;
+  detectionSource?: InputMaybe<Scalars['String']['input']>;
   packageManager?: InputMaybe<Scalars['String']['input']>;
   packageName?: InputMaybe<Scalars['String']['input']>;
   repositoryId?: InputMaybe<Scalars['UUID']['input']>;
@@ -1950,11 +1443,28 @@ export type IntFilter = {
   notIn?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
+/** Input for merging a pull request. */
+export type MergePullRequestInput = {
+  /** Optional custom commit message. If not provided, a default message is used. */
+  commitMessage?: InputMaybe<Scalars['String']['input']>;
+  /** The pull request ID. */
+  pullRequestId: Scalars['UUID']['input'];
+};
+
+/** Payload for mergePullRequest mutation. */
+export type MergePullRequestPayload = {
+  __typename?: 'MergePullRequestPayload';
+  /** Error message if merge failed. */
+  error?: Maybe<Scalars['String']['output']>;
+  /** The merge commit SHA. */
+  mergeCommitSha?: Maybe<Scalars['String']['output']>;
+  /** Whether the merge was successful. */
+  success: Scalars['Boolean']['output'];
+};
+
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
-  /** Creates a single `AuditLog`. */
-  createAuditLog?: Maybe<CreateAuditLogPayload>;
   /** Creates a single `ExternalDependency`. */
   createExternalDependency?: Maybe<CreateExternalDependencyPayload>;
   /** Creates a single `Organization`. */
@@ -1985,10 +1495,6 @@ export type Mutation = {
   createRepositoryWithGit?: Maybe<CreateRepositoryWithGitPayload>;
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>;
-  /** Deletes a single `AuditLog` using a unique key. */
-  deleteAuditLog?: Maybe<DeleteAuditLogPayload>;
-  /** Deletes a single `AuditLog` using its globally unique id. */
-  deleteAuditLogById?: Maybe<DeleteAuditLogPayload>;
   /** Deletes a single `ExternalDependency` using a unique key. */
   deleteExternalDependency?: Maybe<DeleteExternalDependencyPayload>;
   /** Deletes a single `ExternalDependency` using its globally unique id. */
@@ -2040,10 +1546,11 @@ export type Mutation = {
    * Called after the repository record is created in the database.
    */
   initializeRepository?: Maybe<InitializeRepositoryPayload>;
-  /** Updates a single `AuditLog` using a unique key and a patch. */
-  updateAuditLog?: Maybe<UpdateAuditLogPayload>;
-  /** Updates a single `AuditLog` using its globally unique id and a patch. */
-  updateAuditLogById?: Maybe<UpdateAuditLogPayload>;
+  /**
+   * Merge a pull request into its target branch.
+   * Requires write access to the repository.
+   */
+  mergePullRequest?: Maybe<MergePullRequestPayload>;
   /** Updates a single `ExternalDependency` using a unique key and a patch. */
   updateExternalDependency?: Maybe<UpdateExternalDependencyPayload>;
   /** Updates a single `ExternalDependency` using its globally unique id and a patch. */
@@ -2088,12 +1595,6 @@ export type Mutation = {
   updateUser?: Maybe<UpdateUserPayload>;
   /** Updates a single `User` using its globally unique id and a patch. */
   updateUserById?: Maybe<UpdateUserPayload>;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateAuditLogArgs = {
-  input: CreateAuditLogInput;
 };
 
 
@@ -2172,18 +1673,6 @@ export type MutationCreateRepositoryWithGitArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteAuditLogArgs = {
-  input: DeleteAuditLogInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteAuditLogByIdArgs = {
-  input: DeleteAuditLogByIdInput;
 };
 
 
@@ -2332,14 +1821,8 @@ export type MutationInitializeRepositoryArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateAuditLogArgs = {
-  input: UpdateAuditLogInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateAuditLogByIdArgs = {
-  input: UpdateAuditLogByIdInput;
+export type MutationMergePullRequestArgs = {
+  input: MergePullRequestInput;
 };
 
 
@@ -2934,7 +2417,7 @@ export type PullRequest = Node & {
   repositoryId: Scalars['UUID']['output'];
   rowId: Scalars['UUID']['output'];
   sourceBranch: Scalars['String']['output'];
-  state: PullRequestState;
+  state: Scalars['String']['output'];
   targetBranch: Scalars['String']['output'];
   title: Scalars['String']['output'];
   updatedAt: Scalars['Datetime']['output'];
@@ -3481,7 +2964,7 @@ export type PullRequestCondition = {
   /** Checks for equality with the object’s `sourceBranch` field. */
   sourceBranch?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `state` field. */
-  state?: InputMaybe<PullRequestState>;
+  state?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `targetBranch` field. */
   targetBranch?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `title` field. */
@@ -3622,7 +3105,7 @@ export type PullRequestFilter = {
   /** Filter by the object’s `sourceBranch` field. */
   sourceBranch?: InputMaybe<StringFilter>;
   /** Filter by the object’s `state` field. */
-  state?: InputMaybe<PullRequestStateFilter>;
+  state?: InputMaybe<StringFilter>;
   /** Filter by the object’s `targetBranch` field. */
   targetBranch?: InputMaybe<StringFilter>;
   /** Filter by the object’s `title` field. */
@@ -3757,7 +3240,7 @@ export type PullRequestInput = {
   repositoryId: Scalars['UUID']['input'];
   rowId?: InputMaybe<Scalars['UUID']['input']>;
   sourceBranch: Scalars['String']['input'];
-  state?: InputMaybe<PullRequestState>;
+  state?: InputMaybe<Scalars['String']['input']>;
   targetBranch: Scalars['String']['input'];
   title: Scalars['String']['input'];
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
@@ -3868,6 +3351,8 @@ export enum PullRequestOrderBy {
   RowIdDesc = 'ROW_ID_DESC',
   SourceBranchAsc = 'SOURCE_BRANCH_ASC',
   SourceBranchDesc = 'SOURCE_BRANCH_DESC',
+  StateAsc = 'STATE_ASC',
+  StateDesc = 'STATE_DESC',
   TargetBranchAsc = 'TARGET_BRANCH_ASC',
   TargetBranchDesc = 'TARGET_BRANCH_DESC',
   TitleAsc = 'TITLE_ASC',
@@ -3889,7 +3374,7 @@ export type PullRequestPatch = {
   repositoryId?: InputMaybe<Scalars['UUID']['input']>;
   rowId?: InputMaybe<Scalars['UUID']['input']>;
   sourceBranch?: InputMaybe<Scalars['String']['input']>;
-  state?: InputMaybe<PullRequestState>;
+  state?: InputMaybe<Scalars['String']['input']>;
   targetBranch?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
@@ -3908,7 +3393,7 @@ export type PullRequestReview = Node & {
   reviewer?: Maybe<User>;
   reviewerId: Scalars['UUID']['output'];
   rowId: Scalars['UUID']['output'];
-  state: ReviewState;
+  state: Scalars['String']['output'];
   submittedAt?: Maybe<Scalars['Datetime']['output']>;
   updatedAt: Scalars['Datetime']['output'];
 };
@@ -3944,7 +3429,7 @@ export type PullRequestReviewCondition = {
   /** Checks for equality with the object’s `rowId` field. */
   rowId?: InputMaybe<Scalars['UUID']['input']>;
   /** Checks for equality with the object’s `state` field. */
-  state?: InputMaybe<ReviewState>;
+  state?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `submittedAt` field. */
   submittedAt?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `updatedAt` field. */
@@ -4038,7 +3523,7 @@ export type PullRequestReviewFilter = {
   /** Filter by the object’s `rowId` field. */
   rowId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `state` field. */
-  state?: InputMaybe<ReviewStateFilter>;
+  state?: InputMaybe<StringFilter>;
   /** Filter by the object’s `submittedAt` field. */
   submittedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `updatedAt` field. */
@@ -4138,7 +3623,7 @@ export type PullRequestReviewInput = {
   pullRequestId: Scalars['UUID']['input'];
   reviewerId: Scalars['UUID']['input'];
   rowId?: InputMaybe<Scalars['UUID']['input']>;
-  state?: InputMaybe<ReviewState>;
+  state?: InputMaybe<Scalars['String']['input']>;
   submittedAt?: InputMaybe<Scalars['Datetime']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
 };
@@ -4158,6 +3643,8 @@ export enum PullRequestReviewOrderBy {
   ReviewerIdDesc = 'REVIEWER_ID_DESC',
   RowIdAsc = 'ROW_ID_ASC',
   RowIdDesc = 'ROW_ID_DESC',
+  StateAsc = 'STATE_ASC',
+  StateDesc = 'STATE_DESC',
   SubmittedAtAsc = 'SUBMITTED_AT_ASC',
   SubmittedAtDesc = 'SUBMITTED_AT_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
@@ -4171,42 +3658,9 @@ export type PullRequestReviewPatch = {
   pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
   reviewerId?: InputMaybe<Scalars['UUID']['input']>;
   rowId?: InputMaybe<Scalars['UUID']['input']>;
-  state?: InputMaybe<ReviewState>;
+  state?: InputMaybe<Scalars['String']['input']>;
   submittedAt?: InputMaybe<Scalars['Datetime']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-};
-
-export enum PullRequestState {
-  Closed = 'closed',
-  Draft = 'draft',
-  Merged = 'merged',
-  Open = 'open'
-}
-
-/** A filter to be used against PullRequestState fields. All fields are combined with a logical ‘and.’ */
-export type PullRequestStateFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<PullRequestState>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<PullRequestState>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<PullRequestState>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<PullRequestState>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<PullRequestState>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<PullRequestState>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<PullRequestState>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<PullRequestState>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<PullRequestState>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<PullRequestState>>;
 };
 
 export type PullRequestStddevPopulationAggregateFilter = {
@@ -4286,12 +3740,6 @@ export type PullRequestVarianceSampleAggregates = {
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
   __typename?: 'Query';
-  /** Get a single `AuditLog`. */
-  auditLog?: Maybe<AuditLog>;
-  /** Reads a single `AuditLog` using its globally unique `ID`. */
-  auditLogById?: Maybe<AuditLog>;
-  /** Reads and enables pagination through a set of `AuditLog`. */
-  auditLogs?: Maybe<AuditLogConnection>;
   /** Reads and enables pagination through a set of `ExternalDependency`. */
   externalDependencies?: Maybe<ExternalDependencyConnection>;
   /** Get a single `ExternalDependency`. */
@@ -4380,31 +3828,6 @@ export type Query = Node & {
   userByUsername?: Maybe<User>;
   /** Reads and enables pagination through a set of `User`. */
   users?: Maybe<UserConnection>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryAuditLogArgs = {
-  rowId: Scalars['UUID']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryAuditLogByIdArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryAuditLogsArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<AuditLogCondition>;
-  filter?: InputMaybe<AuditLogFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<AuditLogOrderBy>>;
 };
 
 
@@ -5540,7 +4963,7 @@ export type RepositoryRelationship = Node & {
   branch?: Maybe<Scalars['String']['output']>;
   confidence: Scalars['Float']['output'];
   createdAt: Scalars['Datetime']['output'];
-  detectionSource: DetectionSource;
+  detectionSource: Scalars['String']['output'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   id: Scalars['ID']['output'];
   /** Reads a single `RepositoryRelationshipType` that is related to this `RepositoryRelationship`. */
@@ -5640,7 +5063,7 @@ export type RepositoryRelationshipCondition = {
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `detectionSource` field. */
-  detectionSource?: InputMaybe<DetectionSource>;
+  detectionSource?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `relationshipTypeId` field. */
   relationshipTypeId?: InputMaybe<Scalars['UUID']['input']>;
   /** Checks for equality with the object’s `rowId` field. */
@@ -5736,7 +5159,7 @@ export type RepositoryRelationshipFilter = {
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `detectionSource` field. */
-  detectionSource?: InputMaybe<DetectionSourceFilter>;
+  detectionSource?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<RepositoryRelationshipFilter>;
   /** Checks for any expressions in this list. */
@@ -5856,7 +5279,7 @@ export type RepositoryRelationshipInput = {
   branch?: InputMaybe<Scalars['String']['input']>;
   confidence?: InputMaybe<Scalars['Float']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  detectionSource?: InputMaybe<DetectionSource>;
+  detectionSource?: InputMaybe<Scalars['String']['input']>;
   relationshipTypeId: Scalars['UUID']['input'];
   rowId?: InputMaybe<Scalars['UUID']['input']>;
   sourceRepositoryId: Scalars['UUID']['input'];
@@ -6111,6 +5534,8 @@ export enum RepositoryRelationshipOrderBy {
   ConfidenceDesc = 'CONFIDENCE_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
+  DetectionSourceAsc = 'DETECTION_SOURCE_ASC',
+  DetectionSourceDesc = 'DETECTION_SOURCE_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
@@ -6145,7 +5570,7 @@ export type RepositoryRelationshipPatch = {
   branch?: InputMaybe<Scalars['String']['input']>;
   confidence?: InputMaybe<Scalars['Float']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  detectionSource?: InputMaybe<DetectionSource>;
+  detectionSource?: InputMaybe<Scalars['String']['input']>;
   relationshipTypeId?: InputMaybe<Scalars['UUID']['input']>;
   rowId?: InputMaybe<Scalars['UUID']['input']>;
   sourceRepositoryId?: InputMaybe<Scalars['UUID']['input']>;
@@ -6565,39 +5990,6 @@ export type RepositoryToManyRepositoryRelationshipFilter = {
   some?: InputMaybe<RepositoryRelationshipFilter>;
 };
 
-export enum ReviewState {
-  Approved = 'approved',
-  ChangesRequested = 'changes_requested',
-  Commented = 'commented',
-  Pending = 'pending'
-}
-
-/** A filter to be used against ReviewState fields. All fields are combined with a logical ‘and.’ */
-export type ReviewStateFilter = {
-  /** Not equal to the specified value, treating null like an ordinary value. */
-  distinctFrom?: InputMaybe<ReviewState>;
-  /** Equal to the specified value. */
-  equalTo?: InputMaybe<ReviewState>;
-  /** Greater than the specified value. */
-  greaterThan?: InputMaybe<ReviewState>;
-  /** Greater than or equal to the specified value. */
-  greaterThanOrEqualTo?: InputMaybe<ReviewState>;
-  /** Included in the specified list. */
-  in?: InputMaybe<Array<ReviewState>>;
-  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
-  isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  /** Less than the specified value. */
-  lessThan?: InputMaybe<ReviewState>;
-  /** Less than or equal to the specified value. */
-  lessThanOrEqualTo?: InputMaybe<ReviewState>;
-  /** Equal to the specified value, treating null like an ordinary value. */
-  notDistinctFrom?: InputMaybe<ReviewState>;
-  /** Not equal to the specified value. */
-  notEqualTo?: InputMaybe<ReviewState>;
-  /** Not included in the specified list. */
-  notIn?: InputMaybe<Array<ReviewState>>;
-};
-
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
 export type StringFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -6726,53 +6118,6 @@ export type UuidFilter = {
   notEqualTo?: InputMaybe<Scalars['UUID']['input']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['UUID']['input']>>;
-};
-
-/** All input for the `updateAuditLogById` mutation. */
-export type UpdateAuditLogByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `AuditLog` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `AuditLog` being updated. */
-  patch: AuditLogPatch;
-};
-
-/** All input for the `updateAuditLog` mutation. */
-export type UpdateAuditLogInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** An object where the defined keys will be set on the `AuditLog` being updated. */
-  patch: AuditLogPatch;
-  rowId: Scalars['UUID']['input'];
-};
-
-/** The output of our update `AuditLog` mutation. */
-export type UpdateAuditLogPayload = {
-  __typename?: 'UpdateAuditLogPayload';
-  /** The `AuditLog` that was updated by this mutation. */
-  auditLog?: Maybe<AuditLog>;
-  /** An edge for our `AuditLog`. May be used by Relay 1. */
-  auditLogEdge?: Maybe<AuditLogEdge>;
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our update `AuditLog` mutation. */
-export type UpdateAuditLogPayloadAuditLogEdgeArgs = {
-  orderBy?: Array<AuditLogOrderBy>;
 };
 
 /** All input for the `updateExternalDependencyById` mutation. */
@@ -7931,102 +7276,213 @@ export type VisibilityFilter = {
   notIn?: InputMaybe<Array<Visibility>>;
 };
 
+/** All input for the create `Organization` mutation. */
+export type CreateOrganizationInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  /** The `Organization` to be created by this mutation. */
+  organization: OrganizationInput;
+};
+
+/** All input for the create `Repository` mutation. */
+export type CreateRepositoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  /** The `Repository` to be created by this mutation. */
+  repository: RepositoryInput;
+};
+
+/** All input for the `deleteRepository` mutation. */
+export type DeleteRepositoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  rowId: string;
+};
+
+/** An input for mutations affecting `Organization` */
+export type OrganizationInput = {
+  avatarUrl?: string | null | undefined;
+  billingAccountId?: string | null | undefined;
+  createdAt?: Date | null | undefined;
+  deletedAt?: Date | null | undefined;
+  deletionReason?: string | null | undefined;
+  description?: string | null | undefined;
+  idpOrganizationId: string;
+  rowId?: string | null | undefined;
+  subscriptionId?: string | null | undefined;
+  updatedAt?: Date | null | undefined;
+};
+
+export type Permission =
+  | 'admin'
+  | 'read'
+  | 'write';
+
+/** An input for mutations affecting `Repository` */
+export type RepositoryInput = {
+  createdAt?: Date | null | undefined;
+  defaultBranch?: string | null | undefined;
+  description?: string | null | undefined;
+  name: string;
+  organizationId?: string | null | undefined;
+  ownerId: string;
+  rowId?: string | null | undefined;
+  slug: string;
+  updatedAt?: Date | null | undefined;
+  visibility?: Visibility | null | undefined;
+};
+
+/** Represents an update to a `Repository`. Fields that are set will be updated. */
+export type RepositoryPatch = {
+  createdAt?: Date | null | undefined;
+  defaultBranch?: string | null | undefined;
+  description?: string | null | undefined;
+  name?: string | null | undefined;
+  organizationId?: string | null | undefined;
+  ownerId?: string | null | undefined;
+  rowId?: string | null | undefined;
+  slug?: string | null | undefined;
+  updatedAt?: Date | null | undefined;
+  visibility?: Visibility | null | undefined;
+};
+
+/** All input for the `updateRepository` mutation. */
+export type UpdateRepositoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  /** An object where the defined keys will be set on the `Repository` being updated. */
+  patch: RepositoryPatch;
+  rowId: string;
+};
+
+export type Visibility =
+  | 'private'
+  | 'public';
+
 export type CreateOrganizationMutationVariables = Exact<{
   input: CreateOrganizationInput;
 }>;
 
 
-export type CreateOrganizationMutation = { __typename?: 'Mutation', createOrganization?: { __typename?: 'CreateOrganizationPayload', organization?: { __typename?: 'Organization', rowId: string, idpOrganizationId: string, description?: string | null, avatarUrl?: string | null, createdAt: Date } | null } | null };
+export type CreateOrganizationMutation = { createOrganization: { organization: { rowId: string, idpOrganizationId: string, description: string | null, avatarUrl: string | null, createdAt: Date } | null } | null };
 
 export type CreateRepositoryMutationVariables = Exact<{
   input: CreateRepositoryInput;
 }>;
 
 
-export type CreateRepositoryMutation = { __typename?: 'Mutation', createRepository?: { __typename?: 'CreateRepositoryPayload', repository?: { __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner?: { __typename?: 'User', rowId: string, username: string } | null, organization?: { __typename?: 'Organization', rowId: string, idpOrganizationId: string } | null } | null } | null };
+export type CreateRepositoryMutation = { createRepository: { repository: { rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null } | null } | null };
 
 export type DeleteRepositoryMutationVariables = Exact<{
   input: DeleteRepositoryInput;
 }>;
 
 
-export type DeleteRepositoryMutation = { __typename?: 'Mutation', deleteRepository?: { __typename?: 'DeleteRepositoryPayload', repository?: { __typename?: 'Repository', rowId: string } | null } | null };
+export type DeleteRepositoryMutation = { deleteRepository: { repository: { rowId: string } | null } | null };
 
 export type UpdateRepositoryMutationVariables = Exact<{
   input: UpdateRepositoryInput;
 }>;
 
 
-export type UpdateRepositoryMutation = { __typename?: 'Mutation', updateRepository?: { __typename?: 'UpdateRepositoryPayload', repository?: { __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner?: { __typename?: 'User', rowId: string, username: string } | null, organization?: { __typename?: 'Organization', rowId: string, idpOrganizationId: string } | null } | null } | null };
+export type UpdateRepositoryMutation = { updateRepository: { repository: { rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null } | null } | null };
 
 export type RepositoryGraphQueryVariables = Exact<{
-  userId: Scalars['UUID']['input'];
-  organizationId?: InputMaybe<Scalars['UUID']['input']>;
+  userId: string;
+  organizationId?: string | null | undefined;
 }>;
 
 
-export type RepositoryGraphQuery = { __typename?: 'Query', repositories?: { __typename?: 'RepositoryConnection', nodes: Array<{ __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, owner?: { __typename?: 'User', rowId: string, username: string } | null, organization?: { __typename?: 'Organization', rowId: string, idpOrganizationId: string } | null, outgoingRelationships: { __typename?: 'RepositoryRelationshipConnection', nodes: Array<{ __typename?: 'RepositoryRelationship', rowId: string, confidence: number, versionConstraint?: string | null, targetRepository?: { __typename?: 'Repository', rowId: string, name: string, slug: string, owner?: { __typename?: 'User', username: string } | null, organization?: { __typename?: 'Organization', idpOrganizationId: string } | null } | null, relationshipType?: { __typename?: 'RepositoryRelationshipType', rowId: string, name: string, isDirected: boolean } | null }> } }> } | null, repositoryRelationshipTypes?: { __typename?: 'RepositoryRelationshipTypeConnection', nodes: Array<{ __typename?: 'RepositoryRelationshipType', rowId: string, name: string, description?: string | null, isDirected: boolean }> } | null };
+export type RepositoryGraphQuery = { repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null, outgoingRelationships: { nodes: Array<{ rowId: string, confidence: number, versionConstraint: string | null, targetRepository: { rowId: string, name: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null, relationshipType: { rowId: string, name: string, isDirected: boolean } | null }> } }> } | null, repositoryRelationshipTypes: { nodes: Array<{ rowId: string, name: string, description: string | null, isDirected: boolean }> } | null };
 
 export type OrganizationQueryVariables = Exact<{
-  rowId: Scalars['UUID']['input'];
+  rowId: string;
 }>;
 
 
-export type OrganizationQuery = { __typename?: 'Query', organization?: { __typename?: 'Organization', rowId: string, idpOrganizationId: string, description?: string | null, avatarUrl?: string | null, createdAt: Date, updatedAt: Date, repositories: { __typename?: 'RepositoryConnection', totalCount: number, nodes: Array<{ __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, updatedAt: Date }> } } | null };
+export type OrganizationQuery = { organization: { rowId: string, idpOrganizationId: string, description: string | null, avatarUrl: string | null, createdAt: Date, updatedAt: Date, repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, updatedAt: Date }> } } | null };
 
 export type OrganizationsQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Int']['input']>;
+  limit?: number | null | undefined;
 }>;
 
 
-export type OrganizationsQuery = { __typename?: 'Query', organizations?: { __typename?: 'OrganizationConnection', totalCount: number, nodes: Array<{ __typename?: 'Organization', rowId: string, idpOrganizationId: string, description?: string | null, avatarUrl?: string | null, createdAt: Date, updatedAt: Date, repositories: { __typename?: 'RepositoryConnection', totalCount: number } }> } | null };
+export type OrganizationsQuery = { organizations: { totalCount: number, nodes: Array<{ rowId: string, idpOrganizationId: string, description: string | null, avatarUrl: string | null, createdAt: Date, updatedAt: Date, repositories: { totalCount: number } }> } | null };
 
 export type RepositoriesQueryVariables = Exact<{
-  userId: Scalars['UUID']['input'];
-  limit?: InputMaybe<Scalars['Int']['input']>;
+  userId: string;
+  limit?: number | null | undefined;
 }>;
 
 
-export type RepositoriesQuery = { __typename?: 'Query', repositories?: { __typename?: 'RepositoryConnection', totalCount: number, nodes: Array<{ __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner?: { __typename?: 'User', rowId: string, username: string, avatarUrl?: string | null } | null, organization?: { __typename?: 'Organization', rowId: string, idpOrganizationId: string, avatarUrl?: string | null } | null }> } | null };
+export type RepositoriesQuery = { repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null }> } | null };
 
 export type RepositoryQueryVariables = Exact<{
-  rowId: Scalars['UUID']['input'];
+  rowId: string;
 }>;
 
 
-export type RepositoryQuery = { __typename?: 'Query', repository?: { __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner?: { __typename?: 'User', rowId: string, username: string, avatarUrl?: string | null } | null, organization?: { __typename?: 'Organization', rowId: string, idpOrganizationId: string, avatarUrl?: string | null } | null, repositoryCollaborators: { __typename?: 'RepositoryCollaboratorConnection', nodes: Array<{ __typename?: 'RepositoryCollaborator', userId: string, permission: Permission, user?: { __typename?: 'User', rowId: string, username: string, avatarUrl?: string | null } | null }> } } | null };
+export type RepositoryQuery = { repository: { rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null, repositoryCollaborators: { nodes: Array<{ userId: string, permission: Permission, user: { rowId: string, username: string, avatarUrl: string | null } | null }> } } | null };
 
 export type RepositoryWithBranchesQueryVariables = Exact<{
-  ownerSlug: Scalars['String']['input'];
-  repoSlug: Scalars['String']['input'];
+  ownerSlug: string;
+  repoSlug: string;
 }>;
 
 
-export type RepositoryWithBranchesQuery = { __typename?: 'Query', repositories?: { __typename?: 'RepositoryConnection', nodes: Array<{ __typename?: 'Repository', rowId: string, name: string, slug: string, description?: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner?: { __typename?: 'User', rowId: string, username: string, avatarUrl?: string | null } | null, organization?: { __typename?: 'Organization', rowId: string, idpOrganizationId: string, avatarUrl?: string | null } | null, refs: { __typename?: 'RefConnection', totalCount: number, nodes: Array<{ __typename?: 'Ref', id: string, name: string, prefix: string, target?:
-            | { __typename?: 'Blob' }
-            | { __typename?: 'Commit', oid: string }
-            | { __typename?: 'Tree' }
-           | null }> }, defaultBranchRef?: { __typename?: 'Ref', id: string, name: string, prefix: string, target?:
-          | { __typename?: 'Blob' }
-          | { __typename?: 'Commit', oid: string }
-          | { __typename?: 'Tree' }
+export type RepositoryWithBranchesQuery = { repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null, refs: { totalCount: number, nodes: Array<{ id: string, name: string, prefix: string, target:
+            | { oid: string }
+            | Record<PropertyKey, never>
+           | null }> }, defaultBranchRef: { id: string, name: string, prefix: string, target:
+          | { oid: string }
+          | Record<PropertyKey, never>
          | null } | null }> } | null };
 
 export type ObserverQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ObserverQuery = { __typename?: 'Query', observer?: { __typename?: 'Observer', rowId: string } | null };
+export type ObserverQuery = { observer: { rowId: string } | null };
 
 export type UserByIdentityProviderIdQueryVariables = Exact<{
-  identityProviderId: Scalars['UUID']['input'];
+  identityProviderId: string;
 }>;
 
 
-export type UserByIdentityProviderIdQuery = { __typename?: 'Query', userByIdentityProviderId?: { __typename?: 'User', rowId: string, email: string, name: string, avatarUrl?: string | null, createdAt: Date } | null };
+export type UserByIdentityProviderIdQuery = { userByIdentityProviderId: { rowId: string, email: string, name: string, avatarUrl: string | null, createdAt: Date } | null };
 
 
+export class TypedDocumentString<TResult, TVariables>
+  extends String
+  implements DocumentTypeDecoration<TResult, TVariables>
+{
+  __apiType?: NonNullable<DocumentTypeDecoration<TResult, TVariables>['__apiType']>;
+  private value: string;
+  public __meta__?: Record<string, any> | undefined;
 
-export const CreateOrganizationDocument = `
+  constructor(value: string, __meta__?: Record<string, any> | undefined) {
+    super(value);
+    this.value = value;
+    this.__meta__ = __meta__;
+  }
+
+  override toString(): string & DocumentTypeDecoration<TResult, TVariables> {
+    return this.value;
+  }
+}
+
+export const CreateOrganizationDocument = new TypedDocumentString(`
     mutation CreateOrganization($input: CreateOrganizationInput!) {
   createOrganization(input: $input) {
     organization {
@@ -8038,7 +7494,7 @@ export const CreateOrganizationDocument = `
     }
   }
 }
-    `;
+    `);
 
 export const useCreateOrganizationMutation = <
       TError = unknown,
@@ -8058,7 +7514,7 @@ useCreateOrganizationMutation.getKey = () => ['CreateOrganization'];
 
 useCreateOrganizationMutation.fetcher = (variables: CreateOrganizationMutationVariables, options?: RequestInit['headers']) => graphqlFetch<CreateOrganizationMutation, CreateOrganizationMutationVariables>(CreateOrganizationDocument, variables, options);
 
-export const CreateRepositoryDocument = `
+export const CreateRepositoryDocument = new TypedDocumentString(`
     mutation CreateRepository($input: CreateRepositoryInput!) {
   createRepository(input: $input) {
     repository {
@@ -8081,7 +7537,7 @@ export const CreateRepositoryDocument = `
     }
   }
 }
-    `;
+    `);
 
 export const useCreateRepositoryMutation = <
       TError = unknown,
@@ -8101,7 +7557,7 @@ useCreateRepositoryMutation.getKey = () => ['CreateRepository'];
 
 useCreateRepositoryMutation.fetcher = (variables: CreateRepositoryMutationVariables, options?: RequestInit['headers']) => graphqlFetch<CreateRepositoryMutation, CreateRepositoryMutationVariables>(CreateRepositoryDocument, variables, options);
 
-export const DeleteRepositoryDocument = `
+export const DeleteRepositoryDocument = new TypedDocumentString(`
     mutation DeleteRepository($input: DeleteRepositoryInput!) {
   deleteRepository(input: $input) {
     repository {
@@ -8109,7 +7565,7 @@ export const DeleteRepositoryDocument = `
     }
   }
 }
-    `;
+    `);
 
 export const useDeleteRepositoryMutation = <
       TError = unknown,
@@ -8129,7 +7585,7 @@ useDeleteRepositoryMutation.getKey = () => ['DeleteRepository'];
 
 useDeleteRepositoryMutation.fetcher = (variables: DeleteRepositoryMutationVariables, options?: RequestInit['headers']) => graphqlFetch<DeleteRepositoryMutation, DeleteRepositoryMutationVariables>(DeleteRepositoryDocument, variables, options);
 
-export const UpdateRepositoryDocument = `
+export const UpdateRepositoryDocument = new TypedDocumentString(`
     mutation UpdateRepository($input: UpdateRepositoryInput!) {
   updateRepository(input: $input) {
     repository {
@@ -8152,7 +7608,7 @@ export const UpdateRepositoryDocument = `
     }
   }
 }
-    `;
+    `);
 
 export const useUpdateRepositoryMutation = <
       TError = unknown,
@@ -8172,7 +7628,7 @@ useUpdateRepositoryMutation.getKey = () => ['UpdateRepository'];
 
 useUpdateRepositoryMutation.fetcher = (variables: UpdateRepositoryMutationVariables, options?: RequestInit['headers']) => graphqlFetch<UpdateRepositoryMutation, UpdateRepositoryMutationVariables>(UpdateRepositoryDocument, variables, options);
 
-export const RepositoryGraphDocument = `
+export const RepositoryGraphDocument = new TypedDocumentString(`
     query RepositoryGraph($userId: UUID!, $organizationId: UUID) {
   repositories(
     filter: {or: [{ownerId: {equalTo: $userId}}, {repositoryCollaborators: {some: {userId: {equalTo: $userId}}}}, {organizationId: {equalTo: $organizationId}}]}
@@ -8226,7 +7682,7 @@ export const RepositoryGraphDocument = `
     }
   }
 }
-    `;
+    `);
 
 export const useRepositoryGraphQuery = <
       TData = RepositoryGraphQuery,
@@ -8256,13 +7712,13 @@ export const useSuspenseRepositoryGraphQuery = <
     
     return useSuspenseQuery<RepositoryGraphQuery, TError, TData>(
       {
-    queryKey: ['RepositoryGraphSuspense', variables],
+    queryKey: ['RepositoryGraph', variables],
     queryFn: graphqlFetch<RepositoryGraphQuery, RepositoryGraphQueryVariables>(RepositoryGraphDocument, variables),
     ...options
   }
     )};
 
-useSuspenseRepositoryGraphQuery.getKey = (variables: RepositoryGraphQueryVariables) => ['RepositoryGraphSuspense', variables];
+useSuspenseRepositoryGraphQuery.getKey = (variables: RepositoryGraphQueryVariables) => ['RepositoryGraph', variables];
 
 export const useInfiniteRepositoryGraphQuery = <
       TData = InfiniteData<RepositoryGraphQuery>,
@@ -8297,19 +7753,19 @@ export const useSuspenseInfiniteRepositoryGraphQuery = <
       (() => {
     const { queryKey: optionsQueryKey, ...restOptions } = options;
     return {
-      queryKey: optionsQueryKey ?? ['RepositoryGraph.infiniteSuspense', variables],
+      queryKey: optionsQueryKey ?? ['RepositoryGraph.infinite', variables],
       queryFn: (metaData) => graphqlFetch<RepositoryGraphQuery, RepositoryGraphQueryVariables>(RepositoryGraphDocument, {...variables, ...(metaData.pageParam ?? {})})(),
       ...restOptions
     }
   })()
     )};
 
-useSuspenseInfiniteRepositoryGraphQuery.getKey = (variables: RepositoryGraphQueryVariables) => ['RepositoryGraph.infiniteSuspense', variables];
+useSuspenseInfiniteRepositoryGraphQuery.getKey = (variables: RepositoryGraphQueryVariables) => ['RepositoryGraph.infinite', variables];
 
 
 useRepositoryGraphQuery.fetcher = (variables: RepositoryGraphQueryVariables, options?: RequestInit['headers']) => graphqlFetch<RepositoryGraphQuery, RepositoryGraphQueryVariables>(RepositoryGraphDocument, variables, options);
 
-export const OrganizationDocument = `
+export const OrganizationDocument = new TypedDocumentString(`
     query Organization($rowId: UUID!) {
   organization(rowId: $rowId) {
     rowId
@@ -8331,7 +7787,7 @@ export const OrganizationDocument = `
     }
   }
 }
-    `;
+    `);
 
 export const useOrganizationQuery = <
       TData = OrganizationQuery,
@@ -8361,13 +7817,13 @@ export const useSuspenseOrganizationQuery = <
     
     return useSuspenseQuery<OrganizationQuery, TError, TData>(
       {
-    queryKey: ['OrganizationSuspense', variables],
+    queryKey: ['Organization', variables],
     queryFn: graphqlFetch<OrganizationQuery, OrganizationQueryVariables>(OrganizationDocument, variables),
     ...options
   }
     )};
 
-useSuspenseOrganizationQuery.getKey = (variables: OrganizationQueryVariables) => ['OrganizationSuspense', variables];
+useSuspenseOrganizationQuery.getKey = (variables: OrganizationQueryVariables) => ['Organization', variables];
 
 export const useInfiniteOrganizationQuery = <
       TData = InfiniteData<OrganizationQuery>,
@@ -8402,19 +7858,19 @@ export const useSuspenseInfiniteOrganizationQuery = <
       (() => {
     const { queryKey: optionsQueryKey, ...restOptions } = options;
     return {
-      queryKey: optionsQueryKey ?? ['Organization.infiniteSuspense', variables],
+      queryKey: optionsQueryKey ?? ['Organization.infinite', variables],
       queryFn: (metaData) => graphqlFetch<OrganizationQuery, OrganizationQueryVariables>(OrganizationDocument, {...variables, ...(metaData.pageParam ?? {})})(),
       ...restOptions
     }
   })()
     )};
 
-useSuspenseInfiniteOrganizationQuery.getKey = (variables: OrganizationQueryVariables) => ['Organization.infiniteSuspense', variables];
+useSuspenseInfiniteOrganizationQuery.getKey = (variables: OrganizationQueryVariables) => ['Organization.infinite', variables];
 
 
 useOrganizationQuery.fetcher = (variables: OrganizationQueryVariables, options?: RequestInit['headers']) => graphqlFetch<OrganizationQuery, OrganizationQueryVariables>(OrganizationDocument, variables, options);
 
-export const OrganizationsDocument = `
+export const OrganizationsDocument = new TypedDocumentString(`
     query Organizations($limit: Int) {
   organizations(first: $limit) {
     nodes {
@@ -8431,7 +7887,7 @@ export const OrganizationsDocument = `
     totalCount
   }
 }
-    `;
+    `);
 
 export const useOrganizationsQuery = <
       TData = OrganizationsQuery,
@@ -8461,13 +7917,13 @@ export const useSuspenseOrganizationsQuery = <
     
     return useSuspenseQuery<OrganizationsQuery, TError, TData>(
       {
-    queryKey: variables === undefined ? ['OrganizationsSuspense'] : ['OrganizationsSuspense', variables],
+    queryKey: variables === undefined ? ['Organizations'] : ['Organizations', variables],
     queryFn: graphqlFetch<OrganizationsQuery, OrganizationsQueryVariables>(OrganizationsDocument, variables),
     ...options
   }
     )};
 
-useSuspenseOrganizationsQuery.getKey = (variables?: OrganizationsQueryVariables) => variables === undefined ? ['OrganizationsSuspense'] : ['OrganizationsSuspense', variables];
+useSuspenseOrganizationsQuery.getKey = (variables?: OrganizationsQueryVariables) => variables === undefined ? ['Organizations'] : ['Organizations', variables];
 
 export const useInfiniteOrganizationsQuery = <
       TData = InfiniteData<OrganizationsQuery>,
@@ -8502,19 +7958,19 @@ export const useSuspenseInfiniteOrganizationsQuery = <
       (() => {
     const { queryKey: optionsQueryKey, ...restOptions } = options;
     return {
-      queryKey: optionsQueryKey ?? variables === undefined ? ['Organizations.infiniteSuspense'] : ['Organizations.infiniteSuspense', variables],
+      queryKey: optionsQueryKey ?? variables === undefined ? ['Organizations.infinite'] : ['Organizations.infinite', variables],
       queryFn: (metaData) => graphqlFetch<OrganizationsQuery, OrganizationsQueryVariables>(OrganizationsDocument, {...variables, ...(metaData.pageParam ?? {})})(),
       ...restOptions
     }
   })()
     )};
 
-useSuspenseInfiniteOrganizationsQuery.getKey = (variables?: OrganizationsQueryVariables) => variables === undefined ? ['Organizations.infiniteSuspense'] : ['Organizations.infiniteSuspense', variables];
+useSuspenseInfiniteOrganizationsQuery.getKey = (variables?: OrganizationsQueryVariables) => variables === undefined ? ['Organizations.infinite'] : ['Organizations.infinite', variables];
 
 
 useOrganizationsQuery.fetcher = (variables?: OrganizationsQueryVariables, options?: RequestInit['headers']) => graphqlFetch<OrganizationsQuery, OrganizationsQueryVariables>(OrganizationsDocument, variables, options);
 
-export const RepositoriesDocument = `
+export const RepositoriesDocument = new TypedDocumentString(`
     query Repositories($userId: UUID!, $limit: Int) {
   repositories(
     filter: {or: [{ownerId: {equalTo: $userId}}, {repositoryCollaborators: {some: {userId: {equalTo: $userId}}}}]}
@@ -8544,7 +8000,7 @@ export const RepositoriesDocument = `
     totalCount
   }
 }
-    `;
+    `);
 
 export const useRepositoriesQuery = <
       TData = RepositoriesQuery,
@@ -8574,13 +8030,13 @@ export const useSuspenseRepositoriesQuery = <
     
     return useSuspenseQuery<RepositoriesQuery, TError, TData>(
       {
-    queryKey: ['RepositoriesSuspense', variables],
+    queryKey: ['Repositories', variables],
     queryFn: graphqlFetch<RepositoriesQuery, RepositoriesQueryVariables>(RepositoriesDocument, variables),
     ...options
   }
     )};
 
-useSuspenseRepositoriesQuery.getKey = (variables: RepositoriesQueryVariables) => ['RepositoriesSuspense', variables];
+useSuspenseRepositoriesQuery.getKey = (variables: RepositoriesQueryVariables) => ['Repositories', variables];
 
 export const useInfiniteRepositoriesQuery = <
       TData = InfiniteData<RepositoriesQuery>,
@@ -8615,19 +8071,19 @@ export const useSuspenseInfiniteRepositoriesQuery = <
       (() => {
     const { queryKey: optionsQueryKey, ...restOptions } = options;
     return {
-      queryKey: optionsQueryKey ?? ['Repositories.infiniteSuspense', variables],
+      queryKey: optionsQueryKey ?? ['Repositories.infinite', variables],
       queryFn: (metaData) => graphqlFetch<RepositoriesQuery, RepositoriesQueryVariables>(RepositoriesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
       ...restOptions
     }
   })()
     )};
 
-useSuspenseInfiniteRepositoriesQuery.getKey = (variables: RepositoriesQueryVariables) => ['Repositories.infiniteSuspense', variables];
+useSuspenseInfiniteRepositoriesQuery.getKey = (variables: RepositoriesQueryVariables) => ['Repositories.infinite', variables];
 
 
 useRepositoriesQuery.fetcher = (variables: RepositoriesQueryVariables, options?: RequestInit['headers']) => graphqlFetch<RepositoriesQuery, RepositoriesQueryVariables>(RepositoriesDocument, variables, options);
 
-export const RepositoryDocument = `
+export const RepositoryDocument = new TypedDocumentString(`
     query Repository($rowId: UUID!) {
   repository(rowId: $rowId) {
     rowId
@@ -8661,7 +8117,7 @@ export const RepositoryDocument = `
     }
   }
 }
-    `;
+    `);
 
 export const useRepositoryQuery = <
       TData = RepositoryQuery,
@@ -8691,13 +8147,13 @@ export const useSuspenseRepositoryQuery = <
     
     return useSuspenseQuery<RepositoryQuery, TError, TData>(
       {
-    queryKey: ['RepositorySuspense', variables],
+    queryKey: ['Repository', variables],
     queryFn: graphqlFetch<RepositoryQuery, RepositoryQueryVariables>(RepositoryDocument, variables),
     ...options
   }
     )};
 
-useSuspenseRepositoryQuery.getKey = (variables: RepositoryQueryVariables) => ['RepositorySuspense', variables];
+useSuspenseRepositoryQuery.getKey = (variables: RepositoryQueryVariables) => ['Repository', variables];
 
 export const useInfiniteRepositoryQuery = <
       TData = InfiniteData<RepositoryQuery>,
@@ -8732,19 +8188,19 @@ export const useSuspenseInfiniteRepositoryQuery = <
       (() => {
     const { queryKey: optionsQueryKey, ...restOptions } = options;
     return {
-      queryKey: optionsQueryKey ?? ['Repository.infiniteSuspense', variables],
+      queryKey: optionsQueryKey ?? ['Repository.infinite', variables],
       queryFn: (metaData) => graphqlFetch<RepositoryQuery, RepositoryQueryVariables>(RepositoryDocument, {...variables, ...(metaData.pageParam ?? {})})(),
       ...restOptions
     }
   })()
     )};
 
-useSuspenseInfiniteRepositoryQuery.getKey = (variables: RepositoryQueryVariables) => ['Repository.infiniteSuspense', variables];
+useSuspenseInfiniteRepositoryQuery.getKey = (variables: RepositoryQueryVariables) => ['Repository.infinite', variables];
 
 
 useRepositoryQuery.fetcher = (variables: RepositoryQueryVariables, options?: RequestInit['headers']) => graphqlFetch<RepositoryQuery, RepositoryQueryVariables>(RepositoryDocument, variables, options);
 
-export const RepositoryWithBranchesDocument = `
+export const RepositoryWithBranchesDocument = new TypedDocumentString(`
     query RepositoryWithBranches($ownerSlug: String!, $repoSlug: String!) {
   repositories(
     filter: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}
@@ -8795,7 +8251,7 @@ export const RepositoryWithBranchesDocument = `
     }
   }
 }
-    `;
+    `);
 
 export const useRepositoryWithBranchesQuery = <
       TData = RepositoryWithBranchesQuery,
@@ -8825,13 +8281,13 @@ export const useSuspenseRepositoryWithBranchesQuery = <
     
     return useSuspenseQuery<RepositoryWithBranchesQuery, TError, TData>(
       {
-    queryKey: ['RepositoryWithBranchesSuspense', variables],
+    queryKey: ['RepositoryWithBranches', variables],
     queryFn: graphqlFetch<RepositoryWithBranchesQuery, RepositoryWithBranchesQueryVariables>(RepositoryWithBranchesDocument, variables),
     ...options
   }
     )};
 
-useSuspenseRepositoryWithBranchesQuery.getKey = (variables: RepositoryWithBranchesQueryVariables) => ['RepositoryWithBranchesSuspense', variables];
+useSuspenseRepositoryWithBranchesQuery.getKey = (variables: RepositoryWithBranchesQueryVariables) => ['RepositoryWithBranches', variables];
 
 export const useInfiniteRepositoryWithBranchesQuery = <
       TData = InfiniteData<RepositoryWithBranchesQuery>,
@@ -8866,25 +8322,25 @@ export const useSuspenseInfiniteRepositoryWithBranchesQuery = <
       (() => {
     const { queryKey: optionsQueryKey, ...restOptions } = options;
     return {
-      queryKey: optionsQueryKey ?? ['RepositoryWithBranches.infiniteSuspense', variables],
+      queryKey: optionsQueryKey ?? ['RepositoryWithBranches.infinite', variables],
       queryFn: (metaData) => graphqlFetch<RepositoryWithBranchesQuery, RepositoryWithBranchesQueryVariables>(RepositoryWithBranchesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
       ...restOptions
     }
   })()
     )};
 
-useSuspenseInfiniteRepositoryWithBranchesQuery.getKey = (variables: RepositoryWithBranchesQueryVariables) => ['RepositoryWithBranches.infiniteSuspense', variables];
+useSuspenseInfiniteRepositoryWithBranchesQuery.getKey = (variables: RepositoryWithBranchesQueryVariables) => ['RepositoryWithBranches.infinite', variables];
 
 
 useRepositoryWithBranchesQuery.fetcher = (variables: RepositoryWithBranchesQueryVariables, options?: RequestInit['headers']) => graphqlFetch<RepositoryWithBranchesQuery, RepositoryWithBranchesQueryVariables>(RepositoryWithBranchesDocument, variables, options);
 
-export const ObserverDocument = `
+export const ObserverDocument = new TypedDocumentString(`
     query Observer {
   observer {
     rowId
   }
 }
-    `;
+    `);
 
 export const useObserverQuery = <
       TData = ObserverQuery,
@@ -8914,13 +8370,13 @@ export const useSuspenseObserverQuery = <
     
     return useSuspenseQuery<ObserverQuery, TError, TData>(
       {
-    queryKey: variables === undefined ? ['ObserverSuspense'] : ['ObserverSuspense', variables],
+    queryKey: variables === undefined ? ['Observer'] : ['Observer', variables],
     queryFn: graphqlFetch<ObserverQuery, ObserverQueryVariables>(ObserverDocument, variables),
     ...options
   }
     )};
 
-useSuspenseObserverQuery.getKey = (variables?: ObserverQueryVariables) => variables === undefined ? ['ObserverSuspense'] : ['ObserverSuspense', variables];
+useSuspenseObserverQuery.getKey = (variables?: ObserverQueryVariables) => variables === undefined ? ['Observer'] : ['Observer', variables];
 
 export const useInfiniteObserverQuery = <
       TData = InfiniteData<ObserverQuery>,
@@ -8955,19 +8411,19 @@ export const useSuspenseInfiniteObserverQuery = <
       (() => {
     const { queryKey: optionsQueryKey, ...restOptions } = options;
     return {
-      queryKey: optionsQueryKey ?? variables === undefined ? ['Observer.infiniteSuspense'] : ['Observer.infiniteSuspense', variables],
+      queryKey: optionsQueryKey ?? variables === undefined ? ['Observer.infinite'] : ['Observer.infinite', variables],
       queryFn: (metaData) => graphqlFetch<ObserverQuery, ObserverQueryVariables>(ObserverDocument, {...variables, ...(metaData.pageParam ?? {})})(),
       ...restOptions
     }
   })()
     )};
 
-useSuspenseInfiniteObserverQuery.getKey = (variables?: ObserverQueryVariables) => variables === undefined ? ['Observer.infiniteSuspense'] : ['Observer.infiniteSuspense', variables];
+useSuspenseInfiniteObserverQuery.getKey = (variables?: ObserverQueryVariables) => variables === undefined ? ['Observer.infinite'] : ['Observer.infinite', variables];
 
 
 useObserverQuery.fetcher = (variables?: ObserverQueryVariables, options?: RequestInit['headers']) => graphqlFetch<ObserverQuery, ObserverQueryVariables>(ObserverDocument, variables, options);
 
-export const UserByIdentityProviderIdDocument = `
+export const UserByIdentityProviderIdDocument = new TypedDocumentString(`
     query UserByIdentityProviderId($identityProviderId: UUID!) {
   userByIdentityProviderId(identityProviderId: $identityProviderId) {
     rowId
@@ -8977,7 +8433,7 @@ export const UserByIdentityProviderIdDocument = `
     createdAt
   }
 }
-    `;
+    `);
 
 export const useUserByIdentityProviderIdQuery = <
       TData = UserByIdentityProviderIdQuery,
@@ -9007,13 +8463,13 @@ export const useSuspenseUserByIdentityProviderIdQuery = <
     
     return useSuspenseQuery<UserByIdentityProviderIdQuery, TError, TData>(
       {
-    queryKey: ['UserByIdentityProviderIdSuspense', variables],
+    queryKey: ['UserByIdentityProviderId', variables],
     queryFn: graphqlFetch<UserByIdentityProviderIdQuery, UserByIdentityProviderIdQueryVariables>(UserByIdentityProviderIdDocument, variables),
     ...options
   }
     )};
 
-useSuspenseUserByIdentityProviderIdQuery.getKey = (variables: UserByIdentityProviderIdQueryVariables) => ['UserByIdentityProviderIdSuspense', variables];
+useSuspenseUserByIdentityProviderIdQuery.getKey = (variables: UserByIdentityProviderIdQueryVariables) => ['UserByIdentityProviderId', variables];
 
 export const useInfiniteUserByIdentityProviderIdQuery = <
       TData = InfiniteData<UserByIdentityProviderIdQuery>,
@@ -9048,14 +8504,14 @@ export const useSuspenseInfiniteUserByIdentityProviderIdQuery = <
       (() => {
     const { queryKey: optionsQueryKey, ...restOptions } = options;
     return {
-      queryKey: optionsQueryKey ?? ['UserByIdentityProviderId.infiniteSuspense', variables],
+      queryKey: optionsQueryKey ?? ['UserByIdentityProviderId.infinite', variables],
       queryFn: (metaData) => graphqlFetch<UserByIdentityProviderIdQuery, UserByIdentityProviderIdQueryVariables>(UserByIdentityProviderIdDocument, {...variables, ...(metaData.pageParam ?? {})})(),
       ...restOptions
     }
   })()
     )};
 
-useSuspenseInfiniteUserByIdentityProviderIdQuery.getKey = (variables: UserByIdentityProviderIdQueryVariables) => ['UserByIdentityProviderId.infiniteSuspense', variables];
+useSuspenseInfiniteUserByIdentityProviderIdQuery.getKey = (variables: UserByIdentityProviderIdQueryVariables) => ['UserByIdentityProviderId.infinite', variables];
 
 
 useUserByIdentityProviderIdQuery.fetcher = (variables: UserByIdentityProviderIdQueryVariables, options?: RequestInit['headers']) => graphqlFetch<UserByIdentityProviderIdQuery, UserByIdentityProviderIdQueryVariables>(UserByIdentityProviderIdDocument, variables, options);

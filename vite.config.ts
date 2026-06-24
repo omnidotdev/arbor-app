@@ -26,6 +26,7 @@ const viteConfig = defineConfig(({ command }) => ({
     tanstackStart(),
     nitroV2Plugin({
       preset: "node-server",
+      compatibilityDate: "2026-06-23",
       externals: { inline: ["srvx", "react-dom"] },
     }),
     react(),

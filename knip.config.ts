@@ -11,6 +11,7 @@ const knipConfig: KnipConfig = {
     "src/lib/graphql/graphqlFetch.ts",
     "src/lib/providers/billing/index.ts",
     "src/server/functions/*.ts",
+    "src/**/*.test.{ts,tsx}",
   ],
   // NB: files are reported as unused if they are in the set of project files, but not in the set of files resolved from the entry files. See: https://knip.dev/guides/configuring-project-files
   project: ["src/**/*.{ts,tsx,css}"],
@@ -42,6 +43,8 @@ const knipConfig: KnipConfig = {
     "@react-email/preview-server",
     // used by React Email templates
     "@react-email/components",
+    // pulled in by the React Email preview tooling (react-email 6)
+    "@react-email/ui",
   ],
   tags: ["-knipignore"],
 };
