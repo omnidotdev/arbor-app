@@ -1,0 +1,59 @@
+query RepositoryGraph($userId: UUID!, $organizationId: UUID) {
+  repositories(
+    filter: {
+      or: [
+        { ownerId: { equalTo: $userId } }
+        { repositoryCollaborators: { some: { userId: { equalTo: $userId } } } }
+        { organizationId: { equalTo: $organizationId } }
+      ]
+    }
+    orderBy: NAME_ASC
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      owner {
+        rowId
+        username
+      }
+      organization {
+        rowId
+        idpOrganizationId
+      }
+      outgoingRelationships: repositoryRelationshipsBySourceRepositoryId {
+        nodes {
+          rowId
+          confidence
+          versionConstraint
+          targetRepository {
+            rowId
+            name
+            slug
+            owner {
+              username
+            }
+            organization {
+              idpOrganizationId
+            }
+          }
+          relationshipType {
+            rowId
+            name
+            isDirected
+          }
+        }
+      }
+    }
+  }
+  repositoryRelationshipTypes(orderBy: NAME_ASC) {
+    nodes {
+      rowId
+      name
+      description
+      isDirected
+    }
+  }
+}

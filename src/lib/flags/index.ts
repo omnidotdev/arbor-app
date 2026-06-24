@@ -1,0 +1,24 @@
+import { createServerFn } from "@tanstack/react-start";
+
+import { isEnabled } from "./client";
+
+import type { FlagContext } from "./client";
+
+export const FLAGS = {
+  MAINTENANCE: "arbor-app-maintenance-mode",
+} as const;
+
+/**
+ * Fetch the value of the maintenance mode feature flag.
+ * Accepts optional user context for admin bypass (@omni.dev users).
+ */
+export const fetchMaintenanceMode = createServerFn({ method: "GET" })
+  .validator((data: FlagContext | undefined) => data)
+  .handler(async ({ data: context }) => {
+    const isMaintenanceMode = await isEnabled(
+      FLAGS.MAINTENANCE,
+      false,
+      context,
+    );
+    return { isMaintenanceMode };
+  });

@@ -1,0 +1,21 @@
+query Organization($rowId: UUID!) {
+  organization(rowId: $rowId) {
+    rowId
+    idpOrganizationId
+    description
+    avatarUrl
+    createdAt
+    updatedAt
+    repositories {
+      nodes {
+        rowId
+        name
+        slug
+        description
+        visibility
+        updatedAt
+      }
+      totalCount
+    }
+  }
+}

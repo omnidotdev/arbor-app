@@ -1,0 +1,7 @@
+mutation DeleteRepository($input: DeleteRepositoryInput!) {
+  deleteRepository(input: $input) {
+    repository {
+      rowId
+    }
+  }
+}

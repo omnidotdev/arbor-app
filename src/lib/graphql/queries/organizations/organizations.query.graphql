@@ -1,0 +1,16 @@
+query Organizations($limit: Int) {
+  organizations(first: $limit) {
+    nodes {
+      rowId
+      idpOrganizationId
+      description
+      avatarUrl
+      createdAt
+      updatedAt
+      repositories {
+        totalCount
+      }
+    }
+    totalCount
+  }
+}

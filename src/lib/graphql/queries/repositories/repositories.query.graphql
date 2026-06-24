@@ -1,0 +1,34 @@
+query Repositories($userId: UUID!, $limit: Int) {
+  repositories(
+    filter: {
+      or: [
+        { ownerId: { equalTo: $userId } }
+        { repositoryCollaborators: { some: { userId: { equalTo: $userId } } } }
+      ]
+    }
+    orderBy: UPDATED_AT_DESC
+    first: $limit
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      defaultBranch
+      createdAt
+      updatedAt
+      owner {
+        rowId
+        username
+        avatarUrl
+      }
+      organization {
+        rowId
+        idpOrganizationId
+        avatarUrl
+      }
+    }
+    totalCount
+  }
+}
