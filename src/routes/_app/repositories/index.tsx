@@ -217,8 +217,8 @@ function RepositoriesPage() {
             </Button>
           )}
         </div>
-        <div className="flex items-center space-x-4">
-          <div className="flex-1">
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="min-w-0 flex-1 basis-full sm:basis-auto">
             <div className="relative">
               <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
