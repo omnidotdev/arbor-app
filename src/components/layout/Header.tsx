@@ -1,5 +1,6 @@
 "use client";
 
+import { LogoLockup } from "@omnidotdev/thornberry/logo-lockup";
 import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
 import {
   BookOpen,
@@ -93,8 +94,11 @@ export function Header() {
       <div className="container mx-auto flex h-14 max-w-7xl items-center gap-2 px-4 sm:px-6">
         <div className="flex min-w-0 items-center">
           <Link to="/" className="mr-6 flex shrink-0 items-center space-x-2">
-            <TreePine className="h-6 w-6" />
-            <span className="font-bold">Arbor</span>
+            <LogoLockup
+              logo={<TreePine className="h-6 w-6" />}
+              name="Arbor"
+              nameClassName="font-bold"
+            />
           </Link>
           {/* primary nav as a row on desktop, collapsed into the mobile menu below md */}
           <nav className="hidden items-center space-x-6 font-medium text-sm md:flex">
