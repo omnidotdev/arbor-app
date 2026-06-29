@@ -14,10 +14,10 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiHealthzRouteImport } from './routes/api/healthz'
 import { Route as AppGraphRouteImport } from './routes/_app/graph'
+import { Route as AppWorkspacesIndexRouteImport } from './routes/_app/workspaces/index'
 import { Route as AppRepositoriesIndexRouteImport } from './routes/_app/repositories/index'
-import { Route as AppOrganizationsIndexRouteImport } from './routes/_app/organizations/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as AppOrganizationsOrgSlugIndexRouteImport } from './routes/_app/organizations/$orgSlug/index'
+import { Route as AppWorkspacesWorkspaceSlugIndexRouteImport } from './routes/_app/workspaces/$workspaceSlug/index'
 import { Route as AppRepositoriesOwnerRepoRouteImport } from './routes/_app/repositories/$owner.$repo'
 import { Route as ApiOgRepoOwnerRepoRouteImport } from './routes/api/og/repo.$owner.$repo'
 import { Route as AppRepositoriesOwnerRepoCommitsRouteImport } from './routes/_app/repositories/$owner.$repo/commits'
@@ -49,14 +49,14 @@ const AppGraphRoute = AppGraphRouteImport.update({
   path: '/graph',
   getParentRoute: () => AppRoute,
 } as any)
+const AppWorkspacesIndexRoute = AppWorkspacesIndexRouteImport.update({
+  id: '/workspaces/',
+  path: '/workspaces/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppRepositoriesIndexRoute = AppRepositoriesIndexRouteImport.update({
   id: '/repositories/',
   path: '/repositories/',
-  getParentRoute: () => AppRoute,
-} as any)
-const AppOrganizationsIndexRoute = AppOrganizationsIndexRouteImport.update({
-  id: '/organizations/',
-  path: '/organizations/',
   getParentRoute: () => AppRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -64,10 +64,10 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppOrganizationsOrgSlugIndexRoute =
-  AppOrganizationsOrgSlugIndexRouteImport.update({
-    id: '/organizations/$orgSlug/',
-    path: '/organizations/$orgSlug/',
+const AppWorkspacesWorkspaceSlugIndexRoute =
+  AppWorkspacesWorkspaceSlugIndexRouteImport.update({
+    id: '/workspaces/$workspaceSlug/',
+    path: '/workspaces/$workspaceSlug/',
     getParentRoute: () => AppRoute,
   } as any)
 const AppRepositoriesOwnerRepoRoute =
@@ -112,10 +112,10 @@ export interface FileRoutesByFullPath {
   '/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/organizations/': typeof AppOrganizationsIndexRoute
   '/repositories/': typeof AppRepositoriesIndexRoute
+  '/workspaces/': typeof AppWorkspacesIndexRoute
   '/repositories/$owner/$repo': typeof AppRepositoriesOwnerRepoRouteWithChildren
-  '/organizations/$orgSlug/': typeof AppOrganizationsOrgSlugIndexRoute
+  '/workspaces/$workspaceSlug/': typeof AppWorkspacesWorkspaceSlugIndexRoute
   '/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
   '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
@@ -128,10 +128,10 @@ export interface FileRoutesByTo {
   '/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/organizations': typeof AppOrganizationsIndexRoute
   '/repositories': typeof AppRepositoriesIndexRoute
+  '/workspaces': typeof AppWorkspacesIndexRoute
   '/repositories/$owner/$repo': typeof AppRepositoriesOwnerRepoRouteWithChildren
-  '/organizations/$orgSlug': typeof AppOrganizationsOrgSlugIndexRoute
+  '/workspaces/$workspaceSlug': typeof AppWorkspacesWorkspaceSlugIndexRoute
   '/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
   '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
@@ -146,10 +146,10 @@ export interface FileRoutesById {
   '/_app/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/_app/organizations/': typeof AppOrganizationsIndexRoute
   '/_app/repositories/': typeof AppRepositoriesIndexRoute
+  '/_app/workspaces/': typeof AppWorkspacesIndexRoute
   '/_app/repositories/$owner/$repo': typeof AppRepositoriesOwnerRepoRouteWithChildren
-  '/_app/organizations/$orgSlug/': typeof AppOrganizationsOrgSlugIndexRoute
+  '/_app/workspaces/$workspaceSlug/': typeof AppWorkspacesWorkspaceSlugIndexRoute
   '/_app/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
   '/_app/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
@@ -164,10 +164,10 @@ export interface FileRouteTypes {
     | '/graph'
     | '/api/healthz'
     | '/api/auth/$'
-    | '/organizations/'
     | '/repositories/'
+    | '/workspaces/'
     | '/repositories/$owner/$repo'
-    | '/organizations/$orgSlug/'
+    | '/workspaces/$workspaceSlug/'
     | '/repositories/$owner/$repo/branches'
     | '/repositories/$owner/$repo/commits'
     | '/api/og/repo/$owner/$repo'
@@ -180,10 +180,10 @@ export interface FileRouteTypes {
     | '/graph'
     | '/api/healthz'
     | '/api/auth/$'
-    | '/organizations'
     | '/repositories'
+    | '/workspaces'
     | '/repositories/$owner/$repo'
-    | '/organizations/$orgSlug'
+    | '/workspaces/$workspaceSlug'
     | '/repositories/$owner/$repo/branches'
     | '/repositories/$owner/$repo/commits'
     | '/api/og/repo/$owner/$repo'
@@ -197,10 +197,10 @@ export interface FileRouteTypes {
     | '/_app/graph'
     | '/api/healthz'
     | '/api/auth/$'
-    | '/_app/organizations/'
     | '/_app/repositories/'
+    | '/_app/workspaces/'
     | '/_app/repositories/$owner/$repo'
-    | '/_app/organizations/$orgSlug/'
+    | '/_app/workspaces/$workspaceSlug/'
     | '/_app/repositories/$owner/$repo/branches'
     | '/_app/repositories/$owner/$repo/commits'
     | '/api/og/repo/$owner/$repo'
@@ -254,18 +254,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppGraphRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/workspaces/': {
+      id: '/_app/workspaces/'
+      path: '/workspaces'
+      fullPath: '/workspaces/'
+      preLoaderRoute: typeof AppWorkspacesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/repositories/': {
       id: '/_app/repositories/'
       path: '/repositories'
       fullPath: '/repositories/'
       preLoaderRoute: typeof AppRepositoriesIndexRouteImport
-      parentRoute: typeof AppRoute
-    }
-    '/_app/organizations/': {
-      id: '/_app/organizations/'
-      path: '/organizations'
-      fullPath: '/organizations/'
-      preLoaderRoute: typeof AppOrganizationsIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/api/auth/$': {
@@ -275,11 +275,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/organizations/$orgSlug/': {
-      id: '/_app/organizations/$orgSlug/'
-      path: '/organizations/$orgSlug'
-      fullPath: '/organizations/$orgSlug/'
-      preLoaderRoute: typeof AppOrganizationsOrgSlugIndexRouteImport
+    '/_app/workspaces/$workspaceSlug/': {
+      id: '/_app/workspaces/$workspaceSlug/'
+      path: '/workspaces/$workspaceSlug'
+      fullPath: '/workspaces/$workspaceSlug/'
+      preLoaderRoute: typeof AppWorkspacesWorkspaceSlugIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/repositories/$owner/$repo': {
@@ -352,18 +352,18 @@ const AppRepositoriesOwnerRepoRouteWithChildren =
 
 interface AppRouteChildren {
   AppGraphRoute: typeof AppGraphRoute
-  AppOrganizationsIndexRoute: typeof AppOrganizationsIndexRoute
   AppRepositoriesIndexRoute: typeof AppRepositoriesIndexRoute
+  AppWorkspacesIndexRoute: typeof AppWorkspacesIndexRoute
   AppRepositoriesOwnerRepoRoute: typeof AppRepositoriesOwnerRepoRouteWithChildren
-  AppOrganizationsOrgSlugIndexRoute: typeof AppOrganizationsOrgSlugIndexRoute
+  AppWorkspacesWorkspaceSlugIndexRoute: typeof AppWorkspacesWorkspaceSlugIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppGraphRoute: AppGraphRoute,
-  AppOrganizationsIndexRoute: AppOrganizationsIndexRoute,
   AppRepositoriesIndexRoute: AppRepositoriesIndexRoute,
+  AppWorkspacesIndexRoute: AppWorkspacesIndexRoute,
   AppRepositoriesOwnerRepoRoute: AppRepositoriesOwnerRepoRouteWithChildren,
-  AppOrganizationsOrgSlugIndexRoute: AppOrganizationsOrgSlugIndexRoute,
+  AppWorkspacesWorkspaceSlugIndexRoute: AppWorkspacesWorkspaceSlugIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

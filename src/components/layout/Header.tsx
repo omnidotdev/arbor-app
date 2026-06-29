@@ -41,7 +41,7 @@ import { ModeToggle } from "./ModeToggle";
 const primaryNav = [
   { to: "/repositories", label: "Repositories", match: "/repositories" },
   { to: "/graph", label: "Graph", match: "/graph" },
-  { to: "/organizations", label: "Organizations", match: "/organizations" },
+  { to: "/workspaces", label: "Workspaces", match: "/workspaces" },
 ] as const;
 
 export function Header() {

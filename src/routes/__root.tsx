@@ -7,6 +7,7 @@ import {
   Scripts,
   createRootRouteWithContext,
   useRouteContext,
+  useRouterState,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { useEffect, useState } from "react";
@@ -148,6 +149,13 @@ function RootComponent() {
 
   const { isMaintenanceMode, session } = useRouteContext({ from: "__root__" });
 
+  // Authenticated app routes render their own sidebar shell, so the marketing
+  // header only applies to the landing + pricing routes
+  const isAppShell = useRouterState({
+    select: (state) =>
+      state.matches.some((match) => String(match.routeId).startsWith("/_app")),
+  });
+
   const [currentToken, setCurrentToken] = useState(session?.accessToken);
 
   // Sync access token to GraphQL client for client-side requests
@@ -184,6 +192,14 @@ function RootComponent() {
     return (
       <RootDocument>
         <MaintenancePage />
+      </RootDocument>
+    );
+  }
+
+  if (isAppShell) {
+    return (
+      <RootDocument>
+        <Outlet />
       </RootDocument>
     );
   }
