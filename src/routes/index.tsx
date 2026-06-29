@@ -154,9 +154,9 @@ const FEATURES = [
     icon: Building2,
     accent: "text-emerald-500",
     tint: "bg-emerald-500/10",
-    title: "Organizations",
+    title: "Workspaces",
     description:
-      "Group teams and repositories into organizations that mirror how your company actually works.",
+      "Group teams and repositories into workspaces that mirror how your company actually works.",
   },
   {
     icon: Lock,

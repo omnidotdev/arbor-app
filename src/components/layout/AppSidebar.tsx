@@ -3,6 +3,7 @@ import {
   AvatarImage,
   AvatarRoot,
 } from "@omnidotdev/thornberry/avatar";
+import { LogoLockup } from "@omnidotdev/thornberry/logo-lockup";
 import {
   Sidebar,
   SidebarContent,
@@ -59,11 +60,12 @@ const AppSidebar = ({ user, ...rest }: Props) => {
   return (
     <Sidebar collapsible="icon" {...rest}>
       <SidebarHeader className="gap-2">
-        <div className="flex items-center gap-2 px-1 py-1">
-          <TreePine className="size-5 shrink-0 text-primary-500" />
-          <span className="font-bold tracking-tight group-data-[collapsible=icon]:hidden">
-            {app.name}
-          </span>
+        <div className="px-1 py-1">
+          <LogoLockup
+            logo={<TreePine className="size-5 shrink-0 text-primary-500" />}
+            name={app.name}
+            nameClassName="font-bold tracking-tight group-data-[collapsible=icon]:hidden"
+          />
         </div>
 
         <div className="group-data-[collapsible=icon]:hidden">
