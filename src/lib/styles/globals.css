@@ -319,3 +319,154 @@
     box-shadow: var(--glow-lg);
   }
 }
+
+/*
+ * Landing page motion + ambient effects
+ * All keyframe-driven motion is gated behind prefers-reduced-motion at the
+ * bottom of this block so the page stays calm for users who ask for less.
+ */
+@layer components {
+  /* Ambient blueprint grid that fades toward the edges */
+  .arbor-grid {
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 40%,
+      black 0%,
+      transparent 80%
+    );
+    mask-image: radial-gradient(
+      ellipse 70% 60% at 50% 40%,
+      black 0%,
+      transparent 80%
+    );
+  }
+
+  /* Gradient headline shimmer */
+  .arbor-gradient-text {
+    background-image: linear-gradient(
+      120deg,
+      var(--emerald-500) 0%,
+      var(--amethyst-500) 50%,
+      var(--emerald-400) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: arbor-shimmer 8s linear infinite;
+  }
+
+  /* Frosted feature card with a gem glow on hover */
+  .arbor-card {
+    background: color-mix(in oklch, var(--card) 70%, transparent);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .arbor-card:hover {
+    transform: translateY(-4px);
+    border-color: oklch(0.62 0.17 145 / 0.5);
+    box-shadow: var(--glow-md);
+  }
+
+  /* Constellation primitives */
+  .arbor-node {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: arbor-pulse 4s ease-in-out infinite;
+  }
+  .arbor-edge {
+    stroke-dasharray: 6 8;
+    animation: arbor-flow 3s linear infinite;
+  }
+  .arbor-float {
+    animation: arbor-float 7s ease-in-out infinite;
+  }
+  .arbor-aurora {
+    animation: arbor-aurora 18s ease-in-out infinite;
+  }
+  .arbor-fade-up {
+    animation: arbor-fade-up 0.7s both;
+  }
+}
+
+@keyframes arbor-shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes arbor-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes arbor-flow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+@keyframes arbor-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes arbor-aurora {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.6;
+  }
+  33% {
+    transform: translate3d(6%, -4%, 0) scale(1.15);
+    opacity: 0.85;
+  }
+  66% {
+    transform: translate3d(-5%, 5%, 0) scale(0.95);
+    opacity: 0.7;
+  }
+}
+
+@keyframes arbor-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arbor-gradient-text,
+  .arbor-node,
+  .arbor-edge,
+  .arbor-float,
+  .arbor-aurora,
+  .arbor-fade-up {
+    animation: none !important;
+  }
+  .arbor-edge {
+    stroke-dasharray: none;
+  }
+}
