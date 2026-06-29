@@ -356,7 +356,6 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: arbor-shimmer 8s linear infinite;
   }
 
   /* Frosted feature card with a gem glow on hover */
@@ -379,20 +378,9 @@
   .arbor-node {
     transform-box: fill-box;
     transform-origin: center;
-    animation: arbor-pulse 4s ease-in-out infinite;
   }
   .arbor-edge {
     stroke-dasharray: 6 8;
-    animation: arbor-flow 3s linear infinite;
-  }
-  .arbor-float {
-    animation: arbor-float 7s ease-in-out infinite;
-  }
-  .arbor-aurora {
-    animation: arbor-aurora 18s ease-in-out infinite;
-  }
-  .arbor-fade-up {
-    animation: arbor-fade-up 0.7s both;
   }
 }
 
@@ -457,16 +445,27 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .arbor-gradient-text,
-  .arbor-node,
-  .arbor-edge,
-  .arbor-float,
-  .arbor-aurora,
-  .arbor-fade-up {
-    animation: none !important;
+/*
+ * Motion opts in only when the user has not asked for reduced motion, so the
+ * page stays completely still for everyone else without needing !important.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .arbor-gradient-text {
+    animation: arbor-shimmer 8s linear infinite;
+  }
+  .arbor-node {
+    animation: arbor-pulse 4s ease-in-out infinite;
   }
   .arbor-edge {
-    stroke-dasharray: none;
+    animation: arbor-flow 3s linear infinite;
+  }
+  .arbor-float {
+    animation: arbor-float 7s ease-in-out infinite;
+  }
+  .arbor-aurora {
+    animation: arbor-aurora 18s ease-in-out infinite;
+  }
+  .arbor-fade-up {
+    animation: arbor-fade-up 0.7s both;
   }
 }
