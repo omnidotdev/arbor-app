@@ -1,5 +1,3 @@
-import { fileURLToPath } from "node:url";
-
 import tailwindcss from "@tailwindcss/vite";
 import { devtools } from "@tanstack/devtools-vite";
 import { nitroV2Plugin } from "@tanstack/nitro-v2-vite-plugin";
@@ -8,14 +6,6 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import mkcert from "vite-plugin-mkcert";
 import tsConfigPaths from "vite-tsconfig-paths";
-
-// Thornberry ships built against the dev JSX runtime (`jsxDEV`), which
-// `@vitejs/plugin-react` stubs to `undefined` in production builds. Alias
-// `react/jsx-dev-runtime` to a shim that implements `jsxDEV` via the prod
-// runtime so Thornberry components render in production (build only).
-const jsxDevShim = fileURLToPath(
-  new URL("./src/shims/reactJsxDevRuntime.ts", import.meta.url),
-);
 
 /**
  * Vite configuration.
@@ -27,10 +17,6 @@ const viteConfig = defineConfig(({ command }) => ({
     strictPort: true,
     host: "0.0.0.0",
   },
-  resolve:
-    command === "build"
-      ? { alias: { "react/jsx-dev-runtime": jsxDevShim } }
-      : undefined,
   plugins: [
     // NB: command is `serve` in development, `build` in production
     command === "serve" && devtools(),
