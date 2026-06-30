@@ -20,9 +20,10 @@ import signIn from "@/lib/auth/signIn";
 import { BASE_URL } from "@/lib/config/env.config";
 
 export const Route = createFileRoute("/")({
-  beforeLoad: ({ context: { session } }) => {
-    // redirect authenticated users to the main app
-    if (session?.user?.rowId) throw redirect({ to: "/repositories" });
+  beforeLoad: ({ context: { session }, preload }) => {
+    // redirect authenticated users to the main app, but not during hover-preload so the landing link does not navigate on hover
+    if (!preload && session?.user?.rowId)
+      throw redirect({ to: "/repositories" });
   },
   component: Home,
 });
