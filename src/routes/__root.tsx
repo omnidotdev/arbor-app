@@ -12,7 +12,7 @@ import {
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { useEffect, useState } from "react";
 
-import { DefaultCatchBoundary, Header } from "@/components/layout";
+import { DefaultCatchBoundary, Footer, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
 import { isDevEnv } from "@/lib/config/env.config";
 import { fetchMaintenanceMode } from "@/lib/flags";
@@ -210,6 +210,7 @@ function RootComponent() {
       <main className="flex-1">
         <Outlet />
       </main>
+      <Footer />
     </RootDocument>
   );
 }

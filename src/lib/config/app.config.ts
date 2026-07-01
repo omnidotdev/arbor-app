@@ -17,6 +17,11 @@ const app = {
     github: "https://github.com/omnidotdev/arbor",
     feedback: "https://backfeed.omni.dev/workspaces/omni/projects/arbor",
   },
+  // Legal links mirror the omni-api catalog SSOT
+  legal: {
+    privacy: "https://omni.dev/legal/privacy",
+    terms: "https://omni.dev/legal/terms",
+  },
 };
 
 export default app;
