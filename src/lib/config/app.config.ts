@@ -4,6 +4,7 @@
 const app = {
   name: "Arbor",
   description: "A code forge",
+  url: "https://arbor.omni.dev",
   organization: {
     name: "Omni",
     website: "https://omni.dev",
@@ -21,6 +22,7 @@ const app = {
   legal: {
     privacy: "https://omni.dev/legal/privacy",
     terms: "https://omni.dev/legal/terms",
+    cookies: "https://omni.dev/legal/cookies",
   },
 };
 
