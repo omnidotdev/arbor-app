@@ -18,6 +18,7 @@ import { isDevEnv } from "@/lib/config/env.config";
 import { fetchMaintenanceMode } from "@/lib/flags";
 import { setAccessToken } from "@/lib/graphql/graphqlClientFactory";
 import appCss from "@/lib/styles/globals.css?url";
+import createMetaTags from "@/lib/util/createMetaTags";
 import ThemeProvider from "@/providers/ThemeProvider";
 import { fetchSession } from "@/server/functions/auth";
 import { getTheme } from "@/server/functions/theme";
@@ -90,13 +91,10 @@ export const Route = createRootRouteWithContext<{
         name: "viewport",
         content: "width=device-width, initial-scale=1",
       },
-      {
-        title: app.name,
-      },
-      {
-        name: "description",
-        content: app.description,
-      },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      ...createMetaTags(),
     ],
     links: [
       { rel: "stylesheet", href: appCss },
