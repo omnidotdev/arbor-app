@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 import { DefaultCatchBoundary, Footer, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
 import { isDevEnv } from "@/lib/config/env.config";
-import { fetchMaintenanceMode } from "@/lib/flags";
 import { setAccessToken } from "@/lib/graphql/graphqlClientFactory";
 import appCss from "@/lib/styles/globals.css?url";
 import createMetaTags from "@/lib/util/createMetaTags";
@@ -67,19 +66,12 @@ async function refreshAccessToken(): Promise<string | undefined> {
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   session: ExtendedSession | null;
-  isMaintenanceMode: boolean;
 }>()({
   beforeLoad: async () => {
     const { session } = await fetchSession();
     const typedSession = session as ExtendedSession | null;
-    const { isMaintenanceMode } = await fetchMaintenanceMode({
-      data: {
-        userId: typedSession?.user?.id,
-        email: typedSession?.user?.email,
-      },
-    });
 
-    return { session: typedSession, isMaintenanceMode };
+    return { session: typedSession };
   },
   loader: () => getTheme(),
   head: () => ({
@@ -140,25 +132,11 @@ export const Route = createRootRouteWithContext<{
   component: RootComponent,
 });
 
-function MaintenancePage() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-emerald-900 to-emerald-800 p-8 text-white">
-      <div className="text-center">
-        <div className="mb-6 text-9xl">🌳</div>
-        <h1 className="mb-4 font-bold text-4xl">Out on a Limb</h1>
-        <p className="max-w-md text-emerald-200 text-lg">
-          We're pruning and growing. Arbor will branch back soon.
-        </p>
-      </div>
-    </div>
-  );
-}
-
 function RootComponent() {
   // Keep the OAuth access token fresh while the user is idle
   useSessionRefresh(fetchSession);
 
-  const { isMaintenanceMode, session } = useRouteContext({ from: "__root__" });
+  const { session } = useRouteContext({ from: "__root__" });
 
   // Authenticated app routes render their own sidebar shell, so the marketing
   // header only applies to the landing + pricing routes
@@ -198,14 +176,6 @@ function RootComponent() {
 
     return () => clearTimeout(timer);
   }, [currentToken, session?.accessToken]);
-
-  if (isMaintenanceMode) {
-    return (
-      <RootDocument>
-        <MaintenancePage />
-      </RootDocument>
-    );
-  }
 
   if (isAppShell) {
     return (
