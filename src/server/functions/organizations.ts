@@ -15,6 +15,23 @@ const getOrganizationBySlugSchema = z.object({
   slug: z.string().min(1),
 });
 
+const checkWorkspaceHandleSchema = z.object({
+  slug: z.string().min(1),
+});
+
+/**
+ * Check whether a workspace handle (slug) is available across the ecosystem
+ * namespace. Backs live validation in the create-workspace form. Public check,
+ * so no auth middleware
+ */
+export const checkWorkspaceHandleAvailability = createServerFn({
+  method: "GET",
+})
+  .validator((data) => checkWorkspaceHandleSchema.parse(data))
+  .handler(async ({ data }) => {
+    return gatekeeperOrg.checkNamespaceAvailability(data.slug);
+  });
+
 /**
  * Create a new organization via Gatekeeper.
  * @knipignore

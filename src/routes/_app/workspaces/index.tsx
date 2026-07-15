@@ -11,6 +11,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import CreateWorkspaceButton from "@/components/workspaces/CreateWorkspaceButton";
 import { AUTH_BASE_URL, CONSOLE_URL } from "@/lib/config/env.config";
 
 export const Route = createFileRoute("/_app/workspaces/")({
@@ -61,6 +62,7 @@ function WorkspacesPage() {
               </a>
             </Button>
           )}
+          {workspaces.length >= 1 && <CreateWorkspaceButton />}
         </div>
       </div>
 
@@ -74,15 +76,20 @@ function WorkspacesPage() {
           </h3>
           <p className="mt-2 text-muted-foreground text-sm">
             {workspaces.length === 0
-              ? "Create or join a workspace from your Omni account to collaborate with your team."
+              ? "Create a workspace to get started, or join one from your Omni account to collaborate with your team."
               : "Try a different search."}
           </p>
-          {workspaces.length === 0 && manageUrl && (
-            <Button asChild className="mt-4">
-              <a href={manageUrl} target="_blank" rel="noopener noreferrer">
-                Go to Omni
-              </a>
-            </Button>
+          {workspaces.length === 0 && (
+            <div className="mt-4 flex items-center justify-center gap-2">
+              <CreateWorkspaceButton />
+              {manageUrl && (
+                <Button asChild variant="outline">
+                  <a href={manageUrl} target="_blank" rel="noopener noreferrer">
+                    Go to Omni
+                  </a>
+                </Button>
+              )}
+            </div>
           )}
         </div>
       ) : (

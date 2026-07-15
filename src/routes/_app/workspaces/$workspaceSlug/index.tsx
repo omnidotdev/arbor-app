@@ -5,6 +5,7 @@ import {
   AvatarRoot,
 } from "@omnidotdev/thornberry/avatar";
 import { Badge } from "@omnidotdev/thornberry/badge";
+import { useQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   ExternalLink,
@@ -19,6 +20,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { AUTH_BASE_URL, CONSOLE_URL } from "@/lib/config/env.config";
+import { getOrganizationBySlug } from "@/server/functions/organizations";
 
 export const Route = createFileRoute("/_app/workspaces/$workspaceSlug/")({
   component: WorkspaceDetailPage,
@@ -56,9 +58,20 @@ function WorkspaceDetailPage() {
   const { workspaceSlug } = Route.useParams();
   const orgContext = useOrganization();
 
-  const workspace = orgContext?.organizations.find(
+  const claimWorkspace = orgContext?.organizations.find(
     (org) => org.slug === workspaceSlug || org.id === workspaceSlug,
   );
+
+  // A just-created workspace is not yet in the JWT claims (the org list is
+  // hydrated from a short-lived cache), so fall back to a live Gatekeeper
+  // lookup until claims catch up. Skipped once the org is present in claims.
+  const { data: fallbackWorkspace } = useQuery({
+    queryKey: ["workspace-fallback", workspaceSlug],
+    queryFn: () => getOrganizationBySlug({ data: { slug: workspaceSlug } }),
+    enabled: !claimWorkspace,
+  });
+
+  const workspace = claimWorkspace ?? fallbackWorkspace ?? undefined;
 
   const displayName = workspace?.name ?? workspaceSlug;
   const initial = displayName.trim().charAt(0).toUpperCase() || "?";
