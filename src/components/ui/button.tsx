@@ -7,18 +7,20 @@ import { cn } from "@/lib/utils";
 import type { VariantProps } from "class-variance-authority";
 
 const buttonVariants = cva(
-  "inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm outline-none transition-[color,box-shadow] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "btn-gem",
-        destructive: "btn-gem-destructive",
+        default:
+          "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-background shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive",
         outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground transition-colors",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors",
-        ghost: "hover:bg-accent hover:text-accent-foreground transition-colors",
-        link: "text-primary underline-offset-4 hover:underline transition-colors",
+          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground",
+        secondary: "bg-muted text-muted-foreground shadow-xs hover:bg-muted/80",
+        ghost:
+          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+        link: "text-primary underline-offset-2 hover:underline",
       },
       size: {
         default: "h-10 px-4 py-2",
