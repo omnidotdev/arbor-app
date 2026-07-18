@@ -231,7 +231,7 @@ function RepositoriesPage() {
           </div>
           <div className="space-x-2">
             <Button
-              variant={viewType === "list" ? "default" : "outline"}
+              variant={viewType === "list" ? "secondary" : "ghost"}
               size="sm"
               onClick={() => setViewType("list")}
             >
@@ -239,7 +239,7 @@ function RepositoriesPage() {
               List View
             </Button>
             <Button
-              variant={viewType === "graph" ? "default" : "outline"}
+              variant={viewType === "graph" ? "secondary" : "ghost"}
               size="sm"
               onClick={() => setViewType("graph")}
             >
@@ -247,7 +247,7 @@ function RepositoriesPage() {
               Graph View
             </Button>
           </div>
-          <Button onClick={() => setIsCreateDialogOpen(true)}>
+          <Button size="sm" onClick={() => setIsCreateDialogOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             New Repository
           </Button>

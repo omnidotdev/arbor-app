@@ -101,7 +101,7 @@ function WorkspaceDetailPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-lg border bg-card p-4">
+        <div className="flex h-full flex-col rounded-lg border bg-card p-4">
           <div className="flex items-center gap-2">
             <GitBranch className="h-5 w-5 text-muted-foreground" />
             <h3 className="font-semibold">Repositories</h3>
@@ -109,12 +109,12 @@ function WorkspaceDetailPage() {
           <p className="mt-2 text-muted-foreground text-sm">
             Browse repositories in this workspace
           </p>
-          <Button className="mt-4" variant="outline" size="sm" asChild>
+          <Button className="mt-auto" variant="outline" size="sm" asChild>
             <Link to="/repositories">View repositories</Link>
           </Button>
         </div>
 
-        <div className="rounded-lg border bg-card p-4">
+        <div className="flex h-full flex-col rounded-lg border bg-card p-4">
           <div className="flex items-center gap-2">
             <Users className="h-5 w-5 text-muted-foreground" />
             <h3 className="font-semibold">Members</h3>
@@ -123,7 +123,7 @@ function WorkspaceDetailPage() {
             Membership and roles are managed in your Omni account
           </p>
           {manageUrl && (
-            <Button className="mt-4" variant="outline" size="sm" asChild>
+            <Button className="mt-auto" variant="outline" size="sm" asChild>
               <a href={manageUrl} target="_blank" rel="noopener noreferrer">
                 Manage members
               </a>
@@ -131,7 +131,7 @@ function WorkspaceDetailPage() {
           )}
         </div>
 
-        <div className="rounded-lg border bg-card p-4">
+        <div className="flex h-full flex-col rounded-lg border bg-card p-4">
           <div className="flex items-center gap-2">
             <Settings className="h-5 w-5 text-muted-foreground" />
             <h3 className="font-semibold">Settings</h3>
@@ -140,7 +140,7 @@ function WorkspaceDetailPage() {
             Workspace settings and billing
           </p>
           {manageUrl && (
-            <Button className="mt-4" variant="outline" size="sm" asChild>
+            <Button className="mt-auto" variant="outline" size="sm" asChild>
               <a href={manageUrl} target="_blank" rel="noopener noreferrer">
                 Settings
               </a>
