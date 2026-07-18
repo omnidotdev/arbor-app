@@ -11,6 +11,7 @@ import {
   GitCommit,
   GitFork,
   GitPullRequest,
+  Settings,
 } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
@@ -28,7 +29,9 @@ import {
   useRepositoriesQuery,
 } from "@/generated/graphql";
 import { API_BASE_URL, BASE_URL } from "@/lib/config/env.config";
+import repositoryBySlugOptions from "@/lib/options/repositoryBySlug.options";
 import createMetaTags from "@/lib/util/createMetaTags";
+import { getRepositoryAccess } from "@/lib/util/repositoryAccess";
 
 const searchSchema = z.object({
   ref: z.string().optional(),
@@ -146,6 +149,13 @@ function RepositoryDetailPage() {
     },
   });
 
+  // Fetch the repository row to resolve management access for the settings link
+  const repositoryQuery = useQuery(
+    repositoryBySlugOptions({ ownerSlug: owner, repoSlug: repo }),
+  );
+  const repository = repositoryQuery.data?.repositories?.nodes?.[0];
+  const { canManage } = getRepositoryAccess(repository, session?.user?.rowId);
+
   // Fetch branches
   const branchesQuery = useQuery({
     queryKey: ["branches", owner, repo],
@@ -238,7 +248,18 @@ function RepositoryDetailPage() {
             <span className="mx-2 text-muted-foreground">/</span>
             <span>{repo}</span>
           </h1>
-          {/* Settings button - route will be added later */}
+          {/* Settings entry is gated to repository owners/admins */}
+          {canManage && (
+            <Button asChild variant="outline" size="sm">
+              <Link
+                to="/repositories/$owner/$repo/settings"
+                params={{ owner, repo }}
+              >
+                <Settings className="mr-2 h-4 w-4" />
+                Settings
+              </Link>
+            </Button>
+          )}
         </div>
       </div>
 

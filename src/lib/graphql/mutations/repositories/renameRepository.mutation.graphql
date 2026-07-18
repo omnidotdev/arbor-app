@@ -1,0 +1,18 @@
+mutation RenameRepository($input: RenameRepositoryInput!) {
+  renameRepository(input: $input) {
+    repository {
+      rowId
+      name
+      slug
+      owner {
+        rowId
+        username
+      }
+      organization {
+        rowId
+        idpOrganizationId
+      }
+    }
+    error
+  }
+}

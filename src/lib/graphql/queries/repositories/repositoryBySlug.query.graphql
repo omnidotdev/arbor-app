@@ -1,0 +1,35 @@
+query RepositoryBySlug($ownerSlug: String!, $repoSlug: String!) {
+  repositories(
+    filter: {
+      slug: { equalTo: $repoSlug }
+      or: [
+        { owner: { username: { equalTo: $ownerSlug } } }
+        { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
+      ]
+    }
+    first: 1
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      defaultBranch
+      owner {
+        rowId
+        username
+      }
+      organization {
+        rowId
+        idpOrganizationId
+      }
+      repositoryCollaborators {
+        nodes {
+          userId
+          permission
+        }
+      }
+    }
+  }
+}

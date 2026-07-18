@@ -1,0 +1,33 @@
+query PullRequests($ownerSlug: String!, $repoSlug: String!) {
+  pullRequests(
+    filter: {
+      repository: {
+        slug: { equalTo: $repoSlug }
+        or: [
+          { owner: { username: { equalTo: $ownerSlug } } }
+          { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
+        ]
+      }
+    }
+    orderBy: [CREATED_AT_DESC]
+    first: 100
+  ) {
+    nodes {
+      id
+      rowId
+      number
+      title
+      state
+      sourceBranch
+      targetBranch
+      createdAt
+      author {
+        rowId
+        username
+      }
+      pullRequestComments {
+        totalCount
+      }
+    }
+  }
+}

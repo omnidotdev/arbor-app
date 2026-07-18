@@ -7086,6 +7086,16 @@ export type PullRequestReviewInput = {
   updatedAt?: Date | null | undefined;
 };
 
+/** Input for renaming a repository. */
+export type RenameRepositoryInput = {
+  /** Optional new display name. The name is left unchanged when omitted. */
+  newName?: string | null | undefined;
+  /** The new slug (URL-friendly name). Moves the on-disk storage. */
+  newSlug: string;
+  /** The repository row ID. */
+  rowId: string;
+};
+
 /** An input for mutations affecting `Repository` */
 export type RepositoryInput = {
   createdAt?: Date | null | undefined;
@@ -7191,6 +7201,13 @@ export type DeleteRepositoryMutationVariables = Exact<{
 
 export type DeleteRepositoryMutation = { deleteRepository: { repository: { rowId: string } | null } | null };
 
+export type RenameRepositoryMutationVariables = Exact<{
+  input: RenameRepositoryInput;
+}>;
+
+
+export type RenameRepositoryMutation = { renameRepository: { error: string | null, repository: { rowId: string, name: string, slug: string, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null } | null } | null };
+
 export type UpdateRepositoryMutationVariables = Exact<{
   input: UpdateRepositoryInput;
 }>;
@@ -7246,6 +7263,14 @@ export type PullRequestFilesQueryVariables = Exact<{
 
 export type PullRequestFilesQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, number: number, title: string, description: string | null, state: string, sourceBranch: string, targetBranch: string, createdAt: Date, mergedAt: Date | null, author: { rowId: string, username: string, avatarUrl: string | null } | null, mergedBy: { rowId: string, username: string } | null, changedFiles: Array<{ path: string, oldPath: string | null, status: DiffStatus, oldOid: string | null, newOid: string | null, isBinary: boolean, isImage: boolean, additions: number, deletions: number }> }> } | null };
 
+export type PullRequestsQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+}>;
+
+
+export type PullRequestsQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, number: number, title: string, state: string, sourceBranch: string, targetBranch: string, createdAt: Date, author: { rowId: string, username: string } | null, pullRequestComments: { totalCount: number } }> } | null };
+
 export type RepositoriesQueryVariables = Exact<{
   userId: string;
   limit?: number | null | undefined;
@@ -7260,6 +7285,14 @@ export type RepositoryQueryVariables = Exact<{
 
 
 export type RepositoryQuery = { repository: { rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null, repositoryCollaborators: { nodes: Array<{ userId: string, permission: Permission, user: { rowId: string, username: string, avatarUrl: string | null } | null }> } } | null };
+
+export type RepositoryBySlugQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+}>;
+
+
+export type RepositoryBySlugQuery = { repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null, repositoryCollaborators: { nodes: Array<{ userId: string, permission: Permission }> } }> } | null };
 
 export type RepositoryWithBranchesQueryVariables = Exact<{
   ownerSlug: string;
@@ -7397,6 +7430,26 @@ export const DeleteRepositoryDocument = gql`
     repository {
       rowId
     }
+  }
+}
+    `;
+export const RenameRepositoryDocument = gql`
+    mutation RenameRepository($input: RenameRepositoryInput!) {
+  renameRepository(input: $input) {
+    repository {
+      rowId
+      name
+      slug
+      owner {
+        rowId
+        username
+      }
+      organization {
+        rowId
+        idpOrganizationId
+      }
+    }
+    error
   }
 }
     `;
@@ -7632,6 +7685,33 @@ export const PullRequestFilesDocument = gql`
   }
 }
     `;
+export const PullRequestsDocument = gql`
+    query PullRequests($ownerSlug: String!, $repoSlug: String!) {
+  pullRequests(
+    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
+    orderBy: [CREATED_AT_DESC]
+    first: 100
+  ) {
+    nodes {
+      id
+      rowId
+      number
+      title
+      state
+      sourceBranch
+      targetBranch
+      createdAt
+      author {
+        rowId
+        username
+      }
+      pullRequestComments {
+        totalCount
+      }
+    }
+  }
+}
+    `;
 export const RepositoriesDocument = gql`
     query Repositories($userId: UUID!, $limit: Int) {
   repositories(
@@ -7692,6 +7772,37 @@ export const RepositoryDocument = gql`
           rowId
           username
           avatarUrl
+        }
+      }
+    }
+  }
+}
+    `;
+export const RepositoryBySlugDocument = gql`
+    query RepositoryBySlug($ownerSlug: String!, $repoSlug: String!) {
+  repositories(
+    filter: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
+    first: 1
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      defaultBranch
+      owner {
+        rowId
+        username
+      }
+      organization {
+        rowId
+        idpOrganizationId
+      }
+      repositoryCollaborators {
+        nodes {
+          userId
+          permission
         }
       }
     }
@@ -7797,6 +7908,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     DeleteRepository(variables: DeleteRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<DeleteRepositoryMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeleteRepositoryMutation>({ document: DeleteRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'DeleteRepository', 'mutation', variables);
     },
+    RenameRepository(variables: RenameRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RenameRepositoryMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RenameRepositoryMutation>({ document: RenameRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RenameRepository', 'mutation', variables);
+    },
     UpdateRepository(variables: UpdateRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UpdateRepositoryMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateRepositoryMutation>({ document: UpdateRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'UpdateRepository', 'mutation', variables);
     },
@@ -7818,11 +7932,17 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     PullRequestFiles(variables: PullRequestFilesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<PullRequestFilesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PullRequestFilesQuery>({ document: PullRequestFilesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'PullRequestFiles', 'query', variables);
     },
+    PullRequests(variables: PullRequestsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<PullRequestsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PullRequestsQuery>({ document: PullRequestsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'PullRequests', 'query', variables);
+    },
     Repositories(variables: RepositoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoriesQuery>({ document: RepositoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Repositories', 'query', variables);
     },
     Repository(variables: RepositoryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoryQuery>({ document: RepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Repository', 'query', variables);
+    },
+    RepositoryBySlug(variables: RepositoryBySlugQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryBySlugQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RepositoryBySlugQuery>({ document: RepositoryBySlugDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RepositoryBySlug', 'query', variables);
     },
     RepositoryWithBranches(variables: RepositoryWithBranchesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryWithBranchesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoryWithBranchesQuery>({ document: RepositoryWithBranchesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RepositoryWithBranches', 'query', variables);

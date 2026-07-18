@@ -7086,6 +7086,16 @@ export type PullRequestReviewInput = {
   updatedAt?: Date | null | undefined;
 };
 
+/** Input for renaming a repository. */
+export type RenameRepositoryInput = {
+  /** Optional new display name. The name is left unchanged when omitted. */
+  newName?: string | null | undefined;
+  /** The new slug (URL-friendly name). Moves the on-disk storage. */
+  newSlug: string;
+  /** The repository row ID. */
+  rowId: string;
+};
+
 /** An input for mutations affecting `Repository` */
 export type RepositoryInput = {
   createdAt?: Date | null | undefined;
@@ -7191,6 +7201,13 @@ export type DeleteRepositoryMutationVariables = Exact<{
 
 export type DeleteRepositoryMutation = { deleteRepository: { repository: { rowId: string } | null } | null };
 
+export type RenameRepositoryMutationVariables = Exact<{
+  input: RenameRepositoryInput;
+}>;
+
+
+export type RenameRepositoryMutation = { renameRepository: { error: string | null, repository: { rowId: string, name: string, slug: string, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null } | null } | null };
+
 export type UpdateRepositoryMutationVariables = Exact<{
   input: UpdateRepositoryInput;
 }>;
@@ -7246,6 +7263,14 @@ export type PullRequestFilesQueryVariables = Exact<{
 
 export type PullRequestFilesQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, number: number, title: string, description: string | null, state: string, sourceBranch: string, targetBranch: string, createdAt: Date, mergedAt: Date | null, author: { rowId: string, username: string, avatarUrl: string | null } | null, mergedBy: { rowId: string, username: string } | null, changedFiles: Array<{ path: string, oldPath: string | null, status: DiffStatus, oldOid: string | null, newOid: string | null, isBinary: boolean, isImage: boolean, additions: number, deletions: number }> }> } | null };
 
+export type PullRequestsQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+}>;
+
+
+export type PullRequestsQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, number: number, title: string, state: string, sourceBranch: string, targetBranch: string, createdAt: Date, author: { rowId: string, username: string } | null, pullRequestComments: { totalCount: number } }> } | null };
+
 export type RepositoriesQueryVariables = Exact<{
   userId: string;
   limit?: number | null | undefined;
@@ -7260,6 +7285,14 @@ export type RepositoryQueryVariables = Exact<{
 
 
 export type RepositoryQuery = { repository: { rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null, repositoryCollaborators: { nodes: Array<{ userId: string, permission: Permission, user: { rowId: string, username: string, avatarUrl: string | null } | null }> } } | null };
+
+export type RepositoryBySlugQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+}>;
+
+
+export type RepositoryBySlugQuery = { repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null, repositoryCollaborators: { nodes: Array<{ userId: string, permission: Permission }> } }> } | null };
 
 export type RepositoryWithBranchesQueryVariables = Exact<{
   ownerSlug: string;
@@ -7551,6 +7584,45 @@ useDeleteRepositoryMutation.getKey = () => ['DeleteRepository'];
 
 
 useDeleteRepositoryMutation.fetcher = (variables: DeleteRepositoryMutationVariables, options?: RequestInit['headers']) => graphqlFetch<DeleteRepositoryMutation, DeleteRepositoryMutationVariables>(DeleteRepositoryDocument, variables, options);
+
+export const RenameRepositoryDocument = new TypedDocumentString(`
+    mutation RenameRepository($input: RenameRepositoryInput!) {
+  renameRepository(input: $input) {
+    repository {
+      rowId
+      name
+      slug
+      owner {
+        rowId
+        username
+      }
+      organization {
+        rowId
+        idpOrganizationId
+      }
+    }
+    error
+  }
+}
+    `);
+
+export const useRenameRepositoryMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<RenameRepositoryMutation, TError, RenameRepositoryMutationVariables, TContext>) => {
+    
+    return useMutation<RenameRepositoryMutation, TError, RenameRepositoryMutationVariables, TContext>(
+      {
+    mutationKey: ['RenameRepository'],
+    mutationFn: (variables?: RenameRepositoryMutationVariables) => graphqlFetch<RenameRepositoryMutation, RenameRepositoryMutationVariables>(RenameRepositoryDocument, variables)(),
+    ...options
+  }
+    )};
+
+useRenameRepositoryMutation.getKey = () => ['RenameRepository'];
+
+
+useRenameRepositoryMutation.fetcher = (variables: RenameRepositoryMutationVariables, options?: RequestInit['headers']) => graphqlFetch<RenameRepositoryMutation, RenameRepositoryMutationVariables>(RenameRepositoryDocument, variables, options);
 
 export const UpdateRepositoryDocument = new TypedDocumentString(`
     mutation UpdateRepository($input: UpdateRepositoryInput!) {
@@ -8295,6 +8367,115 @@ useSuspenseInfinitePullRequestFilesQuery.getKey = (variables: PullRequestFilesQu
 
 usePullRequestFilesQuery.fetcher = (variables: PullRequestFilesQueryVariables, options?: RequestInit['headers']) => graphqlFetch<PullRequestFilesQuery, PullRequestFilesQueryVariables>(PullRequestFilesDocument, variables, options);
 
+export const PullRequestsDocument = new TypedDocumentString(`
+    query PullRequests($ownerSlug: String!, $repoSlug: String!) {
+  pullRequests(
+    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
+    orderBy: [CREATED_AT_DESC]
+    first: 100
+  ) {
+    nodes {
+      id
+      rowId
+      number
+      title
+      state
+      sourceBranch
+      targetBranch
+      createdAt
+      author {
+        rowId
+        username
+      }
+      pullRequestComments {
+        totalCount
+      }
+    }
+  }
+}
+    `);
+
+export const usePullRequestsQuery = <
+      TData = PullRequestsQuery,
+      TError = unknown
+    >(
+      variables: PullRequestsQueryVariables,
+      options?: Omit<UseQueryOptions<PullRequestsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<PullRequestsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<PullRequestsQuery, TError, TData>(
+      {
+    queryKey: ['PullRequests', variables],
+    queryFn: graphqlFetch<PullRequestsQuery, PullRequestsQueryVariables>(PullRequestsDocument, variables),
+    ...options
+  }
+    )};
+
+usePullRequestsQuery.getKey = (variables: PullRequestsQueryVariables) => ['PullRequests', variables];
+
+export const useSuspensePullRequestsQuery = <
+      TData = PullRequestsQuery,
+      TError = unknown
+    >(
+      variables: PullRequestsQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<PullRequestsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<PullRequestsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<PullRequestsQuery, TError, TData>(
+      {
+    queryKey: ['PullRequests', variables],
+    queryFn: graphqlFetch<PullRequestsQuery, PullRequestsQueryVariables>(PullRequestsDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspensePullRequestsQuery.getKey = (variables: PullRequestsQueryVariables) => ['PullRequests', variables];
+
+export const useInfinitePullRequestsQuery = <
+      TData = InfiniteData<PullRequestsQuery>,
+      TError = unknown
+    >(
+      variables: PullRequestsQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<PullRequestsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<PullRequestsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<PullRequestsQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['PullRequests.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<PullRequestsQuery, PullRequestsQueryVariables>(PullRequestsDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfinitePullRequestsQuery.getKey = (variables: PullRequestsQueryVariables) => ['PullRequests.infinite', variables];
+
+export const useSuspenseInfinitePullRequestsQuery = <
+      TData = InfiniteData<PullRequestsQuery>,
+      TError = unknown
+    >(
+      variables: PullRequestsQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<PullRequestsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<PullRequestsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<PullRequestsQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['PullRequests.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<PullRequestsQuery, PullRequestsQueryVariables>(PullRequestsDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfinitePullRequestsQuery.getKey = (variables: PullRequestsQueryVariables) => ['PullRequests.infinite', variables];
+
+
+usePullRequestsQuery.fetcher = (variables: PullRequestsQueryVariables, options?: RequestInit['headers']) => graphqlFetch<PullRequestsQuery, PullRequestsQueryVariables>(PullRequestsDocument, variables, options);
+
 export const RepositoriesDocument = new TypedDocumentString(`
     query Repositories($userId: UUID!, $limit: Int) {
   repositories(
@@ -8524,6 +8705,119 @@ useSuspenseInfiniteRepositoryQuery.getKey = (variables: RepositoryQueryVariables
 
 
 useRepositoryQuery.fetcher = (variables: RepositoryQueryVariables, options?: RequestInit['headers']) => graphqlFetch<RepositoryQuery, RepositoryQueryVariables>(RepositoryDocument, variables, options);
+
+export const RepositoryBySlugDocument = new TypedDocumentString(`
+    query RepositoryBySlug($ownerSlug: String!, $repoSlug: String!) {
+  repositories(
+    filter: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
+    first: 1
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      defaultBranch
+      owner {
+        rowId
+        username
+      }
+      organization {
+        rowId
+        idpOrganizationId
+      }
+      repositoryCollaborators {
+        nodes {
+          userId
+          permission
+        }
+      }
+    }
+  }
+}
+    `);
+
+export const useRepositoryBySlugQuery = <
+      TData = RepositoryBySlugQuery,
+      TError = unknown
+    >(
+      variables: RepositoryBySlugQueryVariables,
+      options?: Omit<UseQueryOptions<RepositoryBySlugQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<RepositoryBySlugQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<RepositoryBySlugQuery, TError, TData>(
+      {
+    queryKey: ['RepositoryBySlug', variables],
+    queryFn: graphqlFetch<RepositoryBySlugQuery, RepositoryBySlugQueryVariables>(RepositoryBySlugDocument, variables),
+    ...options
+  }
+    )};
+
+useRepositoryBySlugQuery.getKey = (variables: RepositoryBySlugQueryVariables) => ['RepositoryBySlug', variables];
+
+export const useSuspenseRepositoryBySlugQuery = <
+      TData = RepositoryBySlugQuery,
+      TError = unknown
+    >(
+      variables: RepositoryBySlugQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<RepositoryBySlugQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<RepositoryBySlugQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<RepositoryBySlugQuery, TError, TData>(
+      {
+    queryKey: ['RepositoryBySlug', variables],
+    queryFn: graphqlFetch<RepositoryBySlugQuery, RepositoryBySlugQueryVariables>(RepositoryBySlugDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseRepositoryBySlugQuery.getKey = (variables: RepositoryBySlugQueryVariables) => ['RepositoryBySlug', variables];
+
+export const useInfiniteRepositoryBySlugQuery = <
+      TData = InfiniteData<RepositoryBySlugQuery>,
+      TError = unknown
+    >(
+      variables: RepositoryBySlugQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<RepositoryBySlugQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<RepositoryBySlugQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<RepositoryBySlugQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['RepositoryBySlug.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<RepositoryBySlugQuery, RepositoryBySlugQueryVariables>(RepositoryBySlugDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteRepositoryBySlugQuery.getKey = (variables: RepositoryBySlugQueryVariables) => ['RepositoryBySlug.infinite', variables];
+
+export const useSuspenseInfiniteRepositoryBySlugQuery = <
+      TData = InfiniteData<RepositoryBySlugQuery>,
+      TError = unknown
+    >(
+      variables: RepositoryBySlugQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<RepositoryBySlugQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<RepositoryBySlugQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<RepositoryBySlugQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['RepositoryBySlug.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<RepositoryBySlugQuery, RepositoryBySlugQueryVariables>(RepositoryBySlugDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteRepositoryBySlugQuery.getKey = (variables: RepositoryBySlugQueryVariables) => ['RepositoryBySlug.infinite', variables];
+
+
+useRepositoryBySlugQuery.fetcher = (variables: RepositoryBySlugQueryVariables, options?: RequestInit['headers']) => graphqlFetch<RepositoryBySlugQuery, RepositoryBySlugQueryVariables>(RepositoryBySlugDocument, variables, options);
 
 export const RepositoryWithBranchesDocument = new TypedDocumentString(`
     query RepositoryWithBranches($ownerSlug: String!, $repoSlug: String!) {

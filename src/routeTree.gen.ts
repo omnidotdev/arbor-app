@@ -20,6 +20,7 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AppWorkspacesWorkspaceSlugIndexRouteImport } from './routes/_app/workspaces/$workspaceSlug/index'
 import { Route as AppRepositoriesOwnerRepoRouteImport } from './routes/_app/repositories/$owner.$repo'
 import { Route as ApiOgRepoOwnerRepoRouteImport } from './routes/api/og/repo.$owner.$repo'
+import { Route as AppRepositoriesOwnerRepoSettingsRouteImport } from './routes/_app/repositories/$owner.$repo/settings'
 import { Route as AppRepositoriesOwnerRepoCommitsRouteImport } from './routes/_app/repositories/$owner.$repo/commits'
 import { Route as AppRepositoriesOwnerRepoBranchesRouteImport } from './routes/_app/repositories/$owner.$repo/branches'
 import { Route as AppRepositoriesOwnerRepoPullsIndexRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/index'
@@ -83,6 +84,12 @@ const ApiOgRepoOwnerRepoRoute = ApiOgRepoOwnerRepoRouteImport.update({
   path: '/api/og/repo/$owner/$repo',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRepositoriesOwnerRepoSettingsRoute =
+  AppRepositoriesOwnerRepoSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
+  } as any)
 const AppRepositoriesOwnerRepoCommitsRoute =
   AppRepositoriesOwnerRepoCommitsRouteImport.update({
     id: '/commits',
@@ -131,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/workspaces/$workspaceSlug/': typeof AppWorkspacesWorkspaceSlugIndexRoute
   '/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
   '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
+  '/repositories/$owner/$repo/settings': typeof AppRepositoriesOwnerRepoSettingsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
   '/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
@@ -149,6 +157,7 @@ export interface FileRoutesByTo {
   '/workspaces/$workspaceSlug': typeof AppWorkspacesWorkspaceSlugIndexRoute
   '/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
   '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
+  '/repositories/$owner/$repo/settings': typeof AppRepositoriesOwnerRepoSettingsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
   '/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
@@ -169,6 +178,7 @@ export interface FileRoutesById {
   '/_app/workspaces/$workspaceSlug/': typeof AppWorkspacesWorkspaceSlugIndexRoute
   '/_app/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
   '/_app/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
+  '/_app/repositories/$owner/$repo/settings': typeof AppRepositoriesOwnerRepoSettingsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
   '/_app/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/_app/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
@@ -189,6 +199,7 @@ export interface FileRouteTypes {
     | '/workspaces/$workspaceSlug/'
     | '/repositories/$owner/$repo/branches'
     | '/repositories/$owner/$repo/commits'
+    | '/repositories/$owner/$repo/settings'
     | '/api/og/repo/$owner/$repo'
     | '/repositories/$owner/$repo/pulls/$number'
     | '/repositories/$owner/$repo/pulls/new'
@@ -207,6 +218,7 @@ export interface FileRouteTypes {
     | '/workspaces/$workspaceSlug'
     | '/repositories/$owner/$repo/branches'
     | '/repositories/$owner/$repo/commits'
+    | '/repositories/$owner/$repo/settings'
     | '/api/og/repo/$owner/$repo'
     | '/repositories/$owner/$repo/pulls/$number'
     | '/repositories/$owner/$repo/pulls/new'
@@ -226,6 +238,7 @@ export interface FileRouteTypes {
     | '/_app/workspaces/$workspaceSlug/'
     | '/_app/repositories/$owner/$repo/branches'
     | '/_app/repositories/$owner/$repo/commits'
+    | '/_app/repositories/$owner/$repo/settings'
     | '/api/og/repo/$owner/$repo'
     | '/_app/repositories/$owner/$repo/pulls/$number'
     | '/_app/repositories/$owner/$repo/pulls/new'
@@ -322,6 +335,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiOgRepoOwnerRepoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/repositories/$owner/$repo/settings': {
+      id: '/_app/repositories/$owner/$repo/settings'
+      path: '/settings'
+      fullPath: '/repositories/$owner/$repo/settings'
+      preLoaderRoute: typeof AppRepositoriesOwnerRepoSettingsRouteImport
+      parentRoute: typeof AppRepositoriesOwnerRepoRoute
+    }
     '/_app/repositories/$owner/$repo/commits': {
       id: '/_app/repositories/$owner/$repo/commits'
       path: '/commits'
@@ -370,6 +390,7 @@ declare module '@tanstack/react-router' {
 interface AppRepositoriesOwnerRepoRouteChildren {
   AppRepositoriesOwnerRepoBranchesRoute: typeof AppRepositoriesOwnerRepoBranchesRoute
   AppRepositoriesOwnerRepoCommitsRoute: typeof AppRepositoriesOwnerRepoCommitsRoute
+  AppRepositoriesOwnerRepoSettingsRoute: typeof AppRepositoriesOwnerRepoSettingsRoute
   AppRepositoriesOwnerRepoPullsNumberRoute: typeof AppRepositoriesOwnerRepoPullsNumberRoute
   AppRepositoriesOwnerRepoPullsNewRoute: typeof AppRepositoriesOwnerRepoPullsNewRoute
   AppRepositoriesOwnerRepoPullsIndexRoute: typeof AppRepositoriesOwnerRepoPullsIndexRoute
@@ -380,6 +401,8 @@ const AppRepositoriesOwnerRepoRouteChildren: AppRepositoriesOwnerRepoRouteChildr
     AppRepositoriesOwnerRepoBranchesRoute:
       AppRepositoriesOwnerRepoBranchesRoute,
     AppRepositoriesOwnerRepoCommitsRoute: AppRepositoriesOwnerRepoCommitsRoute,
+    AppRepositoriesOwnerRepoSettingsRoute:
+      AppRepositoriesOwnerRepoSettingsRoute,
     AppRepositoriesOwnerRepoPullsNumberRoute:
       AppRepositoriesOwnerRepoPullsNumberRoute,
     AppRepositoriesOwnerRepoPullsNewRoute:

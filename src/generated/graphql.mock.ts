@@ -162,6 +162,28 @@ export const mockDeleteRepositoryMutation = (resolver: GraphQLResponseResolver<T
  * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
  * @see https://mswjs.io/docs/basics/response-resolver
  * @example
+ * mockRenameRepositoryMutation(
+ *   ({ query, variables }) => {
+ *     const { input } = variables;
+ *     return HttpResponse.json({
+ *       data: { renameRepository }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockRenameRepositoryMutation = (resolver: GraphQLResponseResolver<Types.RenameRepositoryMutation, Types.RenameRepositoryMutationVariables>, options?: RequestHandlerOptions) =>
+  graphql.mutation<Types.RenameRepositoryMutation, Types.RenameRepositoryMutationVariables>(
+    'RenameRepository',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
  * mockUpdateRepositoryMutation(
  *   ({ query, variables }) => {
  *     const { input } = variables;
@@ -316,6 +338,28 @@ export const mockPullRequestFilesQuery = (resolver: GraphQLResponseResolver<Type
  * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
  * @see https://mswjs.io/docs/basics/response-resolver
  * @example
+ * mockPullRequestsQuery(
+ *   ({ query, variables }) => {
+ *     const { ownerSlug, repoSlug } = variables;
+ *     return HttpResponse.json({
+ *       data: { pullRequests }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockPullRequestsQuery = (resolver: GraphQLResponseResolver<Types.PullRequestsQuery, Types.PullRequestsQueryVariables>, options?: RequestHandlerOptions) =>
+  graphql.query<Types.PullRequestsQuery, Types.PullRequestsQueryVariables>(
+    'PullRequests',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
  * mockRepositoriesQuery(
  *   ({ query, variables }) => {
  *     const { userId, limit } = variables;
@@ -351,6 +395,28 @@ export const mockRepositoriesQuery = (resolver: GraphQLResponseResolver<Types.Re
 export const mockRepositoryQuery = (resolver: GraphQLResponseResolver<Types.RepositoryQuery, Types.RepositoryQueryVariables>, options?: RequestHandlerOptions) =>
   graphql.query<Types.RepositoryQuery, Types.RepositoryQueryVariables>(
     'Repository',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
+ * mockRepositoryBySlugQuery(
+ *   ({ query, variables }) => {
+ *     const { ownerSlug, repoSlug } = variables;
+ *     return HttpResponse.json({
+ *       data: { repositories }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockRepositoryBySlugQuery = (resolver: GraphQLResponseResolver<Types.RepositoryBySlugQuery, Types.RepositoryBySlugQueryVariables>, options?: RequestHandlerOptions) =>
+  graphql.query<Types.RepositoryBySlugQuery, Types.RepositoryBySlugQueryVariables>(
+    'RepositoryBySlug',
     resolver,
     options
   )

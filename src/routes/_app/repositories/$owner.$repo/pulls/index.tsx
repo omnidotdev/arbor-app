@@ -13,6 +13,7 @@ import { z } from "zod";
 import { PullRequestList } from "@/components/pullRequest";
 import { Button } from "@/components/ui/button";
 import { graphqlFetch } from "@/lib/graphql/graphqlFetch";
+import pullRequestsOptions from "@/lib/options/pullRequests.options";
 
 const searchSchema = z.object({
   state: z.enum(["open", "closed", "merged", "all"]).optional(),
@@ -94,13 +95,14 @@ const REPOSITORY_WITH_BRANCHES_QUERY = `
   }
 `;
 
-async function fetchPullRequests(
-  _owner: string,
-  _repo: string,
-  _state?: string,
-): Promise<PullRequest[]> {
-  // For now, return empty array as pull requests GraphQL schema needs to be implemented
-  return [];
+const KNOWN_STATES = ["open", "closed", "merged", "draft"] as const;
+
+// Map a raw DB state string onto the union the list components render. Unknown
+// values fall back to "open" so a card always has a valid style
+function normalizeState(state: string): PullRequest["state"] {
+  return (KNOWN_STATES as readonly string[]).includes(state)
+    ? (state as PullRequest["state"])
+    : "open";
 }
 
 async function fetchBranches(owner: string, repo: string): Promise<Branch[]> {
@@ -132,10 +134,33 @@ function PullRequestsPage() {
     queryFn: () => fetchBranches(owner, repo),
   });
 
-  const pullRequestsQuery = useQuery({
-    queryKey: ["pullRequests", owner, repo, currentFilter],
-    queryFn: () => fetchPullRequests(owner, repo, currentFilter),
-  });
+  const pullRequestsQuery = useQuery(
+    pullRequestsOptions({ ownerSlug: owner, repoSlug: repo }),
+  );
+
+  // Map the connection onto the shape the list components expect, then apply
+  // the active state filter client-side ("all" shows everything)
+  const allPullRequests: PullRequest[] = (
+    pullRequestsQuery.data?.pullRequests?.nodes ?? []
+  ).map((node) => ({
+    id: node.id,
+    number: node.number,
+    title: node.title,
+    state: normalizeState(node.state),
+    authorName: node.author?.username ?? "Unknown",
+    sourceBranch: node.sourceBranch,
+    targetBranch: node.targetBranch,
+    createdAt:
+      node.createdAt instanceof Date
+        ? node.createdAt.toISOString()
+        : String(node.createdAt),
+    commentCount: node.pullRequestComments.totalCount,
+  }));
+
+  const pullRequests =
+    currentFilter === "all"
+      ? allPullRequests
+      : allPullRequests.filter((pr) => pr.state === currentFilter);
 
   const branches = branchesQuery.data ?? [];
   const defaultBranch =
@@ -227,12 +252,22 @@ function PullRequestsPage() {
       </div>
 
       {/* Pull request list */}
-      <PullRequestList
-        pullRequests={pullRequestsQuery.data ?? []}
-        owner={owner}
-        repo={repo}
-        isLoading={pullRequestsQuery.isLoading}
-      />
+      {pullRequestsQuery.isError ? (
+        <div className="rounded-lg border p-8 text-center">
+          <GitPullRequest className="mx-auto h-12 w-12 text-muted-foreground" />
+          <h3 className="mt-4 font-medium">Unable to load pull requests</h3>
+          <p className="mt-1 text-muted-foreground text-sm">
+            Something went wrong. Please try again.
+          </p>
+        </div>
+      ) : (
+        <PullRequestList
+          pullRequests={pullRequests}
+          owner={owner}
+          repo={repo}
+          isLoading={pullRequestsQuery.isLoading}
+        />
+      )}
     </div>
   );
 }

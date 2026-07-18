@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { GitMerge, GitPullRequest, MessageSquare, User } from "lucide-react";
 
 interface PullRequestCardProps {
@@ -49,7 +50,11 @@ export function PullRequestCard({
   const relativeTime = getRelativeTime(date);
 
   return (
-    <div className="flex items-start gap-4 border-b px-4 py-3 last:border-b-0">
+    <Link
+      to="/repositories/$owner/$repo/pulls/$number"
+      params={{ owner, repo, number: String(number) }}
+      className="flex items-start gap-4 border-b px-4 py-3 transition-colors last:border-b-0 hover:bg-muted/50"
+    >
       <div className={`mt-1 rounded-full p-1.5 ${stateStyles[state]}`}>
         <StateIcon className="h-4 w-4" />
       </div>
@@ -86,7 +91,7 @@ export function PullRequestCard({
           <span>{commentCount}</span>
         </div>
       )}
-    </div>
+    </Link>
   );
 }
 
