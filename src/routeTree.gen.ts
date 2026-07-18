@@ -23,6 +23,7 @@ import { Route as ApiOgRepoOwnerRepoRouteImport } from './routes/api/og/repo.$ow
 import { Route as AppRepositoriesOwnerRepoCommitsRouteImport } from './routes/_app/repositories/$owner.$repo/commits'
 import { Route as AppRepositoriesOwnerRepoBranchesRouteImport } from './routes/_app/repositories/$owner.$repo/branches'
 import { Route as AppRepositoriesOwnerRepoPullsIndexRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/index'
+import { Route as ApiRawOwnerRepoOidSplatRouteImport } from './routes/api/raw/$owner.$repo.$oid.$'
 import { Route as AppRepositoriesOwnerRepoPullsNewRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/new'
 import { Route as AppRepositoriesOwnerRepoPullsNumberRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/$number'
 
@@ -100,6 +101,11 @@ const AppRepositoriesOwnerRepoPullsIndexRoute =
     path: '/pulls/',
     getParentRoute: () => AppRepositoriesOwnerRepoRoute,
   } as any)
+const ApiRawOwnerRepoOidSplatRoute = ApiRawOwnerRepoOidSplatRouteImport.update({
+  id: '/api/raw/$owner/$repo/$oid/$',
+  path: '/api/raw/$owner/$repo/$oid/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppRepositoriesOwnerRepoPullsNewRoute =
   AppRepositoriesOwnerRepoPullsNewRouteImport.update({
     id: '/pulls/new',
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
   '/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
+  '/api/raw/$owner/$repo/$oid/$': typeof ApiRawOwnerRepoOidSplatRoute
   '/repositories/$owner/$repo/pulls/': typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -145,6 +152,7 @@ export interface FileRoutesByTo {
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
   '/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
+  '/api/raw/$owner/$repo/$oid/$': typeof ApiRawOwnerRepoOidSplatRoute
   '/repositories/$owner/$repo/pulls': typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
 export interface FileRoutesById {
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
   '/_app/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/_app/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
+  '/api/raw/$owner/$repo/$oid/$': typeof ApiRawOwnerRepoOidSplatRoute
   '/_app/repositories/$owner/$repo/pulls/': typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
 export interface FileRouteTypes {
@@ -183,6 +192,7 @@ export interface FileRouteTypes {
     | '/api/og/repo/$owner/$repo'
     | '/repositories/$owner/$repo/pulls/$number'
     | '/repositories/$owner/$repo/pulls/new'
+    | '/api/raw/$owner/$repo/$oid/$'
     | '/repositories/$owner/$repo/pulls/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -200,6 +210,7 @@ export interface FileRouteTypes {
     | '/api/og/repo/$owner/$repo'
     | '/repositories/$owner/$repo/pulls/$number'
     | '/repositories/$owner/$repo/pulls/new'
+    | '/api/raw/$owner/$repo/$oid/$'
     | '/repositories/$owner/$repo/pulls'
   id:
     | '__root__'
@@ -218,6 +229,7 @@ export interface FileRouteTypes {
     | '/api/og/repo/$owner/$repo'
     | '/_app/repositories/$owner/$repo/pulls/$number'
     | '/_app/repositories/$owner/$repo/pulls/new'
+    | '/api/raw/$owner/$repo/$oid/$'
     | '/_app/repositories/$owner/$repo/pulls/'
   fileRoutesById: FileRoutesById
 }
@@ -228,6 +240,7 @@ export interface RootRouteChildren {
   ApiHealthzRoute: typeof ApiHealthzRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiOgRepoOwnerRepoRoute: typeof ApiOgRepoOwnerRepoRoute
+  ApiRawOwnerRepoOidSplatRoute: typeof ApiRawOwnerRepoOidSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -330,6 +343,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRepositoriesOwnerRepoPullsIndexRouteImport
       parentRoute: typeof AppRepositoriesOwnerRepoRoute
     }
+    '/api/raw/$owner/$repo/$oid/$': {
+      id: '/api/raw/$owner/$repo/$oid/$'
+      path: '/api/raw/$owner/$repo/$oid/$'
+      fullPath: '/api/raw/$owner/$repo/$oid/$'
+      preLoaderRoute: typeof ApiRawOwnerRepoOidSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_app/repositories/$owner/$repo/pulls/new': {
       id: '/_app/repositories/$owner/$repo/pulls/new'
       path: '/pulls/new'
@@ -398,6 +418,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiHealthzRoute: ApiHealthzRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiOgRepoOwnerRepoRoute: ApiOgRepoOwnerRepoRoute,
+  ApiRawOwnerRepoOidSplatRoute: ApiRawOwnerRepoOidSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

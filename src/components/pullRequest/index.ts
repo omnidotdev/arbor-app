@@ -1,9 +1,11 @@
 export { ChangedFileTree } from "./ChangedFileTree";
 export { CreatePullRequestForm } from "./CreatePullRequestForm";
 export { FileDiffCard } from "./FileDiffCard";
+export { ImageDiff } from "./ImageDiff";
 export { PullRequestCard } from "./PullRequestCard";
 export { PullRequestDetail } from "./PullRequestDetail";
 export { PullRequestList } from "./PullRequestList";
+export { RichDiff } from "./RichDiff";
 export { TextDiff } from "./TextDiff";
 export { useDiffViewMode } from "./useDiffViewMode";
 export { useViewedFiles } from "./useViewedFiles";

@@ -124,3 +124,33 @@ export const getFileLang = (path: string): string => {
   if (!ext) return "plaintext";
   return extensionToLang[ext.toLowerCase()] ?? "plaintext";
 };
+
+/** File kinds that render a source vs rendered rich diff toggle. */
+export type RichDiffKind = "markdown" | "svg";
+
+/**
+ * Detect whether a file should render as a rich diff (source vs rendered
+ * toggle). Markdown and SVG both have a meaningful rendered form.
+ */
+export const getRichDiffKind = (path: string): RichDiffKind | null => {
+  const ext = path.split(".").pop()?.toLowerCase();
+  if (ext === "md" || ext === "markdown") return "markdown";
+  if (ext === "svg") return "svg";
+  return null;
+};
+
+/**
+ * Build a same-origin proxy URL for a file's raw bytes at a given git oid.
+ * Returns null when the oid is absent (added files have no old side, deleted
+ * files have no new side).
+ */
+export const rawProxyUrl = (
+  owner: string,
+  repo: string,
+  oid: string | null | undefined,
+  path: string,
+): string | null => {
+  if (!oid) return null;
+  const encodedPath = path.split("/").map(encodeURIComponent).join("/");
+  return `/api/raw/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${encodeURIComponent(oid)}/${encodedPath}`;
+};

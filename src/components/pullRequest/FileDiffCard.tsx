@@ -5,7 +5,9 @@ import { ChevronDown, ChevronRight, FileWarning } from "lucide-react";
 
 import pullRequestFileDiffOptions from "@/lib/options/pullRequestFileDiff.options";
 import { cn } from "@/lib/utils";
-import { diffStatusMeta } from "./diffTypes";
+import { diffStatusMeta, getRichDiffKind, rawProxyUrl } from "./diffTypes";
+import { ImageDiff } from "./ImageDiff";
+import { RichDiff } from "./RichDiff";
 import { TextDiff } from "./TextDiff";
 
 import type { ChangedFile } from "./diffTypes";
@@ -44,16 +46,33 @@ export function FileDiffCard({
   mode,
 }: FileDiffCardProps) {
   const meta = diffStatusMeta[file.status];
+  const richKind = getRichDiffKind(file.path);
 
-  // only fetch the file contents once the card is expanded
+  // SVG is flagged as an image by the API but is text, so it renders as a rich
+  // diff. Only non-rich image files use the raw byte proxy and skip the text
+  // content fetch
+  const isImageDiff = file.isImage && !richKind;
+
+  // only fetch the file contents once the card is expanded. Images are served as
+  // raw bytes over the proxy instead, so their text content is never fetched
   const diffQuery = useQuery(
     pullRequestFileDiffOptions(
       { ownerSlug: owner, repoSlug: repo, number, path: file.path },
-      { enabled: expanded && !file.isBinary },
+      { enabled: expanded && !file.isBinary && !isImageDiff },
     ),
   );
 
   const fileDiff = diffQuery.data?.pullRequests?.nodes?.[0]?.fileDiff;
+
+  // Same-origin proxy URLs for the old and new image bytes. A null oid means the
+  // side does not exist (added has no old, deleted has no new)
+  const oldImageSrc = rawProxyUrl(
+    owner,
+    repo,
+    file.oldOid,
+    file.oldPath ?? file.path,
+  );
+  const newImageSrc = rawProxyUrl(owner, repo, file.newOid, file.path);
 
   return (
     <div
@@ -121,7 +140,13 @@ export function FileDiffCard({
       {/* Body */}
       {expanded && (
         <div>
-          {file.isBinary ? (
+          {isImageDiff ? (
+            <ImageDiff
+              oldSrc={oldImageSrc}
+              newSrc={newImageSrc}
+              status={file.status}
+            />
+          ) : file.isBinary ? (
             <div className="flex items-center gap-2 p-4 text-muted-foreground text-sm">
               <FileWarning className="h-4 w-4" />
               Binary file not shown
@@ -135,12 +160,22 @@ export function FileDiffCard({
               Failed to load diff
             </div>
           ) : fileDiff ? (
-            <TextDiff
-              path={file.path}
-              oldText={fileDiff.oldText}
-              newText={fileDiff.newText}
-              mode={mode}
-            />
+            richKind ? (
+              <RichDiff
+                path={file.path}
+                kind={richKind}
+                oldText={fileDiff.oldText}
+                newText={fileDiff.newText}
+                mode={mode}
+              />
+            ) : (
+              <TextDiff
+                path={file.path}
+                oldText={fileDiff.oldText}
+                newText={fileDiff.newText}
+                mode={mode}
+              />
+            )
           ) : (
             <div className="p-4 text-muted-foreground text-sm">
               No diff available
