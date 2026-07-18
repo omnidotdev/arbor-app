@@ -1,8 +1,4 @@
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@omnidotdev/thornberry/sidebar";
+import { SidebarInset, SidebarProvider } from "@omnidotdev/thornberry/sidebar";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { useMemo } from "react";
 
@@ -55,9 +51,8 @@ function AuthenticatedLayout() {
             <AppSidebar variant="inset" user={session?.user} />
 
             <SidebarInset className="flex min-h-0 flex-1 flex-col overflow-hidden">
-              {/* Mobile top bar with the sidebar toggle */}
+              {/* Mobile top bar showing the app name; the sidebar toggle is rendered by the sidebar itself on mobile */}
               <header className="flex h-12 shrink-0 items-center gap-2 border-b px-3 md:hidden">
-                <SidebarTrigger />
                 <span className="font-semibold text-sm">{app.name}</span>
               </header>
 
