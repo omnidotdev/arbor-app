@@ -1,0 +1,29 @@
+query PullRequestFileDiff(
+  $ownerSlug: String!
+  $repoSlug: String!
+  $number: Int!
+  $path: String!
+) {
+  pullRequests(
+    filter: {
+      number: { equalTo: $number }
+      repository: {
+        slug: { equalTo: $repoSlug }
+        owner: { username: { equalTo: $ownerSlug } }
+      }
+    }
+    first: 1
+  ) {
+    nodes {
+      id
+      rowId
+      fileDiff(path: $path) {
+        path
+        status
+        isBinary
+        oldText
+        newText
+      }
+    }
+  }
+}

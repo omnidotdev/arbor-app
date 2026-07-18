@@ -128,6 +128,29 @@ export type BooleanFilter = {
   notIn?: InputMaybe<Array<Scalars['Boolean']['input']>>;
 };
 
+/** A single file that changed between two refs (the cheap file-list entry). */
+export type ChangedFile = {
+  __typename?: 'ChangedFile';
+  /** Number of lines added. */
+  additions: Scalars['Int']['output'];
+  /** Number of lines removed. */
+  deletions: Scalars['Int']['output'];
+  /** Whether the file is binary (line counts are skipped for binary files). */
+  isBinary: Scalars['Boolean']['output'];
+  /** Whether the file is an image, derived from its extension. */
+  isImage: Scalars['Boolean']['output'];
+  /** The blob oid at the head ref, or null when the file was deleted. */
+  newOid?: Maybe<Scalars['String']['output']>;
+  /** The blob oid at the base ref, or null when the file was added. */
+  oldOid?: Maybe<Scalars['String']['output']>;
+  /** The previous path when the file was renamed, otherwise null. */
+  oldPath?: Maybe<Scalars['String']['output']>;
+  /** The file path at the head ref (or the base ref for deletions). */
+  path: Scalars['String']['output'];
+  /** How the file changed. */
+  status: DiffStatus;
+};
+
 /** A Git commit. */
 export type Commit = GitObject & {
   __typename?: 'Commit';
@@ -135,10 +158,14 @@ export type Commit = GitObject & {
   author?: Maybe<GitActor>;
   /** When the commit was authored. */
   authoredDate?: Maybe<Scalars['Datetime']['output']>;
+  /** The files changed by this commit relative to its first parent. */
+  changedFiles: Array<ChangedFile>;
   /** When the commit was committed. */
   committedDate?: Maybe<Scalars['Datetime']['output']>;
   /** The committer of the commit. */
   committer?: Maybe<GitActor>;
+  /** The old and new content for a single changed file. */
+  fileDiff?: Maybe<FileDiffContent>;
   /** Commit history starting from this commit. */
   history: Array<Commit>;
   /** The full commit message. */
@@ -151,6 +178,12 @@ export type Commit = GitObject & {
   repository: Repository;
   /** The tree object for this commit. */
   tree?: Maybe<Tree>;
+};
+
+
+/** A Git commit. */
+export type CommitFileDiffArgs = {
+  path: Scalars['String']['input'];
 };
 
 
@@ -1102,6 +1135,16 @@ export type DeleteUserPayloadUserEdgeArgs = {
   orderBy?: Array<UserOrderBy>;
 };
 
+/** The change status of a file within a diff. */
+export enum DiffStatus {
+  Added = 'ADDED',
+  Copied = 'COPIED',
+  Deleted = 'DELETED',
+  Modified = 'MODIFIED',
+  Renamed = 'RENAMED',
+  TypeChanged = 'TYPE_CHANGED'
+}
+
 export type ExternalDependency = Node & {
   __typename?: 'ExternalDependency';
   createdAt: Scalars['Datetime']['output'];
@@ -1344,6 +1387,21 @@ export type ExternalDependencyPatch = {
   repositoryId?: InputMaybe<Scalars['UUID']['input']>;
   rowId?: InputMaybe<Scalars['UUID']['input']>;
   versionConstraint?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The old and new content of a single file, fetched lazily per file. */
+export type FileDiffContent = {
+  __typename?: 'FileDiffContent';
+  /** Whether the file is binary. */
+  isBinary: Scalars['Boolean']['output'];
+  /** UTF-8 content at the head ref, or null when deleted or binary. */
+  newText?: Maybe<Scalars['String']['output']>;
+  /** UTF-8 content at the base ref, or null when added or binary. */
+  oldText?: Maybe<Scalars['String']['output']>;
+  /** The file path. */
+  path: Scalars['String']['output'];
+  /** How the file changed. */
+  status: DiffStatus;
 };
 
 /** A filter to be used against Float fields. All fields are combined with a logical ‘and.’ */
@@ -2412,9 +2470,16 @@ export type PullRequest = Node & {
   /** Reads a single `User` that is related to this `PullRequest`. */
   author?: Maybe<User>;
   authorId: Scalars['UUID']['output'];
+  /**
+   * The files changed by this pull request (merge-base of target and source
+   * to the source tip).
+   */
+  changedFiles: Array<ChangedFile>;
   closedAt?: Maybe<Scalars['Datetime']['output']>;
   createdAt: Scalars['Datetime']['output'];
   description?: Maybe<Scalars['String']['output']>;
+  /** The old and new content for a single changed file. */
+  fileDiff?: Maybe<FileDiffContent>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   id: Scalars['ID']['output'];
   mergeCommitSha?: Maybe<Scalars['String']['output']>;
@@ -2436,6 +2501,11 @@ export type PullRequest = Node & {
   targetBranch: Scalars['String']['output'];
   title: Scalars['String']['output'];
   updatedAt: Scalars['Datetime']['output'];
+};
+
+
+export type PullRequestFileDiffArgs = {
+  path: Scalars['String']['input'];
 };
 
 
@@ -7323,6 +7393,15 @@ export type DeleteRepositoryInput = {
   rowId: string;
 };
 
+/** The change status of a file within a diff. */
+export type DiffStatus =
+  | 'ADDED'
+  | 'COPIED'
+  | 'DELETED'
+  | 'MODIFIED'
+  | 'RENAMED'
+  | 'TYPE_CHANGED';
+
 /** An input for mutations affecting `Organization` */
 export type OrganizationInput = {
   avatarUrl?: string | null | undefined;
@@ -7435,6 +7514,25 @@ export type OrganizationsQueryVariables = Exact<{
 
 
 export type OrganizationsQuery = { organizations: { totalCount: number, nodes: Array<{ rowId: string, idpOrganizationId: string, description: string | null, avatarUrl: string | null, createdAt: Date, updatedAt: Date, repositories: { totalCount: number } }> } | null };
+
+export type PullRequestFileDiffQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+  number: number;
+  path: string;
+}>;
+
+
+export type PullRequestFileDiffQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, fileDiff: { path: string, status: DiffStatus, isBinary: boolean, oldText: string | null, newText: string | null } | null }> } | null };
+
+export type PullRequestFilesQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+  number: number;
+}>;
+
+
+export type PullRequestFilesQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, number: number, title: string, description: string | null, state: string, sourceBranch: string, targetBranch: string, createdAt: Date, mergedAt: Date | null, author: { rowId: string, username: string, avatarUrl: string | null } | null, mergedBy: { rowId: string, username: string } | null, changedFiles: Array<{ path: string, oldPath: string | null, status: DiffStatus, oldOid: string | null, newOid: string | null, isBinary: boolean, isImage: boolean, additions: number, deletions: number }> }> } | null };
 
 export type RepositoriesQueryVariables = Exact<{
   userId: string;
@@ -7644,6 +7742,67 @@ export const OrganizationsDocument = gql`
   }
 }
     `;
+export const PullRequestFileDiffDocument = gql`
+    query PullRequestFileDiff($ownerSlug: String!, $repoSlug: String!, $number: Int!, $path: String!) {
+  pullRequests(
+    filter: {number: {equalTo: $number}, repository: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}}
+    first: 1
+  ) {
+    nodes {
+      id
+      rowId
+      fileDiff(path: $path) {
+        path
+        status
+        isBinary
+        oldText
+        newText
+      }
+    }
+  }
+}
+    `;
+export const PullRequestFilesDocument = gql`
+    query PullRequestFiles($ownerSlug: String!, $repoSlug: String!, $number: Int!) {
+  pullRequests(
+    filter: {number: {equalTo: $number}, repository: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}}
+    first: 1
+  ) {
+    nodes {
+      id
+      rowId
+      number
+      title
+      description
+      state
+      sourceBranch
+      targetBranch
+      createdAt
+      mergedAt
+      author {
+        rowId
+        username
+        avatarUrl
+      }
+      mergedBy {
+        rowId
+        username
+      }
+      changedFiles {
+        path
+        oldPath
+        status
+        oldOid
+        newOid
+        isBinary
+        isImage
+        additions
+        deletions
+      }
+    }
+  }
+}
+    `;
 export const RepositoriesDocument = gql`
     query Repositories($userId: UUID!, $limit: Int) {
   repositories(
@@ -7808,6 +7967,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Organizations(variables?: OrganizationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<OrganizationsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<OrganizationsQuery>({ document: OrganizationsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Organizations', 'query', variables);
+    },
+    PullRequestFileDiff(variables: PullRequestFileDiffQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<PullRequestFileDiffQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PullRequestFileDiffQuery>({ document: PullRequestFileDiffDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'PullRequestFileDiff', 'query', variables);
+    },
+    PullRequestFiles(variables: PullRequestFilesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<PullRequestFilesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PullRequestFilesQuery>({ document: PullRequestFilesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'PullRequestFiles', 'query', variables);
     },
     Repositories(variables: RepositoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoriesQuery>({ document: RepositoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Repositories', 'query', variables);

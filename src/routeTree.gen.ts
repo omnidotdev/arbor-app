@@ -24,6 +24,7 @@ import { Route as AppRepositoriesOwnerRepoCommitsRouteImport } from './routes/_a
 import { Route as AppRepositoriesOwnerRepoBranchesRouteImport } from './routes/_app/repositories/$owner.$repo/branches'
 import { Route as AppRepositoriesOwnerRepoPullsIndexRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/index'
 import { Route as AppRepositoriesOwnerRepoPullsNewRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/new'
+import { Route as AppRepositoriesOwnerRepoPullsNumberRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/$number'
 
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
@@ -105,6 +106,12 @@ const AppRepositoriesOwnerRepoPullsNewRoute =
     path: '/pulls/new',
     getParentRoute: () => AppRepositoriesOwnerRepoRoute,
   } as any)
+const AppRepositoriesOwnerRepoPullsNumberRoute =
+  AppRepositoriesOwnerRepoPullsNumberRouteImport.update({
+    id: '/pulls/$number',
+    path: '/pulls/$number',
+    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -119,6 +126,7 @@ export interface FileRoutesByFullPath {
   '/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
   '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
+  '/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
   '/repositories/$owner/$repo/pulls/': typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
@@ -135,6 +143,7 @@ export interface FileRoutesByTo {
   '/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
   '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
+  '/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
   '/repositories/$owner/$repo/pulls': typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
@@ -153,6 +162,7 @@ export interface FileRoutesById {
   '/_app/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
   '/_app/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
+  '/_app/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/_app/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
   '/_app/repositories/$owner/$repo/pulls/': typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/repositories/$owner/$repo/branches'
     | '/repositories/$owner/$repo/commits'
     | '/api/og/repo/$owner/$repo'
+    | '/repositories/$owner/$repo/pulls/$number'
     | '/repositories/$owner/$repo/pulls/new'
     | '/repositories/$owner/$repo/pulls/'
   fileRoutesByTo: FileRoutesByTo
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/repositories/$owner/$repo/branches'
     | '/repositories/$owner/$repo/commits'
     | '/api/og/repo/$owner/$repo'
+    | '/repositories/$owner/$repo/pulls/$number'
     | '/repositories/$owner/$repo/pulls/new'
     | '/repositories/$owner/$repo/pulls'
   id:
@@ -204,6 +216,7 @@ export interface FileRouteTypes {
     | '/_app/repositories/$owner/$repo/branches'
     | '/_app/repositories/$owner/$repo/commits'
     | '/api/og/repo/$owner/$repo'
+    | '/_app/repositories/$owner/$repo/pulls/$number'
     | '/_app/repositories/$owner/$repo/pulls/new'
     | '/_app/repositories/$owner/$repo/pulls/'
   fileRoutesById: FileRoutesById
@@ -324,12 +337,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRepositoriesOwnerRepoPullsNewRouteImport
       parentRoute: typeof AppRepositoriesOwnerRepoRoute
     }
+    '/_app/repositories/$owner/$repo/pulls/$number': {
+      id: '/_app/repositories/$owner/$repo/pulls/$number'
+      path: '/pulls/$number'
+      fullPath: '/repositories/$owner/$repo/pulls/$number'
+      preLoaderRoute: typeof AppRepositoriesOwnerRepoPullsNumberRouteImport
+      parentRoute: typeof AppRepositoriesOwnerRepoRoute
+    }
   }
 }
 
 interface AppRepositoriesOwnerRepoRouteChildren {
   AppRepositoriesOwnerRepoBranchesRoute: typeof AppRepositoriesOwnerRepoBranchesRoute
   AppRepositoriesOwnerRepoCommitsRoute: typeof AppRepositoriesOwnerRepoCommitsRoute
+  AppRepositoriesOwnerRepoPullsNumberRoute: typeof AppRepositoriesOwnerRepoPullsNumberRoute
   AppRepositoriesOwnerRepoPullsNewRoute: typeof AppRepositoriesOwnerRepoPullsNewRoute
   AppRepositoriesOwnerRepoPullsIndexRoute: typeof AppRepositoriesOwnerRepoPullsIndexRoute
 }
@@ -339,6 +360,8 @@ const AppRepositoriesOwnerRepoRouteChildren: AppRepositoriesOwnerRepoRouteChildr
     AppRepositoriesOwnerRepoBranchesRoute:
       AppRepositoriesOwnerRepoBranchesRoute,
     AppRepositoriesOwnerRepoCommitsRoute: AppRepositoriesOwnerRepoCommitsRoute,
+    AppRepositoriesOwnerRepoPullsNumberRoute:
+      AppRepositoriesOwnerRepoPullsNumberRoute,
     AppRepositoriesOwnerRepoPullsNewRoute:
       AppRepositoriesOwnerRepoPullsNewRoute,
     AppRepositoriesOwnerRepoPullsIndexRoute:

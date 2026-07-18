@@ -1,0 +1,45 @@
+query PullRequestFiles($ownerSlug: String!, $repoSlug: String!, $number: Int!) {
+  pullRequests(
+    filter: {
+      number: { equalTo: $number }
+      repository: {
+        slug: { equalTo: $repoSlug }
+        owner: { username: { equalTo: $ownerSlug } }
+      }
+    }
+    first: 1
+  ) {
+    nodes {
+      id
+      rowId
+      number
+      title
+      description
+      state
+      sourceBranch
+      targetBranch
+      createdAt
+      mergedAt
+      author {
+        rowId
+        username
+        avatarUrl
+      }
+      mergedBy {
+        rowId
+        username
+      }
+      changedFiles {
+        path
+        oldPath
+        status
+        oldOid
+        newOid
+        isBinary
+        isImage
+        additions
+        deletions
+      }
+    }
+  }
+}
