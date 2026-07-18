@@ -104,9 +104,9 @@ function WorkspacesPage() {
                 key={workspace.id}
                 to="/workspaces/$workspaceSlug"
                 params={{ workspaceSlug: slug }}
-                className="group block rounded-lg border border-glow-hover bg-card p-4 transition"
+                className="group flex h-full flex-col rounded-lg border border-glow-hover bg-card p-4 transition"
               >
-                <div className="flex items-start gap-4">
+                <div className="flex flex-1 gap-4">
                   <AvatarRoot size="lg" className="shrink-0 rounded-xl border">
                     {workspace.logo ? (
                       <AvatarImage src={workspace.logo} alt="" />
@@ -116,7 +116,7 @@ function WorkspacesPage() {
                     </AvatarFallback>
                   </AvatarRoot>
 
-                  <div className="min-w-0 flex-1 space-y-1">
+                  <div className="flex min-w-0 flex-1 flex-col gap-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="truncate font-semibold text-lg group-hover:underline">
                         {workspace.name}
@@ -129,7 +129,7 @@ function WorkspacesPage() {
                       {workspace.slug}
                     </p>
                     {workspace.teams?.length > 0 && (
-                      <div className="flex items-center gap-1 pt-1 text-muted-foreground text-xs">
+                      <div className="mt-auto flex items-center gap-1 pt-1 text-muted-foreground text-xs">
                         <Users className="size-3.5" />
                         {workspace.teams.length}{" "}
                         {workspace.teams.length === 1 ? "team" : "teams"}
