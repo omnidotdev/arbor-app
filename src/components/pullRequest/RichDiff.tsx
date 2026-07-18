@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { TextDiff } from "./TextDiff";
 
 import type { RichDiffKind } from "./diffTypes";
+import type { CommentActions, PullRequestComment } from "./reviewTypes";
 import type { DiffViewMode } from "./useDiffViewMode";
 
 interface RichDiffProps {
@@ -16,6 +17,9 @@ interface RichDiffProps {
   oldText: string | null | undefined;
   newText: string | null | undefined;
   mode: DiffViewMode;
+  /** Inline comments for this file, forwarded to the source (text) view. */
+  comments?: PullRequestComment[];
+  actions?: CommentActions;
 }
 
 type RichView = "rendered" | "source";
@@ -33,6 +37,8 @@ export function RichDiff({
   oldText,
   newText,
   mode,
+  comments,
+  actions,
 }: RichDiffProps) {
   const [view, setView] = useState<RichView>("rendered");
 
@@ -73,6 +79,8 @@ export function RichDiff({
             oldText={oldText}
             newText={newText}
             mode={mode}
+            comments={comments}
+            actions={actions}
           />
         </div>
       ) : (

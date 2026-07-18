@@ -6,12 +6,17 @@ import { useState } from "react";
 import {
   ChangedFileTree,
   FileDiffCard,
+  PullRequestConversation,
   PullRequestDetail,
+  ReviewSummaryBar,
   useDiffViewMode,
   useViewedFiles,
 } from "@/components/pullRequest";
 import { Button } from "@/components/ui/button";
+import { usePullRequestConversation } from "@/lib/hooks/usePullRequestConversation";
 import pullRequestFilesOptions from "@/lib/options/pullRequestFiles.options";
+
+import type { PullRequestComment } from "@/components/pullRequest/reviewTypes";
 
 export const Route = createFileRoute(
   "/_app/repositories/$owner/$repo/pulls/$number",
@@ -32,6 +37,8 @@ const normalizeState = (state: string): PullRequestState =>
 
 function PullRequestDetailPage() {
   const { owner, repo, number: numberParam } = Route.useParams();
+  const { session } = Route.useRouteContext();
+  const currentUserId = session?.user?.rowId;
   const number = Number(numberParam);
 
   const [mode, setMode] = useDiffViewMode();
@@ -51,6 +58,33 @@ function PullRequestDetailPage() {
     toggle: toggleViewed,
     count: viewedCount,
   } = useViewedFiles(pullRequest?.rowId);
+
+  const {
+    comments,
+    reviews,
+    isLoading,
+    isError,
+    actions,
+    submitReview,
+    isSubmittingReview,
+  } = usePullRequestConversation({
+    pullRequestId: pullRequest?.rowId,
+    currentUserId,
+  });
+
+  // group comments: path-anchored comments feed each file's diff, the rest
+  // (no path) are the general conversation
+  const commentsByPath = new Map<string, PullRequestComment[]>();
+  const generalComments: PullRequestComment[] = [];
+  for (const comment of comments) {
+    if (comment.path) {
+      const existing = commentsByPath.get(comment.path) ?? [];
+      existing.push(comment);
+      commentsByPath.set(comment.path, existing);
+    } else {
+      generalComments.push(comment);
+    }
+  }
 
   const isExpanded = (path: string) =>
     expandedOverrides[path] ?? !isViewed(path);
@@ -173,6 +207,13 @@ function PullRequestDetailPage() {
             mergedByName={pullRequest.mergedBy?.username}
           />
 
+          <ReviewSummaryBar
+            reviews={reviews}
+            onSubmit={submitReview}
+            isSubmitting={isSubmittingReview}
+            canReview={Boolean(currentUserId)}
+          />
+
           {/* Files changed */}
           <div>
             <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
@@ -234,12 +275,21 @@ function PullRequestDetailPage() {
                       viewed={isViewed(file.path)}
                       onToggleViewed={() => handleToggleViewed(file.path)}
                       mode={mode}
+                      comments={commentsByPath.get(file.path)}
+                      actions={actions}
                     />
                   ))}
                 </div>
               </div>
             )}
           </div>
+
+          <PullRequestConversation
+            comments={generalComments}
+            actions={actions}
+            isLoading={isLoading}
+            isError={isError}
+          />
         </div>
       )}
     </div>

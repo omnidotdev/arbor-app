@@ -1,0 +1,20 @@
+mutation CreatePullRequestReview($input: CreatePullRequestReviewInput!) {
+  createPullRequestReview(input: $input) {
+    pullRequestReview {
+      id
+      rowId
+      pullRequestId
+      reviewerId
+      state
+      body
+      submittedAt
+      createdAt
+      updatedAt
+      reviewer {
+        rowId
+        username
+        avatarUrl
+      }
+    }
+  }
+}

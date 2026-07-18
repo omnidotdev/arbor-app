@@ -1,0 +1,23 @@
+mutation CreatePullRequestComment($input: CreatePullRequestCommentInput!) {
+  createPullRequestComment(input: $input) {
+    pullRequestComment {
+      id
+      rowId
+      pullRequestId
+      authorId
+      body
+      path
+      line
+      side
+      commitSha
+      replyToId
+      createdAt
+      updatedAt
+      author {
+        rowId
+        username
+        avatarUrl
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+mutation UpdatePullRequestComment($input: UpdatePullRequestCommentInput!) {
+  updatePullRequestComment(input: $input) {
+    pullRequestComment {
+      id
+      rowId
+      body
+      updatedAt
+    }
+  }
+}

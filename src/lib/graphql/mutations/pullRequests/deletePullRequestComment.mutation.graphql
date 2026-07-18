@@ -1,0 +1,5 @@
+mutation DeletePullRequestComment($input: DeletePullRequestCommentInput!) {
+  deletePullRequestComment(input: $input) {
+    deletedPullRequestCommentId
+  }
+}

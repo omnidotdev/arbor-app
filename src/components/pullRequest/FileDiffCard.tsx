@@ -6,11 +6,13 @@ import { ChevronDown, ChevronRight, FileWarning } from "lucide-react";
 import pullRequestFileDiffOptions from "@/lib/options/pullRequestFileDiff.options";
 import { cn } from "@/lib/utils";
 import { diffStatusMeta, getRichDiffKind, rawProxyUrl } from "./diffTypes";
+import { FileCommentSection } from "./FileCommentSection";
 import { ImageDiff } from "./ImageDiff";
 import { RichDiff } from "./RichDiff";
 import { TextDiff } from "./TextDiff";
 
 import type { ChangedFile } from "./diffTypes";
+import type { CommentActions, PullRequestComment } from "./reviewTypes";
 import type { DiffViewMode } from "./useDiffViewMode";
 
 interface FileDiffCardProps {
@@ -24,6 +26,10 @@ interface FileDiffCardProps {
   viewed: boolean;
   onToggleViewed: () => void;
   mode: DiffViewMode;
+  /** All comments anchored to this file (line and file-level). */
+  comments?: PullRequestComment[];
+  /** Comment mutation surface. Omitted disables the comment affordances. */
+  actions?: CommentActions;
 }
 
 /**
@@ -44,9 +50,19 @@ export function FileDiffCard({
   viewed,
   onToggleViewed,
   mode,
+  comments,
+  actions,
 }: FileDiffCardProps) {
   const meta = diffStatusMeta[file.status];
   const richKind = getRichDiffKind(file.path);
+
+  const fileComments = comments ?? [];
+  // line-anchored comments render inline in the diff; the rest (line null)
+  // render in the file-level section below the body
+  const inlineComments = fileComments.filter((comment) => comment.line != null);
+  const fileLevelComments = fileComments.filter(
+    (comment) => comment.line == null,
+  );
 
   // SVG is flagged as an image by the API but is text, so it renders as a rich
   // diff. Only non-rich image files use the raw byte proxy and skip the text
@@ -167,6 +183,8 @@ export function FileDiffCard({
                 oldText={fileDiff.oldText}
                 newText={fileDiff.newText}
                 mode={mode}
+                comments={inlineComments}
+                actions={actions}
               />
             ) : (
               <TextDiff
@@ -174,12 +192,22 @@ export function FileDiffCard({
                 oldText={fileDiff.oldText}
                 newText={fileDiff.newText}
                 mode={mode}
+                comments={inlineComments}
+                actions={actions}
               />
             )
           ) : (
             <div className="p-4 text-muted-foreground text-sm">
               No diff available
             </div>
+          )}
+
+          {actions && (
+            <FileCommentSection
+              path={file.path}
+              comments={fileLevelComments}
+              actions={actions}
+            />
           )}
         </div>
       )}

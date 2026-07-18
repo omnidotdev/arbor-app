@@ -1,0 +1,49 @@
+query PullRequestConversation($pullRequestId: UUID!) {
+  pullRequestComments(
+    condition: { pullRequestId: $pullRequestId }
+    orderBy: [CREATED_AT_ASC]
+    first: 500
+  ) {
+    nodes {
+      id
+      rowId
+      pullRequestId
+      authorId
+      body
+      path
+      line
+      side
+      commitSha
+      replyToId
+      createdAt
+      updatedAt
+      author {
+        rowId
+        username
+        avatarUrl
+      }
+    }
+  }
+  pullRequestReviews(
+    condition: { pullRequestId: $pullRequestId }
+    orderBy: [CREATED_AT_ASC]
+    first: 200
+  ) {
+    nodes {
+      id
+      rowId
+      pullRequestId
+      reviewerId
+      state
+      body
+      submittedAt
+      createdAt
+      updatedAt
+      reviewer {
+        rowId
+        username
+        avatarUrl
+      }
+    }
+  }
+}

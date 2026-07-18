@@ -1,10 +1,15 @@
 export { ChangedFileTree } from "./ChangedFileTree";
+export { CommentComposer } from "./CommentComposer";
+export { CommentThread } from "./CommentThread";
 export { CreatePullRequestForm } from "./CreatePullRequestForm";
+export { FileCommentSection } from "./FileCommentSection";
 export { FileDiffCard } from "./FileDiffCard";
 export { ImageDiff } from "./ImageDiff";
 export { PullRequestCard } from "./PullRequestCard";
+export { PullRequestConversation } from "./PullRequestConversation";
 export { PullRequestDetail } from "./PullRequestDetail";
 export { PullRequestList } from "./PullRequestList";
+export { ReviewSummaryBar } from "./ReviewSummaryBar";
 export { RichDiff } from "./RichDiff";
 export { TextDiff } from "./TextDiff";
 export { useDiffViewMode } from "./useDiffViewMode";

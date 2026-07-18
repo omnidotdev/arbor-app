@@ -633,17 +633,6 @@ export type DatetimeFilter = {
   notIn?: InputMaybe<Array<Scalars['Datetime']['input']>>;
 };
 
-/** All input for the `deleteExternalDependencyById` mutation. */
-export type DeleteExternalDependencyByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `ExternalDependency` to be deleted. */
-  id: Scalars['ID']['input'];
-};
-
 /** All input for the `deleteExternalDependency` mutation. */
 export type DeleteExternalDependencyInput = {
   /**
@@ -677,17 +666,6 @@ export type DeleteExternalDependencyPayloadExternalDependencyEdgeArgs = {
   orderBy?: Array<ExternalDependencyOrderBy>;
 };
 
-/** All input for the `deleteOrganizationById` mutation. */
-export type DeleteOrganizationByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Organization` to be deleted. */
-  id: Scalars['ID']['input'];
-};
-
 /** All input for the `deleteOrganization` mutation. */
 export type DeleteOrganizationInput = {
   /**
@@ -719,28 +697,6 @@ export type DeleteOrganizationPayload = {
 /** The output of our delete `Organization` mutation. */
 export type DeleteOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: Array<OrganizationOrderBy>;
-};
-
-/** All input for the `deletePullRequestById` mutation. */
-export type DeletePullRequestByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `PullRequest` to be deleted. */
-  id: Scalars['ID']['input'];
-};
-
-/** All input for the `deletePullRequestCommentById` mutation. */
-export type DeletePullRequestCommentByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `PullRequestComment` to be deleted. */
-  id: Scalars['ID']['input'];
 };
 
 /** All input for the `deletePullRequestComment` mutation. */
@@ -809,17 +765,6 @@ export type DeletePullRequestPayloadPullRequestEdgeArgs = {
   orderBy?: Array<PullRequestOrderBy>;
 };
 
-/** All input for the `deletePullRequestReviewById` mutation. */
-export type DeletePullRequestReviewByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `PullRequestReview` to be deleted. */
-  id: Scalars['ID']['input'];
-};
-
 /** All input for the `deletePullRequestReview` mutation. */
 export type DeletePullRequestReviewInput = {
   /**
@@ -868,28 +813,6 @@ export type DeleteRefPayload = {
   error?: Maybe<Scalars['String']['output']>;
   /** Whether the deletion was successful. */
   success: Scalars['Boolean']['output'];
-};
-
-/** All input for the `deleteRepositoryById` mutation. */
-export type DeleteRepositoryByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Repository` to be deleted. */
-  id: Scalars['ID']['input'];
-};
-
-/** All input for the `deleteRepositoryCollaboratorById` mutation. */
-export type DeleteRepositoryCollaboratorByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `RepositoryCollaborator` to be deleted. */
-  id: Scalars['ID']['input'];
 };
 
 /** All input for the `deleteRepositoryCollaborator` mutation. */
@@ -959,17 +882,6 @@ export type DeleteRepositoryPayloadRepositoryEdgeArgs = {
   orderBy?: Array<RepositoryOrderBy>;
 };
 
-/** All input for the `deleteRepositoryRelationshipById` mutation. */
-export type DeleteRepositoryRelationshipByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `RepositoryRelationship` to be deleted. */
-  id: Scalars['ID']['input'];
-};
-
 /** All input for the `deleteRepositoryRelationship` mutation. */
 export type DeleteRepositoryRelationshipInput = {
   /**
@@ -978,17 +890,6 @@ export type DeleteRepositoryRelationshipInput = {
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   rowId: Scalars['UUID']['input'];
-};
-
-/** All input for the `deleteRepositoryRelationshipMetadatumById` mutation. */
-export type DeleteRepositoryRelationshipMetadatumByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `RepositoryRelationshipMetadatum` to be deleted. */
-  id: Scalars['ID']['input'];
 };
 
 /** All input for the `deleteRepositoryRelationshipMetadatum` mutation. */
@@ -1047,17 +948,6 @@ export type DeleteRepositoryRelationshipPayloadRepositoryRelationshipEdgeArgs = 
   orderBy?: Array<RepositoryRelationshipOrderBy>;
 };
 
-/** All input for the `deleteRepositoryRelationshipTypeById` mutation. */
-export type DeleteRepositoryRelationshipTypeByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `RepositoryRelationshipType` to be deleted. */
-  id: Scalars['ID']['input'];
-};
-
 /** All input for the `deleteRepositoryRelationshipType` mutation. */
 export type DeleteRepositoryRelationshipTypeInput = {
   /**
@@ -1089,17 +979,6 @@ export type DeleteRepositoryRelationshipTypePayload = {
 /** The output of our delete `RepositoryRelationshipType` mutation. */
 export type DeleteRepositoryRelationshipTypePayloadRepositoryRelationshipTypeEdgeArgs = {
   orderBy?: Array<RepositoryRelationshipTypeOrderBy>;
-};
-
-/** All input for the `deleteUserById` mutation. */
-export type DeleteUserByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `User` to be deleted. */
-  id: Scalars['ID']['input'];
 };
 
 /** All input for the `deleteUser` mutation. */
@@ -1570,50 +1449,28 @@ export type Mutation = {
   createUser?: Maybe<CreateUserPayload>;
   /** Deletes a single `ExternalDependency` using a unique key. */
   deleteExternalDependency?: Maybe<DeleteExternalDependencyPayload>;
-  /** Deletes a single `ExternalDependency` using its globally unique id. */
-  deleteExternalDependencyById?: Maybe<DeleteExternalDependencyPayload>;
   /** Deletes a single `Organization` using a unique key. */
   deleteOrganization?: Maybe<DeleteOrganizationPayload>;
-  /** Deletes a single `Organization` using its globally unique id. */
-  deleteOrganizationById?: Maybe<DeleteOrganizationPayload>;
   /** Deletes a single `PullRequest` using a unique key. */
   deletePullRequest?: Maybe<DeletePullRequestPayload>;
-  /** Deletes a single `PullRequest` using its globally unique id. */
-  deletePullRequestById?: Maybe<DeletePullRequestPayload>;
   /** Deletes a single `PullRequestComment` using a unique key. */
   deletePullRequestComment?: Maybe<DeletePullRequestCommentPayload>;
-  /** Deletes a single `PullRequestComment` using its globally unique id. */
-  deletePullRequestCommentById?: Maybe<DeletePullRequestCommentPayload>;
   /** Deletes a single `PullRequestReview` using a unique key. */
   deletePullRequestReview?: Maybe<DeletePullRequestReviewPayload>;
-  /** Deletes a single `PullRequestReview` using its globally unique id. */
-  deletePullRequestReviewById?: Maybe<DeletePullRequestReviewPayload>;
   /** Delete a ref (branch or tag). */
   deleteRef?: Maybe<DeleteRefPayload>;
   /** Deletes a single `Repository` using a unique key. */
   deleteRepository?: Maybe<DeleteRepositoryPayload>;
-  /** Deletes a single `Repository` using its globally unique id. */
-  deleteRepositoryById?: Maybe<DeleteRepositoryPayload>;
   /** Deletes a single `RepositoryCollaborator` using a unique key. */
   deleteRepositoryCollaborator?: Maybe<DeleteRepositoryCollaboratorPayload>;
-  /** Deletes a single `RepositoryCollaborator` using its globally unique id. */
-  deleteRepositoryCollaboratorById?: Maybe<DeleteRepositoryCollaboratorPayload>;
   /** Deletes a single `RepositoryRelationship` using a unique key. */
   deleteRepositoryRelationship?: Maybe<DeleteRepositoryRelationshipPayload>;
-  /** Deletes a single `RepositoryRelationship` using its globally unique id. */
-  deleteRepositoryRelationshipById?: Maybe<DeleteRepositoryRelationshipPayload>;
   /** Deletes a single `RepositoryRelationshipMetadatum` using a unique key. */
   deleteRepositoryRelationshipMetadatum?: Maybe<DeleteRepositoryRelationshipMetadatumPayload>;
-  /** Deletes a single `RepositoryRelationshipMetadatum` using its globally unique id. */
-  deleteRepositoryRelationshipMetadatumById?: Maybe<DeleteRepositoryRelationshipMetadatumPayload>;
   /** Deletes a single `RepositoryRelationshipType` using a unique key. */
   deleteRepositoryRelationshipType?: Maybe<DeleteRepositoryRelationshipTypePayload>;
-  /** Deletes a single `RepositoryRelationshipType` using its globally unique id. */
-  deleteRepositoryRelationshipTypeById?: Maybe<DeleteRepositoryRelationshipTypePayload>;
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>;
-  /** Deletes a single `User` using its globally unique id. */
-  deleteUserById?: Maybe<DeleteUserPayload>;
   /**
    * Initialize git storage for a repository.
    * Called after the repository record is created in the database.
@@ -1624,50 +1481,34 @@ export type Mutation = {
    * Requires write access to the repository.
    */
   mergePullRequest?: Maybe<MergePullRequestPayload>;
+  /**
+   * Rename a repository, moving its on-disk git storage to match the new
+   * slug so the database row and storage never diverge. Requires the
+   * repository owner or an admin collaborator.
+   */
+  renameRepository?: Maybe<RenameRepositoryPayload>;
   /** Updates a single `ExternalDependency` using a unique key and a patch. */
   updateExternalDependency?: Maybe<UpdateExternalDependencyPayload>;
-  /** Updates a single `ExternalDependency` using its globally unique id and a patch. */
-  updateExternalDependencyById?: Maybe<UpdateExternalDependencyPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
   updateOrganization?: Maybe<UpdateOrganizationPayload>;
-  /** Updates a single `Organization` using its globally unique id and a patch. */
-  updateOrganizationById?: Maybe<UpdateOrganizationPayload>;
   /** Updates a single `PullRequest` using a unique key and a patch. */
   updatePullRequest?: Maybe<UpdatePullRequestPayload>;
-  /** Updates a single `PullRequest` using its globally unique id and a patch. */
-  updatePullRequestById?: Maybe<UpdatePullRequestPayload>;
   /** Updates a single `PullRequestComment` using a unique key and a patch. */
   updatePullRequestComment?: Maybe<UpdatePullRequestCommentPayload>;
-  /** Updates a single `PullRequestComment` using its globally unique id and a patch. */
-  updatePullRequestCommentById?: Maybe<UpdatePullRequestCommentPayload>;
   /** Updates a single `PullRequestReview` using a unique key and a patch. */
   updatePullRequestReview?: Maybe<UpdatePullRequestReviewPayload>;
-  /** Updates a single `PullRequestReview` using its globally unique id and a patch. */
-  updatePullRequestReviewById?: Maybe<UpdatePullRequestReviewPayload>;
   /** Updates a single `Repository` using a unique key and a patch. */
   updateRepository?: Maybe<UpdateRepositoryPayload>;
-  /** Updates a single `Repository` using its globally unique id and a patch. */
-  updateRepositoryById?: Maybe<UpdateRepositoryPayload>;
   /** Updates a single `RepositoryCollaborator` using a unique key and a patch. */
   updateRepositoryCollaborator?: Maybe<UpdateRepositoryCollaboratorPayload>;
-  /** Updates a single `RepositoryCollaborator` using its globally unique id and a patch. */
-  updateRepositoryCollaboratorById?: Maybe<UpdateRepositoryCollaboratorPayload>;
   /** Updates a single `RepositoryRelationship` using a unique key and a patch. */
   updateRepositoryRelationship?: Maybe<UpdateRepositoryRelationshipPayload>;
-  /** Updates a single `RepositoryRelationship` using its globally unique id and a patch. */
-  updateRepositoryRelationshipById?: Maybe<UpdateRepositoryRelationshipPayload>;
   /** Updates a single `RepositoryRelationshipMetadatum` using a unique key and a patch. */
   updateRepositoryRelationshipMetadatum?: Maybe<UpdateRepositoryRelationshipMetadatumPayload>;
-  /** Updates a single `RepositoryRelationshipMetadatum` using its globally unique id and a patch. */
-  updateRepositoryRelationshipMetadatumById?: Maybe<UpdateRepositoryRelationshipMetadatumPayload>;
   /** Updates a single `RepositoryRelationshipType` using a unique key and a patch. */
   updateRepositoryRelationshipType?: Maybe<UpdateRepositoryRelationshipTypePayload>;
-  /** Updates a single `RepositoryRelationshipType` using its globally unique id and a patch. */
-  updateRepositoryRelationshipTypeById?: Maybe<UpdateRepositoryRelationshipTypePayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
-  /** Updates a single `User` using its globally unique id and a patch. */
-  updateUserById?: Maybe<UpdateUserPayload>;
 };
 
 
@@ -1756,20 +1597,8 @@ export type MutationDeleteExternalDependencyArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteExternalDependencyByIdArgs = {
-  input: DeleteExternalDependencyByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteOrganizationArgs = {
   input: DeleteOrganizationInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteOrganizationByIdArgs = {
-  input: DeleteOrganizationByIdInput;
 };
 
 
@@ -1780,32 +1609,14 @@ export type MutationDeletePullRequestArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeletePullRequestByIdArgs = {
-  input: DeletePullRequestByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeletePullRequestCommentArgs = {
   input: DeletePullRequestCommentInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeletePullRequestCommentByIdArgs = {
-  input: DeletePullRequestCommentByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeletePullRequestReviewArgs = {
   input: DeletePullRequestReviewInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeletePullRequestReviewByIdArgs = {
-  input: DeletePullRequestReviewByIdInput;
 };
 
 
@@ -1822,20 +1633,8 @@ export type MutationDeleteRepositoryArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRepositoryByIdArgs = {
-  input: DeleteRepositoryByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteRepositoryCollaboratorArgs = {
   input: DeleteRepositoryCollaboratorInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRepositoryCollaboratorByIdArgs = {
-  input: DeleteRepositoryCollaboratorByIdInput;
 };
 
 
@@ -1846,20 +1645,8 @@ export type MutationDeleteRepositoryRelationshipArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRepositoryRelationshipByIdArgs = {
-  input: DeleteRepositoryRelationshipByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteRepositoryRelationshipMetadatumArgs = {
   input: DeleteRepositoryRelationshipMetadatumInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRepositoryRelationshipMetadatumByIdArgs = {
-  input: DeleteRepositoryRelationshipMetadatumByIdInput;
 };
 
 
@@ -1870,20 +1657,8 @@ export type MutationDeleteRepositoryRelationshipTypeArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRepositoryRelationshipTypeByIdArgs = {
-  input: DeleteRepositoryRelationshipTypeByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteUserArgs = {
   input: DeleteUserInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteUserByIdArgs = {
-  input: DeleteUserByIdInput;
 };
 
 
@@ -1900,14 +1675,14 @@ export type MutationMergePullRequestArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateExternalDependencyArgs = {
-  input: UpdateExternalDependencyInput;
+export type MutationRenameRepositoryArgs = {
+  input: RenameRepositoryInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateExternalDependencyByIdArgs = {
-  input: UpdateExternalDependencyByIdInput;
+export type MutationUpdateExternalDependencyArgs = {
+  input: UpdateExternalDependencyInput;
 };
 
 
@@ -1918,20 +1693,8 @@ export type MutationUpdateOrganizationArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateOrganizationByIdArgs = {
-  input: UpdateOrganizationByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdatePullRequestArgs = {
   input: UpdatePullRequestInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdatePullRequestByIdArgs = {
-  input: UpdatePullRequestByIdInput;
 };
 
 
@@ -1942,20 +1705,8 @@ export type MutationUpdatePullRequestCommentArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdatePullRequestCommentByIdArgs = {
-  input: UpdatePullRequestCommentByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdatePullRequestReviewArgs = {
   input: UpdatePullRequestReviewInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdatePullRequestReviewByIdArgs = {
-  input: UpdatePullRequestReviewByIdInput;
 };
 
 
@@ -1966,20 +1717,8 @@ export type MutationUpdateRepositoryArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRepositoryByIdArgs = {
-  input: UpdateRepositoryByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateRepositoryCollaboratorArgs = {
   input: UpdateRepositoryCollaboratorInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRepositoryCollaboratorByIdArgs = {
-  input: UpdateRepositoryCollaboratorByIdInput;
 };
 
 
@@ -1990,20 +1729,8 @@ export type MutationUpdateRepositoryRelationshipArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRepositoryRelationshipByIdArgs = {
-  input: UpdateRepositoryRelationshipByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateRepositoryRelationshipMetadatumArgs = {
   input: UpdateRepositoryRelationshipMetadatumInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRepositoryRelationshipMetadatumByIdArgs = {
-  input: UpdateRepositoryRelationshipMetadatumByIdInput;
 };
 
 
@@ -2014,20 +1741,8 @@ export type MutationUpdateRepositoryRelationshipTypeArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRepositoryRelationshipTypeByIdArgs = {
-  input: UpdateRepositoryRelationshipTypeByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateUserByIdArgs = {
-  input: UpdateUserByIdInput;
 };
 
 /** An object with a globally unique `ID`. */
@@ -4243,6 +3958,25 @@ export type RefConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
+/** Input for renaming a repository. */
+export type RenameRepositoryInput = {
+  /** Optional new display name. The name is left unchanged when omitted. */
+  newName?: InputMaybe<Scalars['String']['input']>;
+  /** The new slug (URL-friendly name). Moves the on-disk storage. */
+  newSlug: Scalars['String']['input'];
+  /** The repository row ID. */
+  rowId: Scalars['UUID']['input'];
+};
+
+/** Payload for renameRepository mutation. */
+export type RenameRepositoryPayload = {
+  __typename?: 'RenameRepositoryPayload';
+  /** Error message if the rename failed. */
+  error?: Maybe<Scalars['String']['output']>;
+  /** The renamed repository. */
+  repository?: Maybe<Repository>;
+};
+
 export type Repository = Node & {
   __typename?: 'Repository';
   /** Fetch a commit by its SHA. */
@@ -6205,19 +5939,6 @@ export type UuidFilter = {
   notIn?: InputMaybe<Array<Scalars['UUID']['input']>>;
 };
 
-/** All input for the `updateExternalDependencyById` mutation. */
-export type UpdateExternalDependencyByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `ExternalDependency` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `ExternalDependency` being updated. */
-  patch: ExternalDependencyPatch;
-};
-
 /** All input for the `updateExternalDependency` mutation. */
 export type UpdateExternalDependencyInput = {
   /**
@@ -6252,19 +5973,6 @@ export type UpdateExternalDependencyPayloadExternalDependencyEdgeArgs = {
   orderBy?: Array<ExternalDependencyOrderBy>;
 };
 
-/** All input for the `updateOrganizationById` mutation. */
-export type UpdateOrganizationByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Organization` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `Organization` being updated. */
-  patch: OrganizationPatch;
-};
-
 /** All input for the `updateOrganization` mutation. */
 export type UpdateOrganizationInput = {
   /**
@@ -6297,32 +6005,6 @@ export type UpdateOrganizationPayload = {
 /** The output of our update `Organization` mutation. */
 export type UpdateOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: Array<OrganizationOrderBy>;
-};
-
-/** All input for the `updatePullRequestById` mutation. */
-export type UpdatePullRequestByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `PullRequest` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `PullRequest` being updated. */
-  patch: PullRequestPatch;
-};
-
-/** All input for the `updatePullRequestCommentById` mutation. */
-export type UpdatePullRequestCommentByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `PullRequestComment` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `PullRequestComment` being updated. */
-  patch: PullRequestCommentPatch;
 };
 
 /** All input for the `updatePullRequestComment` mutation. */
@@ -6393,19 +6075,6 @@ export type UpdatePullRequestPayloadPullRequestEdgeArgs = {
   orderBy?: Array<PullRequestOrderBy>;
 };
 
-/** All input for the `updatePullRequestReviewById` mutation. */
-export type UpdatePullRequestReviewByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `PullRequestReview` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `PullRequestReview` being updated. */
-  patch: PullRequestReviewPatch;
-};
-
 /** All input for the `updatePullRequestReview` mutation. */
 export type UpdatePullRequestReviewInput = {
   /**
@@ -6438,32 +6107,6 @@ export type UpdatePullRequestReviewPayload = {
 /** The output of our update `PullRequestReview` mutation. */
 export type UpdatePullRequestReviewPayloadPullRequestReviewEdgeArgs = {
   orderBy?: Array<PullRequestReviewOrderBy>;
-};
-
-/** All input for the `updateRepositoryById` mutation. */
-export type UpdateRepositoryByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Repository` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `Repository` being updated. */
-  patch: RepositoryPatch;
-};
-
-/** All input for the `updateRepositoryCollaboratorById` mutation. */
-export type UpdateRepositoryCollaboratorByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `RepositoryCollaborator` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `RepositoryCollaborator` being updated. */
-  patch: RepositoryCollaboratorPatch;
 };
 
 /** All input for the `updateRepositoryCollaborator` mutation. */
@@ -6535,19 +6178,6 @@ export type UpdateRepositoryPayloadRepositoryEdgeArgs = {
   orderBy?: Array<RepositoryOrderBy>;
 };
 
-/** All input for the `updateRepositoryRelationshipById` mutation. */
-export type UpdateRepositoryRelationshipByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `RepositoryRelationship` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `RepositoryRelationship` being updated. */
-  patch: RepositoryRelationshipPatch;
-};
-
 /** All input for the `updateRepositoryRelationship` mutation. */
 export type UpdateRepositoryRelationshipInput = {
   /**
@@ -6558,19 +6188,6 @@ export type UpdateRepositoryRelationshipInput = {
   /** An object where the defined keys will be set on the `RepositoryRelationship` being updated. */
   patch: RepositoryRelationshipPatch;
   rowId: Scalars['UUID']['input'];
-};
-
-/** All input for the `updateRepositoryRelationshipMetadatumById` mutation. */
-export type UpdateRepositoryRelationshipMetadatumByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `RepositoryRelationshipMetadatum` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `RepositoryRelationshipMetadatum` being updated. */
-  patch: RepositoryRelationshipMetadatumPatch;
 };
 
 /** All input for the `updateRepositoryRelationshipMetadatum` mutation. */
@@ -6629,19 +6246,6 @@ export type UpdateRepositoryRelationshipPayloadRepositoryRelationshipEdgeArgs = 
   orderBy?: Array<RepositoryRelationshipOrderBy>;
 };
 
-/** All input for the `updateRepositoryRelationshipTypeById` mutation. */
-export type UpdateRepositoryRelationshipTypeByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `RepositoryRelationshipType` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `RepositoryRelationshipType` being updated. */
-  patch: RepositoryRelationshipTypePatch;
-};
-
 /** All input for the `updateRepositoryRelationshipType` mutation. */
 export type UpdateRepositoryRelationshipTypeInput = {
   /**
@@ -6674,19 +6278,6 @@ export type UpdateRepositoryRelationshipTypePayload = {
 /** The output of our update `RepositoryRelationshipType` mutation. */
 export type UpdateRepositoryRelationshipTypePayloadRepositoryRelationshipTypeEdgeArgs = {
   orderBy?: Array<RepositoryRelationshipTypeOrderBy>;
-};
-
-/** All input for the `updateUserById` mutation. */
-export type UpdateUserByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `User` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `User` being updated. */
-  patch: UserPatch;
 };
 
 /** All input for the `updateUser` mutation. */
@@ -7372,6 +6963,28 @@ export type CreateOrganizationInput = {
   organization: OrganizationInput;
 };
 
+/** All input for the create `PullRequestComment` mutation. */
+export type CreatePullRequestCommentInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  /** The `PullRequestComment` to be created by this mutation. */
+  pullRequestComment: PullRequestCommentInput;
+};
+
+/** All input for the create `PullRequestReview` mutation. */
+export type CreatePullRequestReviewInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  /** The `PullRequestReview` to be created by this mutation. */
+  pullRequestReview: PullRequestReviewInput;
+};
+
 /** All input for the create `Repository` mutation. */
 export type CreateRepositoryInput = {
   /**
@@ -7381,6 +6994,16 @@ export type CreateRepositoryInput = {
   clientMutationId?: string | null | undefined;
   /** The `Repository` to be created by this mutation. */
   repository: RepositoryInput;
+};
+
+/** All input for the `deletePullRequestComment` mutation. */
+export type DeletePullRequestCommentInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  rowId: string;
 };
 
 /** All input for the `deleteRepository` mutation. */
@@ -7421,6 +7044,48 @@ export type Permission =
   | 'read'
   | 'write';
 
+/** An input for mutations affecting `PullRequestComment` */
+export type PullRequestCommentInput = {
+  authorId: string;
+  body: string;
+  commitSha?: string | null | undefined;
+  createdAt?: Date | null | undefined;
+  line?: number | null | undefined;
+  path?: string | null | undefined;
+  pullRequestId: string;
+  replyToId?: string | null | undefined;
+  rowId?: string | null | undefined;
+  side?: string | null | undefined;
+  updatedAt?: Date | null | undefined;
+};
+
+/** Represents an update to a `PullRequestComment`. Fields that are set will be updated. */
+export type PullRequestCommentPatch = {
+  authorId?: string | null | undefined;
+  body?: string | null | undefined;
+  commitSha?: string | null | undefined;
+  createdAt?: Date | null | undefined;
+  line?: number | null | undefined;
+  path?: string | null | undefined;
+  pullRequestId?: string | null | undefined;
+  replyToId?: string | null | undefined;
+  rowId?: string | null | undefined;
+  side?: string | null | undefined;
+  updatedAt?: Date | null | undefined;
+};
+
+/** An input for mutations affecting `PullRequestReview` */
+export type PullRequestReviewInput = {
+  body?: string | null | undefined;
+  createdAt?: Date | null | undefined;
+  pullRequestId: string;
+  reviewerId: string;
+  rowId?: string | null | undefined;
+  state?: string | null | undefined;
+  submittedAt?: Date | null | undefined;
+  updatedAt?: Date | null | undefined;
+};
+
 /** An input for mutations affecting `Repository` */
 export type RepositoryInput = {
   createdAt?: Date | null | undefined;
@@ -7449,6 +7114,18 @@ export type RepositoryPatch = {
   visibility?: Visibility | null | undefined;
 };
 
+/** All input for the `updatePullRequestComment` mutation. */
+export type UpdatePullRequestCommentInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  /** An object where the defined keys will be set on the `PullRequestComment` being updated. */
+  patch: PullRequestCommentPatch;
+  rowId: string;
+};
+
 /** All input for the `updateRepository` mutation. */
 export type UpdateRepositoryInput = {
   /**
@@ -7471,6 +7148,34 @@ export type CreateOrganizationMutationVariables = Exact<{
 
 
 export type CreateOrganizationMutation = { createOrganization: { organization: { rowId: string, idpOrganizationId: string, description: string | null, avatarUrl: string | null, createdAt: Date } | null } | null };
+
+export type CreatePullRequestCommentMutationVariables = Exact<{
+  input: CreatePullRequestCommentInput;
+}>;
+
+
+export type CreatePullRequestCommentMutation = { createPullRequestComment: { pullRequestComment: { id: string, rowId: string, pullRequestId: string, authorId: string, body: string, path: string | null, line: number | null, side: string | null, commitSha: string | null, replyToId: string | null, createdAt: Date, updatedAt: Date, author: { rowId: string, username: string, avatarUrl: string | null } | null } | null } | null };
+
+export type CreatePullRequestReviewMutationVariables = Exact<{
+  input: CreatePullRequestReviewInput;
+}>;
+
+
+export type CreatePullRequestReviewMutation = { createPullRequestReview: { pullRequestReview: { id: string, rowId: string, pullRequestId: string, reviewerId: string, state: string, body: string | null, submittedAt: Date | null, createdAt: Date, updatedAt: Date, reviewer: { rowId: string, username: string, avatarUrl: string | null } | null } | null } | null };
+
+export type DeletePullRequestCommentMutationVariables = Exact<{
+  input: DeletePullRequestCommentInput;
+}>;
+
+
+export type DeletePullRequestCommentMutation = { deletePullRequestComment: { deletedPullRequestCommentId: string | null } | null };
+
+export type UpdatePullRequestCommentMutationVariables = Exact<{
+  input: UpdatePullRequestCommentInput;
+}>;
+
+
+export type UpdatePullRequestCommentMutation = { updatePullRequestComment: { pullRequestComment: { id: string, rowId: string, body: string, updatedAt: Date } | null } | null };
 
 export type CreateRepositoryMutationVariables = Exact<{
   input: CreateRepositoryInput;
@@ -7514,6 +7219,13 @@ export type OrganizationsQueryVariables = Exact<{
 
 
 export type OrganizationsQuery = { organizations: { totalCount: number, nodes: Array<{ rowId: string, idpOrganizationId: string, description: string | null, avatarUrl: string | null, createdAt: Date, updatedAt: Date, repositories: { totalCount: number } }> } | null };
+
+export type PullRequestConversationQueryVariables = Exact<{
+  pullRequestId: string;
+}>;
+
+
+export type PullRequestConversationQuery = { pullRequestComments: { nodes: Array<{ id: string, rowId: string, pullRequestId: string, authorId: string, body: string, path: string | null, line: number | null, side: string | null, commitSha: string | null, replyToId: string | null, createdAt: Date, updatedAt: Date, author: { rowId: string, username: string, avatarUrl: string | null } | null }> } | null, pullRequestReviews: { nodes: Array<{ id: string, rowId: string, pullRequestId: string, reviewerId: string, state: string, body: string | null, submittedAt: Date | null, createdAt: Date, updatedAt: Date, reviewer: { rowId: string, username: string, avatarUrl: string | null } | null }> } | null };
 
 export type PullRequestFileDiffQueryVariables = Exact<{
   ownerSlug: string;
@@ -7626,6 +7338,148 @@ useCreateOrganizationMutation.getKey = () => ['CreateOrganization'];
 
 
 useCreateOrganizationMutation.fetcher = (variables: CreateOrganizationMutationVariables, options?: RequestInit['headers']) => graphqlFetch<CreateOrganizationMutation, CreateOrganizationMutationVariables>(CreateOrganizationDocument, variables, options);
+
+export const CreatePullRequestCommentDocument = new TypedDocumentString(`
+    mutation CreatePullRequestComment($input: CreatePullRequestCommentInput!) {
+  createPullRequestComment(input: $input) {
+    pullRequestComment {
+      id
+      rowId
+      pullRequestId
+      authorId
+      body
+      path
+      line
+      side
+      commitSha
+      replyToId
+      createdAt
+      updatedAt
+      author {
+        rowId
+        username
+        avatarUrl
+      }
+    }
+  }
+}
+    `);
+
+export const useCreatePullRequestCommentMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<CreatePullRequestCommentMutation, TError, CreatePullRequestCommentMutationVariables, TContext>) => {
+    
+    return useMutation<CreatePullRequestCommentMutation, TError, CreatePullRequestCommentMutationVariables, TContext>(
+      {
+    mutationKey: ['CreatePullRequestComment'],
+    mutationFn: (variables?: CreatePullRequestCommentMutationVariables) => graphqlFetch<CreatePullRequestCommentMutation, CreatePullRequestCommentMutationVariables>(CreatePullRequestCommentDocument, variables)(),
+    ...options
+  }
+    )};
+
+useCreatePullRequestCommentMutation.getKey = () => ['CreatePullRequestComment'];
+
+
+useCreatePullRequestCommentMutation.fetcher = (variables: CreatePullRequestCommentMutationVariables, options?: RequestInit['headers']) => graphqlFetch<CreatePullRequestCommentMutation, CreatePullRequestCommentMutationVariables>(CreatePullRequestCommentDocument, variables, options);
+
+export const CreatePullRequestReviewDocument = new TypedDocumentString(`
+    mutation CreatePullRequestReview($input: CreatePullRequestReviewInput!) {
+  createPullRequestReview(input: $input) {
+    pullRequestReview {
+      id
+      rowId
+      pullRequestId
+      reviewerId
+      state
+      body
+      submittedAt
+      createdAt
+      updatedAt
+      reviewer {
+        rowId
+        username
+        avatarUrl
+      }
+    }
+  }
+}
+    `);
+
+export const useCreatePullRequestReviewMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<CreatePullRequestReviewMutation, TError, CreatePullRequestReviewMutationVariables, TContext>) => {
+    
+    return useMutation<CreatePullRequestReviewMutation, TError, CreatePullRequestReviewMutationVariables, TContext>(
+      {
+    mutationKey: ['CreatePullRequestReview'],
+    mutationFn: (variables?: CreatePullRequestReviewMutationVariables) => graphqlFetch<CreatePullRequestReviewMutation, CreatePullRequestReviewMutationVariables>(CreatePullRequestReviewDocument, variables)(),
+    ...options
+  }
+    )};
+
+useCreatePullRequestReviewMutation.getKey = () => ['CreatePullRequestReview'];
+
+
+useCreatePullRequestReviewMutation.fetcher = (variables: CreatePullRequestReviewMutationVariables, options?: RequestInit['headers']) => graphqlFetch<CreatePullRequestReviewMutation, CreatePullRequestReviewMutationVariables>(CreatePullRequestReviewDocument, variables, options);
+
+export const DeletePullRequestCommentDocument = new TypedDocumentString(`
+    mutation DeletePullRequestComment($input: DeletePullRequestCommentInput!) {
+  deletePullRequestComment(input: $input) {
+    deletedPullRequestCommentId
+  }
+}
+    `);
+
+export const useDeletePullRequestCommentMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeletePullRequestCommentMutation, TError, DeletePullRequestCommentMutationVariables, TContext>) => {
+    
+    return useMutation<DeletePullRequestCommentMutation, TError, DeletePullRequestCommentMutationVariables, TContext>(
+      {
+    mutationKey: ['DeletePullRequestComment'],
+    mutationFn: (variables?: DeletePullRequestCommentMutationVariables) => graphqlFetch<DeletePullRequestCommentMutation, DeletePullRequestCommentMutationVariables>(DeletePullRequestCommentDocument, variables)(),
+    ...options
+  }
+    )};
+
+useDeletePullRequestCommentMutation.getKey = () => ['DeletePullRequestComment'];
+
+
+useDeletePullRequestCommentMutation.fetcher = (variables: DeletePullRequestCommentMutationVariables, options?: RequestInit['headers']) => graphqlFetch<DeletePullRequestCommentMutation, DeletePullRequestCommentMutationVariables>(DeletePullRequestCommentDocument, variables, options);
+
+export const UpdatePullRequestCommentDocument = new TypedDocumentString(`
+    mutation UpdatePullRequestComment($input: UpdatePullRequestCommentInput!) {
+  updatePullRequestComment(input: $input) {
+    pullRequestComment {
+      id
+      rowId
+      body
+      updatedAt
+    }
+  }
+}
+    `);
+
+export const useUpdatePullRequestCommentMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdatePullRequestCommentMutation, TError, UpdatePullRequestCommentMutationVariables, TContext>) => {
+    
+    return useMutation<UpdatePullRequestCommentMutation, TError, UpdatePullRequestCommentMutationVariables, TContext>(
+      {
+    mutationKey: ['UpdatePullRequestComment'],
+    mutationFn: (variables?: UpdatePullRequestCommentMutationVariables) => graphqlFetch<UpdatePullRequestCommentMutation, UpdatePullRequestCommentMutationVariables>(UpdatePullRequestCommentDocument, variables)(),
+    ...options
+  }
+    )};
+
+useUpdatePullRequestCommentMutation.getKey = () => ['UpdatePullRequestComment'];
+
+
+useUpdatePullRequestCommentMutation.fetcher = (variables: UpdatePullRequestCommentMutationVariables, options?: RequestInit['headers']) => graphqlFetch<UpdatePullRequestCommentMutation, UpdatePullRequestCommentMutationVariables>(UpdatePullRequestCommentDocument, variables, options);
 
 export const CreateRepositoryDocument = new TypedDocumentString(`
     mutation CreateRepository($input: CreateRepositoryInput!) {
@@ -8082,6 +7936,139 @@ useSuspenseInfiniteOrganizationsQuery.getKey = (variables?: OrganizationsQueryVa
 
 
 useOrganizationsQuery.fetcher = (variables?: OrganizationsQueryVariables, options?: RequestInit['headers']) => graphqlFetch<OrganizationsQuery, OrganizationsQueryVariables>(OrganizationsDocument, variables, options);
+
+export const PullRequestConversationDocument = new TypedDocumentString(`
+    query PullRequestConversation($pullRequestId: UUID!) {
+  pullRequestComments(
+    condition: {pullRequestId: $pullRequestId}
+    orderBy: [CREATED_AT_ASC]
+    first: 500
+  ) {
+    nodes {
+      id
+      rowId
+      pullRequestId
+      authorId
+      body
+      path
+      line
+      side
+      commitSha
+      replyToId
+      createdAt
+      updatedAt
+      author {
+        rowId
+        username
+        avatarUrl
+      }
+    }
+  }
+  pullRequestReviews(
+    condition: {pullRequestId: $pullRequestId}
+    orderBy: [CREATED_AT_ASC]
+    first: 200
+  ) {
+    nodes {
+      id
+      rowId
+      pullRequestId
+      reviewerId
+      state
+      body
+      submittedAt
+      createdAt
+      updatedAt
+      reviewer {
+        rowId
+        username
+        avatarUrl
+      }
+    }
+  }
+}
+    `);
+
+export const usePullRequestConversationQuery = <
+      TData = PullRequestConversationQuery,
+      TError = unknown
+    >(
+      variables: PullRequestConversationQueryVariables,
+      options?: Omit<UseQueryOptions<PullRequestConversationQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<PullRequestConversationQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<PullRequestConversationQuery, TError, TData>(
+      {
+    queryKey: ['PullRequestConversation', variables],
+    queryFn: graphqlFetch<PullRequestConversationQuery, PullRequestConversationQueryVariables>(PullRequestConversationDocument, variables),
+    ...options
+  }
+    )};
+
+usePullRequestConversationQuery.getKey = (variables: PullRequestConversationQueryVariables) => ['PullRequestConversation', variables];
+
+export const useSuspensePullRequestConversationQuery = <
+      TData = PullRequestConversationQuery,
+      TError = unknown
+    >(
+      variables: PullRequestConversationQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<PullRequestConversationQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<PullRequestConversationQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<PullRequestConversationQuery, TError, TData>(
+      {
+    queryKey: ['PullRequestConversation', variables],
+    queryFn: graphqlFetch<PullRequestConversationQuery, PullRequestConversationQueryVariables>(PullRequestConversationDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspensePullRequestConversationQuery.getKey = (variables: PullRequestConversationQueryVariables) => ['PullRequestConversation', variables];
+
+export const useInfinitePullRequestConversationQuery = <
+      TData = InfiniteData<PullRequestConversationQuery>,
+      TError = unknown
+    >(
+      variables: PullRequestConversationQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<PullRequestConversationQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<PullRequestConversationQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<PullRequestConversationQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['PullRequestConversation.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<PullRequestConversationQuery, PullRequestConversationQueryVariables>(PullRequestConversationDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfinitePullRequestConversationQuery.getKey = (variables: PullRequestConversationQueryVariables) => ['PullRequestConversation.infinite', variables];
+
+export const useSuspenseInfinitePullRequestConversationQuery = <
+      TData = InfiniteData<PullRequestConversationQuery>,
+      TError = unknown
+    >(
+      variables: PullRequestConversationQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<PullRequestConversationQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<PullRequestConversationQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<PullRequestConversationQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['PullRequestConversation.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<PullRequestConversationQuery, PullRequestConversationQueryVariables>(PullRequestConversationDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfinitePullRequestConversationQuery.getKey = (variables: PullRequestConversationQueryVariables) => ['PullRequestConversation.infinite', variables];
+
+
+usePullRequestConversationQuery.fetcher = (variables: PullRequestConversationQueryVariables, options?: RequestInit['headers']) => graphqlFetch<PullRequestConversationQuery, PullRequestConversationQueryVariables>(PullRequestConversationDocument, variables, options);
 
 export const PullRequestFileDiffDocument = new TypedDocumentString(`
     query PullRequestFileDiff($ownerSlug: String!, $repoSlug: String!, $number: Int!, $path: String!) {
