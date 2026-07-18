@@ -485,3 +485,4 @@ export const mockUserByIdentityProviderIdQuery = (resolver: GraphQLResponseResol
     resolver,
     options
   )
+

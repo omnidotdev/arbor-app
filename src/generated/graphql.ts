@@ -2382,6 +2382,24 @@ export type PullRequestCommentAverageAggregates = {
   line?: Maybe<Scalars['BigFloat']['output']>;
 };
 
+/** The kind of change delivered on a pullRequestCommentChanged event. */
+export enum PullRequestCommentChangeAction {
+  Created = 'CREATED',
+  Deleted = 'DELETED',
+  Updated = 'UPDATED'
+}
+
+/** A single change to a comment on a pull request's conversation. */
+export type PullRequestCommentChangePayload = {
+  __typename?: 'PullRequestCommentChangePayload';
+  /** Whether the comment was created, updated, or deleted. */
+  action?: Maybe<PullRequestCommentChangeAction>;
+  /** The affected comment, or null if it was deleted. */
+  comment?: Maybe<PullRequestComment>;
+  /** The affected comment's id (always present, including on delete). */
+  commentId?: Maybe<Scalars['UUID']['output']>;
+};
+
 /**
  * A condition to be used against `PullRequestComment` object types. All fields are
  * tested for equality and combined with a logical ‘and.’
@@ -5887,6 +5905,19 @@ export type StringFilter = {
   startsWithInsensitive?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** The root subscription type: contains realtime events you can subscribe to with the `subscription` operation. */
+export type Subscription = {
+  __typename?: 'Subscription';
+  /** Fires when a comment on the given pull request is created, updated, or deleted. */
+  pullRequestCommentChanged?: Maybe<PullRequestCommentChangePayload>;
+};
+
+
+/** The root subscription type: contains realtime events you can subscribe to with the `subscription` operation. */
+export type SubscriptionPullRequestCommentChangedArgs = {
+  pullRequestId: Scalars['UUID']['input'];
+};
+
 /** A Git tree (directory). */
 export type Tree = GitObject & {
   __typename?: 'Tree';
@@ -7044,6 +7075,12 @@ export type Permission =
   | 'read'
   | 'write';
 
+/** The kind of change delivered on a pullRequestCommentChanged event. */
+export type PullRequestCommentChangeAction =
+  | 'CREATED'
+  | 'DELETED'
+  | 'UPDATED';
+
 /** An input for mutations affecting `PullRequestComment` */
 export type PullRequestCommentInput = {
   authorId: string;
@@ -7319,6 +7356,13 @@ export type UserByIdentityProviderIdQueryVariables = Exact<{
 
 
 export type UserByIdentityProviderIdQuery = { userByIdentityProviderId: { rowId: string, email: string, name: string, avatarUrl: string | null, createdAt: Date } | null };
+
+export type PullRequestCommentChangedSubscriptionVariables = Exact<{
+  pullRequestId: string;
+}>;
+
+
+export type PullRequestCommentChangedSubscription = { pullRequestCommentChanged: { action: PullRequestCommentChangeAction | null, commentId: string | null, comment: { id: string, rowId: string } | null } | null };
 
 
 export class TypedDocumentString<TResult, TVariables>
@@ -9134,3 +9178,16 @@ useSuspenseInfiniteUserByIdentityProviderIdQuery.getKey = (variables: UserByIden
 
 
 useUserByIdentityProviderIdQuery.fetcher = (variables: UserByIdentityProviderIdQueryVariables, options?: RequestInit['headers']) => graphqlFetch<UserByIdentityProviderIdQuery, UserByIdentityProviderIdQueryVariables>(UserByIdentityProviderIdDocument, variables, options);
+
+export const PullRequestCommentChangedDocument = new TypedDocumentString(`
+    subscription PullRequestCommentChanged($pullRequestId: UUID!) {
+  pullRequestCommentChanged(pullRequestId: $pullRequestId) {
+    action
+    commentId
+    comment {
+      id
+      rowId
+    }
+  }
+}
+    `);

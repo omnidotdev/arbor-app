@@ -1,0 +1,10 @@
+subscription PullRequestCommentChanged($pullRequestId: UUID!) {
+  pullRequestCommentChanged(pullRequestId: $pullRequestId) {
+    action
+    commentId
+    comment {
+      id
+      rowId
+    }
+  }
+}

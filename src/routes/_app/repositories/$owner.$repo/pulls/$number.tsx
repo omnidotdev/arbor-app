@@ -13,6 +13,7 @@ import {
   useViewedFiles,
 } from "@/components/pullRequest";
 import { Button } from "@/components/ui/button";
+import { usePullRequestCommentSubscription } from "@/lib/hooks/usePullRequestCommentSubscription";
 import { usePullRequestConversation } from "@/lib/hooks/usePullRequestConversation";
 import pullRequestFilesOptions from "@/lib/options/pullRequestFiles.options";
 
@@ -70,6 +71,12 @@ function PullRequestDetailPage() {
   } = usePullRequestConversation({
     pullRequestId: pullRequest?.rowId,
     currentUserId,
+  });
+
+  // live-update the conversation as comments change, over SSE
+  usePullRequestCommentSubscription({
+    pullRequestId: pullRequest?.rowId,
+    accessToken: session?.accessToken,
   });
 
   // group comments: path-anchored comments feed each file's diff, the rest
