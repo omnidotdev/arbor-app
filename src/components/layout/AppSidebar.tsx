@@ -15,6 +15,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
   SidebarSeparator,
+  useSidebar,
 } from "@omnidotdev/thornberry/sidebar";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
@@ -57,8 +58,20 @@ const AppSidebar = ({ user, ...rest }: Props) => {
   const displayName = user?.name || user?.email || "Account";
   const initial = displayName.trim().charAt(0).toUpperCase() || "?";
 
+  // On mobile the sheet trigger sits at the top right, so open the sidebar from
+  // the right to match; keep it on the left on desktop
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  const closeOnMobileNav = () => {
+    if (isMobile) setOpenMobile(false);
+  };
+
   return (
-    <Sidebar collapsible="icon" {...rest}>
+    <Sidebar
+      collapsible="icon"
+      side={isMobile ? "right" : "left"}
+      {...rest}
+    >
       <SidebarHeader className="gap-2">
         <div className="px-1 py-1">
           <LogoLockup
@@ -87,7 +100,7 @@ const AppSidebar = ({ user, ...rest }: Props) => {
                     isActive={isActive}
                     tooltip={item.label}
                   >
-                    <Link to={item.to}>
+                    <Link to={item.to} onClick={closeOnMobileNav}>
                       <Icon className="size-4" />
                       <span>{item.label}</span>
                     </Link>
