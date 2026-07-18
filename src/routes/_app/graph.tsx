@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { GraphView } from "@/components/graph";
 import { Button } from "@/components/ui/button";
+import { pluralize } from "@/lib/util/pluralize";
 import { useRepositoryGraphQuery } from "@/generated/graphql";
 
 export const Route = createFileRoute("/_app/graph")({
@@ -84,11 +85,15 @@ function GraphPage() {
         <div className="flex items-center gap-4 text-sm">
           <div className="rounded-lg bg-muted px-3 py-1.5">
             <span className="font-medium">{repositories.length}</span>{" "}
-            <span className="text-muted-foreground">repositories</span>
+            <span className="text-muted-foreground">
+              {pluralize(repositories.length, "repository", "repositories")}
+            </span>
           </div>
           <div className="rounded-lg bg-muted px-3 py-1.5">
             <span className="font-medium">{totalRelationships}</span>{" "}
-            <span className="text-muted-foreground">relationships</span>
+            <span className="text-muted-foreground">
+              {pluralize(totalRelationships, "relationship")}
+            </span>
           </div>
         </div>
 
