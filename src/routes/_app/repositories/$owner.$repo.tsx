@@ -263,8 +263,8 @@ function RepositoryDetailPage() {
         </div>
       </div>
 
-      {/* Navigation tabs */}
-      <div className="mb-6 flex gap-6 border-b">
+      {/* Navigation tabs: scroll the bar itself on small screens instead of the page */}
+      <div className="mb-6 flex gap-6 overflow-x-auto border-b [&>*]:shrink-0">
         <span className="flex items-center gap-2 border-primary border-b-2 px-1 pb-3 font-medium text-sm">
           <GitBranch className="h-4 w-4" />
           Code

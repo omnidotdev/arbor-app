@@ -168,7 +168,7 @@ function NewPullRequestPage() {
       </div>
 
       {/* Navigation tabs */}
-      <div className="mb-6 flex gap-6 border-b">
+      <div className="mb-6 flex gap-6 overflow-x-auto border-b [&>*]:shrink-0">
         <Link
           to="/repositories/$owner/$repo"
           params={{ owner, repo }}
