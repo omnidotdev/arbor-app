@@ -241,7 +241,7 @@ function RepositoryDetailPage() {
             <Link
               to="/repositories"
               search={{ owner }}
-              className="text-blue-600 hover:underline dark:text-blue-400"
+              className="text-primary-600 hover:underline dark:text-primary-400"
             >
               {owner}
             </Link>
@@ -336,7 +336,7 @@ git push -u origin master`}
                 When git prompts, sign in with your Arbor username and a{" "}
                 <Link
                   to="/settings/tokens"
-                  className="text-blue-600 hover:underline dark:text-blue-400"
+                  className="text-primary-600 hover:underline dark:text-primary-400"
                 >
                   personal access token
                 </Link>{" "}
@@ -385,7 +385,7 @@ git push -u origin master`}
                 Clone or push with your Arbor username and a{" "}
                 <Link
                   to="/settings/tokens"
-                  className="text-blue-600 hover:underline dark:text-blue-400"
+                  className="text-primary-600 hover:underline dark:text-primary-400"
                 >
                   personal access token
                 </Link>{" "}

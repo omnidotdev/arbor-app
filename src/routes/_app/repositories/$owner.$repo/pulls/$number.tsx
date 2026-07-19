@@ -125,7 +125,7 @@ function PullRequestDetailPage() {
           <Link
             to="/repositories"
             search={{ owner }}
-            className="text-blue-600 hover:underline dark:text-blue-400"
+            className="text-primary-600 hover:underline dark:text-primary-400"
           >
             {owner}
           </Link>
@@ -191,7 +191,7 @@ function PullRequestDetailPage() {
           <Link
             to="/repositories/$owner/$repo/pulls"
             params={{ owner, repo }}
-            className="mt-4 inline-block text-blue-600 text-sm hover:underline dark:text-blue-400"
+            className="mt-4 inline-block text-primary-600 text-sm hover:underline dark:text-primary-400"
           >
             Back to pull requests
           </Link>

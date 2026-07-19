@@ -265,7 +265,7 @@ function BranchesPage() {
           <Link
             to="/repositories"
             search={{ owner }}
-            className="text-blue-600 hover:underline dark:text-blue-400"
+            className="text-primary-600 hover:underline dark:text-primary-400"
           >
             {owner}
           </Link>

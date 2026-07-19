@@ -25,7 +25,7 @@ export function BreadcrumbNav({
         to="/repositories/$owner/$repo"
         params={{ owner, repo }}
         search={{ ref: branch }}
-        className="flex items-center gap-1 text-blue-600 hover:underline dark:text-blue-400"
+        className="flex items-center gap-1 text-primary-600 hover:underline dark:text-primary-400"
       >
         <Home className="h-4 w-4" />
         <span>{repo}</span>
@@ -45,7 +45,7 @@ export function BreadcrumbNav({
                 to="/repositories/$owner/$repo"
                 params={{ owner, repo }}
                 search={{ ref: branch, path: partPath }}
-                className="text-blue-600 hover:underline dark:text-blue-400"
+                className="text-primary-600 hover:underline dark:text-primary-400"
               >
                 {part}
               </Link>

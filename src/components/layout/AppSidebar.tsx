@@ -19,13 +19,11 @@ import {
 } from "@omnidotdev/thornberry/sidebar";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  Building2,
   ExternalLink,
   GitBranch,
   KeyRound,
   LogOut,
   Network,
-  TreePine,
 } from "lucide-react";
 
 import { ModeToggle } from "@/components/layout/ModeToggle";
@@ -40,7 +38,6 @@ import type { ComponentProps } from "react";
 const primaryNav = [
   { to: "/repositories", label: "Repositories", icon: GitBranch },
   { to: "/graph", label: "Graph", icon: Network },
-  { to: "/workspaces", label: "Workspaces", icon: Building2 },
 ] as const;
 
 interface Props extends ComponentProps<typeof Sidebar> {
@@ -72,7 +69,13 @@ const AppSidebar = ({ user, ...rest }: Props) => {
       <SidebarHeader className="gap-2">
         <div className="px-1 py-1">
           <LogoLockup
-            logo={<TreePine className="size-5 shrink-0 text-primary-500" />}
+            logo={
+              <img
+                src="/favicon.svg"
+                alt=""
+                className="size-5 shrink-0"
+              />
+            }
             name={app.name}
             nameClassName="font-bold tracking-tight group-data-[collapsible=icon]:hidden"
           />

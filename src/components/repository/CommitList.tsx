@@ -76,7 +76,7 @@ export function CommitList({
             type="button"
             onClick={onLoadMore}
             disabled={isLoading}
-            className="text-blue-600 text-sm hover:underline disabled:opacity-50 dark:text-blue-400"
+            className="text-primary-600 text-sm hover:underline disabled:opacity-50 dark:text-primary-400"
           >
             {isLoading ? "Loading..." : "Load more commits"}
           </button>
