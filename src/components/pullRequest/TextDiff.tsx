@@ -94,19 +94,23 @@ export function TextDiff({
 
   const lang = getFileLang(path);
 
-  // @git-diff-view renders from a DiffFile. Build it from the raw old/new
-  // content and compute the diff with initRaw, so a pure add or delete (one
-  // side null) still renders its full one-sided diff. Passing raw content with
-  // empty hunks to the `data` prop renders nothing
+  // @git-diff-view renders from a DiffFile built from the raw old/new content
+  // (initRaw computes the diff, so a pure add or delete still renders its full
+  // one-sided diff). DiffView clones a passed diffFile via _getFullBundle, which
+  // requires the split and unified lines to be built first, so build them here;
+  // an initRaw-only instance clones into an empty view
   const diffFile = useMemo(() => {
     const instance = DiffFile.createInstance({
       oldFile: { fileName: path, fileLang: lang, content: oldText ?? "" },
       newFile: { fileName: path, fileLang: lang, content: newText ?? "" },
       hunks: [],
     });
+    instance.initTheme(theme === "dark" ? "dark" : "light");
     instance.initRaw();
+    instance.buildSplitDiffLines();
+    instance.buildUnifiedDiffLines();
     return instance;
-  }, [path, lang, oldText, newText]);
+  }, [path, lang, oldText, newText, theme]);
 
   if (!mounted) {
     return (
