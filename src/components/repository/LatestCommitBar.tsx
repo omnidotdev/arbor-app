@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { User } from "lucide-react";
 
 import getRelativeTime from "@/lib/util/getRelativeTime";
+import { CommitAuthorAvatar } from "./CommitAuthorAvatar";
 
 interface LatestCommitBarProps {
   owner: string;
@@ -33,9 +33,7 @@ export function LatestCommitBar({
   return (
     <div className="flex items-center gap-3 rounded-lg border bg-muted/40 px-4 py-2.5 text-sm">
       <span className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
-        <span className="rounded-full bg-muted p-1">
-          <User className="h-3.5 w-3.5" />
-        </span>
+        <CommitAuthorAvatar name={authorName} />
         {authorName && (
           <span className="max-w-32 truncate font-medium text-foreground">
             {authorName}

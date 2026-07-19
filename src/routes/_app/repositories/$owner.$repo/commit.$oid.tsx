@@ -1,16 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import {
-  GitBranch,
-  GitCommit,
-  GitFork,
-  GitPullRequest,
-  User,
-} from "lucide-react";
+import { GitBranch, GitCommit, GitFork, GitPullRequest } from "lucide-react";
 import { useState } from "react";
 
 import { useDiffViewMode } from "@/components/pullRequest";
-import { CommitFileDiffCard } from "@/components/repository";
+import {
+  CommitAuthorAvatar,
+  CommitFileDiffCard,
+} from "@/components/repository";
 import { Button } from "@/components/ui/button";
 import commitDetailOptions from "@/lib/options/commitDetail.options";
 import getRelativeTime from "@/lib/util/getRelativeTime";
@@ -145,7 +142,10 @@ function CommitDetailPage() {
             </div>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 text-muted-foreground text-sm">
               <span className="flex items-center gap-1.5">
-                <User className="h-4 w-4 shrink-0" />
+                <CommitAuthorAvatar
+                  name={commit.author?.name}
+                  className="size-6"
+                />
                 <strong className="text-foreground">
                   {commit.author?.name ?? "Unknown"}
                 </strong>

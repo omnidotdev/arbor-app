@@ -1,6 +1,7 @@
 export { BranchList } from "./BranchList";
 export { BranchSelector } from "./BranchSelector";
 export { BreadcrumbNav } from "./BreadcrumbNav";
+export { CommitAuthorAvatar } from "./CommitAuthorAvatar";
 export { CommitCard } from "./CommitCard";
 export { CommitFileDiffCard } from "./CommitFileDiffCard";
 export { CommitList } from "./CommitList";

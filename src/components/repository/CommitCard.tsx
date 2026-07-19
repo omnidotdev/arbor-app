@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { GitCommit, User } from "lucide-react";
+import { GitCommit } from "lucide-react";
 
 import getRelativeTime from "@/lib/util/getRelativeTime";
+import { CommitAuthorAvatar } from "./CommitAuthorAvatar";
 
 interface CommitCardProps {
   sha: string;
@@ -47,7 +48,7 @@ export function CommitCard({
           </p>
         )}
         <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground text-sm">
-          <User className="h-3 w-3 shrink-0" />
+          <CommitAuthorAvatar name={authorName} className="size-4" />
           <span className="truncate">{authorName}</span>
           <span>committed {relativeTime}</span>
         </div>

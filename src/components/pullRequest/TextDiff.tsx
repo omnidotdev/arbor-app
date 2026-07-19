@@ -1,7 +1,12 @@
 "use client";
 
-import { DiffModeEnum, DiffView, SplitSide } from "@git-diff-view/react";
-import { useEffect, useState } from "react";
+import {
+  DiffFile,
+  DiffModeEnum,
+  DiffView,
+  SplitSide,
+} from "@git-diff-view/react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useTheme } from "@/providers/ThemeProvider";
 import { CommentComposer } from "./CommentComposer";
@@ -87,13 +92,28 @@ export function TextDiff({
     setMounted(true);
   }, []);
 
+  const lang = getFileLang(path);
+
+  // @git-diff-view renders from a DiffFile. Build it from the raw old/new
+  // content and compute the diff with initRaw, so a pure add or delete (one
+  // side null) still renders its full one-sided diff. Passing raw content with
+  // empty hunks to the `data` prop renders nothing
+  const diffFile = useMemo(() => {
+    const instance = DiffFile.createInstance({
+      oldFile: { fileName: path, fileLang: lang, content: oldText ?? "" },
+      newFile: { fileName: path, fileLang: lang, content: newText ?? "" },
+      hunks: [],
+    });
+    instance.initRaw();
+    return instance;
+  }, [path, lang, oldText, newText]);
+
   if (!mounted) {
     return (
       <div className="p-4 text-muted-foreground text-sm">Loading diff...</div>
     );
   }
 
-  const lang = getFileLang(path);
   const inlineComments = comments ?? [];
   const canComment = Boolean(actions?.currentUserId);
   const extendData = buildExtendData(inlineComments);
@@ -101,11 +121,7 @@ export function TextDiff({
   return (
     <div className="overflow-x-auto text-sm">
       <DiffView<LineThreadData>
-        data={{
-          oldFile: { fileName: path, fileLang: lang, content: oldText ?? "" },
-          newFile: { fileName: path, fileLang: lang, content: newText ?? "" },
-          hunks: [],
-        }}
+        diffFile={diffFile}
         diffViewMode={
           mode === "split" ? DiffModeEnum.Split : DiffModeEnum.Unified
         }
