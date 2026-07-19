@@ -19,6 +19,7 @@ import { Route as AppRepositoriesIndexRouteImport } from './routes/_app/reposito
 import { Route as AppProjectsIndexRouteImport } from './routes/_app/projects/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AppSettingsTokensRouteImport } from './routes/_app/settings/tokens'
+import { Route as AppSettingsAgentsRouteImport } from './routes/_app/settings/agents'
 import { Route as AppWorkspacesWorkspaceSlugIndexRouteImport } from './routes/_app/workspaces/$workspaceSlug/index'
 import { Route as AppRepositoriesOwnerRepoRouteImport } from './routes/_app/repositories/$owner.$repo'
 import { Route as AppProjectsOwnerSlugRouteImport } from './routes/_app/projects/$owner.$slug'
@@ -79,6 +80,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 const AppSettingsTokensRoute = AppSettingsTokensRouteImport.update({
   id: '/settings/tokens',
   path: '/settings/tokens',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsAgentsRoute = AppSettingsAgentsRouteImport.update({
+  id: '/settings/agents',
+  path: '/settings/agents',
   getParentRoute: () => AppRoute,
 } as any)
 const AppWorkspacesWorkspaceSlugIndexRoute =
@@ -156,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
+  '/settings/agents': typeof AppSettingsAgentsRoute
   '/settings/tokens': typeof AppSettingsTokensRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects/': typeof AppProjectsIndexRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
+  '/settings/agents': typeof AppSettingsAgentsRoute
   '/settings/tokens': typeof AppSettingsTokensRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects': typeof AppProjectsIndexRoute
@@ -204,6 +212,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/_app/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
+  '/_app/settings/agents': typeof AppSettingsAgentsRoute
   '/_app/settings/tokens': typeof AppSettingsTokensRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_app/projects/': typeof AppProjectsIndexRoute
@@ -229,6 +238,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/graph'
     | '/api/healthz'
+    | '/settings/agents'
     | '/settings/tokens'
     | '/api/auth/$'
     | '/projects/'
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/graph'
     | '/api/healthz'
+    | '/settings/agents'
     | '/settings/tokens'
     | '/api/auth/$'
     | '/projects'
@@ -276,6 +287,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/_app/graph'
     | '/api/healthz'
+    | '/_app/settings/agents'
     | '/_app/settings/tokens'
     | '/api/auth/$'
     | '/_app/projects/'
@@ -375,6 +387,13 @@ declare module '@tanstack/react-router' {
       path: '/settings/tokens'
       fullPath: '/settings/tokens'
       preLoaderRoute: typeof AppSettingsTokensRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings/agents': {
+      id: '/_app/settings/agents'
+      path: '/settings/agents'
+      fullPath: '/settings/agents'
+      preLoaderRoute: typeof AppSettingsAgentsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/workspaces/$workspaceSlug/': {
@@ -498,6 +517,7 @@ const AppRepositoriesOwnerRepoRouteWithChildren =
 
 interface AppRouteChildren {
   AppGraphRoute: typeof AppGraphRoute
+  AppSettingsAgentsRoute: typeof AppSettingsAgentsRoute
   AppSettingsTokensRoute: typeof AppSettingsTokensRoute
   AppProjectsIndexRoute: typeof AppProjectsIndexRoute
   AppRepositoriesIndexRoute: typeof AppRepositoriesIndexRoute
@@ -509,6 +529,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppGraphRoute: AppGraphRoute,
+  AppSettingsAgentsRoute: AppSettingsAgentsRoute,
   AppSettingsTokensRoute: AppSettingsTokensRoute,
   AppProjectsIndexRoute: AppProjectsIndexRoute,
   AppRepositoriesIndexRoute: AppRepositoriesIndexRoute,
@@ -532,13 +553,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

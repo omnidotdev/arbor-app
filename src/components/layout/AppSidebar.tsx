@@ -19,6 +19,7 @@ import {
 } from "@omnidotdev/thornberry/sidebar";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
+  Bot,
   Boxes,
   ExternalLink,
   GitBranch,
@@ -129,6 +130,15 @@ const AppSidebar = ({ user, ...rest }: Props) => {
         </div>
 
         <SidebarMenu className="group-data-[collapsible=icon]:hidden">
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip="Agents">
+              <Link to="/settings/agents" onClick={closeOnMobileNav}>
+                <Bot className="size-4" />
+                <span>Agents</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Personal access tokens">
               <Link to="/settings/tokens" onClick={closeOnMobileNav}>

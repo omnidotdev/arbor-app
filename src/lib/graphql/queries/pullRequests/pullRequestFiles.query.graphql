@@ -25,6 +25,10 @@ query PullRequestFiles($ownerSlug: String!, $repoSlug: String!, $number: Int!) {
         username
         avatarUrl
       }
+      authoredByAgent {
+        rowId
+        name
+      }
       mergedBy {
         rowId
         username

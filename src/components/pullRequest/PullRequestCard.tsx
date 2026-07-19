@@ -1,5 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { GitMerge, GitPullRequest, MessageSquare, User } from "lucide-react";
+import {
+  Bot,
+  GitMerge,
+  GitPullRequest,
+  MessageSquare,
+  User,
+} from "lucide-react";
 
 interface PullRequestCardProps {
   id: string;
@@ -7,6 +13,7 @@ interface PullRequestCardProps {
   title: string;
   state: "open" | "closed" | "merged" | "draft";
   authorName: string;
+  agentName?: string;
   sourceBranch: string;
   targetBranch: string;
   createdAt: string;
@@ -38,6 +45,7 @@ export function PullRequestCard({
   title,
   state,
   authorName,
+  agentName,
   sourceBranch,
   targetBranch,
   createdAt,
@@ -73,6 +81,12 @@ export function PullRequestCard({
             <User className="h-3 w-3" />
             {authorName}
           </span>
+          {agentName && (
+            <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs">
+              <Bot className="h-3 w-3" />
+              via {agentName}
+            </span>
+          )}
           <span>
             <code className="rounded bg-muted px-1 py-0.5 text-xs">
               {sourceBranch}

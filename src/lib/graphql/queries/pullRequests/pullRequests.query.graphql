@@ -25,6 +25,10 @@ query PullRequests($ownerSlug: String!, $repoSlug: String!) {
         rowId
         username
       }
+      authoredByAgent {
+        rowId
+        name
+      }
       pullRequestComments {
         totalCount
       }

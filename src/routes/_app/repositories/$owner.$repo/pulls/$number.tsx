@@ -205,6 +205,7 @@ function PullRequestDetailPage() {
             description={pullRequest.description ?? undefined}
             state={normalizeState(pullRequest.state)}
             authorName={pullRequest.author?.username ?? "Unknown"}
+            agentName={pullRequest.authoredByAgent?.name}
             sourceBranch={pullRequest.sourceBranch}
             targetBranch={pullRequest.targetBranch}
             createdAt={String(pullRequest.createdAt)}

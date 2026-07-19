@@ -8,6 +8,7 @@ interface PullRequest {
   title: string;
   state: "open" | "closed" | "merged" | "draft";
   authorName: string;
+  agentName?: string;
   sourceBranch: string;
   targetBranch: string;
   createdAt: string;
@@ -71,6 +72,7 @@ export function PullRequestList({
           title={pr.title}
           state={pr.state}
           authorName={pr.authorName}
+          agentName={pr.agentName}
           sourceBranch={pr.sourceBranch}
           targetBranch={pr.targetBranch}
           createdAt={pr.createdAt}

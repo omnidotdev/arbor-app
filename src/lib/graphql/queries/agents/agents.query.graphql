@@ -1,0 +1,26 @@
+query Agents($userId: UUID!, $organizationId: UUID, $limit: Int) {
+  agents(
+    filter: {
+      or: [
+        { ownerId: { equalTo: $userId } }
+        { organizationId: { equalTo: $organizationId } }
+      ]
+    }
+    orderBy: CREATED_AT_DESC
+    first: $limit
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      model
+      vendor
+      createdAt
+      owner {
+        username
+      }
+    }
+    totalCount
+  }
+}

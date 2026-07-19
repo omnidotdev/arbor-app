@@ -37,6 +37,431 @@ export type Scalars = {
   UUID: { input: string; output: string; }
 };
 
+export type Agent = Node & {
+  __typename?: 'Agent';
+  createdAt: Scalars['Datetime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  model?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  /** Reads a single `Organization` that is related to this `Agent`. */
+  organization?: Maybe<Organization>;
+  organizationId?: Maybe<Scalars['UUID']['output']>;
+  /** Reads a single `User` that is related to this `Agent`. */
+  owner?: Maybe<User>;
+  ownerId: Scalars['UUID']['output'];
+  /** Reads and enables pagination through a set of `PersonalAccessToken`. */
+  personalAccessTokens: PersonalAccessTokenConnection;
+  /** Reads and enables pagination through a set of `PullRequest`. */
+  pullRequestsByAuthoredByAgentId: PullRequestConnection;
+  rowId: Scalars['UUID']['output'];
+  slug: Scalars['String']['output'];
+  updatedAt: Scalars['Datetime']['output'];
+  vendor?: Maybe<Scalars['String']['output']>;
+};
+
+
+export type AgentPersonalAccessTokensArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<PersonalAccessTokenCondition>;
+  filter?: InputMaybe<PersonalAccessTokenFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<PersonalAccessTokenOrderBy>>;
+};
+
+
+export type AgentPullRequestsByAuthoredByAgentIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<PullRequestCondition>;
+  filter?: InputMaybe<PullRequestFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<PullRequestOrderBy>>;
+};
+
+export type AgentAggregates = {
+  __typename?: 'AgentAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<AgentDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/** A filter to be used against aggregates of `Agent` object types. */
+export type AgentAggregatesFilter = {
+  /** Distinct count aggregate over matching `Agent` objects. */
+  distinctCount?: InputMaybe<AgentDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Agent` object to be included within the aggregate. */
+  filter?: InputMaybe<AgentFilter>;
+};
+
+/** A condition to be used against `Agent` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type AgentCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `model` field. */
+  model?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `organizationId` field. */
+  organizationId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `ownerId` field. */
+  ownerId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `slug` field. */
+  slug?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `vendor` field. */
+  vendor?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A connection to a list of `Agent` values. */
+export type AgentConnection = {
+  __typename?: 'AgentConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<AgentAggregates>;
+  /** A list of edges which contains the `Agent` and cursor to aid in pagination. */
+  edges: Array<AgentEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<AgentAggregates>>;
+  /** A list of `Agent` objects. */
+  nodes: Array<Agent>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Agent` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `Agent` values. */
+export type AgentConnectionGroupedAggregatesArgs = {
+  groupBy: Array<AgentGroupBy>;
+  having?: InputMaybe<AgentHavingInput>;
+};
+
+export type AgentDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  description?: InputMaybe<BigIntFilter>;
+  model?: InputMaybe<BigIntFilter>;
+  name?: InputMaybe<BigIntFilter>;
+  organizationId?: InputMaybe<BigIntFilter>;
+  ownerId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  slug?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+  vendor?: InputMaybe<BigIntFilter>;
+};
+
+export type AgentDistinctCountAggregates = {
+  __typename?: 'AgentDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of description across the matching connection */
+  description?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of model across the matching connection */
+  model?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of name across the matching connection */
+  name?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of organizationId across the matching connection */
+  organizationId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of ownerId across the matching connection */
+  ownerId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of slug across the matching connection */
+  slug?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of vendor across the matching connection */
+  vendor?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `Agent` edge in the connection. */
+export type AgentEdge = {
+  __typename?: 'AgentEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `Agent` at the end of the edge. */
+  node: Agent;
+};
+
+/** A filter to be used against `Agent` object types. All fields are combined with a logical ‘and.’ */
+export type AgentFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<AgentFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `model` field. */
+  model?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<AgentFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<AgentFilter>>;
+  /** Filter by the object’s `organization` relation. */
+  organization?: InputMaybe<OrganizationFilter>;
+  /** A related `organization` exists. */
+  organizationExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `organizationId` field. */
+  organizationId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `owner` relation. */
+  owner?: InputMaybe<UserFilter>;
+  /** Filter by the object’s `ownerId` field. */
+  ownerId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `personalAccessTokens` relation. */
+  personalAccessTokens?: InputMaybe<AgentToManyPersonalAccessTokenFilter>;
+  /** Some related `personalAccessTokens` exist. */
+  personalAccessTokensExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `pullRequestsByAuthoredByAgentId` relation. */
+  pullRequestsByAuthoredByAgentId?: InputMaybe<AgentToManyPullRequestFilter>;
+  /** Some related `pullRequestsByAuthoredByAgentId` exist. */
+  pullRequestsByAuthoredByAgentIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `slug` field. */
+  slug?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `vendor` field. */
+  vendor?: InputMaybe<StringFilter>;
+};
+
+/** Grouping methods for `Agent` for usage during aggregation. */
+export enum AgentGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  Description = 'DESCRIPTION',
+  Model = 'MODEL',
+  Name = 'NAME',
+  OrganizationId = 'ORGANIZATION_ID',
+  OwnerId = 'OWNER_ID',
+  Slug = 'SLUG',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR',
+  Vendor = 'VENDOR'
+}
+
+export type AgentHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type AgentHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `Agent` aggregates. */
+export type AgentHavingInput = {
+  AND?: InputMaybe<Array<AgentHavingInput>>;
+  OR?: InputMaybe<Array<AgentHavingInput>>;
+  average?: InputMaybe<AgentHavingAverageInput>;
+  distinctCount?: InputMaybe<AgentHavingDistinctCountInput>;
+  max?: InputMaybe<AgentHavingMaxInput>;
+  min?: InputMaybe<AgentHavingMinInput>;
+  stddevPopulation?: InputMaybe<AgentHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<AgentHavingStddevSampleInput>;
+  sum?: InputMaybe<AgentHavingSumInput>;
+  variancePopulation?: InputMaybe<AgentHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<AgentHavingVarianceSampleInput>;
+};
+
+export type AgentHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type AgentHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type AgentHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type AgentHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type AgentHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type AgentHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type AgentHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `Agent` */
+export type AgentInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  model?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  organizationId?: InputMaybe<Scalars['UUID']['input']>;
+  ownerId: Scalars['UUID']['input'];
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  slug: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  vendor?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Methods to use when ordering `Agent`. */
+export enum AgentOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  ModelAsc = 'MODEL_ASC',
+  ModelDesc = 'MODEL_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  OrganizationIdAsc = 'ORGANIZATION_ID_ASC',
+  OrganizationIdDesc = 'ORGANIZATION_ID_DESC',
+  OwnerIdAsc = 'OWNER_ID_ASC',
+  OwnerIdDesc = 'OWNER_ID_DESC',
+  PersonalAccessTokensCountAsc = 'PERSONAL_ACCESS_TOKENS_COUNT_ASC',
+  PersonalAccessTokensCountDesc = 'PERSONAL_ACCESS_TOKENS_COUNT_DESC',
+  PersonalAccessTokensDistinctCountAgentIdAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_AGENT_ID_ASC',
+  PersonalAccessTokensDistinctCountAgentIdDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_AGENT_ID_DESC',
+  PersonalAccessTokensDistinctCountCreatedAtAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_CREATED_AT_ASC',
+  PersonalAccessTokensDistinctCountCreatedAtDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_CREATED_AT_DESC',
+  PersonalAccessTokensDistinctCountExpiresAtAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_EXPIRES_AT_ASC',
+  PersonalAccessTokensDistinctCountExpiresAtDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_EXPIRES_AT_DESC',
+  PersonalAccessTokensDistinctCountLastUsedAtAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_LAST_USED_AT_ASC',
+  PersonalAccessTokensDistinctCountLastUsedAtDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_LAST_USED_AT_DESC',
+  PersonalAccessTokensDistinctCountNameAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_NAME_ASC',
+  PersonalAccessTokensDistinctCountNameDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_NAME_DESC',
+  PersonalAccessTokensDistinctCountRowIdAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_ROW_ID_ASC',
+  PersonalAccessTokensDistinctCountRowIdDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_ROW_ID_DESC',
+  PersonalAccessTokensDistinctCountTokenPrefixAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_TOKEN_PREFIX_ASC',
+  PersonalAccessTokensDistinctCountTokenPrefixDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_TOKEN_PREFIX_DESC',
+  PersonalAccessTokensDistinctCountUserIdAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_USER_ID_ASC',
+  PersonalAccessTokensDistinctCountUserIdDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_USER_ID_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  PullRequestsByAuthoredByAgentIdAverageNumberAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_AVERAGE_NUMBER_ASC',
+  PullRequestsByAuthoredByAgentIdAverageNumberDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_AVERAGE_NUMBER_DESC',
+  PullRequestsByAuthoredByAgentIdCountAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_COUNT_ASC',
+  PullRequestsByAuthoredByAgentIdCountDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_COUNT_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountAuthoredByAgentIdAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountAuthoredByAgentIdDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountAuthorIdAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_AUTHOR_ID_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountAuthorIdDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_AUTHOR_ID_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountClosedAtAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_CLOSED_AT_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountClosedAtDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_CLOSED_AT_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountCreatedAtAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountCreatedAtDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountDescriptionAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountDescriptionDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountMergedAtAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_MERGED_AT_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountMergedAtDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_MERGED_AT_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountMergedByIdAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_MERGED_BY_ID_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountMergedByIdDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_MERGED_BY_ID_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountMergeCommitShaAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_MERGE_COMMIT_SHA_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountMergeCommitShaDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_MERGE_COMMIT_SHA_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountNumberAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_NUMBER_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountNumberDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_NUMBER_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountRepositoryIdAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountRepositoryIdDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountRowIdAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_ROW_ID_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountRowIdDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_ROW_ID_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountSourceBranchAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_SOURCE_BRANCH_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountSourceBranchDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_SOURCE_BRANCH_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountStateAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_STATE_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountStateDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_STATE_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountTargetBranchAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_TARGET_BRANCH_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountTargetBranchDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_TARGET_BRANCH_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountTitleAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_TITLE_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountTitleDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_TITLE_DESC',
+  PullRequestsByAuthoredByAgentIdDistinctCountUpdatedAtAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  PullRequestsByAuthoredByAgentIdDistinctCountUpdatedAtDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
+  PullRequestsByAuthoredByAgentIdMaxNumberAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_MAX_NUMBER_ASC',
+  PullRequestsByAuthoredByAgentIdMaxNumberDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_MAX_NUMBER_DESC',
+  PullRequestsByAuthoredByAgentIdMinNumberAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_MIN_NUMBER_ASC',
+  PullRequestsByAuthoredByAgentIdMinNumberDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_MIN_NUMBER_DESC',
+  PullRequestsByAuthoredByAgentIdStddevPopulationNumberAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_STDDEV_POPULATION_NUMBER_ASC',
+  PullRequestsByAuthoredByAgentIdStddevPopulationNumberDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_STDDEV_POPULATION_NUMBER_DESC',
+  PullRequestsByAuthoredByAgentIdStddevSampleNumberAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_STDDEV_SAMPLE_NUMBER_ASC',
+  PullRequestsByAuthoredByAgentIdStddevSampleNumberDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_STDDEV_SAMPLE_NUMBER_DESC',
+  PullRequestsByAuthoredByAgentIdSumNumberAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_SUM_NUMBER_ASC',
+  PullRequestsByAuthoredByAgentIdSumNumberDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_SUM_NUMBER_DESC',
+  PullRequestsByAuthoredByAgentIdVariancePopulationNumberAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_VARIANCE_POPULATION_NUMBER_ASC',
+  PullRequestsByAuthoredByAgentIdVariancePopulationNumberDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_VARIANCE_POPULATION_NUMBER_DESC',
+  PullRequestsByAuthoredByAgentIdVarianceSampleNumberAsc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_VARIANCE_SAMPLE_NUMBER_ASC',
+  PullRequestsByAuthoredByAgentIdVarianceSampleNumberDesc = 'PULL_REQUESTS_BY_AUTHORED_BY_AGENT_ID_VARIANCE_SAMPLE_NUMBER_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  SlugAsc = 'SLUG_ASC',
+  SlugDesc = 'SLUG_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
+  VendorAsc = 'VENDOR_ASC',
+  VendorDesc = 'VENDOR_DESC'
+}
+
+/** Represents an update to a `Agent`. Fields that are set will be updated. */
+export type AgentPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  model?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  organizationId?: InputMaybe<Scalars['UUID']['input']>;
+  ownerId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  slug?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  vendor?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A filter to be used against many `PersonalAccessToken` object types. All fields are combined with a logical ‘and.’ */
+export type AgentToManyPersonalAccessTokenFilter = {
+  /** Aggregates across related `PersonalAccessToken` match the filter criteria. */
+  aggregates?: InputMaybe<PersonalAccessTokenAggregatesFilter>;
+  /** Every related `PersonalAccessToken` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<PersonalAccessTokenFilter>;
+  /** No related `PersonalAccessToken` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<PersonalAccessTokenFilter>;
+  /** Some related `PersonalAccessToken` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<PersonalAccessTokenFilter>;
+};
+
+/** A filter to be used against many `PullRequest` object types. All fields are combined with a logical ‘and.’ */
+export type AgentToManyPullRequestFilter = {
+  /** Aggregates across related `PullRequest` match the filter criteria. */
+  aggregates?: InputMaybe<PullRequestAggregatesFilter>;
+  /** Every related `PullRequest` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<PullRequestFilter>;
+  /** No related `PullRequest` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<PullRequestFilter>;
+  /** Some related `PullRequest` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<PullRequestFilter>;
+};
+
 /** A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’ */
 export type BigFloatFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -192,6 +617,39 @@ export type CommitHistoryArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   path?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** All input for the create `Agent` mutation. */
+export type CreateAgentInput = {
+  /** The `Agent` to be created by this mutation. */
+  agent: AgentInput;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The output of our create `Agent` mutation. */
+export type CreateAgentPayload = {
+  __typename?: 'CreateAgentPayload';
+  /** The `Agent` that was created by this mutation. */
+  agent?: Maybe<Agent>;
+  /** An edge for our `Agent`. May be used by Relay 1. */
+  agentEdge?: Maybe<AgentEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `Agent` mutation. */
+export type CreateAgentPayloadAgentEdgeArgs = {
+  orderBy?: Array<AgentOrderBy>;
 };
 
 /** All input for the create `ExternalDependency` mutation. */
@@ -717,6 +1175,39 @@ export type DatetimeFilter = {
   notEqualTo?: InputMaybe<Scalars['Datetime']['input']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['Datetime']['input']>>;
+};
+
+/** All input for the `deleteAgent` mutation. */
+export type DeleteAgentInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `Agent` mutation. */
+export type DeleteAgentPayload = {
+  __typename?: 'DeleteAgentPayload';
+  /** The `Agent` that was deleted by this mutation. */
+  agent?: Maybe<Agent>;
+  /** An edge for our `Agent`. May be used by Relay 1. */
+  agentEdge?: Maybe<AgentEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedAgentId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `Agent` mutation. */
+export type DeleteAgentPayloadAgentEdgeArgs = {
+  orderBy?: Array<AgentOrderBy>;
 };
 
 /** All input for the `deleteExternalDependency` mutation. */
@@ -1601,6 +2092,8 @@ export type MergePullRequestPayload = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Creates a single `Agent`. */
+  createAgent?: Maybe<CreateAgentPayload>;
   /** Creates a single `ExternalDependency`. */
   createExternalDependency?: Maybe<CreateExternalDependencyPayload>;
   /** Creates a single `Organization`. */
@@ -1640,6 +2133,8 @@ export type Mutation = {
   createRepositoryWithGit?: Maybe<CreateRepositoryWithGitPayload>;
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>;
+  /** Deletes a single `Agent` using a unique key. */
+  deleteAgent?: Maybe<DeleteAgentPayload>;
   /** Deletes a single `ExternalDependency` using a unique key. */
   deleteExternalDependency?: Maybe<DeleteExternalDependencyPayload>;
   /** Deletes a single `Organization` using a unique key. */
@@ -1686,6 +2181,8 @@ export type Mutation = {
    * repository owner or an admin collaborator.
    */
   renameRepository?: Maybe<RenameRepositoryPayload>;
+  /** Updates a single `Agent` using a unique key and a patch. */
+  updateAgent?: Maybe<UpdateAgentPayload>;
   /** Updates a single `ExternalDependency` using a unique key and a patch. */
   updateExternalDependency?: Maybe<UpdateExternalDependencyPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
@@ -1712,6 +2209,12 @@ export type Mutation = {
   updateRepositoryRelationshipType?: Maybe<UpdateRepositoryRelationshipTypePayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateAgentArgs = {
+  input: CreateAgentInput;
 };
 
 
@@ -1809,6 +2312,12 @@ export type MutationCreateRepositoryWithGitArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteAgentArgs = {
+  input: DeleteAgentInput;
 };
 
 
@@ -1921,6 +2430,12 @@ export type MutationRenameRepositoryArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateAgentArgs = {
+  input: UpdateAgentInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateExternalDependencyArgs = {
   input: UpdateExternalDependencyInput;
 };
@@ -2014,6 +2529,8 @@ export type Observer = {
 
 export type Organization = Node & {
   __typename?: 'Organization';
+  /** Reads and enables pagination through a set of `Agent`. */
+  agents: AgentConnection;
   avatarUrl?: Maybe<Scalars['String']['output']>;
   billingAccountId?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Datetime']['output'];
@@ -2032,6 +2549,18 @@ export type Organization = Node & {
   rowId: Scalars['UUID']['output'];
   subscriptionId?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['Datetime']['output'];
+};
+
+
+export type OrganizationAgentsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<AgentCondition>;
+  filter?: InputMaybe<AgentFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AgentOrderBy>>;
 };
 
 
@@ -2163,6 +2692,10 @@ export type OrganizationEdge = {
 
 /** A filter to be used against `Organization` object types. All fields are combined with a logical ‘and.’ */
 export type OrganizationFilter = {
+  /** Filter by the object’s `agents` relation. */
+  agents?: InputMaybe<OrganizationToManyAgentFilter>;
+  /** Some related `agents` exist. */
+  agentsExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<OrganizationFilter>>;
   /** Filter by the object’s `avatarUrl` field. */
@@ -2306,6 +2839,28 @@ export type OrganizationInput = {
 
 /** Methods to use when ordering `Organization`. */
 export enum OrganizationOrderBy {
+  AgentsCountAsc = 'AGENTS_COUNT_ASC',
+  AgentsCountDesc = 'AGENTS_COUNT_DESC',
+  AgentsDistinctCountCreatedAtAsc = 'AGENTS_DISTINCT_COUNT_CREATED_AT_ASC',
+  AgentsDistinctCountCreatedAtDesc = 'AGENTS_DISTINCT_COUNT_CREATED_AT_DESC',
+  AgentsDistinctCountDescriptionAsc = 'AGENTS_DISTINCT_COUNT_DESCRIPTION_ASC',
+  AgentsDistinctCountDescriptionDesc = 'AGENTS_DISTINCT_COUNT_DESCRIPTION_DESC',
+  AgentsDistinctCountModelAsc = 'AGENTS_DISTINCT_COUNT_MODEL_ASC',
+  AgentsDistinctCountModelDesc = 'AGENTS_DISTINCT_COUNT_MODEL_DESC',
+  AgentsDistinctCountNameAsc = 'AGENTS_DISTINCT_COUNT_NAME_ASC',
+  AgentsDistinctCountNameDesc = 'AGENTS_DISTINCT_COUNT_NAME_DESC',
+  AgentsDistinctCountOrganizationIdAsc = 'AGENTS_DISTINCT_COUNT_ORGANIZATION_ID_ASC',
+  AgentsDistinctCountOrganizationIdDesc = 'AGENTS_DISTINCT_COUNT_ORGANIZATION_ID_DESC',
+  AgentsDistinctCountOwnerIdAsc = 'AGENTS_DISTINCT_COUNT_OWNER_ID_ASC',
+  AgentsDistinctCountOwnerIdDesc = 'AGENTS_DISTINCT_COUNT_OWNER_ID_DESC',
+  AgentsDistinctCountRowIdAsc = 'AGENTS_DISTINCT_COUNT_ROW_ID_ASC',
+  AgentsDistinctCountRowIdDesc = 'AGENTS_DISTINCT_COUNT_ROW_ID_DESC',
+  AgentsDistinctCountSlugAsc = 'AGENTS_DISTINCT_COUNT_SLUG_ASC',
+  AgentsDistinctCountSlugDesc = 'AGENTS_DISTINCT_COUNT_SLUG_DESC',
+  AgentsDistinctCountUpdatedAtAsc = 'AGENTS_DISTINCT_COUNT_UPDATED_AT_ASC',
+  AgentsDistinctCountUpdatedAtDesc = 'AGENTS_DISTINCT_COUNT_UPDATED_AT_DESC',
+  AgentsDistinctCountVendorAsc = 'AGENTS_DISTINCT_COUNT_VENDOR_ASC',
+  AgentsDistinctCountVendorDesc = 'AGENTS_DISTINCT_COUNT_VENDOR_DESC',
   AvatarUrlAsc = 'AVATAR_URL_ASC',
   AvatarUrlDesc = 'AVATAR_URL_DESC',
   BillingAccountIdAsc = 'BILLING_ACCOUNT_ID_ASC',
@@ -2401,6 +2956,18 @@ export type OrganizationPatch = {
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
+/** A filter to be used against many `Agent` object types. All fields are combined with a logical ‘and.’ */
+export type OrganizationToManyAgentFilter = {
+  /** Aggregates across related `Agent` match the filter criteria. */
+  aggregates?: InputMaybe<AgentAggregatesFilter>;
+  /** Every related `Agent` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<AgentFilter>;
+  /** No related `Agent` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<AgentFilter>;
+  /** Some related `Agent` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<AgentFilter>;
+};
+
 /** A filter to be used against many `Project` object types. All fields are combined with a logical ‘and.’ */
 export type OrganizationToManyProjectFilter = {
   /** Aggregates across related `Project` match the filter criteria. */
@@ -2484,6 +3051,9 @@ export type PermissionFilter = {
 
 export type PersonalAccessToken = {
   __typename?: 'PersonalAccessToken';
+  /** Reads a single `Agent` that is related to this `PersonalAccessToken`. */
+  agent?: Maybe<Agent>;
+  agentId?: Maybe<Scalars['UUID']['output']>;
   createdAt: Scalars['Datetime']['output'];
   expiresAt?: Maybe<Scalars['Datetime']['output']>;
   lastUsedAt?: Maybe<Scalars['Datetime']['output']>;
@@ -2500,11 +3070,21 @@ export type PersonalAccessTokenAggregates = {
   keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
 };
 
+/** A filter to be used against aggregates of `PersonalAccessToken` object types. */
+export type PersonalAccessTokenAggregatesFilter = {
+  /** Distinct count aggregate over matching `PersonalAccessToken` objects. */
+  distinctCount?: InputMaybe<PersonalAccessTokenDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `PersonalAccessToken` object to be included within the aggregate. */
+  filter?: InputMaybe<PersonalAccessTokenFilter>;
+};
+
 /**
  * A condition to be used against `PersonalAccessToken` object types. All fields
  * are tested for equality and combined with a logical ‘and.’
  */
 export type PersonalAccessTokenCondition = {
+  /** Checks for equality with the object’s `agentId` field. */
+  agentId?: InputMaybe<Scalars['UUID']['input']>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `expiresAt` field. */
@@ -2545,8 +3125,21 @@ export type PersonalAccessTokenConnectionGroupedAggregatesArgs = {
   having?: InputMaybe<PersonalAccessTokenHavingInput>;
 };
 
+export type PersonalAccessTokenDistinctCountAggregateFilter = {
+  agentId?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
+  expiresAt?: InputMaybe<BigIntFilter>;
+  lastUsedAt?: InputMaybe<BigIntFilter>;
+  name?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  tokenPrefix?: InputMaybe<BigIntFilter>;
+  userId?: InputMaybe<BigIntFilter>;
+};
+
 export type PersonalAccessTokenDistinctCountAggregates = {
   __typename?: 'PersonalAccessTokenDistinctCountAggregates';
+  /** Distinct count of agentId across the matching connection */
+  agentId?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of createdAt across the matching connection */
   createdAt?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of expiresAt across the matching connection */
@@ -2574,6 +3167,12 @@ export type PersonalAccessTokenEdge = {
 
 /** A filter to be used against `PersonalAccessToken` object types. All fields are combined with a logical ‘and.’ */
 export type PersonalAccessTokenFilter = {
+  /** Filter by the object’s `agent` relation. */
+  agent?: InputMaybe<AgentFilter>;
+  /** A related `agent` exists. */
+  agentExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `agentId` field. */
+  agentId?: InputMaybe<UuidFilter>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<PersonalAccessTokenFilter>>;
   /** Filter by the object’s `createdAt` field. */
@@ -2600,6 +3199,7 @@ export type PersonalAccessTokenFilter = {
 
 /** Grouping methods for `PersonalAccessToken` for usage during aggregation. */
 export enum PersonalAccessTokenGroupBy {
+  AgentId = 'AGENT_ID',
   CreatedAt = 'CREATED_AT',
   CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
   CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
@@ -2685,6 +3285,8 @@ export type PersonalAccessTokenHavingVarianceSampleInput = {
 
 /** Methods to use when ordering `PersonalAccessToken`. */
 export enum PersonalAccessTokenOrderBy {
+  AgentIdAsc = 'AGENT_ID_ASC',
+  AgentIdDesc = 'AGENT_ID_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
   ExpiresAtAsc = 'EXPIRES_AT_ASC',
@@ -3240,6 +3842,9 @@ export type PullRequest = Node & {
   /** Reads a single `User` that is related to this `PullRequest`. */
   author?: Maybe<User>;
   authorId: Scalars['UUID']['output'];
+  /** Reads a single `Agent` that is related to this `PullRequest`. */
+  authoredByAgent?: Maybe<Agent>;
+  authoredByAgentId?: Maybe<Scalars['UUID']['output']>;
   /**
    * The files changed by this pull request (merge-base of target and source
    * to the source tip).
@@ -3816,6 +4421,8 @@ export type PullRequestCommentVarianceSampleAggregates = {
 export type PullRequestCondition = {
   /** Checks for equality with the object’s `authorId` field. */
   authorId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `authoredByAgentId` field. */
+  authoredByAgentId?: InputMaybe<Scalars['UUID']['input']>;
   /** Checks for equality with the object’s `closedAt` field. */
   closedAt?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `createdAt` field. */
@@ -3872,6 +4479,7 @@ export type PullRequestConnectionGroupedAggregatesArgs = {
 
 export type PullRequestDistinctCountAggregateFilter = {
   authorId?: InputMaybe<BigIntFilter>;
+  authoredByAgentId?: InputMaybe<BigIntFilter>;
   closedAt?: InputMaybe<BigIntFilter>;
   createdAt?: InputMaybe<BigIntFilter>;
   description?: InputMaybe<BigIntFilter>;
@@ -3892,6 +4500,8 @@ export type PullRequestDistinctCountAggregates = {
   __typename?: 'PullRequestDistinctCountAggregates';
   /** Distinct count of authorId across the matching connection */
   authorId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of authoredByAgentId across the matching connection */
+  authoredByAgentId?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of closedAt across the matching connection */
   closedAt?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of createdAt across the matching connection */
@@ -3939,6 +4549,12 @@ export type PullRequestFilter = {
   author?: InputMaybe<UserFilter>;
   /** Filter by the object’s `authorId` field. */
   authorId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `authoredByAgent` relation. */
+  authoredByAgent?: InputMaybe<AgentFilter>;
+  /** A related `authoredByAgent` exists. */
+  authoredByAgentExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `authoredByAgentId` field. */
+  authoredByAgentId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `closedAt` field. */
   closedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `createdAt` field. */
@@ -3989,6 +4605,7 @@ export type PullRequestFilter = {
 
 /** Grouping methods for `PullRequest` for usage during aggregation. */
 export enum PullRequestGroupBy {
+  AuthoredByAgentId = 'AUTHORED_BY_AGENT_ID',
   AuthorId = 'AUTHOR_ID',
   ClosedAt = 'CLOSED_AT',
   ClosedAtTruncatedToDay = 'CLOSED_AT_TRUNCATED_TO_DAY',
@@ -4103,6 +4720,7 @@ export type PullRequestHavingVarianceSampleInput = {
 /** An input for mutations affecting `PullRequest` */
 export type PullRequestInput = {
   authorId: Scalars['UUID']['input'];
+  authoredByAgentId?: InputMaybe<Scalars['UUID']['input']>;
   closedAt?: InputMaybe<Scalars['Datetime']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -4141,6 +4759,8 @@ export type PullRequestMinAggregates = {
 
 /** Methods to use when ordering `PullRequest`. */
 export enum PullRequestOrderBy {
+  AuthoredByAgentIdAsc = 'AUTHORED_BY_AGENT_ID_ASC',
+  AuthoredByAgentIdDesc = 'AUTHORED_BY_AGENT_ID_DESC',
   AuthorIdAsc = 'AUTHOR_ID_ASC',
   AuthorIdDesc = 'AUTHOR_ID_DESC',
   ClosedAtAsc = 'CLOSED_AT_ASC',
@@ -4237,6 +4857,7 @@ export enum PullRequestOrderBy {
 /** Represents an update to a `PullRequest`. Fields that are set will be updated. */
 export type PullRequestPatch = {
   authorId?: InputMaybe<Scalars['UUID']['input']>;
+  authoredByAgentId?: InputMaybe<Scalars['UUID']['input']>;
   closedAt?: InputMaybe<Scalars['Datetime']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -4613,6 +5234,12 @@ export type PullRequestVarianceSampleAggregates = {
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
   __typename?: 'Query';
+  /** Get a single `Agent`. */
+  agent?: Maybe<Agent>;
+  /** Reads a single `Agent` using its globally unique `ID`. */
+  agentById?: Maybe<Agent>;
+  /** Reads and enables pagination through a set of `Agent`. */
+  agents?: Maybe<AgentConnection>;
   /** Reads and enables pagination through a set of `ExternalDependency`. */
   externalDependencies?: Maybe<ExternalDependencyConnection>;
   /** Get a single `ExternalDependency`. */
@@ -4715,6 +5342,31 @@ export type Query = Node & {
   userByUsername?: Maybe<User>;
   /** Reads and enables pagination through a set of `User`. */
   users?: Maybe<UserConnection>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAgentArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAgentByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryAgentsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<AgentCondition>;
+  filter?: InputMaybe<AgentFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AgentOrderBy>>;
 };
 
 
@@ -5799,6 +6451,8 @@ export enum RepositoryOrderBy {
   PullRequestsAverageNumberDesc = 'PULL_REQUESTS_AVERAGE_NUMBER_DESC',
   PullRequestsCountAsc = 'PULL_REQUESTS_COUNT_ASC',
   PullRequestsCountDesc = 'PULL_REQUESTS_COUNT_DESC',
+  PullRequestsDistinctCountAuthoredByAgentIdAsc = 'PULL_REQUESTS_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_ASC',
+  PullRequestsDistinctCountAuthoredByAgentIdDesc = 'PULL_REQUESTS_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_DESC',
   PullRequestsDistinctCountAuthorIdAsc = 'PULL_REQUESTS_DISTINCT_COUNT_AUTHOR_ID_ASC',
   PullRequestsDistinctCountAuthorIdDesc = 'PULL_REQUESTS_DISTINCT_COUNT_AUTHOR_ID_DESC',
   PullRequestsDistinctCountClosedAtAsc = 'PULL_REQUESTS_DISTINCT_COUNT_CLOSED_AT_ASC',
@@ -7142,6 +7796,40 @@ export type UuidFilter = {
   notIn?: InputMaybe<Array<Scalars['UUID']['input']>>;
 };
 
+/** All input for the `updateAgent` mutation. */
+export type UpdateAgentInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `Agent` being updated. */
+  patch: AgentPatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `Agent` mutation. */
+export type UpdateAgentPayload = {
+  __typename?: 'UpdateAgentPayload';
+  /** The `Agent` that was updated by this mutation. */
+  agent?: Maybe<Agent>;
+  /** An edge for our `Agent`. May be used by Relay 1. */
+  agentEdge?: Maybe<AgentEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `Agent` mutation. */
+export type UpdateAgentPayloadAgentEdgeArgs = {
+  orderBy?: Array<AgentOrderBy>;
+};
+
 /** All input for the `updateExternalDependency` mutation. */
 export type UpdateExternalDependencyInput = {
   /**
@@ -7587,6 +8275,8 @@ export type UpdateUserPayloadUserEdgeArgs = {
 
 export type User = Node & {
   __typename?: 'User';
+  /** Reads and enables pagination through a set of `Agent`. */
+  agentsByOwnerId: AgentConnection;
   /** Reads and enables pagination through a set of `PullRequestComment`. */
   authoredPullRequestComments: PullRequestCommentConnection;
   /** Reads and enables pagination through a set of `PullRequest`. */
@@ -7612,6 +8302,18 @@ export type User = Node & {
   rowId: Scalars['UUID']['output'];
   updatedAt: Scalars['Datetime']['output'];
   username: Scalars['String']['output'];
+};
+
+
+export type UserAgentsByOwnerIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<AgentCondition>;
+  filter?: InputMaybe<AgentFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<AgentOrderBy>>;
 };
 
 
@@ -7784,6 +8486,10 @@ export type UserEdge = {
 
 /** A filter to be used against `User` object types. All fields are combined with a logical ‘and.’ */
 export type UserFilter = {
+  /** Filter by the object’s `agentsByOwnerId` relation. */
+  agentsByOwnerId?: InputMaybe<UserToManyAgentFilter>;
+  /** Some related `agentsByOwnerId` exist. */
+  agentsByOwnerIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<UserFilter>>;
   /** Filter by the object’s `authoredPullRequestComments` relation. */
@@ -7926,10 +8632,34 @@ export type UserInput = {
 
 /** Methods to use when ordering `User`. */
 export enum UserOrderBy {
+  AgentsByOwnerIdCountAsc = 'AGENTS_BY_OWNER_ID_COUNT_ASC',
+  AgentsByOwnerIdCountDesc = 'AGENTS_BY_OWNER_ID_COUNT_DESC',
+  AgentsByOwnerIdDistinctCountCreatedAtAsc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  AgentsByOwnerIdDistinctCountCreatedAtDesc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  AgentsByOwnerIdDistinctCountDescriptionAsc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
+  AgentsByOwnerIdDistinctCountDescriptionDesc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
+  AgentsByOwnerIdDistinctCountModelAsc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_MODEL_ASC',
+  AgentsByOwnerIdDistinctCountModelDesc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_MODEL_DESC',
+  AgentsByOwnerIdDistinctCountNameAsc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_NAME_ASC',
+  AgentsByOwnerIdDistinctCountNameDesc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_NAME_DESC',
+  AgentsByOwnerIdDistinctCountOrganizationIdAsc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_ORGANIZATION_ID_ASC',
+  AgentsByOwnerIdDistinctCountOrganizationIdDesc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_ORGANIZATION_ID_DESC',
+  AgentsByOwnerIdDistinctCountOwnerIdAsc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_OWNER_ID_ASC',
+  AgentsByOwnerIdDistinctCountOwnerIdDesc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_OWNER_ID_DESC',
+  AgentsByOwnerIdDistinctCountRowIdAsc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_ROW_ID_ASC',
+  AgentsByOwnerIdDistinctCountRowIdDesc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_ROW_ID_DESC',
+  AgentsByOwnerIdDistinctCountSlugAsc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_SLUG_ASC',
+  AgentsByOwnerIdDistinctCountSlugDesc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_SLUG_DESC',
+  AgentsByOwnerIdDistinctCountUpdatedAtAsc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  AgentsByOwnerIdDistinctCountUpdatedAtDesc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
+  AgentsByOwnerIdDistinctCountVendorAsc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_VENDOR_ASC',
+  AgentsByOwnerIdDistinctCountVendorDesc = 'AGENTS_BY_OWNER_ID_DISTINCT_COUNT_VENDOR_DESC',
   AuthoredPullRequestsAverageNumberAsc = 'AUTHORED_PULL_REQUESTS_AVERAGE_NUMBER_ASC',
   AuthoredPullRequestsAverageNumberDesc = 'AUTHORED_PULL_REQUESTS_AVERAGE_NUMBER_DESC',
   AuthoredPullRequestsCountAsc = 'AUTHORED_PULL_REQUESTS_COUNT_ASC',
   AuthoredPullRequestsCountDesc = 'AUTHORED_PULL_REQUESTS_COUNT_DESC',
+  AuthoredPullRequestsDistinctCountAuthoredByAgentIdAsc = 'AUTHORED_PULL_REQUESTS_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_ASC',
+  AuthoredPullRequestsDistinctCountAuthoredByAgentIdDesc = 'AUTHORED_PULL_REQUESTS_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_DESC',
   AuthoredPullRequestsDistinctCountAuthorIdAsc = 'AUTHORED_PULL_REQUESTS_DISTINCT_COUNT_AUTHOR_ID_ASC',
   AuthoredPullRequestsDistinctCountAuthorIdDesc = 'AUTHORED_PULL_REQUESTS_DISTINCT_COUNT_AUTHOR_ID_DESC',
   AuthoredPullRequestsDistinctCountClosedAtAsc = 'AUTHORED_PULL_REQUESTS_DISTINCT_COUNT_CLOSED_AT_ASC',
@@ -8029,6 +8759,8 @@ export enum UserOrderBy {
   Natural = 'NATURAL',
   PersonalAccessTokensCountAsc = 'PERSONAL_ACCESS_TOKENS_COUNT_ASC',
   PersonalAccessTokensCountDesc = 'PERSONAL_ACCESS_TOKENS_COUNT_DESC',
+  PersonalAccessTokensDistinctCountAgentIdAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_AGENT_ID_ASC',
+  PersonalAccessTokensDistinctCountAgentIdDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_AGENT_ID_DESC',
   PersonalAccessTokensDistinctCountCreatedAtAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_CREATED_AT_ASC',
   PersonalAccessTokensDistinctCountCreatedAtDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_CREATED_AT_DESC',
   PersonalAccessTokensDistinctCountExpiresAtAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_EXPIRES_AT_ASC',
@@ -8069,6 +8801,8 @@ export enum UserOrderBy {
   PullRequestsByMergedByIdAverageNumberDesc = 'PULL_REQUESTS_BY_MERGED_BY_ID_AVERAGE_NUMBER_DESC',
   PullRequestsByMergedByIdCountAsc = 'PULL_REQUESTS_BY_MERGED_BY_ID_COUNT_ASC',
   PullRequestsByMergedByIdCountDesc = 'PULL_REQUESTS_BY_MERGED_BY_ID_COUNT_DESC',
+  PullRequestsByMergedByIdDistinctCountAuthoredByAgentIdAsc = 'PULL_REQUESTS_BY_MERGED_BY_ID_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_ASC',
+  PullRequestsByMergedByIdDistinctCountAuthoredByAgentIdDesc = 'PULL_REQUESTS_BY_MERGED_BY_ID_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_DESC',
   PullRequestsByMergedByIdDistinctCountAuthorIdAsc = 'PULL_REQUESTS_BY_MERGED_BY_ID_DISTINCT_COUNT_AUTHOR_ID_ASC',
   PullRequestsByMergedByIdDistinctCountAuthorIdDesc = 'PULL_REQUESTS_BY_MERGED_BY_ID_DISTINCT_COUNT_AUTHOR_ID_DESC',
   PullRequestsByMergedByIdDistinctCountClosedAtAsc = 'PULL_REQUESTS_BY_MERGED_BY_ID_DISTINCT_COUNT_CLOSED_AT_ASC',
@@ -8186,6 +8920,18 @@ export type UserPatch = {
   username?: InputMaybe<Scalars['String']['input']>;
 };
 
+/** A filter to be used against many `Agent` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyAgentFilter = {
+  /** Aggregates across related `Agent` match the filter criteria. */
+  aggregates?: InputMaybe<AgentAggregatesFilter>;
+  /** Every related `Agent` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<AgentFilter>;
+  /** No related `Agent` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<AgentFilter>;
+  /** Some related `Agent` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<AgentFilter>;
+};
+
 /** A filter to be used against many `Project` object types. All fields are combined with a logical ‘and.’ */
 export type UserToManyProjectFilter = {
   /** Aggregates across related `Project` match the filter criteria. */
@@ -8287,6 +9033,31 @@ export type VisibilityFilter = {
   notEqualTo?: InputMaybe<Visibility>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Visibility>>;
+};
+
+/** An input for mutations affecting `Agent` */
+export type AgentInput = {
+  createdAt?: Date | null | undefined;
+  description?: string | null | undefined;
+  model?: string | null | undefined;
+  name: string;
+  organizationId?: string | null | undefined;
+  ownerId: string;
+  rowId?: string | null | undefined;
+  slug: string;
+  updatedAt?: Date | null | undefined;
+  vendor?: string | null | undefined;
+};
+
+/** All input for the create `Agent` mutation. */
+export type CreateAgentInput = {
+  /** The `Agent` to be created by this mutation. */
+  agent: AgentInput;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
 };
 
 /** All input for the create `Organization` mutation. */
@@ -8607,6 +9378,22 @@ export type UpdateRepositoryMutationVariables = Exact<{
 
 export type UpdateRepositoryMutation = { updateRepository: { repository: { rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null } | null } | null };
 
+export type AgentsQueryVariables = Exact<{
+  userId: string;
+  organizationId?: string | null | undefined;
+  limit?: number | null | undefined;
+}>;
+
+
+export type AgentsQuery = { agents: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, model: string | null, vendor: string | null, createdAt: Date, owner: { username: string } | null }> } | null };
+
+export type CreateAgentMutationVariables = Exact<{
+  input: CreateAgentInput;
+}>;
+
+
+export type CreateAgentMutation = { createAgent: { agent: { rowId: string, name: string, slug: string, description: string | null, model: string | null, vendor: string | null, createdAt: Date, owner: { username: string } | null } | null } | null };
+
 export type RepositoryGraphQueryVariables = Exact<{
   userId: string;
   organizationId?: string | null | undefined;
@@ -8682,7 +9469,7 @@ export type PullRequestFilesQueryVariables = Exact<{
 }>;
 
 
-export type PullRequestFilesQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, number: number, title: string, description: string | null, state: string, sourceBranch: string, targetBranch: string, createdAt: Date, mergedAt: Date | null, author: { rowId: string, username: string, avatarUrl: string | null } | null, mergedBy: { rowId: string, username: string } | null, changedFiles: Array<{ path: string, oldPath: string | null, status: DiffStatus, oldOid: string | null, newOid: string | null, isBinary: boolean, isImage: boolean, additions: number, deletions: number }> }> } | null };
+export type PullRequestFilesQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, number: number, title: string, description: string | null, state: string, sourceBranch: string, targetBranch: string, createdAt: Date, mergedAt: Date | null, author: { rowId: string, username: string, avatarUrl: string | null } | null, authoredByAgent: { rowId: string, name: string } | null, mergedBy: { rowId: string, username: string } | null, changedFiles: Array<{ path: string, oldPath: string | null, status: DiffStatus, oldOid: string | null, newOid: string | null, isBinary: boolean, isImage: boolean, additions: number, deletions: number }> }> } | null };
 
 export type PullRequestsQueryVariables = Exact<{
   ownerSlug: string;
@@ -8690,7 +9477,7 @@ export type PullRequestsQueryVariables = Exact<{
 }>;
 
 
-export type PullRequestsQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, number: number, title: string, state: string, sourceBranch: string, targetBranch: string, createdAt: Date, author: { rowId: string, username: string } | null, pullRequestComments: { totalCount: number } }> } | null };
+export type PullRequestsQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, number: number, title: string, state: string, sourceBranch: string, targetBranch: string, createdAt: Date, author: { rowId: string, username: string } | null, authoredByAgent: { rowId: string, name: string } | null, pullRequestComments: { totalCount: number } }> } | null };
 
 export type CommitDetailQueryVariables = Exact<{
   ownerSlug: string;
@@ -8940,6 +9727,47 @@ export const UpdateRepositoryDocument = gql`
       organization {
         rowId
         idpOrganizationId
+      }
+    }
+  }
+}
+    `;
+export const AgentsDocument = gql`
+    query Agents($userId: UUID!, $organizationId: UUID, $limit: Int) {
+  agents(
+    filter: {or: [{ownerId: {equalTo: $userId}}, {organizationId: {equalTo: $organizationId}}]}
+    orderBy: CREATED_AT_DESC
+    first: $limit
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      model
+      vendor
+      createdAt
+      owner {
+        username
+      }
+    }
+    totalCount
+  }
+}
+    `;
+export const CreateAgentDocument = gql`
+    mutation CreateAgent($input: CreateAgentInput!) {
+  createAgent(input: $input) {
+    agent {
+      rowId
+      name
+      slug
+      description
+      model
+      vendor
+      createdAt
+      owner {
+        username
       }
     }
   }
@@ -9292,6 +10120,10 @@ export const PullRequestFilesDocument = gql`
         username
         avatarUrl
       }
+      authoredByAgent {
+        rowId
+        name
+      }
       mergedBy {
         rowId
         username
@@ -9330,6 +10162,10 @@ export const PullRequestsDocument = gql`
       author {
         rowId
         username
+      }
+      authoredByAgent {
+        rowId
+        name
       }
       pullRequestComments {
         totalCount
@@ -9621,6 +10457,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     UpdateRepository(variables: UpdateRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UpdateRepositoryMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<UpdateRepositoryMutation>({ document: UpdateRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'UpdateRepository', 'mutation', variables);
+    },
+    Agents(variables: AgentsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<AgentsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AgentsQuery>({ document: AgentsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Agents', 'query', variables);
+    },
+    CreateAgent(variables: CreateAgentMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreateAgentMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateAgentMutation>({ document: CreateAgentDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CreateAgent', 'mutation', variables);
     },
     RepositoryGraph(variables: RepositoryGraphQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryGraphQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoryGraphQuery>({ document: RepositoryGraphDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RepositoryGraph', 'query', variables);

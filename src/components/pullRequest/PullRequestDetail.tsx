@@ -1,4 +1,5 @@
 import {
+  Bot,
   GitBranch,
   GitMerge,
   GitPullRequest,
@@ -15,6 +16,7 @@ interface PullRequestDetailProps {
   description?: string;
   state: "open" | "closed" | "merged" | "draft";
   authorName: string;
+  agentName?: string;
   sourceBranch: string;
   targetBranch: string;
   createdAt: string;
@@ -51,6 +53,7 @@ export function PullRequestDetail({
   description,
   state,
   authorName,
+  agentName,
   sourceBranch,
   targetBranch,
   createdAt,
@@ -96,6 +99,12 @@ export function PullRequestDetail({
                 <strong className="text-foreground">{authorName}</strong> wants
                 to merge
               </span>
+              {agentName && (
+                <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs">
+                  <Bot className="h-3.5 w-3.5" />
+                  via {agentName}
+                </span>
+              )}
               <span className="flex items-center gap-1">
                 <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
                   {sourceBranch}

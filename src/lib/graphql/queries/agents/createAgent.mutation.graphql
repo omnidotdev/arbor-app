@@ -1,0 +1,16 @@
+mutation CreateAgent($input: CreateAgentInput!) {
+  createAgent(input: $input) {
+    agent {
+      rowId
+      name
+      slug
+      description
+      model
+      vendor
+      createdAt
+      owner {
+        username
+      }
+    }
+  }
+}

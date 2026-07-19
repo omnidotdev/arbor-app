@@ -30,6 +30,7 @@ interface PullRequest {
   title: string;
   state: "open" | "closed" | "merged" | "draft";
   authorName: string;
+  agentName?: string;
   sourceBranch: string;
   targetBranch: string;
   createdAt: string;
@@ -148,6 +149,7 @@ function PullRequestsPage() {
     title: node.title,
     state: normalizeState(node.state),
     authorName: node.author?.username ?? "Unknown",
+    agentName: node.authoredByAgent?.name,
     sourceBranch: node.sourceBranch,
     targetBranch: node.targetBranch,
     createdAt:

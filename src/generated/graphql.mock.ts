@@ -250,6 +250,50 @@ export const mockUpdateRepositoryMutation = (resolver: GraphQLResponseResolver<T
  * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
  * @see https://mswjs.io/docs/basics/response-resolver
  * @example
+ * mockAgentsQuery(
+ *   ({ query, variables }) => {
+ *     const { userId, organizationId, limit } = variables;
+ *     return HttpResponse.json({
+ *       data: { agents }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockAgentsQuery = (resolver: GraphQLResponseResolver<Types.AgentsQuery, Types.AgentsQueryVariables>, options?: RequestHandlerOptions) =>
+  graphql.query<Types.AgentsQuery, Types.AgentsQueryVariables>(
+    'Agents',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
+ * mockCreateAgentMutation(
+ *   ({ query, variables }) => {
+ *     const { input } = variables;
+ *     return HttpResponse.json({
+ *       data: { createAgent }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockCreateAgentMutation = (resolver: GraphQLResponseResolver<Types.CreateAgentMutation, Types.CreateAgentMutationVariables>, options?: RequestHandlerOptions) =>
+  graphql.mutation<Types.CreateAgentMutation, Types.CreateAgentMutationVariables>(
+    'CreateAgent',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
  * mockRepositoryGraphQuery(
  *   ({ query, variables }) => {
  *     const { userId, organizationId } = variables;
