@@ -260,6 +260,26 @@ export type CreateOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: Array<OrganizationOrderBy>;
 };
 
+/** Payload for the createPersonalAccessToken mutation. */
+export type CreatePersonalAccessTokenPayload = {
+  __typename?: 'CreatePersonalAccessTokenPayload';
+  /** When the token was created. */
+  createdAt: Scalars['Datetime']['output'];
+  /** When the token expires, or null if it never expires. */
+  expiresAt?: Maybe<Scalars['Datetime']['output']>;
+  /** The user-facing token label. */
+  name: Scalars['String']['output'];
+  /** The created token row ID. */
+  rowId: Scalars['UUID']['output'];
+  /**
+   * The plaintext token. Returned exactly once, at creation, and never
+   * retrievable again. Store it securely.
+   */
+  token: Scalars['String']['output'];
+  /** Short non-secret prefix for display in the UI. */
+  tokenPrefix: Scalars['String']['output'];
+};
+
 /** All input for the create `PullRequestComment` mutation. */
 export type CreatePullRequestCommentInput = {
   /**
@@ -697,6 +717,38 @@ export type DeleteOrganizationPayload = {
 /** The output of our delete `Organization` mutation. */
 export type DeleteOrganizationPayloadOrganizationEdgeArgs = {
   orderBy?: Array<OrganizationOrderBy>;
+};
+
+/** All input for the `deletePersonalAccessToken` mutation. */
+export type DeletePersonalAccessTokenInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `PersonalAccessToken` mutation. */
+export type DeletePersonalAccessTokenPayload = {
+  __typename?: 'DeletePersonalAccessTokenPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `PersonalAccessToken` that was deleted by this mutation. */
+  personalAccessToken?: Maybe<PersonalAccessToken>;
+  /** An edge for our `PersonalAccessToken`. May be used by Relay 1. */
+  personalAccessTokenEdge?: Maybe<PersonalAccessTokenEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `PersonalAccessToken` mutation. */
+export type DeletePersonalAccessTokenPayloadPersonalAccessTokenEdgeArgs = {
+  orderBy?: Array<PersonalAccessTokenOrderBy>;
 };
 
 /** All input for the `deletePullRequestComment` mutation. */
@@ -1421,6 +1473,11 @@ export type Mutation = {
   createExternalDependency?: Maybe<CreateExternalDependencyPayload>;
   /** Creates a single `Organization`. */
   createOrganization?: Maybe<CreateOrganizationPayload>;
+  /**
+   * Create a personal access token for the authenticated user.
+   * The plaintext token is returned once in the payload and never again.
+   */
+  createPersonalAccessToken?: Maybe<CreatePersonalAccessTokenPayload>;
   /** Creates a single `PullRequest`. */
   createPullRequest?: Maybe<CreatePullRequestPayload>;
   /** Creates a single `PullRequestComment`. */
@@ -1451,6 +1508,8 @@ export type Mutation = {
   deleteExternalDependency?: Maybe<DeleteExternalDependencyPayload>;
   /** Deletes a single `Organization` using a unique key. */
   deleteOrganization?: Maybe<DeleteOrganizationPayload>;
+  /** Deletes a single `PersonalAccessToken` using a unique key. */
+  deletePersonalAccessToken?: Maybe<DeletePersonalAccessTokenPayload>;
   /** Deletes a single `PullRequest` using a unique key. */
   deletePullRequest?: Maybe<DeletePullRequestPayload>;
   /** Deletes a single `PullRequestComment` using a unique key. */
@@ -1521,6 +1580,13 @@ export type MutationCreateExternalDependencyArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateOrganizationArgs = {
   input: CreateOrganizationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreatePersonalAccessTokenArgs = {
+  expiresInDays?: InputMaybe<Scalars['Int']['input']>;
+  name: Scalars['String']['input'];
 };
 
 
@@ -1599,6 +1665,12 @@ export type MutationDeleteExternalDependencyArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteOrganizationArgs = {
   input: DeleteOrganizationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeletePersonalAccessTokenArgs = {
+  input: DeletePersonalAccessTokenInput;
 };
 
 
@@ -2179,6 +2251,228 @@ export type PermissionFilter = {
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Permission>>;
 };
+
+export type PersonalAccessToken = {
+  __typename?: 'PersonalAccessToken';
+  createdAt: Scalars['Datetime']['output'];
+  expiresAt?: Maybe<Scalars['Datetime']['output']>;
+  lastUsedAt?: Maybe<Scalars['Datetime']['output']>;
+  name: Scalars['String']['output'];
+  rowId: Scalars['UUID']['output'];
+  tokenPrefix: Scalars['String']['output'];
+  userId: Scalars['UUID']['output'];
+};
+
+export type PersonalAccessTokenAggregates = {
+  __typename?: 'PersonalAccessTokenAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<PersonalAccessTokenDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/**
+ * A condition to be used against `PersonalAccessToken` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export type PersonalAccessTokenCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `expiresAt` field. */
+  expiresAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `lastUsedAt` field. */
+  lastUsedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `tokenPrefix` field. */
+  tokenPrefix?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+/** A connection to a list of `PersonalAccessToken` values. */
+export type PersonalAccessTokenConnection = {
+  __typename?: 'PersonalAccessTokenConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<PersonalAccessTokenAggregates>;
+  /** A list of edges which contains the `PersonalAccessToken` and cursor to aid in pagination. */
+  edges: Array<PersonalAccessTokenEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<PersonalAccessTokenAggregates>>;
+  /** A list of `PersonalAccessToken` objects. */
+  nodes: Array<PersonalAccessToken>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `PersonalAccessToken` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `PersonalAccessToken` values. */
+export type PersonalAccessTokenConnectionGroupedAggregatesArgs = {
+  groupBy: Array<PersonalAccessTokenGroupBy>;
+  having?: InputMaybe<PersonalAccessTokenHavingInput>;
+};
+
+export type PersonalAccessTokenDistinctCountAggregates = {
+  __typename?: 'PersonalAccessTokenDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of expiresAt across the matching connection */
+  expiresAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of lastUsedAt across the matching connection */
+  lastUsedAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of name across the matching connection */
+  name?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of tokenPrefix across the matching connection */
+  tokenPrefix?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of userId across the matching connection */
+  userId?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `PersonalAccessToken` edge in the connection. */
+export type PersonalAccessTokenEdge = {
+  __typename?: 'PersonalAccessTokenEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `PersonalAccessToken` at the end of the edge. */
+  node: PersonalAccessToken;
+};
+
+/** A filter to be used against `PersonalAccessToken` object types. All fields are combined with a logical ‘and.’ */
+export type PersonalAccessTokenFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<PersonalAccessTokenFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `expiresAt` field. */
+  expiresAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `lastUsedAt` field. */
+  lastUsedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<PersonalAccessTokenFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<PersonalAccessTokenFilter>>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `tokenPrefix` field. */
+  tokenPrefix?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<UuidFilter>;
+};
+
+/** Grouping methods for `PersonalAccessToken` for usage during aggregation. */
+export enum PersonalAccessTokenGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  ExpiresAt = 'EXPIRES_AT',
+  ExpiresAtTruncatedToDay = 'EXPIRES_AT_TRUNCATED_TO_DAY',
+  ExpiresAtTruncatedToHour = 'EXPIRES_AT_TRUNCATED_TO_HOUR',
+  LastUsedAt = 'LAST_USED_AT',
+  LastUsedAtTruncatedToDay = 'LAST_USED_AT_TRUNCATED_TO_DAY',
+  LastUsedAtTruncatedToHour = 'LAST_USED_AT_TRUNCATED_TO_HOUR',
+  Name = 'NAME',
+  TokenPrefix = 'TOKEN_PREFIX',
+  UserId = 'USER_ID'
+}
+
+export type PersonalAccessTokenHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+  lastUsedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+  lastUsedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `PersonalAccessToken` aggregates. */
+export type PersonalAccessTokenHavingInput = {
+  AND?: InputMaybe<Array<PersonalAccessTokenHavingInput>>;
+  OR?: InputMaybe<Array<PersonalAccessTokenHavingInput>>;
+  average?: InputMaybe<PersonalAccessTokenHavingAverageInput>;
+  distinctCount?: InputMaybe<PersonalAccessTokenHavingDistinctCountInput>;
+  max?: InputMaybe<PersonalAccessTokenHavingMaxInput>;
+  min?: InputMaybe<PersonalAccessTokenHavingMinInput>;
+  stddevPopulation?: InputMaybe<PersonalAccessTokenHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<PersonalAccessTokenHavingStddevSampleInput>;
+  sum?: InputMaybe<PersonalAccessTokenHavingSumInput>;
+  variancePopulation?: InputMaybe<PersonalAccessTokenHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<PersonalAccessTokenHavingVarianceSampleInput>;
+};
+
+export type PersonalAccessTokenHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+  lastUsedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+  lastUsedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+  lastUsedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+  lastUsedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+  lastUsedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+  lastUsedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  expiresAt?: InputMaybe<HavingDatetimeFilter>;
+  lastUsedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Methods to use when ordering `PersonalAccessToken`. */
+export enum PersonalAccessTokenOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  ExpiresAtAsc = 'EXPIRES_AT_ASC',
+  ExpiresAtDesc = 'EXPIRES_AT_DESC',
+  LastUsedAtAsc = 'LAST_USED_AT_ASC',
+  LastUsedAtDesc = 'LAST_USED_AT_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  TokenPrefixAsc = 'TOKEN_PREFIX_ASC',
+  TokenPrefixDesc = 'TOKEN_PREFIX_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
 
 export type PullRequest = Node & {
   __typename?: 'PullRequest';
@@ -3581,6 +3875,8 @@ export type Query = Node & {
   organizationByIdpOrganizationId?: Maybe<Organization>;
   /** Reads and enables pagination through a set of `Organization`. */
   organizations?: Maybe<OrganizationConnection>;
+  /** Reads and enables pagination through a set of `PersonalAccessToken`. */
+  personalAccessTokens?: Maybe<PersonalAccessTokenConnection>;
   /** Get a single `PullRequest`. */
   pullRequest?: Maybe<PullRequest>;
   /** Reads a single `PullRequest` using its globally unique `ID`. */
@@ -3708,6 +4004,19 @@ export type QueryOrganizationsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<OrganizationOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryPersonalAccessTokensArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<PersonalAccessTokenCondition>;
+  filter?: InputMaybe<PersonalAccessTokenFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<PersonalAccessTokenOrderBy>>;
 };
 
 
@@ -6769,6 +7078,22 @@ export enum UserOrderBy {
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
+  PersonalAccessTokensCountAsc = 'PERSONAL_ACCESS_TOKENS_COUNT_ASC',
+  PersonalAccessTokensCountDesc = 'PERSONAL_ACCESS_TOKENS_COUNT_DESC',
+  PersonalAccessTokensDistinctCountCreatedAtAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_CREATED_AT_ASC',
+  PersonalAccessTokensDistinctCountCreatedAtDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_CREATED_AT_DESC',
+  PersonalAccessTokensDistinctCountExpiresAtAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_EXPIRES_AT_ASC',
+  PersonalAccessTokensDistinctCountExpiresAtDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_EXPIRES_AT_DESC',
+  PersonalAccessTokensDistinctCountLastUsedAtAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_LAST_USED_AT_ASC',
+  PersonalAccessTokensDistinctCountLastUsedAtDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_LAST_USED_AT_DESC',
+  PersonalAccessTokensDistinctCountNameAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_NAME_ASC',
+  PersonalAccessTokensDistinctCountNameDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_NAME_DESC',
+  PersonalAccessTokensDistinctCountRowIdAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_ROW_ID_ASC',
+  PersonalAccessTokensDistinctCountRowIdDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_ROW_ID_DESC',
+  PersonalAccessTokensDistinctCountTokenPrefixAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_TOKEN_PREFIX_ASC',
+  PersonalAccessTokensDistinctCountTokenPrefixDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_TOKEN_PREFIX_DESC',
+  PersonalAccessTokensDistinctCountUserIdAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_USER_ID_ASC',
+  PersonalAccessTokensDistinctCountUserIdDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_USER_ID_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   PullRequestsByMergedByIdAverageNumberAsc = 'PULL_REQUESTS_BY_MERGED_BY_ID_AVERAGE_NUMBER_ASC',
@@ -7027,6 +7352,16 @@ export type CreateRepositoryInput = {
   repository: RepositoryInput;
 };
 
+/** All input for the `deletePersonalAccessToken` mutation. */
+export type DeletePersonalAccessTokenInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  rowId: string;
+};
+
 /** All input for the `deletePullRequestComment` mutation. */
 export type DeletePullRequestCommentInput = {
   /**
@@ -7196,6 +7531,21 @@ export type CreateOrganizationMutationVariables = Exact<{
 
 export type CreateOrganizationMutation = { createOrganization: { organization: { rowId: string, idpOrganizationId: string, description: string | null, avatarUrl: string | null, createdAt: Date } | null } | null };
 
+export type CreatePersonalAccessTokenMutationVariables = Exact<{
+  name: string;
+  expiresInDays?: number | null | undefined;
+}>;
+
+
+export type CreatePersonalAccessTokenMutation = { createPersonalAccessToken: { rowId: string, name: string, tokenPrefix: string, expiresAt: Date | null, createdAt: Date, token: string } | null };
+
+export type DeletePersonalAccessTokenMutationVariables = Exact<{
+  input: DeletePersonalAccessTokenInput;
+}>;
+
+
+export type DeletePersonalAccessTokenMutation = { deletePersonalAccessToken: { personalAccessToken: { rowId: string } | null } | null };
+
 export type CreatePullRequestCommentMutationVariables = Exact<{
   input: CreatePullRequestCommentInput;
 }>;
@@ -7273,6 +7623,11 @@ export type OrganizationsQueryVariables = Exact<{
 
 
 export type OrganizationsQuery = { organizations: { totalCount: number, nodes: Array<{ rowId: string, idpOrganizationId: string, description: string | null, avatarUrl: string | null, createdAt: Date, updatedAt: Date, repositories: { totalCount: number } }> } | null };
+
+export type PersonalAccessTokensQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PersonalAccessTokensQuery = { personalAccessTokens: { nodes: Array<{ rowId: string, name: string, tokenPrefix: string, lastUsedAt: Date | null, expiresAt: Date | null, createdAt: Date }> } | null };
 
 export type PullRequestConversationQueryVariables = Exact<{
   pullRequestId: string;
@@ -7374,6 +7729,27 @@ export const CreateOrganizationDocument = gql`
       description
       avatarUrl
       createdAt
+    }
+  }
+}
+    `;
+export const CreatePersonalAccessTokenDocument = gql`
+    mutation CreatePersonalAccessToken($name: String!, $expiresInDays: Int) {
+  createPersonalAccessToken(name: $name, expiresInDays: $expiresInDays) {
+    rowId
+    name
+    tokenPrefix
+    expiresAt
+    createdAt
+    token
+  }
+}
+    `;
+export const DeletePersonalAccessTokenDocument = gql`
+    mutation DeletePersonalAccessToken($input: DeletePersonalAccessTokenInput!) {
+  deletePersonalAccessToken(input: $input) {
+    personalAccessToken {
+      rowId
     }
   }
 }
@@ -7614,6 +7990,20 @@ export const OrganizationsDocument = gql`
       }
     }
     totalCount
+  }
+}
+    `;
+export const PersonalAccessTokensDocument = gql`
+    query PersonalAccessTokens {
+  personalAccessTokens(orderBy: CREATED_AT_DESC) {
+    nodes {
+      rowId
+      name
+      tokenPrefix
+      lastUsedAt
+      expiresAt
+      createdAt
+    }
   }
 }
     `;
@@ -7946,6 +8336,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     CreateOrganization(variables: CreateOrganizationMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreateOrganizationMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateOrganizationMutation>({ document: CreateOrganizationDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CreateOrganization', 'mutation', variables);
     },
+    CreatePersonalAccessToken(variables: CreatePersonalAccessTokenMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreatePersonalAccessTokenMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreatePersonalAccessTokenMutation>({ document: CreatePersonalAccessTokenDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CreatePersonalAccessToken', 'mutation', variables);
+    },
+    DeletePersonalAccessToken(variables: DeletePersonalAccessTokenMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<DeletePersonalAccessTokenMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DeletePersonalAccessTokenMutation>({ document: DeletePersonalAccessTokenDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'DeletePersonalAccessToken', 'mutation', variables);
+    },
     CreatePullRequestComment(variables: CreatePullRequestCommentMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreatePullRequestCommentMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreatePullRequestCommentMutation>({ document: CreatePullRequestCommentDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CreatePullRequestComment', 'mutation', variables);
     },
@@ -7978,6 +8374,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Organizations(variables?: OrganizationsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<OrganizationsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<OrganizationsQuery>({ document: OrganizationsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Organizations', 'query', variables);
+    },
+    PersonalAccessTokens(variables?: PersonalAccessTokensQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<PersonalAccessTokensQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<PersonalAccessTokensQuery>({ document: PersonalAccessTokensDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'PersonalAccessTokens', 'query', variables);
     },
     PullRequestConversation(variables: PullRequestConversationQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<PullRequestConversationQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PullRequestConversationQuery>({ document: PullRequestConversationDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'PullRequestConversation', 'query', variables);

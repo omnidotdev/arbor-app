@@ -332,6 +332,16 @@ function RepositoryDetailPage() {
 git branch -M master
 git push -u origin master`}
               </pre>
+              <p className="break-words text-muted-foreground text-xs">
+                When git prompts, sign in with your Arbor username and a{" "}
+                <Link
+                  to="/settings/tokens"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  personal access token
+                </Link>{" "}
+                as the password.
+              </p>
             </div>
           </div>
         </div>
@@ -355,20 +365,32 @@ git push -u origin master`}
                 />
               )}
             </div>
-            <div className="flex w-full min-w-0 items-center gap-2 sm:w-auto">
-              <div className="flex min-w-0 flex-1 items-center rounded-md border sm:flex-none">
-                <code className="min-w-0 truncate px-3 py-1.5 font-mono text-sm">
-                  {cloneUrl}
-                </code>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={copyCloneUrl}
-                  className="rounded-l-none border-l"
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
+            <div className="flex w-full min-w-0 flex-col items-stretch gap-1 sm:w-auto">
+              <div className="flex min-w-0 items-center gap-2">
+                <div className="flex min-w-0 flex-1 items-center rounded-md border sm:flex-none">
+                  <code className="min-w-0 truncate px-3 py-1.5 font-mono text-sm">
+                    {cloneUrl}
+                  </code>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={copyCloneUrl}
+                    className="rounded-l-none border-l"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
+              <p className="break-words text-muted-foreground text-xs sm:max-w-xs">
+                Clone or push with your Arbor username and a{" "}
+                <Link
+                  to="/settings/tokens"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                  personal access token
+                </Link>{" "}
+                as the password.
+              </p>
             </div>
           </div>
 

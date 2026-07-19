@@ -1,0 +1,10 @@
+mutation CreatePersonalAccessToken($name: String!, $expiresInDays: Int) {
+  createPersonalAccessToken(name: $name, expiresInDays: $expiresInDays) {
+    rowId
+    name
+    tokenPrefix
+    expiresAt
+    createdAt
+    token
+  }
+}

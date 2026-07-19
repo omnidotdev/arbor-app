@@ -1,0 +1,7 @@
+mutation DeletePersonalAccessToken($input: DeletePersonalAccessTokenInput!) {
+  deletePersonalAccessToken(input: $input) {
+    personalAccessToken {
+      rowId
+    }
+  }
+}

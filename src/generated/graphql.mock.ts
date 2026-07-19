@@ -30,6 +30,50 @@ export const mockCreateOrganizationMutation = (resolver: GraphQLResponseResolver
  * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
  * @see https://mswjs.io/docs/basics/response-resolver
  * @example
+ * mockCreatePersonalAccessTokenMutation(
+ *   ({ query, variables }) => {
+ *     const { name, expiresInDays } = variables;
+ *     return HttpResponse.json({
+ *       data: { createPersonalAccessToken }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockCreatePersonalAccessTokenMutation = (resolver: GraphQLResponseResolver<Types.CreatePersonalAccessTokenMutation, Types.CreatePersonalAccessTokenMutationVariables>, options?: RequestHandlerOptions) =>
+  graphql.mutation<Types.CreatePersonalAccessTokenMutation, Types.CreatePersonalAccessTokenMutationVariables>(
+    'CreatePersonalAccessToken',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
+ * mockDeletePersonalAccessTokenMutation(
+ *   ({ query, variables }) => {
+ *     const { input } = variables;
+ *     return HttpResponse.json({
+ *       data: { deletePersonalAccessToken }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockDeletePersonalAccessTokenMutation = (resolver: GraphQLResponseResolver<Types.DeletePersonalAccessTokenMutation, Types.DeletePersonalAccessTokenMutationVariables>, options?: RequestHandlerOptions) =>
+  graphql.mutation<Types.DeletePersonalAccessTokenMutation, Types.DeletePersonalAccessTokenMutationVariables>(
+    'DeletePersonalAccessToken',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
  * mockCreatePullRequestCommentMutation(
  *   ({ query, variables }) => {
  *     const { input } = variables;
@@ -263,6 +307,27 @@ export const mockOrganizationQuery = (resolver: GraphQLResponseResolver<Types.Or
 export const mockOrganizationsQuery = (resolver: GraphQLResponseResolver<Types.OrganizationsQuery, Types.OrganizationsQueryVariables>, options?: RequestHandlerOptions) =>
   graphql.query<Types.OrganizationsQuery, Types.OrganizationsQueryVariables>(
     'Organizations',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
+ * mockPersonalAccessTokensQuery(
+ *   ({ query, variables }) => {
+ *     return HttpResponse.json({
+ *       data: { personalAccessTokens }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockPersonalAccessTokensQuery = (resolver: GraphQLResponseResolver<Types.PersonalAccessTokensQuery, Types.PersonalAccessTokensQueryVariables>, options?: RequestHandlerOptions) =>
+  graphql.query<Types.PersonalAccessTokensQuery, Types.PersonalAccessTokensQueryVariables>(
+    'PersonalAccessTokens',
     resolver,
     options
   )

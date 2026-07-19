@@ -22,6 +22,7 @@ import {
   Building2,
   ExternalLink,
   GitBranch,
+  KeyRound,
   LogOut,
   Network,
   TreePine,
@@ -129,6 +130,15 @@ const AppSidebar = ({ user, ...rest }: Props) => {
         </div>
 
         <SidebarMenu className="group-data-[collapsible=icon]:hidden">
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild tooltip="Personal access tokens">
+              <Link to="/settings/tokens" onClick={closeOnMobileNav}>
+                <KeyRound className="size-4" />
+                <span>Personal access tokens</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+
           {CONSOLE_URL && (
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Manage account">

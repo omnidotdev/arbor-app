@@ -17,6 +17,7 @@ import { Route as AppGraphRouteImport } from './routes/_app/graph'
 import { Route as AppWorkspacesIndexRouteImport } from './routes/_app/workspaces/index'
 import { Route as AppRepositoriesIndexRouteImport } from './routes/_app/repositories/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as AppSettingsTokensRouteImport } from './routes/_app/settings/tokens'
 import { Route as AppWorkspacesWorkspaceSlugIndexRouteImport } from './routes/_app/workspaces/$workspaceSlug/index'
 import { Route as AppRepositoriesOwnerRepoRouteImport } from './routes/_app/repositories/$owner.$repo'
 import { Route as ApiOgRepoOwnerRepoRouteImport } from './routes/api/og/repo.$owner.$repo'
@@ -66,6 +67,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppSettingsTokensRoute = AppSettingsTokensRouteImport.update({
+  id: '/settings/tokens',
+  path: '/settings/tokens',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppWorkspacesWorkspaceSlugIndexRoute =
   AppWorkspacesWorkspaceSlugIndexRouteImport.update({
@@ -131,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/pricing': typeof PricingRoute
   '/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
+  '/settings/tokens': typeof AppSettingsTokensRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/repositories/': typeof AppRepositoriesIndexRoute
   '/workspaces/': typeof AppWorkspacesIndexRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/pricing': typeof PricingRoute
   '/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
+  '/settings/tokens': typeof AppSettingsTokensRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/repositories': typeof AppRepositoriesIndexRoute
   '/workspaces': typeof AppWorkspacesIndexRoute
@@ -171,6 +179,7 @@ export interface FileRoutesById {
   '/pricing': typeof PricingRoute
   '/_app/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
+  '/_app/settings/tokens': typeof AppSettingsTokensRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_app/repositories/': typeof AppRepositoriesIndexRoute
   '/_app/workspaces/': typeof AppWorkspacesIndexRoute
@@ -192,6 +201,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/graph'
     | '/api/healthz'
+    | '/settings/tokens'
     | '/api/auth/$'
     | '/repositories/'
     | '/workspaces/'
@@ -211,6 +221,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/graph'
     | '/api/healthz'
+    | '/settings/tokens'
     | '/api/auth/$'
     | '/repositories'
     | '/workspaces'
@@ -231,6 +242,7 @@ export interface FileRouteTypes {
     | '/pricing'
     | '/_app/graph'
     | '/api/healthz'
+    | '/_app/settings/tokens'
     | '/api/auth/$'
     | '/_app/repositories/'
     | '/_app/workspaces/'
@@ -313,6 +325,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/auth/$'
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/settings/tokens': {
+      id: '/_app/settings/tokens'
+      path: '/settings/tokens'
+      fullPath: '/settings/tokens'
+      preLoaderRoute: typeof AppSettingsTokensRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_app/workspaces/$workspaceSlug/': {
       id: '/_app/workspaces/$workspaceSlug/'
@@ -418,6 +437,7 @@ const AppRepositoriesOwnerRepoRouteWithChildren =
 
 interface AppRouteChildren {
   AppGraphRoute: typeof AppGraphRoute
+  AppSettingsTokensRoute: typeof AppSettingsTokensRoute
   AppRepositoriesIndexRoute: typeof AppRepositoriesIndexRoute
   AppWorkspacesIndexRoute: typeof AppWorkspacesIndexRoute
   AppRepositoriesOwnerRepoRoute: typeof AppRepositoriesOwnerRepoRouteWithChildren
@@ -426,6 +446,7 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppGraphRoute: AppGraphRoute,
+  AppSettingsTokensRoute: AppSettingsTokensRoute,
   AppRepositoriesIndexRoute: AppRepositoriesIndexRoute,
   AppWorkspacesIndexRoute: AppWorkspacesIndexRoute,
   AppRepositoriesOwnerRepoRoute: AppRepositoriesOwnerRepoRouteWithChildren,

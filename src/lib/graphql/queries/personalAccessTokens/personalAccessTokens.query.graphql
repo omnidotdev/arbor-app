@@ -1,0 +1,12 @@
+query PersonalAccessTokens {
+  personalAccessTokens(orderBy: CREATED_AT_DESC) {
+    nodes {
+      rowId
+      name
+      tokenPrefix
+      lastUsedAt
+      expiresAt
+      createdAt
+    }
+  }
+}
