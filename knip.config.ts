@@ -8,6 +8,7 @@ const knipConfig: KnipConfig = {
   entry: [
     "src/routes/**/*.{ts,tsx}",
     "src/router.tsx",
+    "src/start.ts",
     "src/lib/graphql/graphqlFetch.ts",
     "src/lib/providers/billing/index.ts",
     "src/server/functions/*.ts",

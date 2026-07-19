@@ -64,7 +64,10 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
   };
 
   // Categorize organizations by their upgrade eligibility for this tier
-  const allOrgs = session?.organizations ?? [];
+  // The context session is loosely typed here (strict: false), so pin the
+  // element shape the buttons and tier lookups rely on
+  const allOrgs: Array<{ id: string; name: string }> =
+    session?.organizations ?? [];
   const upgradeableOrgs = allOrgs.filter(
     (org) => getTierIndex(getOrgTier(org.id)) < getTierIndex(tier),
   );

@@ -69,13 +69,7 @@ const AppSidebar = ({ user, ...rest }: Props) => {
       <SidebarHeader className="gap-2">
         <div className="px-1 py-1">
           <LogoLockup
-            logo={
-              <img
-                src="/favicon.svg"
-                alt=""
-                className="size-5 shrink-0"
-              />
-            }
+            logo={<img src="/logo.png" alt="" className="size-5 shrink-0" />}
             name={app.name}
             nameClassName="font-bold tracking-tight group-data-[collapsible=icon]:hidden"
           />

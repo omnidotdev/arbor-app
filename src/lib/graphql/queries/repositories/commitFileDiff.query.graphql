@@ -1,0 +1,28 @@
+query CommitFileDiff(
+  $ownerSlug: String!
+  $repoSlug: String!
+  $oid: String!
+  $path: String!
+) {
+  repositories(
+    filter: {
+      slug: { equalTo: $repoSlug }
+      owner: { username: { equalTo: $ownerSlug } }
+    }
+    first: 1
+  ) {
+    nodes {
+      id
+      commit(sha: $oid) {
+        oid
+        fileDiff(path: $path) {
+          path
+          status
+          isBinary
+          oldText
+          newText
+        }
+      }
+    }
+  }
+}

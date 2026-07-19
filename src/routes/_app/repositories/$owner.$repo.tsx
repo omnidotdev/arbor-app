@@ -14,6 +14,7 @@ import {
   Settings,
 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import {
@@ -21,6 +22,7 @@ import {
   BreadcrumbNav,
   FileBrowser,
   FileViewer,
+  LatestCommitBar,
   ReadmeDisplay,
 } from "@/components/repository";
 import { Button } from "@/components/ui/button";
@@ -30,6 +32,7 @@ import {
 } from "@/generated/graphql";
 import { API_BASE_URL, BASE_URL, GIT_BASE_URL } from "@/lib/config/env.config";
 import repositoryBySlugOptions from "@/lib/options/repositoryBySlug.options";
+import repositoryWithBranchesOptions from "@/lib/options/repositoryWithBranches.options";
 import createMetaTags from "@/lib/util/createMetaTags";
 import { getRepositoryAccess } from "@/lib/util/repositoryAccess";
 
@@ -156,6 +159,18 @@ function RepositoryDetailPage() {
   const repository = repositoryQuery.data?.repositories?.nodes?.[0];
   const { canManage } = getRepositoryAccess(repository, session?.user?.rowId);
 
+  // Default branch HEAD commit for the latest-commit bar above the file browser
+  const repositoryWithBranchesQuery = useQuery(
+    repositoryWithBranchesOptions({ ownerSlug: owner, repoSlug: repo }),
+  );
+  const defaultBranchTarget =
+    repositoryWithBranchesQuery.data?.repositories?.nodes?.[0]?.defaultBranchRef
+      ?.target;
+  const headCommit =
+    defaultBranchTarget && "oid" in defaultBranchTarget
+      ? defaultBranchTarget
+      : null;
+
   // Fetch branches
   const branchesQuery = useQuery({
     queryKey: ["branches", owner, repo],
@@ -220,7 +235,12 @@ function RepositoryDetailPage() {
   const cloneUrl = `${GIT_BASE_URL}/${owner}/${repo}.git`;
 
   const copyCloneUrl = async () => {
-    await navigator.clipboard.writeText(cloneUrl);
+    try {
+      await navigator.clipboard.writeText(cloneUrl);
+      toast.success("Clone URL copied to clipboard");
+    } catch {
+      toast.error("Couldn't copy the clone URL");
+    }
   };
 
   // Only show empty state if branches loaded and are empty, and we're not viewing a file
@@ -405,14 +425,31 @@ git push -u origin master`}
               path={path}
             />
           ) : (
-            <FileBrowser
-              owner={owner}
-              repo={repo}
-              branch={currentBranch}
-              currentPath={path ?? ""}
-              entries={treeQuery.data ?? []}
-              isLoading={treeQuery.isLoading}
-            />
+            <div className="space-y-3">
+              {/* Latest commit on the default branch, root code view only */}
+              {!path && headCommit && (
+                <LatestCommitBar
+                  owner={owner}
+                  repo={repo}
+                  oid={headCommit.oid}
+                  messageHeadline={headCommit.messageHeadline}
+                  authorName={headCommit.author?.name}
+                  committedDate={
+                    headCommit.committedDate
+                      ? String(headCommit.committedDate)
+                      : null
+                  }
+                />
+              )}
+              <FileBrowser
+                owner={owner}
+                repo={repo}
+                branch={currentBranch}
+                currentPath={path ?? ""}
+                entries={treeQuery.data ?? []}
+                isLoading={treeQuery.isLoading}
+              />
+            </div>
           )}
 
           {/* README at root */}

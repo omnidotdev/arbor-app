@@ -45,6 +45,11 @@ query RepositoryWithBranches($ownerSlug: String!, $repoSlug: String!) {
         target {
           ... on Commit {
             oid
+            messageHeadline
+            committedDate
+            author {
+              name
+            }
           }
         }
       }

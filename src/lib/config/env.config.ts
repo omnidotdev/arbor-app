@@ -23,11 +23,17 @@ export const {
 export const API_BASE_URL = env.API_BASE_URL || env.VITE_API_BASE_URL;
 export const AUTH_BASE_URL = env.AUTH_BASE_URL || env.VITE_AUTH_BASE_URL;
 
-// Git clone host. Set VITE_GIT_BASE_URL to a dedicated clean git host (e.g.
-// https://git.arbor.omni.dev) once it is routed; falls back to the API's /git
-// path so clone urls keep working until then
+// Git clone host. A dedicated clean host (git.arbor.omni.dev) serves the same
+// git Smart-HTTP endpoints as the API's /git path, so production defaults to it.
+// An explicit VITE_GIT_BASE_URL still wins; other environments fall back to the
+// API's /git path so clone urls keep working without a dedicated host
+const defaultGitBaseUrl =
+  API_BASE_URL === "https://api.arbor.omni.dev"
+    ? "https://git.arbor.omni.dev"
+    : `${API_BASE_URL}/git`;
+
 export const GIT_BASE_URL =
-  env.GIT_BASE_URL || env.VITE_GIT_BASE_URL || `${API_BASE_URL}/git`;
+  env.GIT_BASE_URL || env.VITE_GIT_BASE_URL || defaultGitBaseUrl;
 
 // Internal auth URL for server-to-server communication (Docker service name)
 // Falls back to AUTH_BASE_URL for non-Docker environments

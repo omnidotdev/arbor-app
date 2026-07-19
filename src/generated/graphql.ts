@@ -7663,6 +7663,25 @@ export type PullRequestsQueryVariables = Exact<{
 
 export type PullRequestsQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, number: number, title: string, state: string, sourceBranch: string, targetBranch: string, createdAt: Date, author: { rowId: string, username: string } | null, pullRequestComments: { totalCount: number } }> } | null };
 
+export type CommitDetailQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+  oid: string;
+}>;
+
+
+export type CommitDetailQuery = { repositories: { nodes: Array<{ id: string, commit: { oid: string, message: string, messageHeadline: string, committedDate: Date | null, authoredDate: Date | null, author: { name: string | null, email: string | null } | null, parents: Array<{ oid: string }>, changedFiles: Array<{ path: string, oldPath: string | null, status: DiffStatus, oldOid: string | null, newOid: string | null, isBinary: boolean, isImage: boolean, additions: number, deletions: number }> } | null }> } | null };
+
+export type CommitFileDiffQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+  oid: string;
+  path: string;
+}>;
+
+
+export type CommitFileDiffQuery = { repositories: { nodes: Array<{ id: string, commit: { oid: string, fileDiff: { path: string, status: DiffStatus, isBinary: boolean, oldText: string | null, newText: string | null } | null } | null }> } | null };
+
 export type RepositoriesQueryVariables = Exact<{
   userId: string;
   limit?: number | null | undefined;
@@ -7696,7 +7715,7 @@ export type RepositoryWithBranchesQuery = { repositories: { nodes: Array<{ rowId
             | { oid: string }
             | Record<PropertyKey, never>
            | null }> }, defaultBranchRef: { id: string, name: string, prefix: string, target:
-          | { oid: string }
+          | { oid: string, messageHeadline: string, committedDate: Date | null, author: { name: string | null } | null }
           | Record<PropertyKey, never>
          | null } | null }> } | null };
 
@@ -9030,6 +9049,229 @@ useSuspenseInfinitePullRequestsQuery.getKey = (variables: PullRequestsQueryVaria
 
 usePullRequestsQuery.fetcher = (variables: PullRequestsQueryVariables, options?: RequestInit['headers']) => graphqlFetch<PullRequestsQuery, PullRequestsQueryVariables>(PullRequestsDocument, variables, options);
 
+export const CommitDetailDocument = new TypedDocumentString(`
+    query CommitDetail($ownerSlug: String!, $repoSlug: String!, $oid: String!) {
+  repositories(
+    filter: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}
+    first: 1
+  ) {
+    nodes {
+      id
+      commit(sha: $oid) {
+        oid
+        message
+        messageHeadline
+        committedDate
+        authoredDate
+        author {
+          name
+          email
+        }
+        parents {
+          oid
+        }
+        changedFiles {
+          path
+          oldPath
+          status
+          oldOid
+          newOid
+          isBinary
+          isImage
+          additions
+          deletions
+        }
+      }
+    }
+  }
+}
+    `);
+
+export const useCommitDetailQuery = <
+      TData = CommitDetailQuery,
+      TError = unknown
+    >(
+      variables: CommitDetailQueryVariables,
+      options?: Omit<UseQueryOptions<CommitDetailQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<CommitDetailQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<CommitDetailQuery, TError, TData>(
+      {
+    queryKey: ['CommitDetail', variables],
+    queryFn: graphqlFetch<CommitDetailQuery, CommitDetailQueryVariables>(CommitDetailDocument, variables),
+    ...options
+  }
+    )};
+
+useCommitDetailQuery.getKey = (variables: CommitDetailQueryVariables) => ['CommitDetail', variables];
+
+export const useSuspenseCommitDetailQuery = <
+      TData = CommitDetailQuery,
+      TError = unknown
+    >(
+      variables: CommitDetailQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<CommitDetailQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<CommitDetailQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<CommitDetailQuery, TError, TData>(
+      {
+    queryKey: ['CommitDetail', variables],
+    queryFn: graphqlFetch<CommitDetailQuery, CommitDetailQueryVariables>(CommitDetailDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseCommitDetailQuery.getKey = (variables: CommitDetailQueryVariables) => ['CommitDetail', variables];
+
+export const useInfiniteCommitDetailQuery = <
+      TData = InfiniteData<CommitDetailQuery>,
+      TError = unknown
+    >(
+      variables: CommitDetailQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<CommitDetailQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<CommitDetailQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<CommitDetailQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['CommitDetail.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<CommitDetailQuery, CommitDetailQueryVariables>(CommitDetailDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteCommitDetailQuery.getKey = (variables: CommitDetailQueryVariables) => ['CommitDetail.infinite', variables];
+
+export const useSuspenseInfiniteCommitDetailQuery = <
+      TData = InfiniteData<CommitDetailQuery>,
+      TError = unknown
+    >(
+      variables: CommitDetailQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<CommitDetailQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<CommitDetailQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<CommitDetailQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['CommitDetail.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<CommitDetailQuery, CommitDetailQueryVariables>(CommitDetailDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteCommitDetailQuery.getKey = (variables: CommitDetailQueryVariables) => ['CommitDetail.infinite', variables];
+
+
+useCommitDetailQuery.fetcher = (variables: CommitDetailQueryVariables, options?: RequestInit['headers']) => graphqlFetch<CommitDetailQuery, CommitDetailQueryVariables>(CommitDetailDocument, variables, options);
+
+export const CommitFileDiffDocument = new TypedDocumentString(`
+    query CommitFileDiff($ownerSlug: String!, $repoSlug: String!, $oid: String!, $path: String!) {
+  repositories(
+    filter: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}
+    first: 1
+  ) {
+    nodes {
+      id
+      commit(sha: $oid) {
+        oid
+        fileDiff(path: $path) {
+          path
+          status
+          isBinary
+          oldText
+          newText
+        }
+      }
+    }
+  }
+}
+    `);
+
+export const useCommitFileDiffQuery = <
+      TData = CommitFileDiffQuery,
+      TError = unknown
+    >(
+      variables: CommitFileDiffQueryVariables,
+      options?: Omit<UseQueryOptions<CommitFileDiffQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<CommitFileDiffQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<CommitFileDiffQuery, TError, TData>(
+      {
+    queryKey: ['CommitFileDiff', variables],
+    queryFn: graphqlFetch<CommitFileDiffQuery, CommitFileDiffQueryVariables>(CommitFileDiffDocument, variables),
+    ...options
+  }
+    )};
+
+useCommitFileDiffQuery.getKey = (variables: CommitFileDiffQueryVariables) => ['CommitFileDiff', variables];
+
+export const useSuspenseCommitFileDiffQuery = <
+      TData = CommitFileDiffQuery,
+      TError = unknown
+    >(
+      variables: CommitFileDiffQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<CommitFileDiffQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<CommitFileDiffQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<CommitFileDiffQuery, TError, TData>(
+      {
+    queryKey: ['CommitFileDiff', variables],
+    queryFn: graphqlFetch<CommitFileDiffQuery, CommitFileDiffQueryVariables>(CommitFileDiffDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseCommitFileDiffQuery.getKey = (variables: CommitFileDiffQueryVariables) => ['CommitFileDiff', variables];
+
+export const useInfiniteCommitFileDiffQuery = <
+      TData = InfiniteData<CommitFileDiffQuery>,
+      TError = unknown
+    >(
+      variables: CommitFileDiffQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<CommitFileDiffQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<CommitFileDiffQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<CommitFileDiffQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['CommitFileDiff.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<CommitFileDiffQuery, CommitFileDiffQueryVariables>(CommitFileDiffDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteCommitFileDiffQuery.getKey = (variables: CommitFileDiffQueryVariables) => ['CommitFileDiff.infinite', variables];
+
+export const useSuspenseInfiniteCommitFileDiffQuery = <
+      TData = InfiniteData<CommitFileDiffQuery>,
+      TError = unknown
+    >(
+      variables: CommitFileDiffQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<CommitFileDiffQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<CommitFileDiffQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<CommitFileDiffQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['CommitFileDiff.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<CommitFileDiffQuery, CommitFileDiffQueryVariables>(CommitFileDiffDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteCommitFileDiffQuery.getKey = (variables: CommitFileDiffQueryVariables) => ['CommitFileDiff.infinite', variables];
+
+
+useCommitFileDiffQuery.fetcher = (variables: CommitFileDiffQueryVariables, options?: RequestInit['headers']) => graphqlFetch<CommitFileDiffQuery, CommitFileDiffQueryVariables>(CommitFileDiffDocument, variables, options);
+
 export const RepositoriesDocument = new TypedDocumentString(`
     query Repositories($userId: UUID!, $limit: Int) {
   repositories(
@@ -9418,6 +9660,11 @@ export const RepositoryWithBranchesDocument = new TypedDocumentString(`
         target {
           ... on Commit {
             oid
+            messageHeadline
+            committedDate
+            author {
+              name
+            }
           }
         }
       }

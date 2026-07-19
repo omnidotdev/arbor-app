@@ -1,4 +1,7 @@
+import { Link } from "@tanstack/react-router";
 import { GitCommit, User } from "lucide-react";
+
+import getRelativeTime from "@/lib/util/getRelativeTime";
 
 interface CommitCardProps {
   sha: string;
@@ -11,7 +14,7 @@ interface CommitCardProps {
 }
 
 /**
- * Single commit display card.
+ * Single commit display card, linking to the commit detail view.
  */
 export function CommitCard({
   sha,
@@ -28,7 +31,11 @@ export function CommitCard({
   const relativeTime = getRelativeTime(date);
 
   return (
-    <div className="flex items-start gap-4 border-b px-4 py-3 last:border-b-0">
+    <Link
+      to="/repositories/$owner/$repo/commit/$oid"
+      params={{ owner, repo, oid: sha }}
+      className="flex items-start gap-4 border-b px-4 py-3 transition-colors last:border-b-0 hover:bg-muted/50"
+    >
       <div className="mt-1 rounded-full bg-muted p-2">
         <GitCommit className="h-4 w-4 text-muted-foreground" />
       </div>
@@ -50,30 +57,6 @@ export function CommitCard({
           {shortSha}
         </code>
       </div>
-    </div>
+    </Link>
   );
-}
-
-/**
- * Get relative time string from date.
- */
-function getRelativeTime(date: Date): string {
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffSecs = Math.floor(diffMs / 1000);
-  const diffMins = Math.floor(diffSecs / 60);
-  const diffHours = Math.floor(diffMins / 60);
-  const diffDays = Math.floor(diffHours / 24);
-  const diffWeeks = Math.floor(diffDays / 7);
-  const diffMonths = Math.floor(diffDays / 30);
-  const diffYears = Math.floor(diffDays / 365);
-
-  if (diffYears > 0) return `${diffYears} year${diffYears > 1 ? "s" : ""} ago`;
-  if (diffMonths > 0)
-    return `${diffMonths} month${diffMonths > 1 ? "s" : ""} ago`;
-  if (diffWeeks > 0) return `${diffWeeks} week${diffWeeks > 1 ? "s" : ""} ago`;
-  if (diffDays > 0) return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
-  if (diffHours > 0) return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
-  if (diffMins > 0) return `${diffMins} minute${diffMins > 1 ? "s" : ""} ago`;
-  return "just now";
 }

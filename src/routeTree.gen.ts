@@ -28,6 +28,7 @@ import { Route as AppRepositoriesOwnerRepoPullsIndexRouteImport } from './routes
 import { Route as ApiRawOwnerRepoOidSplatRouteImport } from './routes/api/raw/$owner.$repo.$oid.$'
 import { Route as AppRepositoriesOwnerRepoPullsNewRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/new'
 import { Route as AppRepositoriesOwnerRepoPullsNumberRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/$number'
+import { Route as AppRepositoriesOwnerRepoCommitOidRouteImport } from './routes/_app/repositories/$owner.$repo/commit.$oid'
 
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
@@ -131,6 +132,12 @@ const AppRepositoriesOwnerRepoPullsNumberRoute =
     path: '/pulls/$number',
     getParentRoute: () => AppRepositoriesOwnerRepoRoute,
   } as any)
+const AppRepositoriesOwnerRepoCommitOidRoute =
+  AppRepositoriesOwnerRepoCommitOidRouteImport.update({
+    id: '/commit/$oid',
+    path: '/commit/$oid',
+    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByFullPath {
   '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
   '/repositories/$owner/$repo/settings': typeof AppRepositoriesOwnerRepoSettingsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
+  '/repositories/$owner/$repo/commit/$oid': typeof AppRepositoriesOwnerRepoCommitOidRoute
   '/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
   '/api/raw/$owner/$repo/$oid/$': typeof ApiRawOwnerRepoOidSplatRoute
@@ -167,6 +175,7 @@ export interface FileRoutesByTo {
   '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
   '/repositories/$owner/$repo/settings': typeof AppRepositoriesOwnerRepoSettingsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
+  '/repositories/$owner/$repo/commit/$oid': typeof AppRepositoriesOwnerRepoCommitOidRoute
   '/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
   '/api/raw/$owner/$repo/$oid/$': typeof ApiRawOwnerRepoOidSplatRoute
@@ -189,6 +198,7 @@ export interface FileRoutesById {
   '/_app/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
   '/_app/repositories/$owner/$repo/settings': typeof AppRepositoriesOwnerRepoSettingsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
+  '/_app/repositories/$owner/$repo/commit/$oid': typeof AppRepositoriesOwnerRepoCommitOidRoute
   '/_app/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
   '/_app/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
   '/api/raw/$owner/$repo/$oid/$': typeof ApiRawOwnerRepoOidSplatRoute
@@ -211,6 +221,7 @@ export interface FileRouteTypes {
     | '/repositories/$owner/$repo/commits'
     | '/repositories/$owner/$repo/settings'
     | '/api/og/repo/$owner/$repo'
+    | '/repositories/$owner/$repo/commit/$oid'
     | '/repositories/$owner/$repo/pulls/$number'
     | '/repositories/$owner/$repo/pulls/new'
     | '/api/raw/$owner/$repo/$oid/$'
@@ -231,6 +242,7 @@ export interface FileRouteTypes {
     | '/repositories/$owner/$repo/commits'
     | '/repositories/$owner/$repo/settings'
     | '/api/og/repo/$owner/$repo'
+    | '/repositories/$owner/$repo/commit/$oid'
     | '/repositories/$owner/$repo/pulls/$number'
     | '/repositories/$owner/$repo/pulls/new'
     | '/api/raw/$owner/$repo/$oid/$'
@@ -252,6 +264,7 @@ export interface FileRouteTypes {
     | '/_app/repositories/$owner/$repo/commits'
     | '/_app/repositories/$owner/$repo/settings'
     | '/api/og/repo/$owner/$repo'
+    | '/_app/repositories/$owner/$repo/commit/$oid'
     | '/_app/repositories/$owner/$repo/pulls/$number'
     | '/_app/repositories/$owner/$repo/pulls/new'
     | '/api/raw/$owner/$repo/$oid/$'
@@ -403,6 +416,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRepositoriesOwnerRepoPullsNumberRouteImport
       parentRoute: typeof AppRepositoriesOwnerRepoRoute
     }
+    '/_app/repositories/$owner/$repo/commit/$oid': {
+      id: '/_app/repositories/$owner/$repo/commit/$oid'
+      path: '/commit/$oid'
+      fullPath: '/repositories/$owner/$repo/commit/$oid'
+      preLoaderRoute: typeof AppRepositoriesOwnerRepoCommitOidRouteImport
+      parentRoute: typeof AppRepositoriesOwnerRepoRoute
+    }
   }
 }
 
@@ -410,6 +430,7 @@ interface AppRepositoriesOwnerRepoRouteChildren {
   AppRepositoriesOwnerRepoBranchesRoute: typeof AppRepositoriesOwnerRepoBranchesRoute
   AppRepositoriesOwnerRepoCommitsRoute: typeof AppRepositoriesOwnerRepoCommitsRoute
   AppRepositoriesOwnerRepoSettingsRoute: typeof AppRepositoriesOwnerRepoSettingsRoute
+  AppRepositoriesOwnerRepoCommitOidRoute: typeof AppRepositoriesOwnerRepoCommitOidRoute
   AppRepositoriesOwnerRepoPullsNumberRoute: typeof AppRepositoriesOwnerRepoPullsNumberRoute
   AppRepositoriesOwnerRepoPullsNewRoute: typeof AppRepositoriesOwnerRepoPullsNewRoute
   AppRepositoriesOwnerRepoPullsIndexRoute: typeof AppRepositoriesOwnerRepoPullsIndexRoute
@@ -422,6 +443,8 @@ const AppRepositoriesOwnerRepoRouteChildren: AppRepositoriesOwnerRepoRouteChildr
     AppRepositoriesOwnerRepoCommitsRoute: AppRepositoriesOwnerRepoCommitsRoute,
     AppRepositoriesOwnerRepoSettingsRoute:
       AppRepositoriesOwnerRepoSettingsRoute,
+    AppRepositoriesOwnerRepoCommitOidRoute:
+      AppRepositoriesOwnerRepoCommitOidRoute,
     AppRepositoriesOwnerRepoPullsNumberRoute:
       AppRepositoriesOwnerRepoPullsNumberRoute,
     AppRepositoriesOwnerRepoPullsNewRoute:
@@ -467,13 +490,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

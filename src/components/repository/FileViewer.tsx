@@ -3,6 +3,7 @@
 import { Check, Copy, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import { codeToHtml } from "shiki";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 
@@ -158,9 +159,14 @@ export function FileViewer({
   }, [displayContent, language]);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(content);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopied(true);
+      toast.success("File contents copied to clipboard");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Couldn't copy to clipboard");
+    }
   };
 
   const rawUrl = `/api/git/${owner}/${repo}/raw/${branch}/${path}`;

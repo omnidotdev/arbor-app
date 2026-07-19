@@ -7663,6 +7663,25 @@ export type PullRequestsQueryVariables = Exact<{
 
 export type PullRequestsQuery = { pullRequests: { nodes: Array<{ id: string, rowId: string, number: number, title: string, state: string, sourceBranch: string, targetBranch: string, createdAt: Date, author: { rowId: string, username: string } | null, pullRequestComments: { totalCount: number } }> } | null };
 
+export type CommitDetailQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+  oid: string;
+}>;
+
+
+export type CommitDetailQuery = { repositories: { nodes: Array<{ id: string, commit: { oid: string, message: string, messageHeadline: string, committedDate: Date | null, authoredDate: Date | null, author: { name: string | null, email: string | null } | null, parents: Array<{ oid: string }>, changedFiles: Array<{ path: string, oldPath: string | null, status: DiffStatus, oldOid: string | null, newOid: string | null, isBinary: boolean, isImage: boolean, additions: number, deletions: number }> } | null }> } | null };
+
+export type CommitFileDiffQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+  oid: string;
+  path: string;
+}>;
+
+
+export type CommitFileDiffQuery = { repositories: { nodes: Array<{ id: string, commit: { oid: string, fileDiff: { path: string, status: DiffStatus, isBinary: boolean, oldText: string | null, newText: string | null } | null } | null }> } | null };
+
 export type RepositoriesQueryVariables = Exact<{
   userId: string;
   limit?: number | null | undefined;
@@ -7696,7 +7715,7 @@ export type RepositoryWithBranchesQuery = { repositories: { nodes: Array<{ rowId
             | { oid: string }
             | Record<PropertyKey, never>
            | null }> }, defaultBranchRef: { id: string, name: string, prefix: string, target:
-          | { oid: string }
+          | { oid: string, messageHeadline: string, committedDate: Date | null, author: { name: string | null } | null }
           | Record<PropertyKey, never>
          | null } | null }> } | null };
 
@@ -8146,6 +8165,65 @@ export const PullRequestsDocument = gql`
   }
 }
     `;
+export const CommitDetailDocument = gql`
+    query CommitDetail($ownerSlug: String!, $repoSlug: String!, $oid: String!) {
+  repositories(
+    filter: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}
+    first: 1
+  ) {
+    nodes {
+      id
+      commit(sha: $oid) {
+        oid
+        message
+        messageHeadline
+        committedDate
+        authoredDate
+        author {
+          name
+          email
+        }
+        parents {
+          oid
+        }
+        changedFiles {
+          path
+          oldPath
+          status
+          oldOid
+          newOid
+          isBinary
+          isImage
+          additions
+          deletions
+        }
+      }
+    }
+  }
+}
+    `;
+export const CommitFileDiffDocument = gql`
+    query CommitFileDiff($ownerSlug: String!, $repoSlug: String!, $oid: String!, $path: String!) {
+  repositories(
+    filter: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}
+    first: 1
+  ) {
+    nodes {
+      id
+      commit(sha: $oid) {
+        oid
+        fileDiff(path: $path) {
+          path
+          status
+          isBinary
+          oldText
+          newText
+        }
+      }
+    }
+  }
+}
+    `;
 export const RepositoriesDocument = gql`
     query Repositories($userId: UUID!, $limit: Int) {
   repositories(
@@ -8288,6 +8366,11 @@ export const RepositoryWithBranchesDocument = gql`
         target {
           ... on Commit {
             oid
+            messageHeadline
+            committedDate
+            author {
+              name
+            }
           }
         }
       }
@@ -8389,6 +8472,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     PullRequests(variables: PullRequestsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<PullRequestsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<PullRequestsQuery>({ document: PullRequestsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'PullRequests', 'query', variables);
+    },
+    CommitDetail(variables: CommitDetailQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CommitDetailQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CommitDetailQuery>({ document: CommitDetailDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CommitDetail', 'query', variables);
+    },
+    CommitFileDiff(variables: CommitFileDiffQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CommitFileDiffQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CommitFileDiffQuery>({ document: CommitFileDiffDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CommitFileDiff', 'query', variables);
     },
     Repositories(variables: RepositoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoriesQuery>({ document: RepositoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Repositories', 'query', variables);

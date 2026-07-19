@@ -1,7 +1,46 @@
 import { rootRouteId, useMatch, useRouter } from "@tanstack/react-router";
 import { useEffect } from "react";
 
+import signIn from "@/lib/auth/signIn";
+
 import type { ErrorComponentProps } from "@tanstack/react-router";
+
+/**
+ * Detect an expired or missing session surfaced as a GraphQL authorization
+ * error. graphql-request throws a ClientError carrying the raw response, so
+ * check the response status and the per-error extension codes, then fall back
+ * to matching the serialized message
+ */
+const isAuthError = (error: unknown): boolean => {
+  if (!error || typeof error !== "object") return false;
+
+  const response = (
+    error as {
+      response?: {
+        status?: number;
+        errors?: Array<{
+          extensions?: { code?: string; http?: { status?: number } };
+        }>;
+      };
+    }
+  ).response;
+
+  if (response?.status === 401) return true;
+  if (
+    response?.errors?.some(
+      (entry) =>
+        entry.extensions?.code === "UNAUTHORIZED_FIELD_OR_TYPE" ||
+        entry.extensions?.http?.status === 401,
+    )
+  ) {
+    return true;
+  }
+
+  const message = (error as Error)?.message ?? "";
+  return /unauthorized field or type|unauthorized_field_or_type|\b401\b/i.test(
+    message,
+  );
+};
 
 /**
  * Default error boundary for caught route errors.
@@ -16,6 +55,39 @@ const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
   useEffect(() => {
     console.error(error);
   }, [error]);
+
+  // An expired session reads as an authorization error; offer re-auth back to
+  // the current location instead of a dead-end generic error
+  if (isAuthError(error)) {
+    const handleSignIn = () => {
+      const redirectUrl =
+        typeof window !== "undefined"
+          ? window.location.pathname + window.location.search
+          : "/";
+      signIn({ redirectUrl });
+    };
+
+    return (
+      <div className="flex min-h-[50vh] flex-col items-center justify-center p-8">
+        <div className="text-center">
+          <div className="mb-6 text-6xl">🌳</div>
+          <h1 className="font-bold text-2xl">Your session expired</h1>
+          <p className="mt-2 max-w-md text-muted-foreground">
+            Sign in again to pick up right where you left off.
+          </p>
+          <div className="mt-6 flex items-center justify-center">
+            <button
+              type="button"
+              onClick={handleSignIn}
+              className="rounded-lg bg-primary px-4 py-2 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
+            >
+              Sign in
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-[50vh] flex-col items-center justify-center p-8">

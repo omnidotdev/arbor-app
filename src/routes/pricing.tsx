@@ -107,7 +107,7 @@ function PricingPage() {
   );
 
   const filteredPrices = prices.filter(
-    (price) => price.recurring?.interval === billingInterval,
+    (price: Price) => price.recurring?.interval === billingInterval,
   );
 
   return (
@@ -156,7 +156,7 @@ function PricingPage() {
         <div className="flex flex-wrap justify-center gap-4">
           <PriceCard price={FREE_PRICE} orgSubscriptions={orgSubscriptions} />
 
-          {filteredPrices.map((price) => (
+          {filteredPrices.map((price: Price) => (
             <PriceCard
               key={price.id}
               price={price}

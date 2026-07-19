@@ -1,0 +1,38 @@
+query CommitDetail($ownerSlug: String!, $repoSlug: String!, $oid: String!) {
+  repositories(
+    filter: {
+      slug: { equalTo: $repoSlug }
+      owner: { username: { equalTo: $ownerSlug } }
+    }
+    first: 1
+  ) {
+    nodes {
+      id
+      commit(sha: $oid) {
+        oid
+        message
+        messageHeadline
+        committedDate
+        authoredDate
+        author {
+          name
+          email
+        }
+        parents {
+          oid
+        }
+        changedFiles {
+          path
+          oldPath
+          status
+          oldOid
+          newOid
+          isBinary
+          isImage
+          additions
+          deletions
+        }
+      }
+    }
+  }
+}

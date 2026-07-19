@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Check, Copy, KeyRound, Trash2, TriangleAlert } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -97,9 +98,11 @@ function TokensPage() {
     try {
       await navigator.clipboard.writeText(newToken);
       setCopied(true);
+      toast.success("Token copied to clipboard");
     } catch {
       // Clipboard access can be denied; leave the token visible so the user
       // can still copy it manually
+      toast.error("Couldn't copy the token, copy it manually");
     }
   };
 
