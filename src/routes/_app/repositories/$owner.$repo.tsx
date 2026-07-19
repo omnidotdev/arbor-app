@@ -28,7 +28,7 @@ import {
   useDeleteRepositoryMutation,
   useRepositoriesQuery,
 } from "@/generated/graphql";
-import { API_BASE_URL, BASE_URL } from "@/lib/config/env.config";
+import { API_BASE_URL, BASE_URL, GIT_BASE_URL } from "@/lib/config/env.config";
 import repositoryBySlugOptions from "@/lib/options/repositoryBySlug.options";
 import createMetaTags from "@/lib/util/createMetaTags";
 import { getRepositoryAccess } from "@/lib/util/repositoryAccess";
@@ -217,7 +217,7 @@ function RepositoryDetailPage() {
     });
   };
 
-  const cloneUrl = `${API_BASE_URL}/git/${owner}/${repo}.git`;
+  const cloneUrl = `${GIT_BASE_URL}/${owner}/${repo}.git`;
 
   const copyCloneUrl = async () => {
     await navigator.clipboard.writeText(cloneUrl);
