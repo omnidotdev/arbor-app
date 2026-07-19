@@ -20,7 +20,7 @@ export function BreadcrumbNav({
   const parts = path.split("/").filter(Boolean);
 
   return (
-    <nav className="flex items-center gap-1 text-sm">
+    <nav className="flex flex-wrap items-center gap-1 text-sm">
       <Link
         to="/repositories/$owner/$repo"
         params={{ owner, repo }}

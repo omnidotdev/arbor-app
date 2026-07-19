@@ -78,8 +78,8 @@ export function PullRequestDetail({
           <div className={`mt-1 rounded-full p-2 ${stateStyles[state]}`}>
             <StateIcon className="h-5 w-5" />
           </div>
-          <div className="flex-1">
-            <h1 className="font-bold text-2xl">
+          <div className="min-w-0 flex-1">
+            <h1 className="break-words font-bold text-2xl">
               {title}
               <span className="ml-2 font-normal text-muted-foreground">
                 #{number}
@@ -126,7 +126,7 @@ export function PullRequestDetail({
       {/* Merge status */}
       {state === "open" && (
         <div className="rounded-lg border p-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <GitBranch className="h-5 w-5 text-muted-foreground" />
               <div>
@@ -183,7 +183,7 @@ export function PullRequestDetail({
       {/* Closed status */}
       {state === "closed" && onReopen && (
         <div className="rounded-lg border p-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-muted-foreground">
               This pull request is closed.
             </p>

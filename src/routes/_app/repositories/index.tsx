@@ -197,10 +197,10 @@ function RepositoriesPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-5xl px-6 py-6">
+    <div className="container mx-auto max-w-5xl px-4 py-6 sm:px-6">
       <div className="mb-6 space-y-4">
-        <div className="flex items-center gap-3">
-          <h1 className="font-bold text-3xl">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="min-w-0 break-words font-bold text-3xl">
             {ownerFilter
               ? `${ownerFilter}'s Repositories`
               : "Your Repositories"}
@@ -278,9 +278,9 @@ function RepositoriesPage() {
           ) : (
             filteredRepositories.map((repo) => (
               <div key={repo.rowId} className="rounded-lg border bg-card p-4">
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 space-y-1">
+                    <div className="flex flex-wrap items-center gap-2">
                       <Link
                         to="/repositories/$owner/$repo"
                         params={{
@@ -290,7 +290,7 @@ function RepositoriesPage() {
                             "",
                           repo: repo.slug,
                         }}
-                        className="font-semibold text-xl hover:underline"
+                        className="break-all font-semibold text-xl hover:underline"
                       >
                         {repo.organization?.idpOrganizationId ??
                           repo.owner?.username}
@@ -317,7 +317,7 @@ function RepositoriesPage() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                    className="shrink-0 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                     onClick={() =>
                       setDeleteTarget({
                         rowId: repo.rowId,

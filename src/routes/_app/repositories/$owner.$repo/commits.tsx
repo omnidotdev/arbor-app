@@ -122,7 +122,7 @@ function CommitsPage() {
   const hasMore = (commitsQuery.data?.length ?? 0) >= 30;
 
   return (
-    <div className="container mx-auto max-w-6xl px-6 py-6">
+    <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6">
       {/* Header */}
       <div className="mb-6">
         <h1 className="font-bold text-2xl">

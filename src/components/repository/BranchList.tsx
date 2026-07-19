@@ -57,18 +57,18 @@ export function BranchList({
       {branches.map((branch) => (
         <div
           key={branch.name}
-          className="flex items-center justify-between border-b px-4 py-3 last:border-b-0"
+          className="flex items-center justify-between gap-3 border-b px-4 py-3 last:border-b-0"
         >
-          <div className="flex items-center gap-3">
-            <GitBranch className="h-4 w-4 text-muted-foreground" />
-            <span className="font-medium">{branch.name}</span>
+          <div className="flex min-w-0 items-center gap-3">
+            <GitBranch className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <span className="truncate font-medium">{branch.name}</span>
             {branch.isDefault && (
-              <span className="rounded bg-blue-100 px-2 py-0.5 text-blue-700 text-xs dark:bg-blue-900 dark:text-blue-300">
+              <span className="shrink-0 rounded bg-blue-100 px-2 py-0.5 text-blue-700 text-xs dark:bg-blue-900 dark:text-blue-300">
                 default
               </span>
             )}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-3">
             <code className="rounded bg-muted px-2 py-1 font-mono text-muted-foreground text-xs">
               {branch.sha.slice(0, 7)}
             </code>

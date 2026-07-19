@@ -258,7 +258,7 @@ function BranchesPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-6xl px-6 py-6">
+    <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6">
       {/* Header */}
       <div className="mb-6">
         <h1 className="font-bold text-2xl">
@@ -318,7 +318,7 @@ function BranchesPage() {
       </div>
 
       {/* Branch management header */}
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-semibold text-lg">Branches ({branches.length})</h2>
         <Button onClick={() => setShowCreateDialog(true)}>
           <Plus className="mr-2 h-4 w-4" />

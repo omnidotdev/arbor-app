@@ -167,7 +167,7 @@ function PullRequestsPage() {
     branches.find((b) => b.isDefault)?.name ?? branches[0]?.name ?? "master";
 
   return (
-    <div className="container mx-auto max-w-6xl px-6 py-6">
+    <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6">
       {/* Header */}
       <div className="mb-6">
         <h1 className="font-bold text-2xl">
@@ -227,8 +227,8 @@ function PullRequestsPage() {
       </div>
 
       {/* Filters and actions */}
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex gap-2">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex gap-2 overflow-x-auto [&>*]:shrink-0">
           {(["open", "closed", "merged", "all"] as const).map((filterState) => (
             <Button
               key={filterState}

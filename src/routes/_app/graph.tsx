@@ -5,8 +5,8 @@ import { useState } from "react";
 
 import { GraphView } from "@/components/graph";
 import { Button } from "@/components/ui/button";
-import { pluralize } from "@/lib/util/pluralize";
 import { useRepositoryGraphQuery } from "@/generated/graphql";
+import { pluralize } from "@/lib/util/pluralize";
 
 export const Route = createFileRoute("/_app/graph")({
   component: GraphPage,
@@ -59,10 +59,10 @@ function GraphPage() {
   );
 
   return (
-    <div className="container mx-auto max-w-7xl px-6 py-6">
+    <div className="container mx-auto max-w-7xl px-4 py-6 sm:px-6">
       <div className="mb-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="min-w-0">
             <h1 className="font-bold text-3xl">Repository Graph</h1>
             <p className="mt-1 text-muted-foreground">
               Visualize relationships between your repositories

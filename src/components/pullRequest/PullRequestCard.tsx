@@ -59,10 +59,10 @@ export function PullRequestCard({
         <StateIcon className="h-4 w-4" />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-2">
-          <span className="font-medium">{title}</span>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="break-words font-medium">{title}</span>
           <span
-            className={`rounded-full px-2 py-0.5 text-xs capitalize ${stateStyles[state]}`}
+            className={`shrink-0 rounded-full px-2 py-0.5 text-xs capitalize ${stateStyles[state]}`}
           >
             {state}
           </span>

@@ -67,11 +67,7 @@ const AppSidebar = ({ user, ...rest }: Props) => {
   };
 
   return (
-    <Sidebar
-      collapsible="icon"
-      side={isMobile ? "right" : "left"}
-      {...rest}
-    >
+    <Sidebar collapsible="icon" side={isMobile ? "right" : "left"} {...rest}>
       <SidebarHeader className="gap-2">
         <div className="px-1 py-1">
           <LogoLockup

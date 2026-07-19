@@ -170,7 +170,7 @@ export function ImageDiff({ oldSrc, newSrc, status }: ImageDiffProps) {
   return (
     <div className="p-4">
       {/* Mode switcher */}
-      <div className="mb-4 inline-flex rounded-md border">
+      <div className="mb-4 flex max-w-full overflow-x-auto rounded-md border [&>button]:shrink-0">
         {(Object.keys(MODE_LABELS) as ImageDiffMode[]).map((m, index) => (
           <button
             key={m}

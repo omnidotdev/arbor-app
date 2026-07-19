@@ -233,11 +233,11 @@ function RepositoryDetailPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-6xl px-6 py-6">
+    <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6">
       {/* Header */}
       <div className="mb-6">
-        <div className="flex items-center justify-between">
-          <h1 className="font-bold text-2xl">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="min-w-0 break-words font-bold text-2xl">
             <Link
               to="/repositories"
               search={{ owner }}
@@ -355,8 +355,8 @@ git push -u origin master`}
                 />
               )}
             </div>
-            <div className="flex items-center gap-2">
-              <div className="flex min-w-0 items-center rounded-md border">
+            <div className="flex w-full min-w-0 items-center gap-2 sm:w-auto">
+              <div className="flex min-w-0 flex-1 items-center rounded-md border sm:flex-none">
                 <code className="min-w-0 truncate px-3 py-1.5 font-mono text-sm">
                   {cloneUrl}
                 </code>

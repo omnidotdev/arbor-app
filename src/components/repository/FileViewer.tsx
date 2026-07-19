@@ -168,9 +168,9 @@ export function FileViewer({
   return (
     <div className="overflow-hidden rounded-lg border bg-card">
       {/* Header */}
-      <div className="flex items-center justify-between border-b bg-muted/50 px-4 py-2.5">
-        <div className="flex items-center gap-4 text-sm">
-          <span className="font-medium">{filename}</span>
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b bg-muted/50 px-4 py-2.5">
+        <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+          <span className="truncate font-medium">{filename}</span>
           <span className="text-muted-foreground">
             {lineCount} {lineCount === 1 ? "line" : "lines"}
           </span>
@@ -181,7 +181,7 @@ export function FileViewer({
             {language}
           </span>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex shrink-0 items-center gap-1">
           <Button
             variant="ghost"
             size="sm"

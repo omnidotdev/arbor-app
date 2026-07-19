@@ -39,13 +39,13 @@ export function CommitCard({
             {body}
           </p>
         )}
-        <div className="mt-2 flex items-center gap-2 text-muted-foreground text-sm">
-          <User className="h-3 w-3" />
-          <span>{authorName}</span>
+        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground text-sm">
+          <User className="h-3 w-3 shrink-0" />
+          <span className="truncate">{authorName}</span>
           <span>committed {relativeTime}</span>
         </div>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex shrink-0 items-center gap-2">
         <code className="rounded bg-muted px-2 py-1 font-mono text-sm">
           {shortSha}
         </code>
