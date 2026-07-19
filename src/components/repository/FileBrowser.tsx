@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
+import getRelativeTime from "@/lib/util/getRelativeTime";
 import { FileIcon } from "./FileIcon";
 
 interface TreeEntry {
@@ -9,6 +10,14 @@ interface TreeEntry {
   oid: string;
 }
 
+interface TreeEntryCommit {
+  path: string;
+  commitOid: string;
+  messageHeadline: string;
+  committedDate: string;
+  authorName: string;
+}
+
 interface FileBrowserProps {
   owner: string;
   repo: string;
@@ -16,6 +25,9 @@ interface FileBrowserProps {
   currentPath: string;
   entries: TreeEntry[];
   isLoading?: boolean;
+  /** Last commit that touched each entry, keyed by entry basename */
+  commitsByPath?: Map<string, TreeEntryCommit>;
+  commitsLoading?: boolean;
 }
 
 /**
@@ -28,6 +40,8 @@ export function FileBrowser({
   currentPath,
   entries,
   isLoading,
+  commitsByPath,
+  commitsLoading,
 }: FileBrowserProps) {
   if (isLoading) {
     return (
@@ -69,21 +83,44 @@ export function FileBrowser({
           const fullPath = currentPath
             ? `${currentPath}/${entry.path}`
             : entry.path;
+          const lastCommit = commitsByPath?.get(entry.path);
 
           return (
-            <Link
+            <div
               key={entry.oid}
-              to="/repositories/$owner/$repo"
-              params={{ owner, repo }}
-              search={{ ref: branch, path: fullPath }}
               className="flex items-center gap-3 px-4 py-2.5 transition-colors hover:bg-muted/50"
             >
-              <FileIcon name={entry.path} type={entry.type} />
-              <span className="flex-1 truncate text-sm">{entry.path}</span>
-              <span className="font-mono text-muted-foreground text-xs">
-                {entry.oid.slice(0, 7)}
-              </span>
-            </Link>
+              <Link
+                to="/repositories/$owner/$repo"
+                params={{ owner, repo }}
+                search={{ ref: branch, path: fullPath }}
+                className="flex min-w-0 flex-1 items-center gap-3"
+              >
+                <FileIcon name={entry.path} type={entry.type} />
+                <span className="truncate text-sm">{entry.path}</span>
+              </Link>
+
+              {/* Last commit that touched this entry: message headline + time */}
+              <div className="hidden min-w-0 max-w-[45%] flex-1 items-center justify-end gap-3 sm:flex">
+                {lastCommit ? (
+                  <>
+                    <Link
+                      to="/repositories/$owner/$repo/commit/$oid"
+                      params={{ owner, repo, oid: lastCommit.commitOid }}
+                      className="min-w-0 truncate text-muted-foreground text-xs hover:text-primary-600 hover:underline dark:hover:text-primary-400"
+                      title={lastCommit.messageHeadline}
+                    >
+                      {lastCommit.messageHeadline}
+                    </Link>
+                    <span className="shrink-0 text-muted-foreground text-xs">
+                      {getRelativeTime(new Date(lastCommit.committedDate))}
+                    </span>
+                  </>
+                ) : commitsLoading ? (
+                  <div className="h-3 w-24 animate-pulse rounded bg-muted" />
+                ) : null}
+              </div>
+            </div>
           );
         })}
       </div>

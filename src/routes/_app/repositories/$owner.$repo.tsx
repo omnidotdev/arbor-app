@@ -69,6 +69,14 @@ interface Branch {
   isDefault: boolean;
 }
 
+interface TreeEntryCommit {
+  path: string;
+  commitOid: string;
+  messageHeadline: string;
+  committedDate: string;
+  authorName: string;
+}
+
 interface BlobResponse {
   content: string;
   encoding: string;
@@ -102,6 +110,23 @@ async function fetchTree(
   if (!res.ok) {
     if (res.status === 404) return [];
     throw new Error("Failed to fetch tree");
+  }
+  return res.json();
+}
+
+async function fetchTreeCommits(
+  owner: string,
+  repo: string,
+  ref: string,
+  path?: string,
+): Promise<TreeEntryCommit[]> {
+  const url = path
+    ? `${API_BASE_URL}/git/${owner}/${repo}/tree-commits/${ref}/${path}`
+    : `${API_BASE_URL}/git/${owner}/${repo}/tree-commits/${ref}`;
+  const res = await fetch(url, { credentials: "include" });
+  if (!res.ok) {
+    if (res.status === 404) return [];
+    throw new Error("Failed to fetch tree commits");
   }
   return res.json();
 }
@@ -188,6 +213,18 @@ function RepositoryDetailPage() {
     queryFn: () => fetchTree(owner, repo, currentBranch, path),
     enabled: branches.length > 0 || !branchesQuery.isLoading,
   });
+
+  // Last commit per tree entry, for the GitHub-style file browser column
+  const treeCommitsQuery = useQuery({
+    queryKey: ["tree-commits", owner, repo, currentBranch, path],
+    queryFn: () => fetchTreeCommits(owner, repo, currentBranch, path),
+    enabled: branches.length > 0 || !branchesQuery.isLoading,
+  });
+
+  // Index the last-commit info by entry basename for O(1) lookup in the browser
+  const treeCommitsByPath = new Map(
+    (treeCommitsQuery.data ?? []).map((entry) => [entry.path, entry]),
+  );
 
   // Check if current path is a file (we need to fetch blob)
   const currentEntry = treeQuery.data?.find(
@@ -448,6 +485,8 @@ git push -u origin master`}
                 currentPath={path ?? ""}
                 entries={treeQuery.data ?? []}
                 isLoading={treeQuery.isLoading}
+                commitsByPath={treeCommitsByPath}
+                commitsLoading={treeCommitsQuery.isLoading}
               />
             </div>
           )}
