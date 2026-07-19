@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@ark-ui/react": "^5.30.0",
+    "@git-diff-view/file": "^0.1.7",
     "@git-diff-view/react": "^0.1.7",
     "@omnidotdev/providers": "github:omnidotdev/providers#67cb527",
     "@omnidotdev/thornberry": "github:omnidotdev/thornberry#e87d7b4",
