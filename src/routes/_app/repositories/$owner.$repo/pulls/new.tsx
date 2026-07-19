@@ -1,6 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
-import { GitBranch, GitCommit, GitFork, GitPullRequest } from "lucide-react";
+import {
+  GitBranch,
+  GitCommit,
+  GitFork,
+  GitPullRequest,
+  Layers,
+  ListChecks,
+} from "lucide-react";
 
 import { CreatePullRequestForm } from "@/components/pullRequest";
 import { graphqlFetch } from "@/lib/graphql/graphqlFetch";
@@ -201,6 +208,22 @@ function NewPullRequestPage() {
         >
           <GitPullRequest className="h-4 w-4" />
           Pull Requests
+        </Link>
+        <Link
+          to="/repositories/$owner/$repo/stacks"
+          params={{ owner, repo }}
+          className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
+        >
+          <Layers className="h-4 w-4" />
+          Stacks
+        </Link>
+        <Link
+          to="/repositories/$owner/$repo/merge-queue"
+          params={{ owner, repo }}
+          className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
+        >
+          <ListChecks className="h-4 w-4" />
+          Merge queue
         </Link>
       </div>
 

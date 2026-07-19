@@ -1,0 +1,58 @@
+query Stack($rowId: UUID!) {
+  stack(rowId: $rowId) {
+    id
+    rowId
+    title
+    description
+    baseBranch
+    status
+    createdAt
+    updatedAt
+    repository {
+      rowId
+      slug
+      owner {
+        username
+      }
+      organization {
+        idpOrganizationId
+      }
+    }
+    author {
+      rowId
+      username
+    }
+    authoredByAgent {
+      rowId
+      name
+    }
+    changes(orderBy: [POSITION_ASC]) {
+      nodes {
+        id
+        rowId
+        title
+        description
+        position
+        status
+        commitSha
+        parentChangeId
+        pullRequest {
+          rowId
+          number
+        }
+        verificationChecks(orderBy: [NAME_ASC]) {
+          nodes {
+            id
+            rowId
+            name
+            category
+            status
+            required
+            summary
+            detailsUrl
+          }
+        }
+      }
+    }
+  }
+}

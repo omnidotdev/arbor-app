@@ -1,0 +1,36 @@
+query Stacks($ownerSlug: String!, $repoSlug: String!) {
+  stacks(
+    filter: {
+      repository: {
+        slug: { equalTo: $repoSlug }
+        or: [
+          { owner: { username: { equalTo: $ownerSlug } } }
+          { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
+        ]
+      }
+    }
+    orderBy: [CREATED_AT_DESC]
+    first: 100
+  ) {
+    nodes {
+      id
+      rowId
+      title
+      description
+      baseBranch
+      status
+      createdAt
+      author {
+        rowId
+        username
+      }
+      authoredByAgent {
+        rowId
+        name
+      }
+      changes {
+        totalCount
+      }
+    }
+  }
+}

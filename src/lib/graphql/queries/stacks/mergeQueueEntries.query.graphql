@@ -1,0 +1,39 @@
+query MergeQueueEntries($ownerSlug: String!, $repoSlug: String!) {
+  mergeQueueEntries(
+    filter: {
+      repository: {
+        slug: { equalTo: $repoSlug }
+        or: [
+          { owner: { username: { equalTo: $ownerSlug } } }
+          { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
+        ]
+      }
+    }
+    orderBy: [POSITION_ASC]
+    first: 100
+  ) {
+    nodes {
+      id
+      rowId
+      state
+      position
+      targetBranch
+      enqueuedAt
+      createdAt
+      stack {
+        rowId
+        title
+      }
+      pullRequest {
+        rowId
+        number
+        title
+      }
+      batch {
+        rowId
+        ciStatus
+        speculativeBranch
+      }
+    }
+  }
+}

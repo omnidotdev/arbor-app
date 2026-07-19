@@ -1,0 +1,10 @@
+mutation MergeChange($changeId: UUID!) {
+  mergeChange(input: { changeId: $changeId }) {
+    success
+    changeId
+    mode
+    deferred
+    blockingChecks
+    error
+  }
+}

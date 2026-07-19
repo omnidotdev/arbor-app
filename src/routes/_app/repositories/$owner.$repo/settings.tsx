@@ -6,6 +6,8 @@ import {
   GitFork,
   GitPullRequest,
   Globe,
+  Layers,
+  ListChecks,
   Lock,
   Settings,
   ShieldCheck,
@@ -234,6 +236,22 @@ function RepositorySettingsPage() {
         >
           <GitPullRequest className="h-4 w-4" />
           Pull Requests
+        </Link>
+        <Link
+          to="/repositories/$owner/$repo/stacks"
+          params={{ owner, repo }}
+          className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
+        >
+          <Layers className="h-4 w-4" />
+          Stacks
+        </Link>
+        <Link
+          to="/repositories/$owner/$repo/merge-queue"
+          params={{ owner, repo }}
+          className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
+        >
+          <ListChecks className="h-4 w-4" />
+          Merge queue
         </Link>
         <span className="flex items-center gap-2 border-primary border-b-2 px-1 pb-3 font-medium text-sm">
           <Settings className="h-4 w-4" />

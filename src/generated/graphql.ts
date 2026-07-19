@@ -57,6 +57,8 @@ export type Agent = Node & {
   pullRequestsByAuthoredByAgentId: PullRequestConnection;
   rowId: Scalars['UUID']['output'];
   slug: Scalars['String']['output'];
+  /** Reads and enables pagination through a set of `Stack`. */
+  stacksByAuthoredByAgentId: StackConnection;
   updatedAt: Scalars['Datetime']['output'];
   vendor?: Maybe<Scalars['String']['output']>;
 };
@@ -83,6 +85,18 @@ export type AgentPullRequestsByAuthoredByAgentIdArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<PullRequestOrderBy>>;
+};
+
+
+export type AgentStacksByAuthoredByAgentIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<StackCondition>;
+  filter?: InputMaybe<StackFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<StackOrderBy>>;
 };
 
 export type AgentAggregates = {
@@ -232,6 +246,10 @@ export type AgentFilter = {
   rowId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `slug` field. */
   slug?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `stacksByAuthoredByAgentId` relation. */
+  stacksByAuthoredByAgentId?: InputMaybe<AgentToManyStackFilter>;
+  /** Some related `stacksByAuthoredByAgentId` exist. */
+  stacksByAuthoredByAgentIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `vendor` field. */
@@ -418,6 +436,28 @@ export enum AgentOrderBy {
   RowIdDesc = 'ROW_ID_DESC',
   SlugAsc = 'SLUG_ASC',
   SlugDesc = 'SLUG_DESC',
+  StacksByAuthoredByAgentIdCountAsc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_COUNT_ASC',
+  StacksByAuthoredByAgentIdCountDesc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_COUNT_DESC',
+  StacksByAuthoredByAgentIdDistinctCountAuthoredByAgentIdAsc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_ASC',
+  StacksByAuthoredByAgentIdDistinctCountAuthoredByAgentIdDesc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_DESC',
+  StacksByAuthoredByAgentIdDistinctCountAuthorIdAsc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_AUTHOR_ID_ASC',
+  StacksByAuthoredByAgentIdDistinctCountAuthorIdDesc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_AUTHOR_ID_DESC',
+  StacksByAuthoredByAgentIdDistinctCountBaseBranchAsc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_BASE_BRANCH_ASC',
+  StacksByAuthoredByAgentIdDistinctCountBaseBranchDesc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_BASE_BRANCH_DESC',
+  StacksByAuthoredByAgentIdDistinctCountCreatedAtAsc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  StacksByAuthoredByAgentIdDistinctCountCreatedAtDesc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  StacksByAuthoredByAgentIdDistinctCountDescriptionAsc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
+  StacksByAuthoredByAgentIdDistinctCountDescriptionDesc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
+  StacksByAuthoredByAgentIdDistinctCountRepositoryIdAsc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  StacksByAuthoredByAgentIdDistinctCountRepositoryIdDesc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  StacksByAuthoredByAgentIdDistinctCountRowIdAsc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_ROW_ID_ASC',
+  StacksByAuthoredByAgentIdDistinctCountRowIdDesc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_ROW_ID_DESC',
+  StacksByAuthoredByAgentIdDistinctCountStatusAsc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_STATUS_ASC',
+  StacksByAuthoredByAgentIdDistinctCountStatusDesc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_STATUS_DESC',
+  StacksByAuthoredByAgentIdDistinctCountTitleAsc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_TITLE_ASC',
+  StacksByAuthoredByAgentIdDistinctCountTitleDesc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_TITLE_DESC',
+  StacksByAuthoredByAgentIdDistinctCountUpdatedAtAsc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  StacksByAuthoredByAgentIdDistinctCountUpdatedAtDesc = 'STACKS_BY_AUTHORED_BY_AGENT_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC',
   VendorAsc = 'VENDOR_ASC',
@@ -460,6 +500,18 @@ export type AgentToManyPullRequestFilter = {
   none?: InputMaybe<PullRequestFilter>;
   /** Some related `PullRequest` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<PullRequestFilter>;
+};
+
+/** A filter to be used against many `Stack` object types. All fields are combined with a logical ‘and.’ */
+export type AgentToManyStackFilter = {
+  /** Aggregates across related `Stack` match the filter criteria. */
+  aggregates?: InputMaybe<StackAggregatesFilter>;
+  /** Every related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<StackFilter>;
+  /** No related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<StackFilter>;
+  /** Some related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<StackFilter>;
 };
 
 /** A filter to be used against BigFloat fields. All fields are combined with a logical ‘and.’ */
@@ -551,6 +603,519 @@ export type BooleanFilter = {
   notEqualTo?: InputMaybe<Scalars['Boolean']['input']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+};
+
+export type Change = Node & {
+  __typename?: 'Change';
+  commitSha?: Maybe<Scalars['String']['output']>;
+  createdAt: Scalars['Datetime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  headBranch?: Maybe<Scalars['String']['output']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  parentChangeId?: Maybe<Scalars['UUID']['output']>;
+  position: Scalars['Int']['output'];
+  /** Reads a single `PullRequest` that is related to this `Change`. */
+  pullRequest?: Maybe<PullRequest>;
+  pullRequestId?: Maybe<Scalars['UUID']['output']>;
+  /** Reads a single `Repository` that is related to this `Change`. */
+  repository?: Maybe<Repository>;
+  repositoryId: Scalars['UUID']['output'];
+  rowId: Scalars['UUID']['output'];
+  /** Reads a single `Stack` that is related to this `Change`. */
+  stack?: Maybe<Stack>;
+  stackId: Scalars['UUID']['output'];
+  status: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['Datetime']['output'];
+  /** Reads and enables pagination through a set of `VerificationCheck`. */
+  verificationChecks: VerificationCheckConnection;
+};
+
+
+export type ChangeVerificationChecksArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<VerificationCheckCondition>;
+  filter?: InputMaybe<VerificationCheckFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<VerificationCheckOrderBy>>;
+};
+
+export type ChangeAggregates = {
+  __typename?: 'ChangeAggregates';
+  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  average?: Maybe<ChangeAverageAggregates>;
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<ChangeDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  max?: Maybe<ChangeMaxAggregates>;
+  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  min?: Maybe<ChangeMinAggregates>;
+  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevPopulation?: Maybe<ChangeStddevPopulationAggregates>;
+  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevSample?: Maybe<ChangeStddevSampleAggregates>;
+  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  sum?: Maybe<ChangeSumAggregates>;
+  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  variancePopulation?: Maybe<ChangeVariancePopulationAggregates>;
+  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  varianceSample?: Maybe<ChangeVarianceSampleAggregates>;
+};
+
+/** A filter to be used against aggregates of `Change` object types. */
+export type ChangeAggregatesFilter = {
+  /** Mean average aggregate over matching `Change` objects. */
+  average?: InputMaybe<ChangeAverageAggregateFilter>;
+  /** Distinct count aggregate over matching `Change` objects. */
+  distinctCount?: InputMaybe<ChangeDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Change` object to be included within the aggregate. */
+  filter?: InputMaybe<ChangeFilter>;
+  /** Maximum aggregate over matching `Change` objects. */
+  max?: InputMaybe<ChangeMaxAggregateFilter>;
+  /** Minimum aggregate over matching `Change` objects. */
+  min?: InputMaybe<ChangeMinAggregateFilter>;
+  /** Population standard deviation aggregate over matching `Change` objects. */
+  stddevPopulation?: InputMaybe<ChangeStddevPopulationAggregateFilter>;
+  /** Sample standard deviation aggregate over matching `Change` objects. */
+  stddevSample?: InputMaybe<ChangeStddevSampleAggregateFilter>;
+  /** Sum aggregate over matching `Change` objects. */
+  sum?: InputMaybe<ChangeSumAggregateFilter>;
+  /** Population variance aggregate over matching `Change` objects. */
+  variancePopulation?: InputMaybe<ChangeVariancePopulationAggregateFilter>;
+  /** Sample variance aggregate over matching `Change` objects. */
+  varianceSample?: InputMaybe<ChangeVarianceSampleAggregateFilter>;
+};
+
+export type ChangeAverageAggregateFilter = {
+  position?: InputMaybe<BigFloatFilter>;
+};
+
+export type ChangeAverageAggregates = {
+  __typename?: 'ChangeAverageAggregates';
+  /** Mean average of position across the matching connection */
+  position?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+/** A condition to be used against `Change` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type ChangeCondition = {
+  /** Checks for equality with the object’s `commitSha` field. */
+  commitSha?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `headBranch` field. */
+  headBranch?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `parentChangeId` field. */
+  parentChangeId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `position` field. */
+  position?: InputMaybe<Scalars['Int']['input']>;
+  /** Checks for equality with the object’s `pullRequestId` field. */
+  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `stackId` field. */
+  stackId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `status` field. */
+  status?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `title` field. */
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** A connection to a list of `Change` values. */
+export type ChangeConnection = {
+  __typename?: 'ChangeConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<ChangeAggregates>;
+  /** A list of edges which contains the `Change` and cursor to aid in pagination. */
+  edges: Array<ChangeEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<ChangeAggregates>>;
+  /** A list of `Change` objects. */
+  nodes: Array<Change>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Change` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `Change` values. */
+export type ChangeConnectionGroupedAggregatesArgs = {
+  groupBy: Array<ChangeGroupBy>;
+  having?: InputMaybe<ChangeHavingInput>;
+};
+
+export type ChangeDistinctCountAggregateFilter = {
+  commitSha?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
+  description?: InputMaybe<BigIntFilter>;
+  headBranch?: InputMaybe<BigIntFilter>;
+  parentChangeId?: InputMaybe<BigIntFilter>;
+  position?: InputMaybe<BigIntFilter>;
+  pullRequestId?: InputMaybe<BigIntFilter>;
+  repositoryId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  stackId?: InputMaybe<BigIntFilter>;
+  status?: InputMaybe<BigIntFilter>;
+  title?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+};
+
+export type ChangeDistinctCountAggregates = {
+  __typename?: 'ChangeDistinctCountAggregates';
+  /** Distinct count of commitSha across the matching connection */
+  commitSha?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of description across the matching connection */
+  description?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of headBranch across the matching connection */
+  headBranch?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of parentChangeId across the matching connection */
+  parentChangeId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of position across the matching connection */
+  position?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of pullRequestId across the matching connection */
+  pullRequestId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of repositoryId across the matching connection */
+  repositoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of stackId across the matching connection */
+  stackId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of status across the matching connection */
+  status?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of title across the matching connection */
+  title?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `Change` edge in the connection. */
+export type ChangeEdge = {
+  __typename?: 'ChangeEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `Change` at the end of the edge. */
+  node: Change;
+};
+
+/** A filter to be used against `Change` object types. All fields are combined with a logical ‘and.’ */
+export type ChangeFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<ChangeFilter>>;
+  /** Filter by the object’s `commitSha` field. */
+  commitSha?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `headBranch` field. */
+  headBranch?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<ChangeFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<ChangeFilter>>;
+  /** Filter by the object’s `parentChangeId` field. */
+  parentChangeId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `position` field. */
+  position?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `pullRequest` relation. */
+  pullRequest?: InputMaybe<PullRequestFilter>;
+  /** A related `pullRequest` exists. */
+  pullRequestExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `pullRequestId` field. */
+  pullRequestId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `repository` relation. */
+  repository?: InputMaybe<RepositoryFilter>;
+  /** Filter by the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `stack` relation. */
+  stack?: InputMaybe<StackFilter>;
+  /** Filter by the object’s `stackId` field. */
+  stackId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `title` field. */
+  title?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `verificationChecks` relation. */
+  verificationChecks?: InputMaybe<ChangeToManyVerificationCheckFilter>;
+  /** Some related `verificationChecks` exist. */
+  verificationChecksExist?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Grouping methods for `Change` for usage during aggregation. */
+export enum ChangeGroupBy {
+  CommitSha = 'COMMIT_SHA',
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  Description = 'DESCRIPTION',
+  HeadBranch = 'HEAD_BRANCH',
+  ParentChangeId = 'PARENT_CHANGE_ID',
+  Position = 'POSITION',
+  PullRequestId = 'PULL_REQUEST_ID',
+  RepositoryId = 'REPOSITORY_ID',
+  StackId = 'STACK_ID',
+  Status = 'STATUS',
+  Title = 'TITLE',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+}
+
+export type ChangeHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ChangeHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `Change` aggregates. */
+export type ChangeHavingInput = {
+  AND?: InputMaybe<Array<ChangeHavingInput>>;
+  OR?: InputMaybe<Array<ChangeHavingInput>>;
+  average?: InputMaybe<ChangeHavingAverageInput>;
+  distinctCount?: InputMaybe<ChangeHavingDistinctCountInput>;
+  max?: InputMaybe<ChangeHavingMaxInput>;
+  min?: InputMaybe<ChangeHavingMinInput>;
+  stddevPopulation?: InputMaybe<ChangeHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<ChangeHavingStddevSampleInput>;
+  sum?: InputMaybe<ChangeHavingSumInput>;
+  variancePopulation?: InputMaybe<ChangeHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<ChangeHavingVarianceSampleInput>;
+};
+
+export type ChangeHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ChangeHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ChangeHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ChangeHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ChangeHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ChangeHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type ChangeHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `Change` */
+export type ChangeInput = {
+  commitSha?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  headBranch?: InputMaybe<Scalars['String']['input']>;
+  parentChangeId?: InputMaybe<Scalars['UUID']['input']>;
+  position?: InputMaybe<Scalars['Int']['input']>;
+  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
+  repositoryId: Scalars['UUID']['input'];
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  stackId: Scalars['UUID']['input'];
+  status?: InputMaybe<Scalars['String']['input']>;
+  title: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type ChangeMaxAggregateFilter = {
+  position?: InputMaybe<IntFilter>;
+};
+
+export type ChangeMaxAggregates = {
+  __typename?: 'ChangeMaxAggregates';
+  /** Maximum of position across the matching connection */
+  position?: Maybe<Scalars['Int']['output']>;
+};
+
+export type ChangeMinAggregateFilter = {
+  position?: InputMaybe<IntFilter>;
+};
+
+export type ChangeMinAggregates = {
+  __typename?: 'ChangeMinAggregates';
+  /** Minimum of position across the matching connection */
+  position?: Maybe<Scalars['Int']['output']>;
+};
+
+/** Methods to use when ordering `Change`. */
+export enum ChangeOrderBy {
+  CommitShaAsc = 'COMMIT_SHA_ASC',
+  CommitShaDesc = 'COMMIT_SHA_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  HeadBranchAsc = 'HEAD_BRANCH_ASC',
+  HeadBranchDesc = 'HEAD_BRANCH_DESC',
+  Natural = 'NATURAL',
+  ParentChangeIdAsc = 'PARENT_CHANGE_ID_ASC',
+  ParentChangeIdDesc = 'PARENT_CHANGE_ID_DESC',
+  PositionAsc = 'POSITION_ASC',
+  PositionDesc = 'POSITION_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  PullRequestIdAsc = 'PULL_REQUEST_ID_ASC',
+  PullRequestIdDesc = 'PULL_REQUEST_ID_DESC',
+  RepositoryIdAsc = 'REPOSITORY_ID_ASC',
+  RepositoryIdDesc = 'REPOSITORY_ID_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  StackIdAsc = 'STACK_ID_ASC',
+  StackIdDesc = 'STACK_ID_DESC',
+  StatusAsc = 'STATUS_ASC',
+  StatusDesc = 'STATUS_DESC',
+  TitleAsc = 'TITLE_ASC',
+  TitleDesc = 'TITLE_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
+  VerificationChecksCountAsc = 'VERIFICATION_CHECKS_COUNT_ASC',
+  VerificationChecksCountDesc = 'VERIFICATION_CHECKS_COUNT_DESC',
+  VerificationChecksDistinctCountCategoryAsc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_CATEGORY_ASC',
+  VerificationChecksDistinctCountCategoryDesc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_CATEGORY_DESC',
+  VerificationChecksDistinctCountChangeIdAsc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_CHANGE_ID_ASC',
+  VerificationChecksDistinctCountChangeIdDesc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_CHANGE_ID_DESC',
+  VerificationChecksDistinctCountCreatedAtAsc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_CREATED_AT_ASC',
+  VerificationChecksDistinctCountCreatedAtDesc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_CREATED_AT_DESC',
+  VerificationChecksDistinctCountDetailsUrlAsc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_DETAILS_URL_ASC',
+  VerificationChecksDistinctCountDetailsUrlDesc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_DETAILS_URL_DESC',
+  VerificationChecksDistinctCountNameAsc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_NAME_ASC',
+  VerificationChecksDistinctCountNameDesc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_NAME_DESC',
+  VerificationChecksDistinctCountRequiredAsc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_REQUIRED_ASC',
+  VerificationChecksDistinctCountRequiredDesc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_REQUIRED_DESC',
+  VerificationChecksDistinctCountRowIdAsc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_ROW_ID_ASC',
+  VerificationChecksDistinctCountRowIdDesc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_ROW_ID_DESC',
+  VerificationChecksDistinctCountStatusAsc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_STATUS_ASC',
+  VerificationChecksDistinctCountStatusDesc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_STATUS_DESC',
+  VerificationChecksDistinctCountSummaryAsc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_SUMMARY_ASC',
+  VerificationChecksDistinctCountSummaryDesc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_SUMMARY_DESC',
+  VerificationChecksDistinctCountUpdatedAtAsc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_UPDATED_AT_ASC',
+  VerificationChecksDistinctCountUpdatedAtDesc = 'VERIFICATION_CHECKS_DISTINCT_COUNT_UPDATED_AT_DESC'
+}
+
+/** Represents an update to a `Change`. Fields that are set will be updated. */
+export type ChangePatch = {
+  commitSha?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  headBranch?: InputMaybe<Scalars['String']['input']>;
+  parentChangeId?: InputMaybe<Scalars['UUID']['input']>;
+  position?: InputMaybe<Scalars['Int']['input']>;
+  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  stackId?: InputMaybe<Scalars['UUID']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type ChangeStddevPopulationAggregateFilter = {
+  position?: InputMaybe<BigFloatFilter>;
+};
+
+export type ChangeStddevPopulationAggregates = {
+  __typename?: 'ChangeStddevPopulationAggregates';
+  /** Population standard deviation of position across the matching connection */
+  position?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+export type ChangeStddevSampleAggregateFilter = {
+  position?: InputMaybe<BigFloatFilter>;
+};
+
+export type ChangeStddevSampleAggregates = {
+  __typename?: 'ChangeStddevSampleAggregates';
+  /** Sample standard deviation of position across the matching connection */
+  position?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+export type ChangeSumAggregateFilter = {
+  position?: InputMaybe<BigIntFilter>;
+};
+
+export type ChangeSumAggregates = {
+  __typename?: 'ChangeSumAggregates';
+  /** Sum of position across the matching connection */
+  position: Scalars['BigInt']['output'];
+};
+
+/** A filter to be used against many `VerificationCheck` object types. All fields are combined with a logical ‘and.’ */
+export type ChangeToManyVerificationCheckFilter = {
+  /** Aggregates across related `VerificationCheck` match the filter criteria. */
+  aggregates?: InputMaybe<VerificationCheckAggregatesFilter>;
+  /** Every related `VerificationCheck` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<VerificationCheckFilter>;
+  /** No related `VerificationCheck` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<VerificationCheckFilter>;
+  /** Some related `VerificationCheck` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<VerificationCheckFilter>;
+};
+
+export type ChangeVariancePopulationAggregateFilter = {
+  position?: InputMaybe<BigFloatFilter>;
+};
+
+export type ChangeVariancePopulationAggregates = {
+  __typename?: 'ChangeVariancePopulationAggregates';
+  /** Population variance of position across the matching connection */
+  position?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+export type ChangeVarianceSampleAggregateFilter = {
+  position?: InputMaybe<BigFloatFilter>;
+};
+
+export type ChangeVarianceSampleAggregates = {
+  __typename?: 'ChangeVarianceSampleAggregates';
+  /** Sample variance of position across the matching connection */
+  position?: Maybe<Scalars['BigFloat']['output']>;
 };
 
 /** A single file that changed between two refs (the cheap file-list entry). */
@@ -652,6 +1217,39 @@ export type CreateAgentPayloadAgentEdgeArgs = {
   orderBy?: Array<AgentOrderBy>;
 };
 
+/** All input for the create `Change` mutation. */
+export type CreateChangeInput = {
+  /** The `Change` to be created by this mutation. */
+  change: ChangeInput;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The output of our create `Change` mutation. */
+export type CreateChangePayload = {
+  __typename?: 'CreateChangePayload';
+  /** The `Change` that was created by this mutation. */
+  change?: Maybe<Change>;
+  /** An edge for our `Change`. May be used by Relay 1. */
+  changeEdge?: Maybe<ChangeEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `Change` mutation. */
+export type CreateChangePayloadChangeEdgeArgs = {
+  orderBy?: Array<ChangeOrderBy>;
+};
+
 /** All input for the create `ExternalDependency` mutation. */
 export type CreateExternalDependencyInput = {
   /**
@@ -683,6 +1281,72 @@ export type CreateExternalDependencyPayload = {
 /** The output of our create `ExternalDependency` mutation. */
 export type CreateExternalDependencyPayloadExternalDependencyEdgeArgs = {
   orderBy?: Array<ExternalDependencyOrderBy>;
+};
+
+/** All input for the create `MergeBatch` mutation. */
+export type CreateMergeBatchInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `MergeBatch` to be created by this mutation. */
+  mergeBatch: MergeBatchInput;
+};
+
+/** The output of our create `MergeBatch` mutation. */
+export type CreateMergeBatchPayload = {
+  __typename?: 'CreateMergeBatchPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `MergeBatch` that was created by this mutation. */
+  mergeBatch?: Maybe<MergeBatch>;
+  /** An edge for our `MergeBatch`. May be used by Relay 1. */
+  mergeBatchEdge?: Maybe<MergeBatchEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `MergeBatch` mutation. */
+export type CreateMergeBatchPayloadMergeBatchEdgeArgs = {
+  orderBy?: Array<MergeBatchOrderBy>;
+};
+
+/** All input for the create `MergeQueueEntry` mutation. */
+export type CreateMergeQueueEntryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `MergeQueueEntry` to be created by this mutation. */
+  mergeQueueEntry: MergeQueueEntryInput;
+};
+
+/** The output of our create `MergeQueueEntry` mutation. */
+export type CreateMergeQueueEntryPayload = {
+  __typename?: 'CreateMergeQueueEntryPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `MergeQueueEntry` that was created by this mutation. */
+  mergeQueueEntry?: Maybe<MergeQueueEntry>;
+  /** An edge for our `MergeQueueEntry`. May be used by Relay 1. */
+  mergeQueueEntryEdge?: Maybe<MergeQueueEntryEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `MergeQueueEntry` mutation. */
+export type CreateMergeQueueEntryPayloadMergeQueueEntryEdgeArgs = {
+  orderBy?: Array<MergeQueueEntryOrderBy>;
 };
 
 /** All input for the create `Organization` mutation. */
@@ -1118,6 +1782,39 @@ export type CreateRepositoryWithGitPayload = {
   slug?: Maybe<Scalars['String']['output']>;
 };
 
+/** All input for the create `Stack` mutation. */
+export type CreateStackInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `Stack` to be created by this mutation. */
+  stack: StackInput;
+};
+
+/** The output of our create `Stack` mutation. */
+export type CreateStackPayload = {
+  __typename?: 'CreateStackPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Stack` that was created by this mutation. */
+  stack?: Maybe<Stack>;
+  /** An edge for our `Stack`. May be used by Relay 1. */
+  stackEdge?: Maybe<StackEdge>;
+};
+
+
+/** The output of our create `Stack` mutation. */
+export type CreateStackPayloadStackEdgeArgs = {
+  orderBy?: Array<StackOrderBy>;
+};
+
 /** All input for the create `User` mutation. */
 export type CreateUserInput = {
   /**
@@ -1149,6 +1846,39 @@ export type CreateUserPayload = {
 /** The output of our create `User` mutation. */
 export type CreateUserPayloadUserEdgeArgs = {
   orderBy?: Array<UserOrderBy>;
+};
+
+/** All input for the create `VerificationCheck` mutation. */
+export type CreateVerificationCheckInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `VerificationCheck` to be created by this mutation. */
+  verificationCheck: VerificationCheckInput;
+};
+
+/** The output of our create `VerificationCheck` mutation. */
+export type CreateVerificationCheckPayload = {
+  __typename?: 'CreateVerificationCheckPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `VerificationCheck` that was created by this mutation. */
+  verificationCheck?: Maybe<VerificationCheck>;
+  /** An edge for our `VerificationCheck`. May be used by Relay 1. */
+  verificationCheckEdge?: Maybe<VerificationCheckEdge>;
+};
+
+
+/** The output of our create `VerificationCheck` mutation. */
+export type CreateVerificationCheckPayloadVerificationCheckEdgeArgs = {
+  orderBy?: Array<VerificationCheckOrderBy>;
 };
 
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
@@ -1210,6 +1940,39 @@ export type DeleteAgentPayloadAgentEdgeArgs = {
   orderBy?: Array<AgentOrderBy>;
 };
 
+/** All input for the `deleteChange` mutation. */
+export type DeleteChangeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `Change` mutation. */
+export type DeleteChangePayload = {
+  __typename?: 'DeleteChangePayload';
+  /** The `Change` that was deleted by this mutation. */
+  change?: Maybe<Change>;
+  /** An edge for our `Change`. May be used by Relay 1. */
+  changeEdge?: Maybe<ChangeEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedChangeId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `Change` mutation. */
+export type DeleteChangePayloadChangeEdgeArgs = {
+  orderBy?: Array<ChangeOrderBy>;
+};
+
 /** All input for the `deleteExternalDependency` mutation. */
 export type DeleteExternalDependencyInput = {
   /**
@@ -1241,6 +2004,72 @@ export type DeleteExternalDependencyPayload = {
 /** The output of our delete `ExternalDependency` mutation. */
 export type DeleteExternalDependencyPayloadExternalDependencyEdgeArgs = {
   orderBy?: Array<ExternalDependencyOrderBy>;
+};
+
+/** All input for the `deleteMergeBatch` mutation. */
+export type DeleteMergeBatchInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `MergeBatch` mutation. */
+export type DeleteMergeBatchPayload = {
+  __typename?: 'DeleteMergeBatchPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedMergeBatchId?: Maybe<Scalars['ID']['output']>;
+  /** The `MergeBatch` that was deleted by this mutation. */
+  mergeBatch?: Maybe<MergeBatch>;
+  /** An edge for our `MergeBatch`. May be used by Relay 1. */
+  mergeBatchEdge?: Maybe<MergeBatchEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `MergeBatch` mutation. */
+export type DeleteMergeBatchPayloadMergeBatchEdgeArgs = {
+  orderBy?: Array<MergeBatchOrderBy>;
+};
+
+/** All input for the `deleteMergeQueueEntry` mutation. */
+export type DeleteMergeQueueEntryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `MergeQueueEntry` mutation. */
+export type DeleteMergeQueueEntryPayload = {
+  __typename?: 'DeleteMergeQueueEntryPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedMergeQueueEntryId?: Maybe<Scalars['ID']['output']>;
+  /** The `MergeQueueEntry` that was deleted by this mutation. */
+  mergeQueueEntry?: Maybe<MergeQueueEntry>;
+  /** An edge for our `MergeQueueEntry`. May be used by Relay 1. */
+  mergeQueueEntryEdge?: Maybe<MergeQueueEntryEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `MergeQueueEntry` mutation. */
+export type DeleteMergeQueueEntryPayloadMergeQueueEntryEdgeArgs = {
+  orderBy?: Array<MergeQueueEntryOrderBy>;
 };
 
 /** All input for the `deleteOrganization` mutation. */
@@ -1656,6 +2485,39 @@ export type DeleteRepositoryRelationshipTypePayloadRepositoryRelationshipTypeEdg
   orderBy?: Array<RepositoryRelationshipTypeOrderBy>;
 };
 
+/** All input for the `deleteStack` mutation. */
+export type DeleteStackInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `Stack` mutation. */
+export type DeleteStackPayload = {
+  __typename?: 'DeleteStackPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedStackId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Stack` that was deleted by this mutation. */
+  stack?: Maybe<Stack>;
+  /** An edge for our `Stack`. May be used by Relay 1. */
+  stackEdge?: Maybe<StackEdge>;
+};
+
+
+/** The output of our delete `Stack` mutation. */
+export type DeleteStackPayloadStackEdgeArgs = {
+  orderBy?: Array<StackOrderBy>;
+};
+
 /** All input for the `deleteUser` mutation. */
 export type DeleteUserInput = {
   /**
@@ -1687,6 +2549,39 @@ export type DeleteUserPayload = {
 /** The output of our delete `User` mutation. */
 export type DeleteUserPayloadUserEdgeArgs = {
   orderBy?: Array<UserOrderBy>;
+};
+
+/** All input for the `deleteVerificationCheck` mutation. */
+export type DeleteVerificationCheckInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `VerificationCheck` mutation. */
+export type DeleteVerificationCheckPayload = {
+  __typename?: 'DeleteVerificationCheckPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedVerificationCheckId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `VerificationCheck` that was deleted by this mutation. */
+  verificationCheck?: Maybe<VerificationCheck>;
+  /** An edge for our `VerificationCheck`. May be used by Relay 1. */
+  verificationCheckEdge?: Maybe<VerificationCheckEdge>;
+};
+
+
+/** The output of our delete `VerificationCheck` mutation. */
+export type DeleteVerificationCheckPayloadVerificationCheckEdgeArgs = {
+  orderBy?: Array<VerificationCheckOrderBy>;
 };
 
 /** The change status of a file within a diff. */
@@ -2070,6 +2965,343 @@ export type IntFilter = {
   notIn?: InputMaybe<Array<Scalars['Int']['input']>>;
 };
 
+export type MergeBatch = Node & {
+  __typename?: 'MergeBatch';
+  ciStatus: Scalars['String']['output'];
+  createdAt: Scalars['Datetime']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  /** Reads and enables pagination through a set of `MergeQueueEntry`. */
+  mergeQueueEntriesByBatchId: MergeQueueEntryConnection;
+  /** Reads a single `Repository` that is related to this `MergeBatch`. */
+  repository?: Maybe<Repository>;
+  repositoryId: Scalars['UUID']['output'];
+  rowId: Scalars['UUID']['output'];
+  speculativeBranch?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Datetime']['output'];
+};
+
+
+export type MergeBatchMergeQueueEntriesByBatchIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<MergeQueueEntryCondition>;
+  filter?: InputMaybe<MergeQueueEntryFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MergeQueueEntryOrderBy>>;
+};
+
+export type MergeBatchAggregates = {
+  __typename?: 'MergeBatchAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<MergeBatchDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/** A filter to be used against aggregates of `MergeBatch` object types. */
+export type MergeBatchAggregatesFilter = {
+  /** Distinct count aggregate over matching `MergeBatch` objects. */
+  distinctCount?: InputMaybe<MergeBatchDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `MergeBatch` object to be included within the aggregate. */
+  filter?: InputMaybe<MergeBatchFilter>;
+};
+
+/**
+ * A condition to be used against `MergeBatch` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type MergeBatchCondition = {
+  /** Checks for equality with the object’s `ciStatus` field. */
+  ciStatus?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `speculativeBranch` field. */
+  speculativeBranch?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** A connection to a list of `MergeBatch` values. */
+export type MergeBatchConnection = {
+  __typename?: 'MergeBatchConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<MergeBatchAggregates>;
+  /** A list of edges which contains the `MergeBatch` and cursor to aid in pagination. */
+  edges: Array<MergeBatchEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<MergeBatchAggregates>>;
+  /** A list of `MergeBatch` objects. */
+  nodes: Array<MergeBatch>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `MergeBatch` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `MergeBatch` values. */
+export type MergeBatchConnectionGroupedAggregatesArgs = {
+  groupBy: Array<MergeBatchGroupBy>;
+  having?: InputMaybe<MergeBatchHavingInput>;
+};
+
+export type MergeBatchDistinctCountAggregateFilter = {
+  ciStatus?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
+  repositoryId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  speculativeBranch?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+};
+
+export type MergeBatchDistinctCountAggregates = {
+  __typename?: 'MergeBatchDistinctCountAggregates';
+  /** Distinct count of ciStatus across the matching connection */
+  ciStatus?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of repositoryId across the matching connection */
+  repositoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of speculativeBranch across the matching connection */
+  speculativeBranch?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `MergeBatch` edge in the connection. */
+export type MergeBatchEdge = {
+  __typename?: 'MergeBatchEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `MergeBatch` at the end of the edge. */
+  node: MergeBatch;
+};
+
+/** A filter to be used against `MergeBatch` object types. All fields are combined with a logical ‘and.’ */
+export type MergeBatchFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<MergeBatchFilter>>;
+  /** Filter by the object’s `ciStatus` field. */
+  ciStatus?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `mergeQueueEntriesByBatchId` relation. */
+  mergeQueueEntriesByBatchId?: InputMaybe<MergeBatchToManyMergeQueueEntryFilter>;
+  /** Some related `mergeQueueEntriesByBatchId` exist. */
+  mergeQueueEntriesByBatchIdExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Negates the expression. */
+  not?: InputMaybe<MergeBatchFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<MergeBatchFilter>>;
+  /** Filter by the object’s `repository` relation. */
+  repository?: InputMaybe<RepositoryFilter>;
+  /** Filter by the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `speculativeBranch` field. */
+  speculativeBranch?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** Grouping methods for `MergeBatch` for usage during aggregation. */
+export enum MergeBatchGroupBy {
+  CiStatus = 'CI_STATUS',
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  RepositoryId = 'REPOSITORY_ID',
+  SpeculativeBranch = 'SPECULATIVE_BRANCH',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+}
+
+export type MergeBatchHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeBatchHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `MergeBatch` aggregates. */
+export type MergeBatchHavingInput = {
+  AND?: InputMaybe<Array<MergeBatchHavingInput>>;
+  OR?: InputMaybe<Array<MergeBatchHavingInput>>;
+  average?: InputMaybe<MergeBatchHavingAverageInput>;
+  distinctCount?: InputMaybe<MergeBatchHavingDistinctCountInput>;
+  max?: InputMaybe<MergeBatchHavingMaxInput>;
+  min?: InputMaybe<MergeBatchHavingMinInput>;
+  stddevPopulation?: InputMaybe<MergeBatchHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<MergeBatchHavingStddevSampleInput>;
+  sum?: InputMaybe<MergeBatchHavingSumInput>;
+  variancePopulation?: InputMaybe<MergeBatchHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<MergeBatchHavingVarianceSampleInput>;
+};
+
+export type MergeBatchHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeBatchHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeBatchHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeBatchHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeBatchHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeBatchHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeBatchHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `MergeBatch` */
+export type MergeBatchInput = {
+  ciStatus?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  repositoryId: Scalars['UUID']['input'];
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  speculativeBranch?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** Methods to use when ordering `MergeBatch`. */
+export enum MergeBatchOrderBy {
+  CiStatusAsc = 'CI_STATUS_ASC',
+  CiStatusDesc = 'CI_STATUS_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  MergeQueueEntriesByBatchIdAveragePositionAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_AVERAGE_POSITION_ASC',
+  MergeQueueEntriesByBatchIdAveragePositionDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_AVERAGE_POSITION_DESC',
+  MergeQueueEntriesByBatchIdCountAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_COUNT_ASC',
+  MergeQueueEntriesByBatchIdCountDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_COUNT_DESC',
+  MergeQueueEntriesByBatchIdDistinctCountBatchIdAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_BATCH_ID_ASC',
+  MergeQueueEntriesByBatchIdDistinctCountBatchIdDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_BATCH_ID_DESC',
+  MergeQueueEntriesByBatchIdDistinctCountCreatedAtAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  MergeQueueEntriesByBatchIdDistinctCountCreatedAtDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  MergeQueueEntriesByBatchIdDistinctCountEnqueuedAtAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_ENQUEUED_AT_ASC',
+  MergeQueueEntriesByBatchIdDistinctCountEnqueuedAtDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_ENQUEUED_AT_DESC',
+  MergeQueueEntriesByBatchIdDistinctCountPositionAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_POSITION_ASC',
+  MergeQueueEntriesByBatchIdDistinctCountPositionDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_POSITION_DESC',
+  MergeQueueEntriesByBatchIdDistinctCountPullRequestIdAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_PULL_REQUEST_ID_ASC',
+  MergeQueueEntriesByBatchIdDistinctCountPullRequestIdDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_PULL_REQUEST_ID_DESC',
+  MergeQueueEntriesByBatchIdDistinctCountRepositoryIdAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  MergeQueueEntriesByBatchIdDistinctCountRepositoryIdDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  MergeQueueEntriesByBatchIdDistinctCountRowIdAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_ROW_ID_ASC',
+  MergeQueueEntriesByBatchIdDistinctCountRowIdDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_ROW_ID_DESC',
+  MergeQueueEntriesByBatchIdDistinctCountStackIdAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_STACK_ID_ASC',
+  MergeQueueEntriesByBatchIdDistinctCountStackIdDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_STACK_ID_DESC',
+  MergeQueueEntriesByBatchIdDistinctCountStateAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_STATE_ASC',
+  MergeQueueEntriesByBatchIdDistinctCountStateDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_STATE_DESC',
+  MergeQueueEntriesByBatchIdDistinctCountTargetBranchAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_TARGET_BRANCH_ASC',
+  MergeQueueEntriesByBatchIdDistinctCountTargetBranchDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_TARGET_BRANCH_DESC',
+  MergeQueueEntriesByBatchIdDistinctCountUpdatedAtAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  MergeQueueEntriesByBatchIdDistinctCountUpdatedAtDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
+  MergeQueueEntriesByBatchIdMaxPositionAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_MAX_POSITION_ASC',
+  MergeQueueEntriesByBatchIdMaxPositionDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_MAX_POSITION_DESC',
+  MergeQueueEntriesByBatchIdMinPositionAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_MIN_POSITION_ASC',
+  MergeQueueEntriesByBatchIdMinPositionDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_MIN_POSITION_DESC',
+  MergeQueueEntriesByBatchIdStddevPopulationPositionAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_STDDEV_POPULATION_POSITION_ASC',
+  MergeQueueEntriesByBatchIdStddevPopulationPositionDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_STDDEV_POPULATION_POSITION_DESC',
+  MergeQueueEntriesByBatchIdStddevSamplePositionAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_STDDEV_SAMPLE_POSITION_ASC',
+  MergeQueueEntriesByBatchIdStddevSamplePositionDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_STDDEV_SAMPLE_POSITION_DESC',
+  MergeQueueEntriesByBatchIdSumPositionAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_SUM_POSITION_ASC',
+  MergeQueueEntriesByBatchIdSumPositionDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_SUM_POSITION_DESC',
+  MergeQueueEntriesByBatchIdVariancePopulationPositionAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_VARIANCE_POPULATION_POSITION_ASC',
+  MergeQueueEntriesByBatchIdVariancePopulationPositionDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_VARIANCE_POPULATION_POSITION_DESC',
+  MergeQueueEntriesByBatchIdVarianceSamplePositionAsc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_VARIANCE_SAMPLE_POSITION_ASC',
+  MergeQueueEntriesByBatchIdVarianceSamplePositionDesc = 'MERGE_QUEUE_ENTRIES_BY_BATCH_ID_VARIANCE_SAMPLE_POSITION_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepositoryIdAsc = 'REPOSITORY_ID_ASC',
+  RepositoryIdDesc = 'REPOSITORY_ID_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  SpeculativeBranchAsc = 'SPECULATIVE_BRANCH_ASC',
+  SpeculativeBranchDesc = 'SPECULATIVE_BRANCH_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
+/** Represents an update to a `MergeBatch`. Fields that are set will be updated. */
+export type MergeBatchPatch = {
+  ciStatus?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  speculativeBranch?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** A filter to be used against many `MergeQueueEntry` object types. All fields are combined with a logical ‘and.’ */
+export type MergeBatchToManyMergeQueueEntryFilter = {
+  /** Aggregates across related `MergeQueueEntry` match the filter criteria. */
+  aggregates?: InputMaybe<MergeQueueEntryAggregatesFilter>;
+  /** Every related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<MergeQueueEntryFilter>;
+  /** No related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<MergeQueueEntryFilter>;
+  /** Some related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<MergeQueueEntryFilter>;
+};
+
+/** Input for merging a change onto its stack base branch. */
+export type MergeChangeInput = {
+  /** The change ID to merge. */
+  changeId: Scalars['UUID']['input'];
+};
+
+/** Payload for the mergeChange mutation. */
+export type MergeChangePayload = {
+  __typename?: 'MergeChangePayload';
+  /** Names of required checks blocking the merge, when it was not mergeable. */
+  blockingChecks?: Maybe<Array<Scalars['String']['output']>>;
+  /** The change that was merged. */
+  changeId?: Maybe<Scalars['UUID']['output']>;
+  /** Always true: the base-branch ref advance is deferred to the merge queue. */
+  deferred: Scalars['Boolean']['output'];
+  /** Error message if the merge did not proceed. */
+  error?: Maybe<Scalars['String']['output']>;
+  /** The landing shape: "fast-forward" or "merge-commit". */
+  mode?: Maybe<Scalars['String']['output']>;
+  /** The commit the merge intent was recorded against. */
+  recordedTargetOid?: Maybe<Scalars['String']['output']>;
+  /** Whether the merge intent was recorded successfully. */
+  success: Scalars['Boolean']['output'];
+};
+
 /** Input for merging a pull request. */
 export type MergePullRequestInput = {
   /** Optional custom commit message. If not provided, a default message is used. */
@@ -2089,13 +3321,476 @@ export type MergePullRequestPayload = {
   success: Scalars['Boolean']['output'];
 };
 
+export type MergeQueueEntry = Node & {
+  __typename?: 'MergeQueueEntry';
+  /** Reads a single `MergeBatch` that is related to this `MergeQueueEntry`. */
+  batch?: Maybe<MergeBatch>;
+  batchId?: Maybe<Scalars['UUID']['output']>;
+  createdAt: Scalars['Datetime']['output'];
+  enqueuedAt: Scalars['Datetime']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  position: Scalars['Int']['output'];
+  /** Reads a single `PullRequest` that is related to this `MergeQueueEntry`. */
+  pullRequest?: Maybe<PullRequest>;
+  pullRequestId?: Maybe<Scalars['UUID']['output']>;
+  /** Reads a single `Repository` that is related to this `MergeQueueEntry`. */
+  repository?: Maybe<Repository>;
+  repositoryId: Scalars['UUID']['output'];
+  rowId: Scalars['UUID']['output'];
+  /** Reads a single `Stack` that is related to this `MergeQueueEntry`. */
+  stack?: Maybe<Stack>;
+  stackId?: Maybe<Scalars['UUID']['output']>;
+  state: Scalars['String']['output'];
+  targetBranch: Scalars['String']['output'];
+  updatedAt: Scalars['Datetime']['output'];
+};
+
+export type MergeQueueEntryAggregates = {
+  __typename?: 'MergeQueueEntryAggregates';
+  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  average?: Maybe<MergeQueueEntryAverageAggregates>;
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<MergeQueueEntryDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  max?: Maybe<MergeQueueEntryMaxAggregates>;
+  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  min?: Maybe<MergeQueueEntryMinAggregates>;
+  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevPopulation?: Maybe<MergeQueueEntryStddevPopulationAggregates>;
+  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevSample?: Maybe<MergeQueueEntryStddevSampleAggregates>;
+  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  sum?: Maybe<MergeQueueEntrySumAggregates>;
+  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  variancePopulation?: Maybe<MergeQueueEntryVariancePopulationAggregates>;
+  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  varianceSample?: Maybe<MergeQueueEntryVarianceSampleAggregates>;
+};
+
+/** A filter to be used against aggregates of `MergeQueueEntry` object types. */
+export type MergeQueueEntryAggregatesFilter = {
+  /** Mean average aggregate over matching `MergeQueueEntry` objects. */
+  average?: InputMaybe<MergeQueueEntryAverageAggregateFilter>;
+  /** Distinct count aggregate over matching `MergeQueueEntry` objects. */
+  distinctCount?: InputMaybe<MergeQueueEntryDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `MergeQueueEntry` object to be included within the aggregate. */
+  filter?: InputMaybe<MergeQueueEntryFilter>;
+  /** Maximum aggregate over matching `MergeQueueEntry` objects. */
+  max?: InputMaybe<MergeQueueEntryMaxAggregateFilter>;
+  /** Minimum aggregate over matching `MergeQueueEntry` objects. */
+  min?: InputMaybe<MergeQueueEntryMinAggregateFilter>;
+  /** Population standard deviation aggregate over matching `MergeQueueEntry` objects. */
+  stddevPopulation?: InputMaybe<MergeQueueEntryStddevPopulationAggregateFilter>;
+  /** Sample standard deviation aggregate over matching `MergeQueueEntry` objects. */
+  stddevSample?: InputMaybe<MergeQueueEntryStddevSampleAggregateFilter>;
+  /** Sum aggregate over matching `MergeQueueEntry` objects. */
+  sum?: InputMaybe<MergeQueueEntrySumAggregateFilter>;
+  /** Population variance aggregate over matching `MergeQueueEntry` objects. */
+  variancePopulation?: InputMaybe<MergeQueueEntryVariancePopulationAggregateFilter>;
+  /** Sample variance aggregate over matching `MergeQueueEntry` objects. */
+  varianceSample?: InputMaybe<MergeQueueEntryVarianceSampleAggregateFilter>;
+};
+
+export type MergeQueueEntryAverageAggregateFilter = {
+  position?: InputMaybe<BigFloatFilter>;
+};
+
+export type MergeQueueEntryAverageAggregates = {
+  __typename?: 'MergeQueueEntryAverageAggregates';
+  /** Mean average of position across the matching connection */
+  position?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+/**
+ * A condition to be used against `MergeQueueEntry` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type MergeQueueEntryCondition = {
+  /** Checks for equality with the object’s `batchId` field. */
+  batchId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `enqueuedAt` field. */
+  enqueuedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `position` field. */
+  position?: InputMaybe<Scalars['Int']['input']>;
+  /** Checks for equality with the object’s `pullRequestId` field. */
+  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `stackId` field. */
+  stackId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `state` field. */
+  state?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `targetBranch` field. */
+  targetBranch?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** A connection to a list of `MergeQueueEntry` values. */
+export type MergeQueueEntryConnection = {
+  __typename?: 'MergeQueueEntryConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<MergeQueueEntryAggregates>;
+  /** A list of edges which contains the `MergeQueueEntry` and cursor to aid in pagination. */
+  edges: Array<MergeQueueEntryEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<MergeQueueEntryAggregates>>;
+  /** A list of `MergeQueueEntry` objects. */
+  nodes: Array<MergeQueueEntry>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `MergeQueueEntry` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `MergeQueueEntry` values. */
+export type MergeQueueEntryConnectionGroupedAggregatesArgs = {
+  groupBy: Array<MergeQueueEntryGroupBy>;
+  having?: InputMaybe<MergeQueueEntryHavingInput>;
+};
+
+export type MergeQueueEntryDistinctCountAggregateFilter = {
+  batchId?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
+  enqueuedAt?: InputMaybe<BigIntFilter>;
+  position?: InputMaybe<BigIntFilter>;
+  pullRequestId?: InputMaybe<BigIntFilter>;
+  repositoryId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  stackId?: InputMaybe<BigIntFilter>;
+  state?: InputMaybe<BigIntFilter>;
+  targetBranch?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+};
+
+export type MergeQueueEntryDistinctCountAggregates = {
+  __typename?: 'MergeQueueEntryDistinctCountAggregates';
+  /** Distinct count of batchId across the matching connection */
+  batchId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of enqueuedAt across the matching connection */
+  enqueuedAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of position across the matching connection */
+  position?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of pullRequestId across the matching connection */
+  pullRequestId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of repositoryId across the matching connection */
+  repositoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of stackId across the matching connection */
+  stackId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of state across the matching connection */
+  state?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of targetBranch across the matching connection */
+  targetBranch?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `MergeQueueEntry` edge in the connection. */
+export type MergeQueueEntryEdge = {
+  __typename?: 'MergeQueueEntryEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `MergeQueueEntry` at the end of the edge. */
+  node: MergeQueueEntry;
+};
+
+/** A filter to be used against `MergeQueueEntry` object types. All fields are combined with a logical ‘and.’ */
+export type MergeQueueEntryFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<MergeQueueEntryFilter>>;
+  /** Filter by the object’s `batch` relation. */
+  batch?: InputMaybe<MergeBatchFilter>;
+  /** A related `batch` exists. */
+  batchExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `batchId` field. */
+  batchId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `enqueuedAt` field. */
+  enqueuedAt?: InputMaybe<DatetimeFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<MergeQueueEntryFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<MergeQueueEntryFilter>>;
+  /** Filter by the object’s `position` field. */
+  position?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `pullRequest` relation. */
+  pullRequest?: InputMaybe<PullRequestFilter>;
+  /** A related `pullRequest` exists. */
+  pullRequestExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `pullRequestId` field. */
+  pullRequestId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `repository` relation. */
+  repository?: InputMaybe<RepositoryFilter>;
+  /** Filter by the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `stack` relation. */
+  stack?: InputMaybe<StackFilter>;
+  /** A related `stack` exists. */
+  stackExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `stackId` field. */
+  stackId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `state` field. */
+  state?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `targetBranch` field. */
+  targetBranch?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** Grouping methods for `MergeQueueEntry` for usage during aggregation. */
+export enum MergeQueueEntryGroupBy {
+  BatchId = 'BATCH_ID',
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  EnqueuedAt = 'ENQUEUED_AT',
+  EnqueuedAtTruncatedToDay = 'ENQUEUED_AT_TRUNCATED_TO_DAY',
+  EnqueuedAtTruncatedToHour = 'ENQUEUED_AT_TRUNCATED_TO_HOUR',
+  Position = 'POSITION',
+  PullRequestId = 'PULL_REQUEST_ID',
+  RepositoryId = 'REPOSITORY_ID',
+  StackId = 'STACK_ID',
+  State = 'STATE',
+  TargetBranch = 'TARGET_BRANCH',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+}
+
+export type MergeQueueEntryHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  enqueuedAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeQueueEntryHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  enqueuedAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `MergeQueueEntry` aggregates. */
+export type MergeQueueEntryHavingInput = {
+  AND?: InputMaybe<Array<MergeQueueEntryHavingInput>>;
+  OR?: InputMaybe<Array<MergeQueueEntryHavingInput>>;
+  average?: InputMaybe<MergeQueueEntryHavingAverageInput>;
+  distinctCount?: InputMaybe<MergeQueueEntryHavingDistinctCountInput>;
+  max?: InputMaybe<MergeQueueEntryHavingMaxInput>;
+  min?: InputMaybe<MergeQueueEntryHavingMinInput>;
+  stddevPopulation?: InputMaybe<MergeQueueEntryHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<MergeQueueEntryHavingStddevSampleInput>;
+  sum?: InputMaybe<MergeQueueEntryHavingSumInput>;
+  variancePopulation?: InputMaybe<MergeQueueEntryHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<MergeQueueEntryHavingVarianceSampleInput>;
+};
+
+export type MergeQueueEntryHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  enqueuedAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeQueueEntryHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  enqueuedAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeQueueEntryHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  enqueuedAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeQueueEntryHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  enqueuedAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeQueueEntryHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  enqueuedAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeQueueEntryHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  enqueuedAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type MergeQueueEntryHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  enqueuedAt?: InputMaybe<HavingDatetimeFilter>;
+  position?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `MergeQueueEntry` */
+export type MergeQueueEntryInput = {
+  batchId?: InputMaybe<Scalars['UUID']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  enqueuedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  position?: InputMaybe<Scalars['Int']['input']>;
+  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
+  repositoryId: Scalars['UUID']['input'];
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  stackId?: InputMaybe<Scalars['UUID']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  targetBranch?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type MergeQueueEntryMaxAggregateFilter = {
+  position?: InputMaybe<IntFilter>;
+};
+
+export type MergeQueueEntryMaxAggregates = {
+  __typename?: 'MergeQueueEntryMaxAggregates';
+  /** Maximum of position across the matching connection */
+  position?: Maybe<Scalars['Int']['output']>;
+};
+
+export type MergeQueueEntryMinAggregateFilter = {
+  position?: InputMaybe<IntFilter>;
+};
+
+export type MergeQueueEntryMinAggregates = {
+  __typename?: 'MergeQueueEntryMinAggregates';
+  /** Minimum of position across the matching connection */
+  position?: Maybe<Scalars['Int']['output']>;
+};
+
+/** Methods to use when ordering `MergeQueueEntry`. */
+export enum MergeQueueEntryOrderBy {
+  BatchIdAsc = 'BATCH_ID_ASC',
+  BatchIdDesc = 'BATCH_ID_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  EnqueuedAtAsc = 'ENQUEUED_AT_ASC',
+  EnqueuedAtDesc = 'ENQUEUED_AT_DESC',
+  Natural = 'NATURAL',
+  PositionAsc = 'POSITION_ASC',
+  PositionDesc = 'POSITION_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  PullRequestIdAsc = 'PULL_REQUEST_ID_ASC',
+  PullRequestIdDesc = 'PULL_REQUEST_ID_DESC',
+  RepositoryIdAsc = 'REPOSITORY_ID_ASC',
+  RepositoryIdDesc = 'REPOSITORY_ID_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  StackIdAsc = 'STACK_ID_ASC',
+  StackIdDesc = 'STACK_ID_DESC',
+  StateAsc = 'STATE_ASC',
+  StateDesc = 'STATE_DESC',
+  TargetBranchAsc = 'TARGET_BRANCH_ASC',
+  TargetBranchDesc = 'TARGET_BRANCH_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
+/** Represents an update to a `MergeQueueEntry`. Fields that are set will be updated. */
+export type MergeQueueEntryPatch = {
+  batchId?: InputMaybe<Scalars['UUID']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  enqueuedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  position?: InputMaybe<Scalars['Int']['input']>;
+  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  stackId?: InputMaybe<Scalars['UUID']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  targetBranch?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type MergeQueueEntryStddevPopulationAggregateFilter = {
+  position?: InputMaybe<BigFloatFilter>;
+};
+
+export type MergeQueueEntryStddevPopulationAggregates = {
+  __typename?: 'MergeQueueEntryStddevPopulationAggregates';
+  /** Population standard deviation of position across the matching connection */
+  position?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+export type MergeQueueEntryStddevSampleAggregateFilter = {
+  position?: InputMaybe<BigFloatFilter>;
+};
+
+export type MergeQueueEntryStddevSampleAggregates = {
+  __typename?: 'MergeQueueEntryStddevSampleAggregates';
+  /** Sample standard deviation of position across the matching connection */
+  position?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+export type MergeQueueEntrySumAggregateFilter = {
+  position?: InputMaybe<BigIntFilter>;
+};
+
+export type MergeQueueEntrySumAggregates = {
+  __typename?: 'MergeQueueEntrySumAggregates';
+  /** Sum of position across the matching connection */
+  position: Scalars['BigInt']['output'];
+};
+
+export type MergeQueueEntryVariancePopulationAggregateFilter = {
+  position?: InputMaybe<BigFloatFilter>;
+};
+
+export type MergeQueueEntryVariancePopulationAggregates = {
+  __typename?: 'MergeQueueEntryVariancePopulationAggregates';
+  /** Population variance of position across the matching connection */
+  position?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+export type MergeQueueEntryVarianceSampleAggregateFilter = {
+  position?: InputMaybe<BigFloatFilter>;
+};
+
+export type MergeQueueEntryVarianceSampleAggregates = {
+  __typename?: 'MergeQueueEntryVarianceSampleAggregates';
+  /** Sample variance of position across the matching connection */
+  position?: Maybe<Scalars['BigFloat']['output']>;
+};
+
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
   /** Creates a single `Agent`. */
   createAgent?: Maybe<CreateAgentPayload>;
+  /** Creates a single `Change`. */
+  createChange?: Maybe<CreateChangePayload>;
   /** Creates a single `ExternalDependency`. */
   createExternalDependency?: Maybe<CreateExternalDependencyPayload>;
+  /** Creates a single `MergeBatch`. */
+  createMergeBatch?: Maybe<CreateMergeBatchPayload>;
+  /** Creates a single `MergeQueueEntry`. */
+  createMergeQueueEntry?: Maybe<CreateMergeQueueEntryPayload>;
   /** Creates a single `Organization`. */
   createOrganization?: Maybe<CreateOrganizationPayload>;
   /**
@@ -2131,12 +3826,22 @@ export type Mutation = {
    * the git repository is properly initialized on disk.
    */
   createRepositoryWithGit?: Maybe<CreateRepositoryWithGitPayload>;
+  /** Creates a single `Stack`. */
+  createStack?: Maybe<CreateStackPayload>;
   /** Creates a single `User`. */
   createUser?: Maybe<CreateUserPayload>;
+  /** Creates a single `VerificationCheck`. */
+  createVerificationCheck?: Maybe<CreateVerificationCheckPayload>;
   /** Deletes a single `Agent` using a unique key. */
   deleteAgent?: Maybe<DeleteAgentPayload>;
+  /** Deletes a single `Change` using a unique key. */
+  deleteChange?: Maybe<DeleteChangePayload>;
   /** Deletes a single `ExternalDependency` using a unique key. */
   deleteExternalDependency?: Maybe<DeleteExternalDependencyPayload>;
+  /** Deletes a single `MergeBatch` using a unique key. */
+  deleteMergeBatch?: Maybe<DeleteMergeBatchPayload>;
+  /** Deletes a single `MergeQueueEntry` using a unique key. */
+  deleteMergeQueueEntry?: Maybe<DeleteMergeQueueEntryPayload>;
   /** Deletes a single `Organization` using a unique key. */
   deleteOrganization?: Maybe<DeleteOrganizationPayload>;
   /** Deletes a single `PersonalAccessToken` using a unique key. */
@@ -2163,13 +3868,23 @@ export type Mutation = {
   deleteRepositoryRelationshipMetadatum?: Maybe<DeleteRepositoryRelationshipMetadatumPayload>;
   /** Deletes a single `RepositoryRelationshipType` using a unique key. */
   deleteRepositoryRelationshipType?: Maybe<DeleteRepositoryRelationshipTypePayload>;
+  /** Deletes a single `Stack` using a unique key. */
+  deleteStack?: Maybe<DeleteStackPayload>;
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>;
+  /** Deletes a single `VerificationCheck` using a unique key. */
+  deleteVerificationCheck?: Maybe<DeleteVerificationCheckPayload>;
   /**
    * Initialize git storage for a repository.
    * Called after the repository record is created in the database.
    */
   initializeRepository?: Maybe<InitializeRepositoryPayload>;
+  /**
+   * Merge a change onto its stack base branch.
+   * Only the bottom mergeable change of a stack can be merged, and only when
+   * every required check has passed. Requires write access to the repository.
+   */
+  mergeChange?: Maybe<MergeChangePayload>;
   /**
    * Merge a pull request into its target branch.
    * Requires write access to the repository.
@@ -2183,8 +3898,14 @@ export type Mutation = {
   renameRepository?: Maybe<RenameRepositoryPayload>;
   /** Updates a single `Agent` using a unique key and a patch. */
   updateAgent?: Maybe<UpdateAgentPayload>;
+  /** Updates a single `Change` using a unique key and a patch. */
+  updateChange?: Maybe<UpdateChangePayload>;
   /** Updates a single `ExternalDependency` using a unique key and a patch. */
   updateExternalDependency?: Maybe<UpdateExternalDependencyPayload>;
+  /** Updates a single `MergeBatch` using a unique key and a patch. */
+  updateMergeBatch?: Maybe<UpdateMergeBatchPayload>;
+  /** Updates a single `MergeQueueEntry` using a unique key and a patch. */
+  updateMergeQueueEntry?: Maybe<UpdateMergeQueueEntryPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
   updateOrganization?: Maybe<UpdateOrganizationPayload>;
   /** Updates a single `Project` using a unique key and a patch. */
@@ -2207,8 +3928,12 @@ export type Mutation = {
   updateRepositoryRelationshipMetadatum?: Maybe<UpdateRepositoryRelationshipMetadatumPayload>;
   /** Updates a single `RepositoryRelationshipType` using a unique key and a patch. */
   updateRepositoryRelationshipType?: Maybe<UpdateRepositoryRelationshipTypePayload>;
+  /** Updates a single `Stack` using a unique key and a patch. */
+  updateStack?: Maybe<UpdateStackPayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
+  /** Updates a single `VerificationCheck` using a unique key and a patch. */
+  updateVerificationCheck?: Maybe<UpdateVerificationCheckPayload>;
 };
 
 
@@ -2219,8 +3944,26 @@ export type MutationCreateAgentArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateChangeArgs = {
+  input: CreateChangeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateExternalDependencyArgs = {
   input: CreateExternalDependencyInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateMergeBatchArgs = {
+  input: CreateMergeBatchInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateMergeQueueEntryArgs = {
+  input: CreateMergeQueueEntryInput;
 };
 
 
@@ -2310,8 +4053,20 @@ export type MutationCreateRepositoryWithGitArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateStackArgs = {
+  input: CreateStackInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateVerificationCheckArgs = {
+  input: CreateVerificationCheckInput;
 };
 
 
@@ -2322,8 +4077,26 @@ export type MutationDeleteAgentArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteChangeArgs = {
+  input: DeleteChangeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteExternalDependencyArgs = {
   input: DeleteExternalDependencyInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteMergeBatchArgs = {
+  input: DeleteMergeBatchInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteMergeQueueEntryArgs = {
+  input: DeleteMergeQueueEntryInput;
 };
 
 
@@ -2406,14 +4179,32 @@ export type MutationDeleteRepositoryRelationshipTypeArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteStackArgs = {
+  input: DeleteStackInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteUserArgs = {
   input: DeleteUserInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteVerificationCheckArgs = {
+  input: DeleteVerificationCheckInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationInitializeRepositoryArgs = {
   input: InitializeRepositoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationMergeChangeArgs = {
+  input: MergeChangeInput;
 };
 
 
@@ -2436,8 +4227,26 @@ export type MutationUpdateAgentArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateChangeArgs = {
+  input: UpdateChangeInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateExternalDependencyArgs = {
   input: UpdateExternalDependencyInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateMergeBatchArgs = {
+  input: UpdateMergeBatchInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateMergeQueueEntryArgs = {
+  input: UpdateMergeQueueEntryInput;
 };
 
 
@@ -2508,8 +4317,20 @@ export type MutationUpdateRepositoryRelationshipTypeArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateStackArgs = {
+  input: UpdateStackInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateVerificationCheckArgs = {
+  input: UpdateVerificationCheckInput;
 };
 
 /** An object with a globally unique `ID`. */
@@ -3850,6 +5671,8 @@ export type PullRequest = Node & {
    * to the source tip).
    */
   changedFiles: Array<ChangedFile>;
+  /** Reads and enables pagination through a set of `Change`. */
+  changes: ChangeConnection;
   closedAt?: Maybe<Scalars['Datetime']['output']>;
   createdAt: Scalars['Datetime']['output'];
   description?: Maybe<Scalars['String']['output']>;
@@ -3858,6 +5681,8 @@ export type PullRequest = Node & {
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   id: Scalars['ID']['output'];
   mergeCommitSha?: Maybe<Scalars['String']['output']>;
+  /** Reads and enables pagination through a set of `MergeQueueEntry`. */
+  mergeQueueEntries: MergeQueueEntryConnection;
   mergedAt?: Maybe<Scalars['Datetime']['output']>;
   /** Reads a single `User` that is related to this `PullRequest`. */
   mergedBy?: Maybe<User>;
@@ -3879,8 +5704,32 @@ export type PullRequest = Node & {
 };
 
 
+export type PullRequestChangesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<ChangeCondition>;
+  filter?: InputMaybe<ChangeFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ChangeOrderBy>>;
+};
+
+
 export type PullRequestFileDiffArgs = {
   path: Scalars['String']['input'];
+};
+
+
+export type PullRequestMergeQueueEntriesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<MergeQueueEntryCondition>;
+  filter?: InputMaybe<MergeQueueEntryFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MergeQueueEntryOrderBy>>;
 };
 
 
@@ -4555,6 +6404,10 @@ export type PullRequestFilter = {
   authoredByAgentExists?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `authoredByAgentId` field. */
   authoredByAgentId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `changes` relation. */
+  changes?: InputMaybe<PullRequestToManyChangeFilter>;
+  /** Some related `changes` exist. */
+  changesExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `closedAt` field. */
   closedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `createdAt` field. */
@@ -4563,6 +6416,10 @@ export type PullRequestFilter = {
   description?: InputMaybe<StringFilter>;
   /** Filter by the object’s `mergeCommitSha` field. */
   mergeCommitSha?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `mergeQueueEntries` relation. */
+  mergeQueueEntries?: InputMaybe<PullRequestToManyMergeQueueEntryFilter>;
+  /** Some related `mergeQueueEntries` exist. */
+  mergeQueueEntriesExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `mergedAt` field. */
   mergedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `mergedBy` relation. */
@@ -4763,6 +6620,50 @@ export enum PullRequestOrderBy {
   AuthoredByAgentIdDesc = 'AUTHORED_BY_AGENT_ID_DESC',
   AuthorIdAsc = 'AUTHOR_ID_ASC',
   AuthorIdDesc = 'AUTHOR_ID_DESC',
+  ChangesAveragePositionAsc = 'CHANGES_AVERAGE_POSITION_ASC',
+  ChangesAveragePositionDesc = 'CHANGES_AVERAGE_POSITION_DESC',
+  ChangesCountAsc = 'CHANGES_COUNT_ASC',
+  ChangesCountDesc = 'CHANGES_COUNT_DESC',
+  ChangesDistinctCountCommitShaAsc = 'CHANGES_DISTINCT_COUNT_COMMIT_SHA_ASC',
+  ChangesDistinctCountCommitShaDesc = 'CHANGES_DISTINCT_COUNT_COMMIT_SHA_DESC',
+  ChangesDistinctCountCreatedAtAsc = 'CHANGES_DISTINCT_COUNT_CREATED_AT_ASC',
+  ChangesDistinctCountCreatedAtDesc = 'CHANGES_DISTINCT_COUNT_CREATED_AT_DESC',
+  ChangesDistinctCountDescriptionAsc = 'CHANGES_DISTINCT_COUNT_DESCRIPTION_ASC',
+  ChangesDistinctCountDescriptionDesc = 'CHANGES_DISTINCT_COUNT_DESCRIPTION_DESC',
+  ChangesDistinctCountHeadBranchAsc = 'CHANGES_DISTINCT_COUNT_HEAD_BRANCH_ASC',
+  ChangesDistinctCountHeadBranchDesc = 'CHANGES_DISTINCT_COUNT_HEAD_BRANCH_DESC',
+  ChangesDistinctCountParentChangeIdAsc = 'CHANGES_DISTINCT_COUNT_PARENT_CHANGE_ID_ASC',
+  ChangesDistinctCountParentChangeIdDesc = 'CHANGES_DISTINCT_COUNT_PARENT_CHANGE_ID_DESC',
+  ChangesDistinctCountPositionAsc = 'CHANGES_DISTINCT_COUNT_POSITION_ASC',
+  ChangesDistinctCountPositionDesc = 'CHANGES_DISTINCT_COUNT_POSITION_DESC',
+  ChangesDistinctCountPullRequestIdAsc = 'CHANGES_DISTINCT_COUNT_PULL_REQUEST_ID_ASC',
+  ChangesDistinctCountPullRequestIdDesc = 'CHANGES_DISTINCT_COUNT_PULL_REQUEST_ID_DESC',
+  ChangesDistinctCountRepositoryIdAsc = 'CHANGES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  ChangesDistinctCountRepositoryIdDesc = 'CHANGES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  ChangesDistinctCountRowIdAsc = 'CHANGES_DISTINCT_COUNT_ROW_ID_ASC',
+  ChangesDistinctCountRowIdDesc = 'CHANGES_DISTINCT_COUNT_ROW_ID_DESC',
+  ChangesDistinctCountStackIdAsc = 'CHANGES_DISTINCT_COUNT_STACK_ID_ASC',
+  ChangesDistinctCountStackIdDesc = 'CHANGES_DISTINCT_COUNT_STACK_ID_DESC',
+  ChangesDistinctCountStatusAsc = 'CHANGES_DISTINCT_COUNT_STATUS_ASC',
+  ChangesDistinctCountStatusDesc = 'CHANGES_DISTINCT_COUNT_STATUS_DESC',
+  ChangesDistinctCountTitleAsc = 'CHANGES_DISTINCT_COUNT_TITLE_ASC',
+  ChangesDistinctCountTitleDesc = 'CHANGES_DISTINCT_COUNT_TITLE_DESC',
+  ChangesDistinctCountUpdatedAtAsc = 'CHANGES_DISTINCT_COUNT_UPDATED_AT_ASC',
+  ChangesDistinctCountUpdatedAtDesc = 'CHANGES_DISTINCT_COUNT_UPDATED_AT_DESC',
+  ChangesMaxPositionAsc = 'CHANGES_MAX_POSITION_ASC',
+  ChangesMaxPositionDesc = 'CHANGES_MAX_POSITION_DESC',
+  ChangesMinPositionAsc = 'CHANGES_MIN_POSITION_ASC',
+  ChangesMinPositionDesc = 'CHANGES_MIN_POSITION_DESC',
+  ChangesStddevPopulationPositionAsc = 'CHANGES_STDDEV_POPULATION_POSITION_ASC',
+  ChangesStddevPopulationPositionDesc = 'CHANGES_STDDEV_POPULATION_POSITION_DESC',
+  ChangesStddevSamplePositionAsc = 'CHANGES_STDDEV_SAMPLE_POSITION_ASC',
+  ChangesStddevSamplePositionDesc = 'CHANGES_STDDEV_SAMPLE_POSITION_DESC',
+  ChangesSumPositionAsc = 'CHANGES_SUM_POSITION_ASC',
+  ChangesSumPositionDesc = 'CHANGES_SUM_POSITION_DESC',
+  ChangesVariancePopulationPositionAsc = 'CHANGES_VARIANCE_POPULATION_POSITION_ASC',
+  ChangesVariancePopulationPositionDesc = 'CHANGES_VARIANCE_POPULATION_POSITION_DESC',
+  ChangesVarianceSamplePositionAsc = 'CHANGES_VARIANCE_SAMPLE_POSITION_ASC',
+  ChangesVarianceSamplePositionDesc = 'CHANGES_VARIANCE_SAMPLE_POSITION_DESC',
   ClosedAtAsc = 'CLOSED_AT_ASC',
   ClosedAtDesc = 'CLOSED_AT_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
@@ -4775,6 +6676,46 @@ export enum PullRequestOrderBy {
   MergedByIdDesc = 'MERGED_BY_ID_DESC',
   MergeCommitShaAsc = 'MERGE_COMMIT_SHA_ASC',
   MergeCommitShaDesc = 'MERGE_COMMIT_SHA_DESC',
+  MergeQueueEntriesAveragePositionAsc = 'MERGE_QUEUE_ENTRIES_AVERAGE_POSITION_ASC',
+  MergeQueueEntriesAveragePositionDesc = 'MERGE_QUEUE_ENTRIES_AVERAGE_POSITION_DESC',
+  MergeQueueEntriesCountAsc = 'MERGE_QUEUE_ENTRIES_COUNT_ASC',
+  MergeQueueEntriesCountDesc = 'MERGE_QUEUE_ENTRIES_COUNT_DESC',
+  MergeQueueEntriesDistinctCountBatchIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_BATCH_ID_ASC',
+  MergeQueueEntriesDistinctCountBatchIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_BATCH_ID_DESC',
+  MergeQueueEntriesDistinctCountCreatedAtAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_CREATED_AT_ASC',
+  MergeQueueEntriesDistinctCountCreatedAtDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_CREATED_AT_DESC',
+  MergeQueueEntriesDistinctCountEnqueuedAtAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ENQUEUED_AT_ASC',
+  MergeQueueEntriesDistinctCountEnqueuedAtDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ENQUEUED_AT_DESC',
+  MergeQueueEntriesDistinctCountPositionAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_POSITION_ASC',
+  MergeQueueEntriesDistinctCountPositionDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_POSITION_DESC',
+  MergeQueueEntriesDistinctCountPullRequestIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_PULL_REQUEST_ID_ASC',
+  MergeQueueEntriesDistinctCountPullRequestIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_PULL_REQUEST_ID_DESC',
+  MergeQueueEntriesDistinctCountRepositoryIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  MergeQueueEntriesDistinctCountRepositoryIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  MergeQueueEntriesDistinctCountRowIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ROW_ID_ASC',
+  MergeQueueEntriesDistinctCountRowIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ROW_ID_DESC',
+  MergeQueueEntriesDistinctCountStackIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STACK_ID_ASC',
+  MergeQueueEntriesDistinctCountStackIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STACK_ID_DESC',
+  MergeQueueEntriesDistinctCountStateAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STATE_ASC',
+  MergeQueueEntriesDistinctCountStateDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STATE_DESC',
+  MergeQueueEntriesDistinctCountTargetBranchAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_TARGET_BRANCH_ASC',
+  MergeQueueEntriesDistinctCountTargetBranchDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_TARGET_BRANCH_DESC',
+  MergeQueueEntriesDistinctCountUpdatedAtAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_UPDATED_AT_ASC',
+  MergeQueueEntriesDistinctCountUpdatedAtDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_UPDATED_AT_DESC',
+  MergeQueueEntriesMaxPositionAsc = 'MERGE_QUEUE_ENTRIES_MAX_POSITION_ASC',
+  MergeQueueEntriesMaxPositionDesc = 'MERGE_QUEUE_ENTRIES_MAX_POSITION_DESC',
+  MergeQueueEntriesMinPositionAsc = 'MERGE_QUEUE_ENTRIES_MIN_POSITION_ASC',
+  MergeQueueEntriesMinPositionDesc = 'MERGE_QUEUE_ENTRIES_MIN_POSITION_DESC',
+  MergeQueueEntriesStddevPopulationPositionAsc = 'MERGE_QUEUE_ENTRIES_STDDEV_POPULATION_POSITION_ASC',
+  MergeQueueEntriesStddevPopulationPositionDesc = 'MERGE_QUEUE_ENTRIES_STDDEV_POPULATION_POSITION_DESC',
+  MergeQueueEntriesStddevSamplePositionAsc = 'MERGE_QUEUE_ENTRIES_STDDEV_SAMPLE_POSITION_ASC',
+  MergeQueueEntriesStddevSamplePositionDesc = 'MERGE_QUEUE_ENTRIES_STDDEV_SAMPLE_POSITION_DESC',
+  MergeQueueEntriesSumPositionAsc = 'MERGE_QUEUE_ENTRIES_SUM_POSITION_ASC',
+  MergeQueueEntriesSumPositionDesc = 'MERGE_QUEUE_ENTRIES_SUM_POSITION_DESC',
+  MergeQueueEntriesVariancePopulationPositionAsc = 'MERGE_QUEUE_ENTRIES_VARIANCE_POPULATION_POSITION_ASC',
+  MergeQueueEntriesVariancePopulationPositionDesc = 'MERGE_QUEUE_ENTRIES_VARIANCE_POPULATION_POSITION_DESC',
+  MergeQueueEntriesVarianceSamplePositionAsc = 'MERGE_QUEUE_ENTRIES_VARIANCE_SAMPLE_POSITION_ASC',
+  MergeQueueEntriesVarianceSamplePositionDesc = 'MERGE_QUEUE_ENTRIES_VARIANCE_SAMPLE_POSITION_DESC',
   Natural = 'NATURAL',
   NumberAsc = 'NUMBER_ASC',
   NumberDesc = 'NUMBER_DESC',
@@ -5187,6 +7128,30 @@ export type PullRequestSumAggregates = {
   number: Scalars['BigInt']['output'];
 };
 
+/** A filter to be used against many `Change` object types. All fields are combined with a logical ‘and.’ */
+export type PullRequestToManyChangeFilter = {
+  /** Aggregates across related `Change` match the filter criteria. */
+  aggregates?: InputMaybe<ChangeAggregatesFilter>;
+  /** Every related `Change` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<ChangeFilter>;
+  /** No related `Change` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<ChangeFilter>;
+  /** Some related `Change` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<ChangeFilter>;
+};
+
+/** A filter to be used against many `MergeQueueEntry` object types. All fields are combined with a logical ‘and.’ */
+export type PullRequestToManyMergeQueueEntryFilter = {
+  /** Aggregates across related `MergeQueueEntry` match the filter criteria. */
+  aggregates?: InputMaybe<MergeQueueEntryAggregatesFilter>;
+  /** Every related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<MergeQueueEntryFilter>;
+  /** No related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<MergeQueueEntryFilter>;
+  /** Some related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<MergeQueueEntryFilter>;
+};
+
 /** A filter to be used against many `PullRequestComment` object types. All fields are combined with a logical ‘and.’ */
 export type PullRequestToManyPullRequestCommentFilter = {
   /** Aggregates across related `PullRequestComment` match the filter criteria. */
@@ -5240,6 +7205,12 @@ export type Query = Node & {
   agentById?: Maybe<Agent>;
   /** Reads and enables pagination through a set of `Agent`. */
   agents?: Maybe<AgentConnection>;
+  /** Get a single `Change`. */
+  change?: Maybe<Change>;
+  /** Reads a single `Change` using its globally unique `ID`. */
+  changeById?: Maybe<Change>;
+  /** Reads and enables pagination through a set of `Change`. */
+  changes?: Maybe<ChangeConnection>;
   /** Reads and enables pagination through a set of `ExternalDependency`. */
   externalDependencies?: Maybe<ExternalDependencyConnection>;
   /** Get a single `ExternalDependency`. */
@@ -5248,6 +7219,18 @@ export type Query = Node & {
   externalDependencyById?: Maybe<ExternalDependency>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   id: Scalars['ID']['output'];
+  /** Get a single `MergeBatch`. */
+  mergeBatch?: Maybe<MergeBatch>;
+  /** Reads a single `MergeBatch` using its globally unique `ID`. */
+  mergeBatchById?: Maybe<MergeBatch>;
+  /** Reads and enables pagination through a set of `MergeBatch`. */
+  mergeBatches?: Maybe<MergeBatchConnection>;
+  /** Reads and enables pagination through a set of `MergeQueueEntry`. */
+  mergeQueueEntries?: Maybe<MergeQueueEntryConnection>;
+  /** Get a single `MergeQueueEntry`. */
+  mergeQueueEntry?: Maybe<MergeQueueEntry>;
+  /** Reads a single `MergeQueueEntry` using its globally unique `ID`. */
+  mergeQueueEntryById?: Maybe<MergeQueueEntry>;
   /** Fetches an object given its globally unique `ID`. */
   node?: Maybe<Node>;
   /**
@@ -5330,6 +7313,14 @@ export type Query = Node & {
   repositoryRelationshipTypes?: Maybe<RepositoryRelationshipTypeConnection>;
   /** Reads and enables pagination through a set of `RepositoryRelationship`. */
   repositoryRelationships?: Maybe<RepositoryRelationshipConnection>;
+  /** Get a single `Stack`. */
+  stack?: Maybe<Stack>;
+  /** Reads a single `Stack` using its globally unique `ID`. */
+  stackById?: Maybe<Stack>;
+  /** Whether a change can merge, from its required verification checks. */
+  stackMergeability?: Maybe<StackMergeabilityResult>;
+  /** Reads and enables pagination through a set of `Stack`. */
+  stacks?: Maybe<StackConnection>;
   /** Get a single `User`. */
   user?: Maybe<User>;
   /** Get a single `User`. */
@@ -5342,6 +7333,12 @@ export type Query = Node & {
   userByUsername?: Maybe<User>;
   /** Reads and enables pagination through a set of `User`. */
   users?: Maybe<UserConnection>;
+  /** Get a single `VerificationCheck`. */
+  verificationCheck?: Maybe<VerificationCheck>;
+  /** Reads a single `VerificationCheck` using its globally unique `ID`. */
+  verificationCheckById?: Maybe<VerificationCheck>;
+  /** Reads and enables pagination through a set of `VerificationCheck`. */
+  verificationChecks?: Maybe<VerificationCheckConnection>;
 };
 
 
@@ -5371,6 +7368,31 @@ export type QueryAgentsArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryChangeArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryChangeByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryChangesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<ChangeCondition>;
+  filter?: InputMaybe<ChangeFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ChangeOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryExternalDependenciesArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -5391,6 +7413,56 @@ export type QueryExternalDependencyArgs = {
 
 /** The root query type which gives access points into the data universe. */
 export type QueryExternalDependencyByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryMergeBatchArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryMergeBatchByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryMergeBatchesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<MergeBatchCondition>;
+  filter?: InputMaybe<MergeBatchFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MergeBatchOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryMergeQueueEntriesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<MergeQueueEntryCondition>;
+  filter?: InputMaybe<MergeQueueEntryFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MergeQueueEntryOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryMergeQueueEntryArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryMergeQueueEntryByIdArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -5697,6 +7769,37 @@ export type QueryRepositoryRelationshipsArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryStackArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryStackByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryStackMergeabilityArgs = {
+  changeId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryStacksArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<StackCondition>;
+  filter?: InputMaybe<StackFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<StackOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryUserArgs = {
   rowId: Scalars['UUID']['input'];
 };
@@ -5736,6 +7839,31 @@ export type QueryUsersArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<UserOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryVerificationCheckArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryVerificationCheckByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryVerificationChecksArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<VerificationCheckCondition>;
+  filter?: InputMaybe<VerificationCheckFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<VerificationCheckOrderBy>>;
 };
 
 /** A Git reference (branch or tag). */
@@ -5781,6 +7909,8 @@ export type RenameRepositoryPayload = {
 
 export type Repository = Node & {
   __typename?: 'Repository';
+  /** Reads and enables pagination through a set of `Change`. */
+  changes: ChangeConnection;
   /** Fetch a commit by its SHA. */
   commit?: Maybe<Commit>;
   createdAt: Scalars['Datetime']['output'];
@@ -5792,6 +7922,10 @@ export type Repository = Node & {
   externalDependencies: ExternalDependencyConnection;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   id: Scalars['ID']['output'];
+  /** Reads and enables pagination through a set of `MergeBatch`. */
+  mergeBatches: MergeBatchConnection;
+  /** Reads and enables pagination through a set of `MergeQueueEntry`. */
+  mergeQueueEntries: MergeQueueEntryConnection;
   name: Scalars['String']['output'];
   /** Reads a single `Organization` that is related to this `Repository`. */
   organization?: Maybe<Organization>;
@@ -5815,8 +7949,22 @@ export type Repository = Node & {
   repositoryRelationshipsByTargetRepositoryId: RepositoryRelationshipConnection;
   rowId: Scalars['UUID']['output'];
   slug: Scalars['String']['output'];
+  /** Reads and enables pagination through a set of `Stack`. */
+  stacks: StackConnection;
   updatedAt: Scalars['Datetime']['output'];
   visibility: Visibility;
+};
+
+
+export type RepositoryChangesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<ChangeCondition>;
+  filter?: InputMaybe<ChangeFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ChangeOrderBy>>;
 };
 
 
@@ -5834,6 +7982,30 @@ export type RepositoryExternalDependenciesArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<ExternalDependencyOrderBy>>;
+};
+
+
+export type RepositoryMergeBatchesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<MergeBatchCondition>;
+  filter?: InputMaybe<MergeBatchFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MergeBatchOrderBy>>;
+};
+
+
+export type RepositoryMergeQueueEntriesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<MergeQueueEntryCondition>;
+  filter?: InputMaybe<MergeQueueEntryFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MergeQueueEntryOrderBy>>;
 };
 
 
@@ -5905,6 +8077,18 @@ export type RepositoryRepositoryRelationshipsByTargetRepositoryIdArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<RepositoryRelationshipOrderBy>>;
+};
+
+
+export type RepositoryStacksArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<StackCondition>;
+  filter?: InputMaybe<StackFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<StackOrderBy>>;
 };
 
 export type RepositoryAggregates = {
@@ -6257,6 +8441,10 @@ export type RepositoryEdge = {
 export type RepositoryFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<RepositoryFilter>>;
+  /** Filter by the object’s `changes` relation. */
+  changes?: InputMaybe<RepositoryToManyChangeFilter>;
+  /** Some related `changes` exist. */
+  changesExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `defaultBranch` field. */
@@ -6267,6 +8455,14 @@ export type RepositoryFilter = {
   externalDependencies?: InputMaybe<RepositoryToManyExternalDependencyFilter>;
   /** Some related `externalDependencies` exist. */
   externalDependenciesExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `mergeBatches` relation. */
+  mergeBatches?: InputMaybe<RepositoryToManyMergeBatchFilter>;
+  /** Some related `mergeBatches` exist. */
+  mergeBatchesExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `mergeQueueEntries` relation. */
+  mergeQueueEntries?: InputMaybe<RepositoryToManyMergeQueueEntryFilter>;
+  /** Some related `mergeQueueEntries` exist. */
+  mergeQueueEntriesExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `name` field. */
   name?: InputMaybe<StringFilter>;
   /** Negates the expression. */
@@ -6307,6 +8503,10 @@ export type RepositoryFilter = {
   rowId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `slug` field. */
   slug?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `stacks` relation. */
+  stacks?: InputMaybe<RepositoryToManyStackFilter>;
+  /** Some related `stacks` exist. */
+  stacksExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `visibility` field. */
@@ -6406,6 +8606,50 @@ export type RepositoryInput = {
 
 /** Methods to use when ordering `Repository`. */
 export enum RepositoryOrderBy {
+  ChangesAveragePositionAsc = 'CHANGES_AVERAGE_POSITION_ASC',
+  ChangesAveragePositionDesc = 'CHANGES_AVERAGE_POSITION_DESC',
+  ChangesCountAsc = 'CHANGES_COUNT_ASC',
+  ChangesCountDesc = 'CHANGES_COUNT_DESC',
+  ChangesDistinctCountCommitShaAsc = 'CHANGES_DISTINCT_COUNT_COMMIT_SHA_ASC',
+  ChangesDistinctCountCommitShaDesc = 'CHANGES_DISTINCT_COUNT_COMMIT_SHA_DESC',
+  ChangesDistinctCountCreatedAtAsc = 'CHANGES_DISTINCT_COUNT_CREATED_AT_ASC',
+  ChangesDistinctCountCreatedAtDesc = 'CHANGES_DISTINCT_COUNT_CREATED_AT_DESC',
+  ChangesDistinctCountDescriptionAsc = 'CHANGES_DISTINCT_COUNT_DESCRIPTION_ASC',
+  ChangesDistinctCountDescriptionDesc = 'CHANGES_DISTINCT_COUNT_DESCRIPTION_DESC',
+  ChangesDistinctCountHeadBranchAsc = 'CHANGES_DISTINCT_COUNT_HEAD_BRANCH_ASC',
+  ChangesDistinctCountHeadBranchDesc = 'CHANGES_DISTINCT_COUNT_HEAD_BRANCH_DESC',
+  ChangesDistinctCountParentChangeIdAsc = 'CHANGES_DISTINCT_COUNT_PARENT_CHANGE_ID_ASC',
+  ChangesDistinctCountParentChangeIdDesc = 'CHANGES_DISTINCT_COUNT_PARENT_CHANGE_ID_DESC',
+  ChangesDistinctCountPositionAsc = 'CHANGES_DISTINCT_COUNT_POSITION_ASC',
+  ChangesDistinctCountPositionDesc = 'CHANGES_DISTINCT_COUNT_POSITION_DESC',
+  ChangesDistinctCountPullRequestIdAsc = 'CHANGES_DISTINCT_COUNT_PULL_REQUEST_ID_ASC',
+  ChangesDistinctCountPullRequestIdDesc = 'CHANGES_DISTINCT_COUNT_PULL_REQUEST_ID_DESC',
+  ChangesDistinctCountRepositoryIdAsc = 'CHANGES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  ChangesDistinctCountRepositoryIdDesc = 'CHANGES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  ChangesDistinctCountRowIdAsc = 'CHANGES_DISTINCT_COUNT_ROW_ID_ASC',
+  ChangesDistinctCountRowIdDesc = 'CHANGES_DISTINCT_COUNT_ROW_ID_DESC',
+  ChangesDistinctCountStackIdAsc = 'CHANGES_DISTINCT_COUNT_STACK_ID_ASC',
+  ChangesDistinctCountStackIdDesc = 'CHANGES_DISTINCT_COUNT_STACK_ID_DESC',
+  ChangesDistinctCountStatusAsc = 'CHANGES_DISTINCT_COUNT_STATUS_ASC',
+  ChangesDistinctCountStatusDesc = 'CHANGES_DISTINCT_COUNT_STATUS_DESC',
+  ChangesDistinctCountTitleAsc = 'CHANGES_DISTINCT_COUNT_TITLE_ASC',
+  ChangesDistinctCountTitleDesc = 'CHANGES_DISTINCT_COUNT_TITLE_DESC',
+  ChangesDistinctCountUpdatedAtAsc = 'CHANGES_DISTINCT_COUNT_UPDATED_AT_ASC',
+  ChangesDistinctCountUpdatedAtDesc = 'CHANGES_DISTINCT_COUNT_UPDATED_AT_DESC',
+  ChangesMaxPositionAsc = 'CHANGES_MAX_POSITION_ASC',
+  ChangesMaxPositionDesc = 'CHANGES_MAX_POSITION_DESC',
+  ChangesMinPositionAsc = 'CHANGES_MIN_POSITION_ASC',
+  ChangesMinPositionDesc = 'CHANGES_MIN_POSITION_DESC',
+  ChangesStddevPopulationPositionAsc = 'CHANGES_STDDEV_POPULATION_POSITION_ASC',
+  ChangesStddevPopulationPositionDesc = 'CHANGES_STDDEV_POPULATION_POSITION_DESC',
+  ChangesStddevSamplePositionAsc = 'CHANGES_STDDEV_SAMPLE_POSITION_ASC',
+  ChangesStddevSamplePositionDesc = 'CHANGES_STDDEV_SAMPLE_POSITION_DESC',
+  ChangesSumPositionAsc = 'CHANGES_SUM_POSITION_ASC',
+  ChangesSumPositionDesc = 'CHANGES_SUM_POSITION_DESC',
+  ChangesVariancePopulationPositionAsc = 'CHANGES_VARIANCE_POPULATION_POSITION_ASC',
+  ChangesVariancePopulationPositionDesc = 'CHANGES_VARIANCE_POPULATION_POSITION_DESC',
+  ChangesVarianceSamplePositionAsc = 'CHANGES_VARIANCE_SAMPLE_POSITION_ASC',
+  ChangesVarianceSamplePositionDesc = 'CHANGES_VARIANCE_SAMPLE_POSITION_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
   DefaultBranchAsc = 'DEFAULT_BRANCH_ASC',
@@ -6428,6 +8672,60 @@ export enum RepositoryOrderBy {
   ExternalDependenciesDistinctCountRowIdDesc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_ROW_ID_DESC',
   ExternalDependenciesDistinctCountVersionConstraintAsc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_VERSION_CONSTRAINT_ASC',
   ExternalDependenciesDistinctCountVersionConstraintDesc = 'EXTERNAL_DEPENDENCIES_DISTINCT_COUNT_VERSION_CONSTRAINT_DESC',
+  MergeBatchesCountAsc = 'MERGE_BATCHES_COUNT_ASC',
+  MergeBatchesCountDesc = 'MERGE_BATCHES_COUNT_DESC',
+  MergeBatchesDistinctCountCiStatusAsc = 'MERGE_BATCHES_DISTINCT_COUNT_CI_STATUS_ASC',
+  MergeBatchesDistinctCountCiStatusDesc = 'MERGE_BATCHES_DISTINCT_COUNT_CI_STATUS_DESC',
+  MergeBatchesDistinctCountCreatedAtAsc = 'MERGE_BATCHES_DISTINCT_COUNT_CREATED_AT_ASC',
+  MergeBatchesDistinctCountCreatedAtDesc = 'MERGE_BATCHES_DISTINCT_COUNT_CREATED_AT_DESC',
+  MergeBatchesDistinctCountRepositoryIdAsc = 'MERGE_BATCHES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  MergeBatchesDistinctCountRepositoryIdDesc = 'MERGE_BATCHES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  MergeBatchesDistinctCountRowIdAsc = 'MERGE_BATCHES_DISTINCT_COUNT_ROW_ID_ASC',
+  MergeBatchesDistinctCountRowIdDesc = 'MERGE_BATCHES_DISTINCT_COUNT_ROW_ID_DESC',
+  MergeBatchesDistinctCountSpeculativeBranchAsc = 'MERGE_BATCHES_DISTINCT_COUNT_SPECULATIVE_BRANCH_ASC',
+  MergeBatchesDistinctCountSpeculativeBranchDesc = 'MERGE_BATCHES_DISTINCT_COUNT_SPECULATIVE_BRANCH_DESC',
+  MergeBatchesDistinctCountUpdatedAtAsc = 'MERGE_BATCHES_DISTINCT_COUNT_UPDATED_AT_ASC',
+  MergeBatchesDistinctCountUpdatedAtDesc = 'MERGE_BATCHES_DISTINCT_COUNT_UPDATED_AT_DESC',
+  MergeQueueEntriesAveragePositionAsc = 'MERGE_QUEUE_ENTRIES_AVERAGE_POSITION_ASC',
+  MergeQueueEntriesAveragePositionDesc = 'MERGE_QUEUE_ENTRIES_AVERAGE_POSITION_DESC',
+  MergeQueueEntriesCountAsc = 'MERGE_QUEUE_ENTRIES_COUNT_ASC',
+  MergeQueueEntriesCountDesc = 'MERGE_QUEUE_ENTRIES_COUNT_DESC',
+  MergeQueueEntriesDistinctCountBatchIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_BATCH_ID_ASC',
+  MergeQueueEntriesDistinctCountBatchIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_BATCH_ID_DESC',
+  MergeQueueEntriesDistinctCountCreatedAtAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_CREATED_AT_ASC',
+  MergeQueueEntriesDistinctCountCreatedAtDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_CREATED_AT_DESC',
+  MergeQueueEntriesDistinctCountEnqueuedAtAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ENQUEUED_AT_ASC',
+  MergeQueueEntriesDistinctCountEnqueuedAtDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ENQUEUED_AT_DESC',
+  MergeQueueEntriesDistinctCountPositionAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_POSITION_ASC',
+  MergeQueueEntriesDistinctCountPositionDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_POSITION_DESC',
+  MergeQueueEntriesDistinctCountPullRequestIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_PULL_REQUEST_ID_ASC',
+  MergeQueueEntriesDistinctCountPullRequestIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_PULL_REQUEST_ID_DESC',
+  MergeQueueEntriesDistinctCountRepositoryIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  MergeQueueEntriesDistinctCountRepositoryIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  MergeQueueEntriesDistinctCountRowIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ROW_ID_ASC',
+  MergeQueueEntriesDistinctCountRowIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ROW_ID_DESC',
+  MergeQueueEntriesDistinctCountStackIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STACK_ID_ASC',
+  MergeQueueEntriesDistinctCountStackIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STACK_ID_DESC',
+  MergeQueueEntriesDistinctCountStateAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STATE_ASC',
+  MergeQueueEntriesDistinctCountStateDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STATE_DESC',
+  MergeQueueEntriesDistinctCountTargetBranchAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_TARGET_BRANCH_ASC',
+  MergeQueueEntriesDistinctCountTargetBranchDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_TARGET_BRANCH_DESC',
+  MergeQueueEntriesDistinctCountUpdatedAtAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_UPDATED_AT_ASC',
+  MergeQueueEntriesDistinctCountUpdatedAtDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_UPDATED_AT_DESC',
+  MergeQueueEntriesMaxPositionAsc = 'MERGE_QUEUE_ENTRIES_MAX_POSITION_ASC',
+  MergeQueueEntriesMaxPositionDesc = 'MERGE_QUEUE_ENTRIES_MAX_POSITION_DESC',
+  MergeQueueEntriesMinPositionAsc = 'MERGE_QUEUE_ENTRIES_MIN_POSITION_ASC',
+  MergeQueueEntriesMinPositionDesc = 'MERGE_QUEUE_ENTRIES_MIN_POSITION_DESC',
+  MergeQueueEntriesStddevPopulationPositionAsc = 'MERGE_QUEUE_ENTRIES_STDDEV_POPULATION_POSITION_ASC',
+  MergeQueueEntriesStddevPopulationPositionDesc = 'MERGE_QUEUE_ENTRIES_STDDEV_POPULATION_POSITION_DESC',
+  MergeQueueEntriesStddevSamplePositionAsc = 'MERGE_QUEUE_ENTRIES_STDDEV_SAMPLE_POSITION_ASC',
+  MergeQueueEntriesStddevSamplePositionDesc = 'MERGE_QUEUE_ENTRIES_STDDEV_SAMPLE_POSITION_DESC',
+  MergeQueueEntriesSumPositionAsc = 'MERGE_QUEUE_ENTRIES_SUM_POSITION_ASC',
+  MergeQueueEntriesSumPositionDesc = 'MERGE_QUEUE_ENTRIES_SUM_POSITION_DESC',
+  MergeQueueEntriesVariancePopulationPositionAsc = 'MERGE_QUEUE_ENTRIES_VARIANCE_POPULATION_POSITION_ASC',
+  MergeQueueEntriesVariancePopulationPositionDesc = 'MERGE_QUEUE_ENTRIES_VARIANCE_POPULATION_POSITION_DESC',
+  MergeQueueEntriesVarianceSamplePositionAsc = 'MERGE_QUEUE_ENTRIES_VARIANCE_SAMPLE_POSITION_ASC',
+  MergeQueueEntriesVarianceSamplePositionDesc = 'MERGE_QUEUE_ENTRIES_VARIANCE_SAMPLE_POSITION_DESC',
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
@@ -6589,6 +8887,28 @@ export enum RepositoryOrderBy {
   RowIdDesc = 'ROW_ID_DESC',
   SlugAsc = 'SLUG_ASC',
   SlugDesc = 'SLUG_DESC',
+  StacksCountAsc = 'STACKS_COUNT_ASC',
+  StacksCountDesc = 'STACKS_COUNT_DESC',
+  StacksDistinctCountAuthoredByAgentIdAsc = 'STACKS_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_ASC',
+  StacksDistinctCountAuthoredByAgentIdDesc = 'STACKS_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_DESC',
+  StacksDistinctCountAuthorIdAsc = 'STACKS_DISTINCT_COUNT_AUTHOR_ID_ASC',
+  StacksDistinctCountAuthorIdDesc = 'STACKS_DISTINCT_COUNT_AUTHOR_ID_DESC',
+  StacksDistinctCountBaseBranchAsc = 'STACKS_DISTINCT_COUNT_BASE_BRANCH_ASC',
+  StacksDistinctCountBaseBranchDesc = 'STACKS_DISTINCT_COUNT_BASE_BRANCH_DESC',
+  StacksDistinctCountCreatedAtAsc = 'STACKS_DISTINCT_COUNT_CREATED_AT_ASC',
+  StacksDistinctCountCreatedAtDesc = 'STACKS_DISTINCT_COUNT_CREATED_AT_DESC',
+  StacksDistinctCountDescriptionAsc = 'STACKS_DISTINCT_COUNT_DESCRIPTION_ASC',
+  StacksDistinctCountDescriptionDesc = 'STACKS_DISTINCT_COUNT_DESCRIPTION_DESC',
+  StacksDistinctCountRepositoryIdAsc = 'STACKS_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  StacksDistinctCountRepositoryIdDesc = 'STACKS_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  StacksDistinctCountRowIdAsc = 'STACKS_DISTINCT_COUNT_ROW_ID_ASC',
+  StacksDistinctCountRowIdDesc = 'STACKS_DISTINCT_COUNT_ROW_ID_DESC',
+  StacksDistinctCountStatusAsc = 'STACKS_DISTINCT_COUNT_STATUS_ASC',
+  StacksDistinctCountStatusDesc = 'STACKS_DISTINCT_COUNT_STATUS_DESC',
+  StacksDistinctCountTitleAsc = 'STACKS_DISTINCT_COUNT_TITLE_ASC',
+  StacksDistinctCountTitleDesc = 'STACKS_DISTINCT_COUNT_TITLE_DESC',
+  StacksDistinctCountUpdatedAtAsc = 'STACKS_DISTINCT_COUNT_UPDATED_AT_ASC',
+  StacksDistinctCountUpdatedAtDesc = 'STACKS_DISTINCT_COUNT_UPDATED_AT_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC',
   VisibilityAsc = 'VISIBILITY_ASC',
@@ -7593,6 +9913,18 @@ export type RepositoryRelationshipVarianceSampleAggregates = {
   confidence?: Maybe<Scalars['Float']['output']>;
 };
 
+/** A filter to be used against many `Change` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryToManyChangeFilter = {
+  /** Aggregates across related `Change` match the filter criteria. */
+  aggregates?: InputMaybe<ChangeAggregatesFilter>;
+  /** Every related `Change` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<ChangeFilter>;
+  /** No related `Change` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<ChangeFilter>;
+  /** Some related `Change` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<ChangeFilter>;
+};
+
 /** A filter to be used against many `ExternalDependency` object types. All fields are combined with a logical ‘and.’ */
 export type RepositoryToManyExternalDependencyFilter = {
   /** Aggregates across related `ExternalDependency` match the filter criteria. */
@@ -7603,6 +9935,30 @@ export type RepositoryToManyExternalDependencyFilter = {
   none?: InputMaybe<ExternalDependencyFilter>;
   /** Some related `ExternalDependency` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<ExternalDependencyFilter>;
+};
+
+/** A filter to be used against many `MergeBatch` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryToManyMergeBatchFilter = {
+  /** Aggregates across related `MergeBatch` match the filter criteria. */
+  aggregates?: InputMaybe<MergeBatchAggregatesFilter>;
+  /** Every related `MergeBatch` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<MergeBatchFilter>;
+  /** No related `MergeBatch` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<MergeBatchFilter>;
+  /** Some related `MergeBatch` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<MergeBatchFilter>;
+};
+
+/** A filter to be used against many `MergeQueueEntry` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryToManyMergeQueueEntryFilter = {
+  /** Aggregates across related `MergeQueueEntry` match the filter criteria. */
+  aggregates?: InputMaybe<MergeQueueEntryAggregatesFilter>;
+  /** Every related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<MergeQueueEntryFilter>;
+  /** No related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<MergeQueueEntryFilter>;
+  /** Some related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<MergeQueueEntryFilter>;
 };
 
 /** A filter to be used against many `ProjectRepository` object types. All fields are combined with a logical ‘and.’ */
@@ -7651,6 +10007,472 @@ export type RepositoryToManyRepositoryRelationshipFilter = {
   none?: InputMaybe<RepositoryRelationshipFilter>;
   /** Some related `RepositoryRelationship` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<RepositoryRelationshipFilter>;
+};
+
+/** A filter to be used against many `Stack` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryToManyStackFilter = {
+  /** Aggregates across related `Stack` match the filter criteria. */
+  aggregates?: InputMaybe<StackAggregatesFilter>;
+  /** Every related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<StackFilter>;
+  /** No related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<StackFilter>;
+  /** Some related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<StackFilter>;
+};
+
+export type Stack = Node & {
+  __typename?: 'Stack';
+  /** Reads a single `User` that is related to this `Stack`. */
+  author?: Maybe<User>;
+  authorId: Scalars['UUID']['output'];
+  /** Reads a single `Agent` that is related to this `Stack`. */
+  authoredByAgent?: Maybe<Agent>;
+  authoredByAgentId?: Maybe<Scalars['UUID']['output']>;
+  baseBranch: Scalars['String']['output'];
+  /** Reads and enables pagination through a set of `Change`. */
+  changes: ChangeConnection;
+  createdAt: Scalars['Datetime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  /** Reads and enables pagination through a set of `MergeQueueEntry`. */
+  mergeQueueEntries: MergeQueueEntryConnection;
+  /** Reads a single `Repository` that is related to this `Stack`. */
+  repository?: Maybe<Repository>;
+  repositoryId: Scalars['UUID']['output'];
+  rowId: Scalars['UUID']['output'];
+  status: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['Datetime']['output'];
+};
+
+
+export type StackChangesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<ChangeCondition>;
+  filter?: InputMaybe<ChangeFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<ChangeOrderBy>>;
+};
+
+
+export type StackMergeQueueEntriesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<MergeQueueEntryCondition>;
+  filter?: InputMaybe<MergeQueueEntryFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MergeQueueEntryOrderBy>>;
+};
+
+export type StackAggregates = {
+  __typename?: 'StackAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<StackDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/** A filter to be used against aggregates of `Stack` object types. */
+export type StackAggregatesFilter = {
+  /** Distinct count aggregate over matching `Stack` objects. */
+  distinctCount?: InputMaybe<StackDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Stack` object to be included within the aggregate. */
+  filter?: InputMaybe<StackFilter>;
+};
+
+/** A condition to be used against `Stack` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type StackCondition = {
+  /** Checks for equality with the object’s `authorId` field. */
+  authorId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `authoredByAgentId` field. */
+  authoredByAgentId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `baseBranch` field. */
+  baseBranch?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `status` field. */
+  status?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `title` field. */
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** A connection to a list of `Stack` values. */
+export type StackConnection = {
+  __typename?: 'StackConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<StackAggregates>;
+  /** A list of edges which contains the `Stack` and cursor to aid in pagination. */
+  edges: Array<StackEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<StackAggregates>>;
+  /** A list of `Stack` objects. */
+  nodes: Array<Stack>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Stack` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `Stack` values. */
+export type StackConnectionGroupedAggregatesArgs = {
+  groupBy: Array<StackGroupBy>;
+  having?: InputMaybe<StackHavingInput>;
+};
+
+export type StackDistinctCountAggregateFilter = {
+  authorId?: InputMaybe<BigIntFilter>;
+  authoredByAgentId?: InputMaybe<BigIntFilter>;
+  baseBranch?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
+  description?: InputMaybe<BigIntFilter>;
+  repositoryId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  status?: InputMaybe<BigIntFilter>;
+  title?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+};
+
+export type StackDistinctCountAggregates = {
+  __typename?: 'StackDistinctCountAggregates';
+  /** Distinct count of authorId across the matching connection */
+  authorId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of authoredByAgentId across the matching connection */
+  authoredByAgentId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of baseBranch across the matching connection */
+  baseBranch?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of description across the matching connection */
+  description?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of repositoryId across the matching connection */
+  repositoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of status across the matching connection */
+  status?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of title across the matching connection */
+  title?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `Stack` edge in the connection. */
+export type StackEdge = {
+  __typename?: 'StackEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `Stack` at the end of the edge. */
+  node: Stack;
+};
+
+/** A filter to be used against `Stack` object types. All fields are combined with a logical ‘and.’ */
+export type StackFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<StackFilter>>;
+  /** Filter by the object’s `author` relation. */
+  author?: InputMaybe<UserFilter>;
+  /** Filter by the object’s `authorId` field. */
+  authorId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `authoredByAgent` relation. */
+  authoredByAgent?: InputMaybe<AgentFilter>;
+  /** A related `authoredByAgent` exists. */
+  authoredByAgentExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `authoredByAgentId` field. */
+  authoredByAgentId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `baseBranch` field. */
+  baseBranch?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `changes` relation. */
+  changes?: InputMaybe<StackToManyChangeFilter>;
+  /** Some related `changes` exist. */
+  changesExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `mergeQueueEntries` relation. */
+  mergeQueueEntries?: InputMaybe<StackToManyMergeQueueEntryFilter>;
+  /** Some related `mergeQueueEntries` exist. */
+  mergeQueueEntriesExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Negates the expression. */
+  not?: InputMaybe<StackFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<StackFilter>>;
+  /** Filter by the object’s `repository` relation. */
+  repository?: InputMaybe<RepositoryFilter>;
+  /** Filter by the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `title` field. */
+  title?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** Grouping methods for `Stack` for usage during aggregation. */
+export enum StackGroupBy {
+  AuthoredByAgentId = 'AUTHORED_BY_AGENT_ID',
+  AuthorId = 'AUTHOR_ID',
+  BaseBranch = 'BASE_BRANCH',
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  Description = 'DESCRIPTION',
+  RepositoryId = 'REPOSITORY_ID',
+  Status = 'STATUS',
+  Title = 'TITLE',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+}
+
+export type StackHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type StackHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `Stack` aggregates. */
+export type StackHavingInput = {
+  AND?: InputMaybe<Array<StackHavingInput>>;
+  OR?: InputMaybe<Array<StackHavingInput>>;
+  average?: InputMaybe<StackHavingAverageInput>;
+  distinctCount?: InputMaybe<StackHavingDistinctCountInput>;
+  max?: InputMaybe<StackHavingMaxInput>;
+  min?: InputMaybe<StackHavingMinInput>;
+  stddevPopulation?: InputMaybe<StackHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<StackHavingStddevSampleInput>;
+  sum?: InputMaybe<StackHavingSumInput>;
+  variancePopulation?: InputMaybe<StackHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<StackHavingVarianceSampleInput>;
+};
+
+export type StackHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type StackHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type StackHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type StackHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type StackHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type StackHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type StackHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `Stack` */
+export type StackInput = {
+  authorId: Scalars['UUID']['input'];
+  authoredByAgentId?: InputMaybe<Scalars['UUID']['input']>;
+  baseBranch?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  repositoryId: Scalars['UUID']['input'];
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  title: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** Whether a change can merge, derived from its required verification checks. */
+export type StackMergeabilityResult = {
+  __typename?: 'StackMergeabilityResult';
+  /** Names of the required checks that are not yet passed. */
+  blockingChecks: Array<Scalars['String']['output']>;
+  /** True when every required check has passed. */
+  mergeable: Scalars['Boolean']['output'];
+};
+
+/** Methods to use when ordering `Stack`. */
+export enum StackOrderBy {
+  AuthoredByAgentIdAsc = 'AUTHORED_BY_AGENT_ID_ASC',
+  AuthoredByAgentIdDesc = 'AUTHORED_BY_AGENT_ID_DESC',
+  AuthorIdAsc = 'AUTHOR_ID_ASC',
+  AuthorIdDesc = 'AUTHOR_ID_DESC',
+  BaseBranchAsc = 'BASE_BRANCH_ASC',
+  BaseBranchDesc = 'BASE_BRANCH_DESC',
+  ChangesAveragePositionAsc = 'CHANGES_AVERAGE_POSITION_ASC',
+  ChangesAveragePositionDesc = 'CHANGES_AVERAGE_POSITION_DESC',
+  ChangesCountAsc = 'CHANGES_COUNT_ASC',
+  ChangesCountDesc = 'CHANGES_COUNT_DESC',
+  ChangesDistinctCountCommitShaAsc = 'CHANGES_DISTINCT_COUNT_COMMIT_SHA_ASC',
+  ChangesDistinctCountCommitShaDesc = 'CHANGES_DISTINCT_COUNT_COMMIT_SHA_DESC',
+  ChangesDistinctCountCreatedAtAsc = 'CHANGES_DISTINCT_COUNT_CREATED_AT_ASC',
+  ChangesDistinctCountCreatedAtDesc = 'CHANGES_DISTINCT_COUNT_CREATED_AT_DESC',
+  ChangesDistinctCountDescriptionAsc = 'CHANGES_DISTINCT_COUNT_DESCRIPTION_ASC',
+  ChangesDistinctCountDescriptionDesc = 'CHANGES_DISTINCT_COUNT_DESCRIPTION_DESC',
+  ChangesDistinctCountHeadBranchAsc = 'CHANGES_DISTINCT_COUNT_HEAD_BRANCH_ASC',
+  ChangesDistinctCountHeadBranchDesc = 'CHANGES_DISTINCT_COUNT_HEAD_BRANCH_DESC',
+  ChangesDistinctCountParentChangeIdAsc = 'CHANGES_DISTINCT_COUNT_PARENT_CHANGE_ID_ASC',
+  ChangesDistinctCountParentChangeIdDesc = 'CHANGES_DISTINCT_COUNT_PARENT_CHANGE_ID_DESC',
+  ChangesDistinctCountPositionAsc = 'CHANGES_DISTINCT_COUNT_POSITION_ASC',
+  ChangesDistinctCountPositionDesc = 'CHANGES_DISTINCT_COUNT_POSITION_DESC',
+  ChangesDistinctCountPullRequestIdAsc = 'CHANGES_DISTINCT_COUNT_PULL_REQUEST_ID_ASC',
+  ChangesDistinctCountPullRequestIdDesc = 'CHANGES_DISTINCT_COUNT_PULL_REQUEST_ID_DESC',
+  ChangesDistinctCountRepositoryIdAsc = 'CHANGES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  ChangesDistinctCountRepositoryIdDesc = 'CHANGES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  ChangesDistinctCountRowIdAsc = 'CHANGES_DISTINCT_COUNT_ROW_ID_ASC',
+  ChangesDistinctCountRowIdDesc = 'CHANGES_DISTINCT_COUNT_ROW_ID_DESC',
+  ChangesDistinctCountStackIdAsc = 'CHANGES_DISTINCT_COUNT_STACK_ID_ASC',
+  ChangesDistinctCountStackIdDesc = 'CHANGES_DISTINCT_COUNT_STACK_ID_DESC',
+  ChangesDistinctCountStatusAsc = 'CHANGES_DISTINCT_COUNT_STATUS_ASC',
+  ChangesDistinctCountStatusDesc = 'CHANGES_DISTINCT_COUNT_STATUS_DESC',
+  ChangesDistinctCountTitleAsc = 'CHANGES_DISTINCT_COUNT_TITLE_ASC',
+  ChangesDistinctCountTitleDesc = 'CHANGES_DISTINCT_COUNT_TITLE_DESC',
+  ChangesDistinctCountUpdatedAtAsc = 'CHANGES_DISTINCT_COUNT_UPDATED_AT_ASC',
+  ChangesDistinctCountUpdatedAtDesc = 'CHANGES_DISTINCT_COUNT_UPDATED_AT_DESC',
+  ChangesMaxPositionAsc = 'CHANGES_MAX_POSITION_ASC',
+  ChangesMaxPositionDesc = 'CHANGES_MAX_POSITION_DESC',
+  ChangesMinPositionAsc = 'CHANGES_MIN_POSITION_ASC',
+  ChangesMinPositionDesc = 'CHANGES_MIN_POSITION_DESC',
+  ChangesStddevPopulationPositionAsc = 'CHANGES_STDDEV_POPULATION_POSITION_ASC',
+  ChangesStddevPopulationPositionDesc = 'CHANGES_STDDEV_POPULATION_POSITION_DESC',
+  ChangesStddevSamplePositionAsc = 'CHANGES_STDDEV_SAMPLE_POSITION_ASC',
+  ChangesStddevSamplePositionDesc = 'CHANGES_STDDEV_SAMPLE_POSITION_DESC',
+  ChangesSumPositionAsc = 'CHANGES_SUM_POSITION_ASC',
+  ChangesSumPositionDesc = 'CHANGES_SUM_POSITION_DESC',
+  ChangesVariancePopulationPositionAsc = 'CHANGES_VARIANCE_POPULATION_POSITION_ASC',
+  ChangesVariancePopulationPositionDesc = 'CHANGES_VARIANCE_POPULATION_POSITION_DESC',
+  ChangesVarianceSamplePositionAsc = 'CHANGES_VARIANCE_SAMPLE_POSITION_ASC',
+  ChangesVarianceSamplePositionDesc = 'CHANGES_VARIANCE_SAMPLE_POSITION_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  MergeQueueEntriesAveragePositionAsc = 'MERGE_QUEUE_ENTRIES_AVERAGE_POSITION_ASC',
+  MergeQueueEntriesAveragePositionDesc = 'MERGE_QUEUE_ENTRIES_AVERAGE_POSITION_DESC',
+  MergeQueueEntriesCountAsc = 'MERGE_QUEUE_ENTRIES_COUNT_ASC',
+  MergeQueueEntriesCountDesc = 'MERGE_QUEUE_ENTRIES_COUNT_DESC',
+  MergeQueueEntriesDistinctCountBatchIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_BATCH_ID_ASC',
+  MergeQueueEntriesDistinctCountBatchIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_BATCH_ID_DESC',
+  MergeQueueEntriesDistinctCountCreatedAtAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_CREATED_AT_ASC',
+  MergeQueueEntriesDistinctCountCreatedAtDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_CREATED_AT_DESC',
+  MergeQueueEntriesDistinctCountEnqueuedAtAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ENQUEUED_AT_ASC',
+  MergeQueueEntriesDistinctCountEnqueuedAtDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ENQUEUED_AT_DESC',
+  MergeQueueEntriesDistinctCountPositionAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_POSITION_ASC',
+  MergeQueueEntriesDistinctCountPositionDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_POSITION_DESC',
+  MergeQueueEntriesDistinctCountPullRequestIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_PULL_REQUEST_ID_ASC',
+  MergeQueueEntriesDistinctCountPullRequestIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_PULL_REQUEST_ID_DESC',
+  MergeQueueEntriesDistinctCountRepositoryIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  MergeQueueEntriesDistinctCountRepositoryIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  MergeQueueEntriesDistinctCountRowIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ROW_ID_ASC',
+  MergeQueueEntriesDistinctCountRowIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_ROW_ID_DESC',
+  MergeQueueEntriesDistinctCountStackIdAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STACK_ID_ASC',
+  MergeQueueEntriesDistinctCountStackIdDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STACK_ID_DESC',
+  MergeQueueEntriesDistinctCountStateAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STATE_ASC',
+  MergeQueueEntriesDistinctCountStateDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_STATE_DESC',
+  MergeQueueEntriesDistinctCountTargetBranchAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_TARGET_BRANCH_ASC',
+  MergeQueueEntriesDistinctCountTargetBranchDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_TARGET_BRANCH_DESC',
+  MergeQueueEntriesDistinctCountUpdatedAtAsc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_UPDATED_AT_ASC',
+  MergeQueueEntriesDistinctCountUpdatedAtDesc = 'MERGE_QUEUE_ENTRIES_DISTINCT_COUNT_UPDATED_AT_DESC',
+  MergeQueueEntriesMaxPositionAsc = 'MERGE_QUEUE_ENTRIES_MAX_POSITION_ASC',
+  MergeQueueEntriesMaxPositionDesc = 'MERGE_QUEUE_ENTRIES_MAX_POSITION_DESC',
+  MergeQueueEntriesMinPositionAsc = 'MERGE_QUEUE_ENTRIES_MIN_POSITION_ASC',
+  MergeQueueEntriesMinPositionDesc = 'MERGE_QUEUE_ENTRIES_MIN_POSITION_DESC',
+  MergeQueueEntriesStddevPopulationPositionAsc = 'MERGE_QUEUE_ENTRIES_STDDEV_POPULATION_POSITION_ASC',
+  MergeQueueEntriesStddevPopulationPositionDesc = 'MERGE_QUEUE_ENTRIES_STDDEV_POPULATION_POSITION_DESC',
+  MergeQueueEntriesStddevSamplePositionAsc = 'MERGE_QUEUE_ENTRIES_STDDEV_SAMPLE_POSITION_ASC',
+  MergeQueueEntriesStddevSamplePositionDesc = 'MERGE_QUEUE_ENTRIES_STDDEV_SAMPLE_POSITION_DESC',
+  MergeQueueEntriesSumPositionAsc = 'MERGE_QUEUE_ENTRIES_SUM_POSITION_ASC',
+  MergeQueueEntriesSumPositionDesc = 'MERGE_QUEUE_ENTRIES_SUM_POSITION_DESC',
+  MergeQueueEntriesVariancePopulationPositionAsc = 'MERGE_QUEUE_ENTRIES_VARIANCE_POPULATION_POSITION_ASC',
+  MergeQueueEntriesVariancePopulationPositionDesc = 'MERGE_QUEUE_ENTRIES_VARIANCE_POPULATION_POSITION_DESC',
+  MergeQueueEntriesVarianceSamplePositionAsc = 'MERGE_QUEUE_ENTRIES_VARIANCE_SAMPLE_POSITION_ASC',
+  MergeQueueEntriesVarianceSamplePositionDesc = 'MERGE_QUEUE_ENTRIES_VARIANCE_SAMPLE_POSITION_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepositoryIdAsc = 'REPOSITORY_ID_ASC',
+  RepositoryIdDesc = 'REPOSITORY_ID_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  StatusAsc = 'STATUS_ASC',
+  StatusDesc = 'STATUS_DESC',
+  TitleAsc = 'TITLE_ASC',
+  TitleDesc = 'TITLE_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
+/** Represents an update to a `Stack`. Fields that are set will be updated. */
+export type StackPatch = {
+  authorId?: InputMaybe<Scalars['UUID']['input']>;
+  authoredByAgentId?: InputMaybe<Scalars['UUID']['input']>;
+  baseBranch?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** A filter to be used against many `Change` object types. All fields are combined with a logical ‘and.’ */
+export type StackToManyChangeFilter = {
+  /** Aggregates across related `Change` match the filter criteria. */
+  aggregates?: InputMaybe<ChangeAggregatesFilter>;
+  /** Every related `Change` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<ChangeFilter>;
+  /** No related `Change` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<ChangeFilter>;
+  /** Some related `Change` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<ChangeFilter>;
+};
+
+/** A filter to be used against many `MergeQueueEntry` object types. All fields are combined with a logical ‘and.’ */
+export type StackToManyMergeQueueEntryFilter = {
+  /** Aggregates across related `MergeQueueEntry` match the filter criteria. */
+  aggregates?: InputMaybe<MergeQueueEntryAggregatesFilter>;
+  /** Every related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<MergeQueueEntryFilter>;
+  /** No related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<MergeQueueEntryFilter>;
+  /** Some related `MergeQueueEntry` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<MergeQueueEntryFilter>;
 };
 
 /** A filter to be used against String fields. All fields are combined with a logical ‘and.’ */
@@ -7830,6 +10652,40 @@ export type UpdateAgentPayloadAgentEdgeArgs = {
   orderBy?: Array<AgentOrderBy>;
 };
 
+/** All input for the `updateChange` mutation. */
+export type UpdateChangeInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `Change` being updated. */
+  patch: ChangePatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `Change` mutation. */
+export type UpdateChangePayload = {
+  __typename?: 'UpdateChangePayload';
+  /** The `Change` that was updated by this mutation. */
+  change?: Maybe<Change>;
+  /** An edge for our `Change`. May be used by Relay 1. */
+  changeEdge?: Maybe<ChangeEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `Change` mutation. */
+export type UpdateChangePayloadChangeEdgeArgs = {
+  orderBy?: Array<ChangeOrderBy>;
+};
+
 /** All input for the `updateExternalDependency` mutation. */
 export type UpdateExternalDependencyInput = {
   /**
@@ -7862,6 +10718,74 @@ export type UpdateExternalDependencyPayload = {
 /** The output of our update `ExternalDependency` mutation. */
 export type UpdateExternalDependencyPayloadExternalDependencyEdgeArgs = {
   orderBy?: Array<ExternalDependencyOrderBy>;
+};
+
+/** All input for the `updateMergeBatch` mutation. */
+export type UpdateMergeBatchInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `MergeBatch` being updated. */
+  patch: MergeBatchPatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `MergeBatch` mutation. */
+export type UpdateMergeBatchPayload = {
+  __typename?: 'UpdateMergeBatchPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `MergeBatch` that was updated by this mutation. */
+  mergeBatch?: Maybe<MergeBatch>;
+  /** An edge for our `MergeBatch`. May be used by Relay 1. */
+  mergeBatchEdge?: Maybe<MergeBatchEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `MergeBatch` mutation. */
+export type UpdateMergeBatchPayloadMergeBatchEdgeArgs = {
+  orderBy?: Array<MergeBatchOrderBy>;
+};
+
+/** All input for the `updateMergeQueueEntry` mutation. */
+export type UpdateMergeQueueEntryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `MergeQueueEntry` being updated. */
+  patch: MergeQueueEntryPatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `MergeQueueEntry` mutation. */
+export type UpdateMergeQueueEntryPayload = {
+  __typename?: 'UpdateMergeQueueEntryPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** The `MergeQueueEntry` that was updated by this mutation. */
+  mergeQueueEntry?: Maybe<MergeQueueEntry>;
+  /** An edge for our `MergeQueueEntry`. May be used by Relay 1. */
+  mergeQueueEntryEdge?: Maybe<MergeQueueEntryEdge>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `MergeQueueEntry` mutation. */
+export type UpdateMergeQueueEntryPayloadMergeQueueEntryEdgeArgs = {
+  orderBy?: Array<MergeQueueEntryOrderBy>;
 };
 
 /** All input for the `updateOrganization` mutation. */
@@ -8239,6 +11163,40 @@ export type UpdateRepositoryRelationshipTypePayloadRepositoryRelationshipTypeEdg
   orderBy?: Array<RepositoryRelationshipTypeOrderBy>;
 };
 
+/** All input for the `updateStack` mutation. */
+export type UpdateStackInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `Stack` being updated. */
+  patch: StackPatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `Stack` mutation. */
+export type UpdateStackPayload = {
+  __typename?: 'UpdateStackPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Stack` that was updated by this mutation. */
+  stack?: Maybe<Stack>;
+  /** An edge for our `Stack`. May be used by Relay 1. */
+  stackEdge?: Maybe<StackEdge>;
+};
+
+
+/** The output of our update `Stack` mutation. */
+export type UpdateStackPayloadStackEdgeArgs = {
+  orderBy?: Array<StackOrderBy>;
+};
+
 /** All input for the `updateUser` mutation. */
 export type UpdateUserInput = {
   /**
@@ -8273,6 +11231,40 @@ export type UpdateUserPayloadUserEdgeArgs = {
   orderBy?: Array<UserOrderBy>;
 };
 
+/** All input for the `updateVerificationCheck` mutation. */
+export type UpdateVerificationCheckInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `VerificationCheck` being updated. */
+  patch: VerificationCheckPatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `VerificationCheck` mutation. */
+export type UpdateVerificationCheckPayload = {
+  __typename?: 'UpdateVerificationCheckPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `VerificationCheck` that was updated by this mutation. */
+  verificationCheck?: Maybe<VerificationCheck>;
+  /** An edge for our `VerificationCheck`. May be used by Relay 1. */
+  verificationCheckEdge?: Maybe<VerificationCheckEdge>;
+};
+
+
+/** The output of our update `VerificationCheck` mutation. */
+export type UpdateVerificationCheckPayloadVerificationCheckEdgeArgs = {
+  orderBy?: Array<VerificationCheckOrderBy>;
+};
+
 export type User = Node & {
   __typename?: 'User';
   /** Reads and enables pagination through a set of `Agent`. */
@@ -8281,6 +11273,8 @@ export type User = Node & {
   authoredPullRequestComments: PullRequestCommentConnection;
   /** Reads and enables pagination through a set of `PullRequest`. */
   authoredPullRequests: PullRequestConnection;
+  /** Reads and enables pagination through a set of `Stack`. */
+  authoredStacks: StackConnection;
   avatarUrl?: Maybe<Scalars['String']['output']>;
   bio?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Datetime']['output'];
@@ -8338,6 +11332,18 @@ export type UserAuthoredPullRequestsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<PullRequestOrderBy>>;
+};
+
+
+export type UserAuthoredStacksArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<StackCondition>;
+  filter?: InputMaybe<StackFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<StackOrderBy>>;
 };
 
 
@@ -8500,6 +11506,10 @@ export type UserFilter = {
   authoredPullRequests?: InputMaybe<UserToManyPullRequestFilter>;
   /** Some related `authoredPullRequests` exist. */
   authoredPullRequestsExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `authoredStacks` relation. */
+  authoredStacks?: InputMaybe<UserToManyStackFilter>;
+  /** Some related `authoredStacks` exist. */
+  authoredStacksExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `avatarUrl` field. */
   avatarUrl?: InputMaybe<StringFilter>;
   /** Filter by the object’s `bio` field. */
@@ -8744,6 +11754,28 @@ export enum UserOrderBy {
   AuthoredPullRequestCommentsVariancePopulationLineDesc = 'AUTHORED_PULL_REQUEST_COMMENTS_VARIANCE_POPULATION_LINE_DESC',
   AuthoredPullRequestCommentsVarianceSampleLineAsc = 'AUTHORED_PULL_REQUEST_COMMENTS_VARIANCE_SAMPLE_LINE_ASC',
   AuthoredPullRequestCommentsVarianceSampleLineDesc = 'AUTHORED_PULL_REQUEST_COMMENTS_VARIANCE_SAMPLE_LINE_DESC',
+  AuthoredStacksCountAsc = 'AUTHORED_STACKS_COUNT_ASC',
+  AuthoredStacksCountDesc = 'AUTHORED_STACKS_COUNT_DESC',
+  AuthoredStacksDistinctCountAuthoredByAgentIdAsc = 'AUTHORED_STACKS_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_ASC',
+  AuthoredStacksDistinctCountAuthoredByAgentIdDesc = 'AUTHORED_STACKS_DISTINCT_COUNT_AUTHORED_BY_AGENT_ID_DESC',
+  AuthoredStacksDistinctCountAuthorIdAsc = 'AUTHORED_STACKS_DISTINCT_COUNT_AUTHOR_ID_ASC',
+  AuthoredStacksDistinctCountAuthorIdDesc = 'AUTHORED_STACKS_DISTINCT_COUNT_AUTHOR_ID_DESC',
+  AuthoredStacksDistinctCountBaseBranchAsc = 'AUTHORED_STACKS_DISTINCT_COUNT_BASE_BRANCH_ASC',
+  AuthoredStacksDistinctCountBaseBranchDesc = 'AUTHORED_STACKS_DISTINCT_COUNT_BASE_BRANCH_DESC',
+  AuthoredStacksDistinctCountCreatedAtAsc = 'AUTHORED_STACKS_DISTINCT_COUNT_CREATED_AT_ASC',
+  AuthoredStacksDistinctCountCreatedAtDesc = 'AUTHORED_STACKS_DISTINCT_COUNT_CREATED_AT_DESC',
+  AuthoredStacksDistinctCountDescriptionAsc = 'AUTHORED_STACKS_DISTINCT_COUNT_DESCRIPTION_ASC',
+  AuthoredStacksDistinctCountDescriptionDesc = 'AUTHORED_STACKS_DISTINCT_COUNT_DESCRIPTION_DESC',
+  AuthoredStacksDistinctCountRepositoryIdAsc = 'AUTHORED_STACKS_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  AuthoredStacksDistinctCountRepositoryIdDesc = 'AUTHORED_STACKS_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  AuthoredStacksDistinctCountRowIdAsc = 'AUTHORED_STACKS_DISTINCT_COUNT_ROW_ID_ASC',
+  AuthoredStacksDistinctCountRowIdDesc = 'AUTHORED_STACKS_DISTINCT_COUNT_ROW_ID_DESC',
+  AuthoredStacksDistinctCountStatusAsc = 'AUTHORED_STACKS_DISTINCT_COUNT_STATUS_ASC',
+  AuthoredStacksDistinctCountStatusDesc = 'AUTHORED_STACKS_DISTINCT_COUNT_STATUS_DESC',
+  AuthoredStacksDistinctCountTitleAsc = 'AUTHORED_STACKS_DISTINCT_COUNT_TITLE_ASC',
+  AuthoredStacksDistinctCountTitleDesc = 'AUTHORED_STACKS_DISTINCT_COUNT_TITLE_DESC',
+  AuthoredStacksDistinctCountUpdatedAtAsc = 'AUTHORED_STACKS_DISTINCT_COUNT_UPDATED_AT_ASC',
+  AuthoredStacksDistinctCountUpdatedAtDesc = 'AUTHORED_STACKS_DISTINCT_COUNT_UPDATED_AT_DESC',
   AvatarUrlAsc = 'AVATAR_URL_ASC',
   AvatarUrlDesc = 'AVATAR_URL_DESC',
   BioAsc = 'BIO_ASC',
@@ -9004,6 +12036,312 @@ export type UserToManyRepositoryFilter = {
   some?: InputMaybe<RepositoryFilter>;
 };
 
+/** A filter to be used against many `Stack` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyStackFilter = {
+  /** Aggregates across related `Stack` match the filter criteria. */
+  aggregates?: InputMaybe<StackAggregatesFilter>;
+  /** Every related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<StackFilter>;
+  /** No related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<StackFilter>;
+  /** Some related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<StackFilter>;
+};
+
+export type VerificationCheck = Node & {
+  __typename?: 'VerificationCheck';
+  category: Scalars['String']['output'];
+  /** Reads a single `Change` that is related to this `VerificationCheck`. */
+  change?: Maybe<Change>;
+  changeId: Scalars['UUID']['output'];
+  createdAt: Scalars['Datetime']['output'];
+  detailsUrl?: Maybe<Scalars['String']['output']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  required: Scalars['Boolean']['output'];
+  rowId: Scalars['UUID']['output'];
+  status: Scalars['String']['output'];
+  summary?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['Datetime']['output'];
+};
+
+export type VerificationCheckAggregates = {
+  __typename?: 'VerificationCheckAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<VerificationCheckDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/** A filter to be used against aggregates of `VerificationCheck` object types. */
+export type VerificationCheckAggregatesFilter = {
+  /** Distinct count aggregate over matching `VerificationCheck` objects. */
+  distinctCount?: InputMaybe<VerificationCheckDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `VerificationCheck` object to be included within the aggregate. */
+  filter?: InputMaybe<VerificationCheckFilter>;
+};
+
+/**
+ * A condition to be used against `VerificationCheck` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type VerificationCheckCondition = {
+  /** Checks for equality with the object’s `category` field. */
+  category?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `changeId` field. */
+  changeId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `detailsUrl` field. */
+  detailsUrl?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `required` field. */
+  required?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `status` field. */
+  status?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `summary` field. */
+  summary?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** A connection to a list of `VerificationCheck` values. */
+export type VerificationCheckConnection = {
+  __typename?: 'VerificationCheckConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<VerificationCheckAggregates>;
+  /** A list of edges which contains the `VerificationCheck` and cursor to aid in pagination. */
+  edges: Array<VerificationCheckEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<VerificationCheckAggregates>>;
+  /** A list of `VerificationCheck` objects. */
+  nodes: Array<VerificationCheck>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `VerificationCheck` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `VerificationCheck` values. */
+export type VerificationCheckConnectionGroupedAggregatesArgs = {
+  groupBy: Array<VerificationCheckGroupBy>;
+  having?: InputMaybe<VerificationCheckHavingInput>;
+};
+
+export type VerificationCheckDistinctCountAggregateFilter = {
+  category?: InputMaybe<BigIntFilter>;
+  changeId?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
+  detailsUrl?: InputMaybe<BigIntFilter>;
+  name?: InputMaybe<BigIntFilter>;
+  required?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  status?: InputMaybe<BigIntFilter>;
+  summary?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+};
+
+export type VerificationCheckDistinctCountAggregates = {
+  __typename?: 'VerificationCheckDistinctCountAggregates';
+  /** Distinct count of category across the matching connection */
+  category?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of changeId across the matching connection */
+  changeId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of detailsUrl across the matching connection */
+  detailsUrl?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of name across the matching connection */
+  name?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of required across the matching connection */
+  required?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of status across the matching connection */
+  status?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of summary across the matching connection */
+  summary?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `VerificationCheck` edge in the connection. */
+export type VerificationCheckEdge = {
+  __typename?: 'VerificationCheckEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `VerificationCheck` at the end of the edge. */
+  node: VerificationCheck;
+};
+
+/** A filter to be used against `VerificationCheck` object types. All fields are combined with a logical ‘and.’ */
+export type VerificationCheckFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<VerificationCheckFilter>>;
+  /** Filter by the object’s `category` field. */
+  category?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `change` relation. */
+  change?: InputMaybe<ChangeFilter>;
+  /** Filter by the object’s `changeId` field. */
+  changeId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `detailsUrl` field. */
+  detailsUrl?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<VerificationCheckFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<VerificationCheckFilter>>;
+  /** Filter by the object’s `required` field. */
+  required?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `summary` field. */
+  summary?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** Grouping methods for `VerificationCheck` for usage during aggregation. */
+export enum VerificationCheckGroupBy {
+  Category = 'CATEGORY',
+  ChangeId = 'CHANGE_ID',
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  DetailsUrl = 'DETAILS_URL',
+  Name = 'NAME',
+  Required = 'REQUIRED',
+  Status = 'STATUS',
+  Summary = 'SUMMARY',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+}
+
+export type VerificationCheckHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type VerificationCheckHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `VerificationCheck` aggregates. */
+export type VerificationCheckHavingInput = {
+  AND?: InputMaybe<Array<VerificationCheckHavingInput>>;
+  OR?: InputMaybe<Array<VerificationCheckHavingInput>>;
+  average?: InputMaybe<VerificationCheckHavingAverageInput>;
+  distinctCount?: InputMaybe<VerificationCheckHavingDistinctCountInput>;
+  max?: InputMaybe<VerificationCheckHavingMaxInput>;
+  min?: InputMaybe<VerificationCheckHavingMinInput>;
+  stddevPopulation?: InputMaybe<VerificationCheckHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<VerificationCheckHavingStddevSampleInput>;
+  sum?: InputMaybe<VerificationCheckHavingSumInput>;
+  variancePopulation?: InputMaybe<VerificationCheckHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<VerificationCheckHavingVarianceSampleInput>;
+};
+
+export type VerificationCheckHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type VerificationCheckHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type VerificationCheckHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type VerificationCheckHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type VerificationCheckHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type VerificationCheckHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type VerificationCheckHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `VerificationCheck` */
+export type VerificationCheckInput = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  changeId: Scalars['UUID']['input'];
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  detailsUrl?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  required?: InputMaybe<Scalars['Boolean']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  summary?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** Methods to use when ordering `VerificationCheck`. */
+export enum VerificationCheckOrderBy {
+  CategoryAsc = 'CATEGORY_ASC',
+  CategoryDesc = 'CATEGORY_DESC',
+  ChangeIdAsc = 'CHANGE_ID_ASC',
+  ChangeIdDesc = 'CHANGE_ID_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  DetailsUrlAsc = 'DETAILS_URL_ASC',
+  DetailsUrlDesc = 'DETAILS_URL_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RequiredAsc = 'REQUIRED_ASC',
+  RequiredDesc = 'REQUIRED_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  StatusAsc = 'STATUS_ASC',
+  StatusDesc = 'STATUS_DESC',
+  SummaryAsc = 'SUMMARY_ASC',
+  SummaryDesc = 'SUMMARY_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
+/** Represents an update to a `VerificationCheck`. Fields that are set will be updated. */
+export type VerificationCheckPatch = {
+  category?: InputMaybe<Scalars['String']['input']>;
+  changeId?: InputMaybe<Scalars['UUID']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  detailsUrl?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  required?: InputMaybe<Scalars['Boolean']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  summary?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
 export enum Visibility {
   Private = 'private',
   Public = 'public'
@@ -9113,6 +12451,17 @@ export type CreateRepositoryInput = {
   clientMutationId?: string | null | undefined;
   /** The `Repository` to be created by this mutation. */
   repository: RepositoryInput;
+};
+
+/** All input for the create `Stack` mutation. */
+export type CreateStackInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  /** The `Stack` to be created by this mutation. */
+  stack: StackInput;
 };
 
 /** All input for the `deletePersonalAccessToken` mutation. */
@@ -9272,6 +12621,20 @@ export type RepositoryPatch = {
   visibility?: Visibility | null | undefined;
 };
 
+/** An input for mutations affecting `Stack` */
+export type StackInput = {
+  authorId: string;
+  authoredByAgentId?: string | null | undefined;
+  baseBranch?: string | null | undefined;
+  createdAt?: Date | null | undefined;
+  description?: string | null | undefined;
+  repositoryId: string;
+  rowId?: string | null | undefined;
+  status?: string | null | undefined;
+  title: string;
+  updatedAt?: Date | null | undefined;
+};
+
 /** All input for the `updatePullRequestComment` mutation. */
 export type UpdatePullRequestCommentInput = {
   /**
@@ -9377,6 +12740,20 @@ export type UpdateRepositoryMutationVariables = Exact<{
 
 
 export type UpdateRepositoryMutation = { updateRepository: { repository: { rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null } | null } | null };
+
+export type CreateStackMutationVariables = Exact<{
+  input: CreateStackInput;
+}>;
+
+
+export type CreateStackMutation = { createStack: { stack: { id: string, rowId: string, title: string, description: string | null, baseBranch: string, status: string, createdAt: Date, repository: { slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null } | null } | null };
+
+export type MergeChangeMutationVariables = Exact<{
+  changeId: string;
+}>;
+
+
+export type MergeChangeMutation = { mergeChange: { success: boolean, changeId: string | null, mode: string | null, deferred: boolean, blockingChecks: Array<string> | null, error: string | null } | null };
 
 export type AgentsQueryVariables = Exact<{
   userId: string;
@@ -9534,6 +12911,29 @@ export type RepositoryWithBranchesQuery = { repositories: { nodes: Array<{ rowId
           | { oid: string, messageHeadline: string, committedDate: Date | null, author: { name: string | null } | null }
           | Record<PropertyKey, never>
          | null } | null }> } | null };
+
+export type MergeQueueEntriesQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+}>;
+
+
+export type MergeQueueEntriesQuery = { mergeQueueEntries: { nodes: Array<{ id: string, rowId: string, state: string, position: number, targetBranch: string, enqueuedAt: Date, createdAt: Date, stack: { rowId: string, title: string } | null, pullRequest: { rowId: string, number: number, title: string } | null, batch: { rowId: string, ciStatus: string, speculativeBranch: string | null } | null }> } | null };
+
+export type StackQueryVariables = Exact<{
+  rowId: string;
+}>;
+
+
+export type StackQuery = { stack: { id: string, rowId: string, title: string, description: string | null, baseBranch: string, status: string, createdAt: Date, updatedAt: Date, repository: { rowId: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null, author: { rowId: string, username: string } | null, authoredByAgent: { rowId: string, name: string } | null, changes: { nodes: Array<{ id: string, rowId: string, title: string, description: string | null, position: number, status: string, commitSha: string | null, parentChangeId: string | null, pullRequest: { rowId: string, number: number } | null, verificationChecks: { nodes: Array<{ id: string, rowId: string, name: string, category: string, status: string, required: boolean, summary: string | null, detailsUrl: string | null }> } }> } } | null };
+
+export type StacksQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+}>;
+
+
+export type StacksQuery = { stacks: { nodes: Array<{ id: string, rowId: string, title: string, description: string | null, baseBranch: string, status: string, createdAt: Date, author: { rowId: string, username: string } | null, authoredByAgent: { rowId: string, name: string } | null, changes: { totalCount: number } }> } | null };
 
 export type ObserverQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -9959,6 +13359,80 @@ useUpdateRepositoryMutation.getKey = () => ['UpdateRepository'];
 
 
 useUpdateRepositoryMutation.fetcher = (variables: UpdateRepositoryMutationVariables, options?: RequestInit['headers']) => graphqlFetch<UpdateRepositoryMutation, UpdateRepositoryMutationVariables>(UpdateRepositoryDocument, variables, options);
+
+export const CreateStackDocument = new TypedDocumentString(`
+    mutation CreateStack($input: CreateStackInput!) {
+  createStack(input: $input) {
+    stack {
+      id
+      rowId
+      title
+      description
+      baseBranch
+      status
+      createdAt
+      repository {
+        slug
+        owner {
+          username
+        }
+        organization {
+          idpOrganizationId
+        }
+      }
+    }
+  }
+}
+    `);
+
+export const useCreateStackMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<CreateStackMutation, TError, CreateStackMutationVariables, TContext>) => {
+    
+    return useMutation<CreateStackMutation, TError, CreateStackMutationVariables, TContext>(
+      {
+    mutationKey: ['CreateStack'],
+    mutationFn: (variables?: CreateStackMutationVariables) => graphqlFetch<CreateStackMutation, CreateStackMutationVariables>(CreateStackDocument, variables)(),
+    ...options
+  }
+    )};
+
+useCreateStackMutation.getKey = () => ['CreateStack'];
+
+
+useCreateStackMutation.fetcher = (variables: CreateStackMutationVariables, options?: RequestInit['headers']) => graphqlFetch<CreateStackMutation, CreateStackMutationVariables>(CreateStackDocument, variables, options);
+
+export const MergeChangeDocument = new TypedDocumentString(`
+    mutation MergeChange($changeId: UUID!) {
+  mergeChange(input: {changeId: $changeId}) {
+    success
+    changeId
+    mode
+    deferred
+    blockingChecks
+    error
+  }
+}
+    `);
+
+export const useMergeChangeMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<MergeChangeMutation, TError, MergeChangeMutationVariables, TContext>) => {
+    
+    return useMutation<MergeChangeMutation, TError, MergeChangeMutationVariables, TContext>(
+      {
+    mutationKey: ['MergeChange'],
+    mutationFn: (variables?: MergeChangeMutationVariables) => graphqlFetch<MergeChangeMutation, MergeChangeMutationVariables>(MergeChangeDocument, variables)(),
+    ...options
+  }
+    )};
+
+useMergeChangeMutation.getKey = () => ['MergeChange'];
+
+
+useMergeChangeMutation.fetcher = (variables: MergeChangeMutationVariables, options?: RequestInit['headers']) => graphqlFetch<MergeChangeMutation, MergeChangeMutationVariables>(MergeChangeDocument, variables, options);
 
 export const AgentsDocument = new TypedDocumentString(`
     query Agents($userId: UUID!, $organizationId: UUID, $limit: Int) {
@@ -12046,6 +15520,375 @@ useSuspenseInfiniteRepositoryWithBranchesQuery.getKey = (variables: RepositoryWi
 
 
 useRepositoryWithBranchesQuery.fetcher = (variables: RepositoryWithBranchesQueryVariables, options?: RequestInit['headers']) => graphqlFetch<RepositoryWithBranchesQuery, RepositoryWithBranchesQueryVariables>(RepositoryWithBranchesDocument, variables, options);
+
+export const MergeQueueEntriesDocument = new TypedDocumentString(`
+    query MergeQueueEntries($ownerSlug: String!, $repoSlug: String!) {
+  mergeQueueEntries(
+    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
+    orderBy: [POSITION_ASC]
+    first: 100
+  ) {
+    nodes {
+      id
+      rowId
+      state
+      position
+      targetBranch
+      enqueuedAt
+      createdAt
+      stack {
+        rowId
+        title
+      }
+      pullRequest {
+        rowId
+        number
+        title
+      }
+      batch {
+        rowId
+        ciStatus
+        speculativeBranch
+      }
+    }
+  }
+}
+    `);
+
+export const useMergeQueueEntriesQuery = <
+      TData = MergeQueueEntriesQuery,
+      TError = unknown
+    >(
+      variables: MergeQueueEntriesQueryVariables,
+      options?: Omit<UseQueryOptions<MergeQueueEntriesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<MergeQueueEntriesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<MergeQueueEntriesQuery, TError, TData>(
+      {
+    queryKey: ['MergeQueueEntries', variables],
+    queryFn: graphqlFetch<MergeQueueEntriesQuery, MergeQueueEntriesQueryVariables>(MergeQueueEntriesDocument, variables),
+    ...options
+  }
+    )};
+
+useMergeQueueEntriesQuery.getKey = (variables: MergeQueueEntriesQueryVariables) => ['MergeQueueEntries', variables];
+
+export const useSuspenseMergeQueueEntriesQuery = <
+      TData = MergeQueueEntriesQuery,
+      TError = unknown
+    >(
+      variables: MergeQueueEntriesQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<MergeQueueEntriesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<MergeQueueEntriesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<MergeQueueEntriesQuery, TError, TData>(
+      {
+    queryKey: ['MergeQueueEntries', variables],
+    queryFn: graphqlFetch<MergeQueueEntriesQuery, MergeQueueEntriesQueryVariables>(MergeQueueEntriesDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseMergeQueueEntriesQuery.getKey = (variables: MergeQueueEntriesQueryVariables) => ['MergeQueueEntries', variables];
+
+export const useInfiniteMergeQueueEntriesQuery = <
+      TData = InfiniteData<MergeQueueEntriesQuery>,
+      TError = unknown
+    >(
+      variables: MergeQueueEntriesQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<MergeQueueEntriesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<MergeQueueEntriesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<MergeQueueEntriesQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['MergeQueueEntries.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<MergeQueueEntriesQuery, MergeQueueEntriesQueryVariables>(MergeQueueEntriesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteMergeQueueEntriesQuery.getKey = (variables: MergeQueueEntriesQueryVariables) => ['MergeQueueEntries.infinite', variables];
+
+export const useSuspenseInfiniteMergeQueueEntriesQuery = <
+      TData = InfiniteData<MergeQueueEntriesQuery>,
+      TError = unknown
+    >(
+      variables: MergeQueueEntriesQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<MergeQueueEntriesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<MergeQueueEntriesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<MergeQueueEntriesQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['MergeQueueEntries.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<MergeQueueEntriesQuery, MergeQueueEntriesQueryVariables>(MergeQueueEntriesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteMergeQueueEntriesQuery.getKey = (variables: MergeQueueEntriesQueryVariables) => ['MergeQueueEntries.infinite', variables];
+
+
+useMergeQueueEntriesQuery.fetcher = (variables: MergeQueueEntriesQueryVariables, options?: RequestInit['headers']) => graphqlFetch<MergeQueueEntriesQuery, MergeQueueEntriesQueryVariables>(MergeQueueEntriesDocument, variables, options);
+
+export const StackDocument = new TypedDocumentString(`
+    query Stack($rowId: UUID!) {
+  stack(rowId: $rowId) {
+    id
+    rowId
+    title
+    description
+    baseBranch
+    status
+    createdAt
+    updatedAt
+    repository {
+      rowId
+      slug
+      owner {
+        username
+      }
+      organization {
+        idpOrganizationId
+      }
+    }
+    author {
+      rowId
+      username
+    }
+    authoredByAgent {
+      rowId
+      name
+    }
+    changes(orderBy: [POSITION_ASC]) {
+      nodes {
+        id
+        rowId
+        title
+        description
+        position
+        status
+        commitSha
+        parentChangeId
+        pullRequest {
+          rowId
+          number
+        }
+        verificationChecks(orderBy: [NAME_ASC]) {
+          nodes {
+            id
+            rowId
+            name
+            category
+            status
+            required
+            summary
+            detailsUrl
+          }
+        }
+      }
+    }
+  }
+}
+    `);
+
+export const useStackQuery = <
+      TData = StackQuery,
+      TError = unknown
+    >(
+      variables: StackQueryVariables,
+      options?: Omit<UseQueryOptions<StackQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<StackQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<StackQuery, TError, TData>(
+      {
+    queryKey: ['Stack', variables],
+    queryFn: graphqlFetch<StackQuery, StackQueryVariables>(StackDocument, variables),
+    ...options
+  }
+    )};
+
+useStackQuery.getKey = (variables: StackQueryVariables) => ['Stack', variables];
+
+export const useSuspenseStackQuery = <
+      TData = StackQuery,
+      TError = unknown
+    >(
+      variables: StackQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<StackQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<StackQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<StackQuery, TError, TData>(
+      {
+    queryKey: ['Stack', variables],
+    queryFn: graphqlFetch<StackQuery, StackQueryVariables>(StackDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseStackQuery.getKey = (variables: StackQueryVariables) => ['Stack', variables];
+
+export const useInfiniteStackQuery = <
+      TData = InfiniteData<StackQuery>,
+      TError = unknown
+    >(
+      variables: StackQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<StackQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<StackQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<StackQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['Stack.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<StackQuery, StackQueryVariables>(StackDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteStackQuery.getKey = (variables: StackQueryVariables) => ['Stack.infinite', variables];
+
+export const useSuspenseInfiniteStackQuery = <
+      TData = InfiniteData<StackQuery>,
+      TError = unknown
+    >(
+      variables: StackQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<StackQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<StackQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<StackQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['Stack.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<StackQuery, StackQueryVariables>(StackDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteStackQuery.getKey = (variables: StackQueryVariables) => ['Stack.infinite', variables];
+
+
+useStackQuery.fetcher = (variables: StackQueryVariables, options?: RequestInit['headers']) => graphqlFetch<StackQuery, StackQueryVariables>(StackDocument, variables, options);
+
+export const StacksDocument = new TypedDocumentString(`
+    query Stacks($ownerSlug: String!, $repoSlug: String!) {
+  stacks(
+    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
+    orderBy: [CREATED_AT_DESC]
+    first: 100
+  ) {
+    nodes {
+      id
+      rowId
+      title
+      description
+      baseBranch
+      status
+      createdAt
+      author {
+        rowId
+        username
+      }
+      authoredByAgent {
+        rowId
+        name
+      }
+      changes {
+        totalCount
+      }
+    }
+  }
+}
+    `);
+
+export const useStacksQuery = <
+      TData = StacksQuery,
+      TError = unknown
+    >(
+      variables: StacksQueryVariables,
+      options?: Omit<UseQueryOptions<StacksQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<StacksQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<StacksQuery, TError, TData>(
+      {
+    queryKey: ['Stacks', variables],
+    queryFn: graphqlFetch<StacksQuery, StacksQueryVariables>(StacksDocument, variables),
+    ...options
+  }
+    )};
+
+useStacksQuery.getKey = (variables: StacksQueryVariables) => ['Stacks', variables];
+
+export const useSuspenseStacksQuery = <
+      TData = StacksQuery,
+      TError = unknown
+    >(
+      variables: StacksQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<StacksQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<StacksQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<StacksQuery, TError, TData>(
+      {
+    queryKey: ['Stacks', variables],
+    queryFn: graphqlFetch<StacksQuery, StacksQueryVariables>(StacksDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseStacksQuery.getKey = (variables: StacksQueryVariables) => ['Stacks', variables];
+
+export const useInfiniteStacksQuery = <
+      TData = InfiniteData<StacksQuery>,
+      TError = unknown
+    >(
+      variables: StacksQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<StacksQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<StacksQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<StacksQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['Stacks.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<StacksQuery, StacksQueryVariables>(StacksDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteStacksQuery.getKey = (variables: StacksQueryVariables) => ['Stacks.infinite', variables];
+
+export const useSuspenseInfiniteStacksQuery = <
+      TData = InfiniteData<StacksQuery>,
+      TError = unknown
+    >(
+      variables: StacksQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<StacksQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<StacksQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<StacksQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['Stacks.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<StacksQuery, StacksQueryVariables>(StacksDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteStacksQuery.getKey = (variables: StacksQueryVariables) => ['Stacks.infinite', variables];
+
+
+useStacksQuery.fetcher = (variables: StacksQueryVariables, options?: RequestInit['headers']) => graphqlFetch<StacksQuery, StacksQueryVariables>(StacksDocument, variables, options);
 
 export const ObserverDocument = new TypedDocumentString(`
     query Observer {

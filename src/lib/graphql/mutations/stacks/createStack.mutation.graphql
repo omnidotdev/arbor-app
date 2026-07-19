@@ -1,0 +1,22 @@
+mutation CreateStack($input: CreateStackInput!) {
+  createStack(input: $input) {
+    stack {
+      id
+      rowId
+      title
+      description
+      baseBranch
+      status
+      createdAt
+      repository {
+        slug
+        owner {
+          username
+        }
+        organization {
+          idpOrganizationId
+        }
+      }
+    }
+  }
+}
