@@ -1,0 +1,16 @@
+mutation CreateProject($input: CreateProjectInput!) {
+  createProject(input: $input) {
+    project {
+      rowId
+      name
+      slug
+      visibility
+      owner {
+        username
+      }
+      organization {
+        idpOrganizationId
+      }
+    }
+  }
+}

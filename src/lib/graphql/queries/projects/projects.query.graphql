@@ -1,0 +1,35 @@
+query Projects($userId: UUID!, $organizationId: UUID, $limit: Int) {
+  projects(
+    filter: {
+      or: [
+        { ownerId: { equalTo: $userId } }
+        { organizationId: { equalTo: $organizationId } }
+      ]
+    }
+    orderBy: UPDATED_AT_DESC
+    first: $limit
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      createdAt
+      owner {
+        rowId
+        username
+        avatarUrl
+      }
+      organization {
+        rowId
+        idpOrganizationId
+        avatarUrl
+      }
+      projectRepositories {
+        totalCount
+      }
+    }
+    totalCount
+  }
+}

@@ -337,6 +337,72 @@ export const mockPersonalAccessTokensQuery = (resolver: GraphQLResponseResolver<
  * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
  * @see https://mswjs.io/docs/basics/response-resolver
  * @example
+ * mockCreateProjectMutation(
+ *   ({ query, variables }) => {
+ *     const { input } = variables;
+ *     return HttpResponse.json({
+ *       data: { createProject }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockCreateProjectMutation = (resolver: GraphQLResponseResolver<Types.CreateProjectMutation, Types.CreateProjectMutationVariables>, options?: RequestHandlerOptions) =>
+  graphql.mutation<Types.CreateProjectMutation, Types.CreateProjectMutationVariables>(
+    'CreateProject',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
+ * mockProjectBySlugQuery(
+ *   ({ query, variables }) => {
+ *     const { ownerSlug, slug } = variables;
+ *     return HttpResponse.json({
+ *       data: { projects }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockProjectBySlugQuery = (resolver: GraphQLResponseResolver<Types.ProjectBySlugQuery, Types.ProjectBySlugQueryVariables>, options?: RequestHandlerOptions) =>
+  graphql.query<Types.ProjectBySlugQuery, Types.ProjectBySlugQueryVariables>(
+    'ProjectBySlug',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
+ * mockProjectsQuery(
+ *   ({ query, variables }) => {
+ *     const { userId, organizationId, limit } = variables;
+ *     return HttpResponse.json({
+ *       data: { projects }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockProjectsQuery = (resolver: GraphQLResponseResolver<Types.ProjectsQuery, Types.ProjectsQueryVariables>, options?: RequestHandlerOptions) =>
+  graphql.query<Types.ProjectsQuery, Types.ProjectsQueryVariables>(
+    'Projects',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
  * mockPullRequestConversationQuery(
  *   ({ query, variables }) => {
  *     const { pullRequestId } = variables;

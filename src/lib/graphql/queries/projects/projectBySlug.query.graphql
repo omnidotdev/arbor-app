@@ -1,0 +1,98 @@
+query ProjectBySlug($ownerSlug: String!, $slug: String!) {
+  projects(
+    filter: {
+      slug: { equalTo: $slug }
+      or: [
+        { owner: { username: { equalTo: $ownerSlug } } }
+        { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
+      ]
+    }
+    first: 1
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      createdAt
+      owner {
+        rowId
+        username
+        avatarUrl
+      }
+      organization {
+        rowId
+        idpOrganizationId
+        avatarUrl
+      }
+      projectRepositories {
+        totalCount
+        nodes {
+          rowId
+          repository {
+            rowId
+            name
+            slug
+            visibility
+            owner {
+              username
+            }
+            organization {
+              idpOrganizationId
+            }
+            memberships: projectRepositories {
+              totalCount
+            }
+            outgoingRelationships: repositoryRelationshipsBySourceRepositoryId {
+              nodes {
+                rowId
+                confidence
+                versionConstraint
+                targetRepository {
+                  rowId
+                  name
+                  slug
+                  owner {
+                    username
+                  }
+                  organization {
+                    idpOrganizationId
+                  }
+                }
+                relationshipType {
+                  rowId
+                  name
+                  isDirected
+                }
+              }
+            }
+            incomingRelationships: repositoryRelationshipsByTargetRepositoryId {
+              nodes {
+                rowId
+                confidence
+                versionConstraint
+                sourceRepository {
+                  rowId
+                  name
+                  slug
+                  owner {
+                    username
+                  }
+                  organization {
+                    idpOrganizationId
+                  }
+                }
+                relationshipType {
+                  rowId
+                  name
+                  isDirected
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

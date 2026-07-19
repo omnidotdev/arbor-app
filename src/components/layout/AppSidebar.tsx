@@ -19,6 +19,7 @@ import {
 } from "@omnidotdev/thornberry/sidebar";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
+  Boxes,
   ExternalLink,
   GitBranch,
   KeyRound,
@@ -37,6 +38,7 @@ import type { ComponentProps } from "react";
 
 const primaryNav = [
   { to: "/repositories", label: "Repositories", icon: GitBranch },
+  { to: "/projects", label: "Projects", icon: Boxes },
   { to: "/graph", label: "Graph", icon: Network },
 ] as const;
 
