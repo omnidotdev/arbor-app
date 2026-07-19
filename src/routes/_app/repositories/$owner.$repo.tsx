@@ -316,7 +316,7 @@ function RepositoryDetailPage() {
           <div className="mx-auto mt-6 max-w-lg rounded-lg border bg-muted/30 p-4 text-left">
             <p className="mb-2 font-medium text-sm">Quick setup</p>
             <div className="flex items-center gap-2">
-              <code className="flex-1 rounded bg-muted px-3 py-2 font-mono text-sm">
+              <code className="min-w-0 flex-1 break-all rounded bg-muted px-3 py-2 font-mono text-sm">
                 {cloneUrl}
               </code>
               <Button variant="outline" size="sm" onClick={copyCloneUrl}>
@@ -327,7 +327,7 @@ function RepositoryDetailPage() {
               <p className="font-medium text-foreground">
                 Push an existing repository:
               </p>
-              <pre className="overflow-x-auto rounded bg-muted p-3 font-mono text-xs">
+              <pre className="whitespace-pre-wrap break-all rounded bg-muted p-3 font-mono text-xs">
                 {`git remote add origin ${cloneUrl}
 git branch -M master
 git push -u origin master`}
@@ -339,7 +339,7 @@ git push -u origin master`}
         /* Repository with content */
         <div className="space-y-4">
           {/* Branch selector and clone button */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-4">
               <BranchSelector
                 branches={branches}
@@ -356,8 +356,8 @@ git push -u origin master`}
               )}
             </div>
             <div className="flex items-center gap-2">
-              <div className="flex items-center rounded-md border">
-                <code className="px-3 py-1.5 font-mono text-sm">
+              <div className="flex min-w-0 items-center rounded-md border">
+                <code className="min-w-0 truncate px-3 py-1.5 font-mono text-sm">
                   {cloneUrl}
                 </code>
                 <Button
