@@ -12,7 +12,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CreateWorkspaceButton from "@/components/workspaces/CreateWorkspaceButton";
-import { AUTH_BASE_URL, CONSOLE_URL } from "@/lib/config/env.config";
+import { AUTH_BASE_URL } from "@/lib/config/env.config";
 
 export const Route = createFileRoute("/_app/workspaces/")({
   component: WorkspacesPage,
@@ -23,7 +23,8 @@ function WorkspacesPage() {
   const orgContext = useOrganization();
 
   const workspaces = orgContext?.organizations ?? [];
-  const manageUrl = CONSOLE_URL || AUTH_BASE_URL;
+  // Workspace membership lifecycle lives on the Gatekeeper identity dashboard
+  const manageUrl = AUTH_BASE_URL ? `${AUTH_BASE_URL}/dashboard` : "";
 
   const filtered = workspaces.filter((workspace) => {
     if (!searchQuery) return true;
@@ -41,7 +42,7 @@ function WorkspacesPage() {
           <h1 className="font-bold text-3xl tracking-tight">Workspaces</h1>
           <p className="mt-1 text-muted-foreground text-sm">
             Workspaces are your Omni organizations. Membership is managed in
-            your Omni account.
+            your Omni organization settings.
           </p>
         </div>
 
@@ -76,7 +77,7 @@ function WorkspacesPage() {
           </h3>
           <p className="mt-2 text-muted-foreground text-sm">
             {workspaces.length === 0
-              ? "Create a workspace to get started, or join one from your Omni account to collaborate with your team."
+              ? "Create a workspace to get started, or join one from your Omni organization settings to collaborate with your team."
               : "Try a different search."}
           </p>
           {workspaces.length === 0 && (

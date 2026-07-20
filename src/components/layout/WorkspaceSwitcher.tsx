@@ -17,7 +17,7 @@ import {
   Settings2,
 } from "lucide-react";
 
-import { AUTH_BASE_URL, CONSOLE_URL } from "@/lib/config/env.config";
+import { AUTH_BASE_URL } from "@/lib/config/env.config";
 import { cn } from "@/lib/utils";
 
 /**
@@ -39,17 +39,19 @@ const WorkspaceSwitcher = () => {
     ? organizations.find((org) => org.slug === workspaceSlug)
     : orgContext?.currentOrganization;
 
+  // Org/workspace lifecycle (create, join, list membership) lives on the
+  // Gatekeeper identity dashboard, not the account console
+  const orgDashboardUrl = AUTH_BASE_URL ? `${AUTH_BASE_URL}/dashboard` : "";
+
   // No workspaces: deep-link out to Gatekeeper to create/join one
   if (!organizations.length) {
-    const manageUrl = CONSOLE_URL || AUTH_BASE_URL;
-
     return (
       <SidebarMenuButton
-        asChild={!!manageUrl}
+        asChild={!!orgDashboardUrl}
         className="border bg-background shadow-xs"
       >
-        {manageUrl ? (
-          <a href={manageUrl}>
+        {orgDashboardUrl ? (
+          <a href={orgDashboardUrl}>
             <Building2 className="size-4" />
             <span>Manage workspaces</span>
           </a>
@@ -114,9 +116,9 @@ const WorkspaceSwitcher = () => {
             All workspaces
           </MenuItem>
 
-          {(CONSOLE_URL || AUTH_BASE_URL) && (
+          {orgDashboardUrl && (
             <MenuItem asChild value="manage-workspaces" className="gap-2">
-              <a href={CONSOLE_URL || AUTH_BASE_URL}>
+              <a href={orgDashboardUrl}>
                 <Settings2 className="size-4 shrink-0 opacity-70" />
                 Manage workspaces
               </a>

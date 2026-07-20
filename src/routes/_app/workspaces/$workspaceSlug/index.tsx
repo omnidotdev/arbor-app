@@ -1,4 +1,4 @@
-import { useOrganization } from "@omnidotdev/providers/react";
+import { ManageTeamLink, useOrganization } from "@omnidotdev/providers/react";
 import {
   AvatarFallback,
   AvatarImage,
@@ -75,7 +75,8 @@ function WorkspaceDetailPage() {
 
   const displayName = workspace?.name ?? workspaceSlug;
   const initial = displayName.trim().charAt(0).toUpperCase() || "?";
-  const manageUrl = CONSOLE_URL || AUTH_BASE_URL;
+  // Billing is per-workspace and lives on the account console
+  const billingUrl = CONSOLE_URL ? `${CONSOLE_URL}/billing` : "";
 
   return (
     <div className="container mx-auto max-w-5xl px-4 py-6 sm:px-6">
@@ -120,13 +121,16 @@ function WorkspaceDetailPage() {
             <h3 className="font-semibold">Members</h3>
           </div>
           <p className="mt-2 text-muted-foreground text-sm">
-            Membership and roles are managed in your Omni account
+            Membership and roles are managed in your Omni organization settings
           </p>
-          {manageUrl && (
+          {AUTH_BASE_URL && workspaceSlug && (
             <Button className="mt-auto" variant="outline" size="sm" asChild>
-              <a href={manageUrl} target="_blank" rel="noopener noreferrer">
+              <ManageTeamLink
+                identityBaseUrl={AUTH_BASE_URL}
+                orgSlug={workspaceSlug}
+              >
                 Manage members
-              </a>
+              </ManageTeamLink>
             </Button>
           )}
         </div>
@@ -137,15 +141,27 @@ function WorkspaceDetailPage() {
             <h3 className="font-semibold">Settings</h3>
           </div>
           <p className="mt-2 text-muted-foreground text-sm">
-            Workspace settings and billing
+            Organization settings live in Omni; billing lives in your account
           </p>
-          {manageUrl && (
-            <Button className="mt-auto" variant="outline" size="sm" asChild>
-              <a href={manageUrl} target="_blank" rel="noopener noreferrer">
-                Settings
-              </a>
-            </Button>
-          )}
+          <div className="mt-auto flex flex-col gap-2">
+            {AUTH_BASE_URL && workspaceSlug && (
+              <Button variant="outline" size="sm" asChild>
+                <ManageTeamLink
+                  identityBaseUrl={AUTH_BASE_URL}
+                  orgSlug={workspaceSlug}
+                >
+                  Workspace settings
+                </ManageTeamLink>
+              </Button>
+            )}
+            {billingUrl && (
+              <Button variant="outline" size="sm" asChild>
+                <a href={billingUrl} target="_blank" rel="noopener noreferrer">
+                  Billing
+                </a>
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
