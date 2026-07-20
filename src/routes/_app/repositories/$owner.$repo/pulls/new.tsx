@@ -10,7 +10,9 @@ import {
 } from "lucide-react";
 
 import { CreatePullRequestForm } from "@/components/pullRequest";
+import { useOpenPullRequestMutation } from "@/generated/graphql";
 import { graphqlFetch } from "@/lib/graphql/graphqlFetch";
+import pullRequestsOptions from "@/lib/options/pullRequests.options";
 
 export const Route = createFileRoute(
   "/_app/repositories/$owner/$repo/pulls/new",
@@ -77,37 +79,35 @@ const REPOSITORY_WITH_BRANCHES_QUERY = `
   }
 `;
 
-async function fetchBranches(owner: string, repo: string): Promise<Branch[]> {
+interface RepositoryBranches {
+  /** Repository row ID, needed as the openPullRequest input. */
+  repositoryId: string | null;
+  branches: Branch[];
+}
+
+async function fetchBranches(
+  owner: string,
+  repo: string,
+): Promise<RepositoryBranches> {
   const data = await graphqlFetch<
     RepositoryWithBranchesResponse,
     { ownerSlug: string; repoSlug: string }
   >(REPOSITORY_WITH_BRANCHES_QUERY, { ownerSlug: owner, repoSlug: repo })();
 
   const repository = data.repositories.nodes[0];
-  if (!repository) return [];
+  if (!repository) return { repositoryId: null, branches: [] };
 
   const defaultBranchName =
     repository.defaultBranchRef?.name ?? repository.defaultBranch ?? "master";
 
-  return repository.refs.nodes.map((ref) => ({
-    name: ref.name,
-    sha: ref.target?.oid ?? "",
-    isDefault: ref.name === defaultBranchName,
-  }));
-}
-
-async function createPullRequest(
-  _owner: string,
-  _repo: string,
-  _data: {
-    title: string;
-    description: string;
-    sourceBranch: string;
-    targetBranch: string;
-  },
-): Promise<{ id: string; number: number }> {
-  // For now, this is a placeholder - actual GraphQL mutation would be used
-  throw new Error("Pull request creation not yet implemented");
+  return {
+    repositoryId: repository.rowId,
+    branches: repository.refs.nodes.map((ref) => ({
+      name: ref.name,
+      sha: ref.target?.oid ?? "",
+      isDefault: ref.name === defaultBranchName,
+    })),
+  };
 }
 
 function NewPullRequestPage() {
@@ -120,25 +120,55 @@ function NewPullRequestPage() {
     queryFn: () => fetchBranches(owner, repo),
   });
 
-  const branches = branchesQuery.data ?? [];
+  const branches = branchesQuery.data?.branches ?? [];
+  const repositoryId = branchesQuery.data?.repositoryId ?? null;
   const defaultBranch =
     branches.find((b) => b.isDefault)?.name ?? branches[0]?.name ?? "master";
 
   const createMutation = useMutation({
-    mutationFn: (data: {
+    mutationKey: useOpenPullRequestMutation.getKey(),
+    mutationFn: async (data: {
       title: string;
       description: string;
       sourceBranch: string;
       targetBranch: string;
-    }) => createPullRequest(owner, repo, data),
-    onSuccess: () => {
+    }) => {
+      if (!repositoryId) throw new Error("Repository not found");
+
+      const result = await useOpenPullRequestMutation.fetcher({
+        input: {
+          repositoryId,
+          title: data.title,
+          description: data.description || null,
+          sourceBranch: data.sourceBranch,
+          targetBranch: data.targetBranch,
+        },
+      })();
+
+      const payload = result.openPullRequest;
+      // The mutation reports domain failures (branch missing, no access) in the
+      // payload rather than throwing, so surface them as an error here
+      if (!payload || payload.error) {
+        throw new Error(payload?.error ?? "Failed to open pull request");
+      }
+      return payload;
+    },
+    onSuccess: (payload) => {
       queryClient.invalidateQueries({
-        queryKey: ["pullRequests", owner, repo],
+        queryKey: pullRequestsOptions({ ownerSlug: owner, repoSlug: repo })
+          .queryKey,
       });
-      navigate({
-        to: "/repositories/$owner/$repo/pulls",
-        params: { owner, repo },
-      });
+      if (payload.number != null) {
+        navigate({
+          to: "/repositories/$owner/$repo/pulls/$number",
+          params: { owner, repo, number: String(payload.number) },
+        });
+      } else {
+        navigate({
+          to: "/repositories/$owner/$repo/pulls",
+          params: { owner, repo },
+        });
+      }
     },
   });
 

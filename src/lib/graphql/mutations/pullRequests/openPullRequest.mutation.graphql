@@ -1,0 +1,7 @@
+mutation OpenPullRequest($input: OpenPullRequestInput!) {
+  openPullRequest(input: $input) {
+    rowId
+    number
+    error
+  }
+}

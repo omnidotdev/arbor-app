@@ -2594,6 +2594,25 @@ export enum DiffStatus {
   TypeChanged = 'TYPE_CHANGED'
 }
 
+/** Input for enqueuing a stack onto its repository's merge queue. */
+export type EnqueueStackInput = {
+  /** The stack ID to enqueue. */
+  stackId: Scalars['UUID']['input'];
+};
+
+/** Payload for the enqueueStack mutation. */
+export type EnqueueStackPayload = {
+  __typename?: 'EnqueueStackPayload';
+  /** True when an active entry already existed, so no new entry was inserted. */
+  alreadyQueued?: Maybe<Scalars['Boolean']['output']>;
+  /** The merge queue entry for the stack. */
+  entryId?: Maybe<Scalars['UUID']['output']>;
+  /** Error message if the stack could not be enqueued. */
+  error?: Maybe<Scalars['String']['output']>;
+  /** Whether the stack was enqueued (or already had an active entry). */
+  success: Scalars['Boolean']['output'];
+};
+
 export type ExternalDependency = Node & {
   __typename?: 'ExternalDependency';
   createdAt: Scalars['Datetime']['output'];
@@ -3728,6 +3747,23 @@ export type MergeQueueEntryPatch = {
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
+/** Result of processing a single merge queue entry. */
+export type MergeQueueEntryResult = {
+  __typename?: 'MergeQueueEntryResult';
+  /** Names of required checks blocking the entry, when it was gated. */
+  blockingChecks?: Maybe<Array<Scalars['String']['output']>>;
+  /** A generic explanation when the entry was blocked or skipped. */
+  detail?: Maybe<Scalars['String']['output']>;
+  /** The merge queue entry that was processed. */
+  entryId: Scalars['UUID']['output'];
+  /** The changes that landed during this pass, bottom-up. */
+  mergedChangeIds: Array<Scalars['UUID']['output']>;
+  /** The stack the entry references, when it is a stack entry. */
+  stackId?: Maybe<Scalars['UUID']['output']>;
+  /** The entry's status after this pass: "merged", "blocked" or "skipped". */
+  status: Scalars['String']['output'];
+};
+
 export type MergeQueueEntryStddevPopulationAggregateFilter = {
   position?: InputMaybe<BigFloatFilter>;
 };
@@ -3875,6 +3911,12 @@ export type Mutation = {
   /** Deletes a single `VerificationCheck` using a unique key. */
   deleteVerificationCheck?: Maybe<DeleteVerificationCheckPayload>;
   /**
+   * Enqueue a stack onto its repository's merge queue.
+   * Idempotent: an already-queued stack returns its existing entry. Requires
+   * write access to the repository.
+   */
+  enqueueStack?: Maybe<EnqueueStackPayload>;
+  /**
    * Initialize git storage for a repository.
    * Called after the repository record is created in the database.
    */
@@ -3890,6 +3932,18 @@ export type Mutation = {
    * Requires write access to the repository.
    */
   mergePullRequest?: Maybe<MergePullRequestPayload>;
+  /**
+   * Open a pull request from a source branch into a target branch. Assigns
+   * the next per-repository number and records the authenticated user as
+   * author. Requires write access; both branches must already exist.
+   */
+  openPullRequest?: Maybe<OpenPullRequestPayload>;
+  /**
+   * Process a repository's merge queue with one serial pass, landing the
+   * changes it safely can through the existing merge path. Requires write
+   * access to the repository.
+   */
+  processMergeQueue?: Maybe<ProcessMergeQueuePayload>;
   /**
    * Rename a repository, moving its on-disk git storage to match the new
    * slug so the database row and storage never diverge. Requires the
@@ -4197,6 +4251,12 @@ export type MutationDeleteVerificationCheckArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationEnqueueStackArgs = {
+  input: EnqueueStackInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationInitializeRepositoryArgs = {
   input: InitializeRepositoryInput;
 };
@@ -4211,6 +4271,18 @@ export type MutationMergeChangeArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationMergePullRequestArgs = {
   input: MergePullRequestInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationOpenPullRequestArgs = {
+  input: OpenPullRequestInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationProcessMergeQueueArgs = {
+  input: ProcessMergeQueueInput;
 };
 
 
@@ -4346,6 +4418,31 @@ export type Observer = {
   identityProviderId: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
   rowId: Scalars['UUID']['output'];
+};
+
+/** Input for opening a pull request. */
+export type OpenPullRequestInput = {
+  /** Optional description (Markdown). */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The repository the pull request belongs to. */
+  repositoryId: Scalars['UUID']['input'];
+  /** Branch the changes come from. */
+  sourceBranch: Scalars['String']['input'];
+  /** Branch the changes merge into. */
+  targetBranch: Scalars['String']['input'];
+  /** Pull request title. */
+  title: Scalars['String']['input'];
+};
+
+/** Payload for the openPullRequest mutation. */
+export type OpenPullRequestPayload = {
+  __typename?: 'OpenPullRequestPayload';
+  /** Error message if opening failed. */
+  error?: Maybe<Scalars['String']['output']>;
+  /** The per-repository pull request number. */
+  number?: Maybe<Scalars['Int']['output']>;
+  /** The created pull request row ID. */
+  rowId?: Maybe<Scalars['UUID']['output']>;
 };
 
 export type Organization = Node & {
@@ -5126,6 +5223,23 @@ export enum PersonalAccessTokenOrderBy {
   UserIdAsc = 'USER_ID_ASC',
   UserIdDesc = 'USER_ID_DESC'
 }
+
+/** Input for processing a repository's merge queue. */
+export type ProcessMergeQueueInput = {
+  /** The repository ID whose queue to process. */
+  repositoryId: Scalars['UUID']['input'];
+};
+
+/** Payload for the processMergeQueue mutation. */
+export type ProcessMergeQueuePayload = {
+  __typename?: 'ProcessMergeQueuePayload';
+  /** Error message if the pass did not run. */
+  error?: Maybe<Scalars['String']['output']>;
+  /** Per-entry results of the pass, in queue order. */
+  results?: Maybe<Array<MergeQueueEntryResult>>;
+  /** Whether the queue pass ran. */
+  success: Scalars['Boolean']['output'];
+};
 
 export type Project = Node & {
   __typename?: 'Project';
@@ -12503,6 +12617,20 @@ export type DiffStatus =
   | 'RENAMED'
   | 'TYPE_CHANGED';
 
+/** Input for opening a pull request. */
+export type OpenPullRequestInput = {
+  /** Optional description (Markdown). */
+  description?: string | null | undefined;
+  /** The repository the pull request belongs to. */
+  repositoryId: string;
+  /** Branch the changes come from. */
+  sourceBranch: string;
+  /** Branch the changes merge into. */
+  targetBranch: string;
+  /** Pull request title. */
+  title: string;
+};
+
 /** An input for mutations affecting `Organization` */
 export type OrganizationInput = {
   avatarUrl?: string | null | undefined;
@@ -12705,6 +12833,13 @@ export type DeletePullRequestCommentMutationVariables = Exact<{
 
 
 export type DeletePullRequestCommentMutation = { deletePullRequestComment: { deletedPullRequestCommentId: string | null } | null };
+
+export type OpenPullRequestMutationVariables = Exact<{
+  input: OpenPullRequestInput;
+}>;
+
+
+export type OpenPullRequestMutation = { openPullRequest: { rowId: string | null, number: number | null, error: string | null } | null };
 
 export type UpdatePullRequestCommentMutationVariables = Exact<{
   input: UpdatePullRequestCommentInput;
@@ -13175,6 +13310,34 @@ useDeletePullRequestCommentMutation.getKey = () => ['DeletePullRequestComment'];
 
 
 useDeletePullRequestCommentMutation.fetcher = (variables: DeletePullRequestCommentMutationVariables, options?: RequestInit['headers']) => graphqlFetch<DeletePullRequestCommentMutation, DeletePullRequestCommentMutationVariables>(DeletePullRequestCommentDocument, variables, options);
+
+export const OpenPullRequestDocument = new TypedDocumentString(`
+    mutation OpenPullRequest($input: OpenPullRequestInput!) {
+  openPullRequest(input: $input) {
+    rowId
+    number
+    error
+  }
+}
+    `);
+
+export const useOpenPullRequestMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<OpenPullRequestMutation, TError, OpenPullRequestMutationVariables, TContext>) => {
+    
+    return useMutation<OpenPullRequestMutation, TError, OpenPullRequestMutationVariables, TContext>(
+      {
+    mutationKey: ['OpenPullRequest'],
+    mutationFn: (variables?: OpenPullRequestMutationVariables) => graphqlFetch<OpenPullRequestMutation, OpenPullRequestMutationVariables>(OpenPullRequestDocument, variables)(),
+    ...options
+  }
+    )};
+
+useOpenPullRequestMutation.getKey = () => ['OpenPullRequest'];
+
+
+useOpenPullRequestMutation.fetcher = (variables: OpenPullRequestMutationVariables, options?: RequestInit['headers']) => graphqlFetch<OpenPullRequestMutation, OpenPullRequestMutationVariables>(OpenPullRequestDocument, variables, options);
 
 export const UpdatePullRequestCommentDocument = new TypedDocumentString(`
     mutation UpdatePullRequestComment($input: UpdatePullRequestCommentInput!) {
