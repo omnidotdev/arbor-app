@@ -1,17 +1,12 @@
 "use client";
 
-import {
-  DiffFile,
-  DiffModeEnum,
-  DiffView,
-  SplitSide,
-} from "@git-diff-view/react";
+import { DiffModeEnum, DiffView, SplitSide } from "@git-diff-view/react";
 import { useEffect, useMemo, useState } from "react";
 
 import { useTheme } from "@/providers/ThemeProvider";
+import { buildDiffFile } from "./buildDiffFile";
 import { CommentComposer } from "./CommentComposer";
 import { CommentThread } from "./CommentThread";
-import { getFileLang } from "./diffTypes";
 import { buildCommentTrees } from "./reviewTypes";
 
 import type {
@@ -92,25 +87,16 @@ export function TextDiff({
     setMounted(true);
   }, []);
 
-  const lang = getFileLang(path);
-
-  // @git-diff-view renders from a DiffFile built from the raw old/new content
-  // (initRaw computes the diff, so a pure add or delete still renders its full
-  // one-sided diff). DiffView clones a passed diffFile via _getFullBundle, which
-  // requires the split and unified lines to be built first, so build them here;
-  // an initRaw-only instance clones into an empty view
-  const diffFile = useMemo(() => {
-    const instance = DiffFile.createInstance({
-      oldFile: { fileName: path, fileLang: lang, content: oldText ?? "" },
-      newFile: { fileName: path, fileLang: lang, content: newText ?? "" },
-      hunks: [],
-    });
-    instance.initTheme(theme === "dark" ? "dark" : "light");
-    instance.initRaw();
-    instance.buildSplitDiffLines();
-    instance.buildUnifiedDiffLines();
-    return instance;
-  }, [path, lang, oldText, newText, theme]);
+  const diffFile = useMemo(
+    () =>
+      buildDiffFile(
+        path,
+        oldText,
+        newText,
+        theme === "dark" ? "dark" : "light",
+      ),
+    [path, oldText, newText, theme],
+  );
 
   if (!mounted) {
     return (
