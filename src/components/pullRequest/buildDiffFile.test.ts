@@ -2,10 +2,12 @@ import { describe, expect, it } from "bun:test";
 
 import { DiffFile } from "@git-diff-view/react";
 
+import { textDiffFixtures } from "./__fixtures__/diffPreview";
 import { buildDiffFile } from "./buildDiffFile";
 
 /**
- * Regression tests for the text diff builder.
+ * Regression tests for the text diff builder, driven by the real
+ * `claude/diff-preview-check` preview fixture.
  *
  * Prod bug: commit and pull request file previews rendered blank. The DiffFile
  * was created with `hunks: []`, but `@git-diff-view/core` renders a *provided*
@@ -16,48 +18,55 @@ import { buildDiffFile } from "./buildDiffFile";
  * silently returns.
  */
 describe("buildDiffFile", () => {
-  const OLD = 'export const version = "1.0.0";\nexport const flag = false;\n';
-  const NEW =
-    'export const version = "2.0.0";\nexport const flag = true;\nexport const added = "yes";\n';
+  describe.each(textDiffFixtures)("preview fixture: $path", ({
+    path,
+    oldText,
+    newText,
+    additions,
+    deletions,
+  }) => {
+    it("produces the expected visible diff lines", () => {
+      const file = buildDiffFile(path, oldText, newText, "light");
+      const bundle = file._getFullBundle();
 
-  it("produces visible diff lines for a modified file", () => {
-    const file = buildDiffFile("config.js", OLD, NEW, "light");
-    const bundle = file._getFullBundle();
+      expect(bundle.additionLength).toBe(additions);
+      expect(bundle.deletionLength).toBe(deletions);
+      expect(bundle.unifiedLineLength).toBeGreaterThan(0);
 
-    expect(bundle.additionLength).toBe(3);
-    expect(bundle.deletionLength).toBe(2);
-    expect(bundle.unifiedLineLength).toBeGreaterThan(0);
+      const changedLinesHidden = Array.from(
+        { length: bundle.unifiedLineLength },
+        (_, i) => file.getUnifiedLine(i),
+      ).some((line) => line?.isHidden);
+      expect(changedLinesHidden).toBe(false);
+    });
 
-    const anyHidden = Array.from({ length: bundle.unifiedLineLength }, (_, i) =>
-      file.getUnifiedLine(i),
-    ).some((line) => line?.isHidden);
-    expect(anyHidden).toBe(false);
-  });
+    it("survives the DiffView clone (split + unified lines pre-built)", () => {
+      const file = buildDiffFile(path, oldText, newText, "light");
+      const clone = DiffFileCloneOf(file);
 
-  it("survives the DiffView clone (split + unified lines are pre-built)", () => {
-    const file = buildDiffFile("config.js", OLD, NEW, "light");
-    const clone = DiffFileCloneOf(file);
-
-    expect(clone.splitLeftLines?.length).toBeGreaterThan(0);
-    expect(clone.splitRightLines?.length).toBeGreaterThan(0);
-    expect(clone.unifiedLineLength).toBeGreaterThan(0);
+      expect(clone.splitLeftLines?.length).toBeGreaterThan(0);
+      expect(clone.splitRightLines?.length).toBeGreaterThan(0);
+      expect(clone.unifiedLineLength).toBeGreaterThan(0);
+    });
   });
 
   it("renders a pure addition (new file) one-sided", () => {
-    const file = buildDiffFile("added.js", "", NEW, "light");
+    const { path, newText, additions } = textDiffFixtures[0];
+    const file = buildDiffFile(path, "", newText, "light");
     const bundle = file._getFullBundle();
 
-    expect(bundle.additionLength).toBe(3);
+    expect(bundle.additionLength).toBe(additions);
     expect(bundle.deletionLength).toBe(0);
     expect(bundle.unifiedLineLength).toBeGreaterThan(0);
   });
 
   it("renders a pure deletion one-sided", () => {
-    const file = buildDiffFile("removed.js", OLD, "", "light");
+    const { path, oldText, deletions } = textDiffFixtures[0];
+    const file = buildDiffFile(path, oldText, "", "light");
     const bundle = file._getFullBundle();
 
     expect(bundle.additionLength).toBe(0);
-    expect(bundle.deletionLength).toBe(2);
+    expect(bundle.deletionLength).toBe(deletions);
     expect(bundle.unifiedLineLength).toBeGreaterThan(0);
   });
 });
