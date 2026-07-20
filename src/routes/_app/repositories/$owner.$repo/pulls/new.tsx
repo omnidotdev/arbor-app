@@ -11,8 +11,8 @@ import {
 
 import { CreatePullRequestForm } from "@/components/pullRequest";
 import { useOpenPullRequestMutation } from "@/generated/graphql";
-import { graphqlFetch } from "@/lib/graphql/graphqlFetch";
 import pullRequestsOptions from "@/lib/options/pullRequests.options";
+import repositoryWithBranchesOptions from "@/lib/options/repositoryWithBranches.options";
 
 export const Route = createFileRoute(
   "/_app/repositories/$owner/$repo/pulls/new",
@@ -26,102 +26,25 @@ interface Branch {
   isDefault: boolean;
 }
 
-interface RepositoryWithBranchesResponse {
-  repositories: {
-    nodes: Array<{
-      rowId: string;
-      defaultBranch: string;
-      refs: {
-        nodes: Array<{
-          name: string;
-          target: {
-            oid: string;
-          } | null;
-        }>;
-      };
-      defaultBranchRef: {
-        name: string;
-      } | null;
-    }>;
-  };
-}
-
-const REPOSITORY_WITH_BRANCHES_QUERY = `
-  query RepositoryWithBranches($ownerSlug: String!, $repoSlug: String!) {
-    repositories(
-      filter: {
-        slug: { equalTo: $repoSlug }
-        or: [
-          { owner: { username: { equalTo: $ownerSlug } } }
-          { organization: { slug: { equalTo: $ownerSlug } } }
-        ]
-      }
-      first: 1
-    ) {
-      nodes {
-        rowId
-        defaultBranch
-        refs(refPrefix: "refs/heads/") {
-          nodes {
-            name
-            target {
-              ... on Commit {
-                oid
-              }
-            }
-          }
-        }
-        defaultBranchRef {
-          name
-        }
-      }
-    }
-  }
-`;
-
-interface RepositoryBranches {
-  /** Repository row ID, needed as the openPullRequest input. */
-  repositoryId: string | null;
-  branches: Branch[];
-}
-
-async function fetchBranches(
-  owner: string,
-  repo: string,
-): Promise<RepositoryBranches> {
-  const data = await graphqlFetch<
-    RepositoryWithBranchesResponse,
-    { ownerSlug: string; repoSlug: string }
-  >(REPOSITORY_WITH_BRANCHES_QUERY, { ownerSlug: owner, repoSlug: repo })();
-
-  const repository = data.repositories.nodes[0];
-  if (!repository) return { repositoryId: null, branches: [] };
-
-  const defaultBranchName =
-    repository.defaultBranchRef?.name ?? repository.defaultBranch ?? "master";
-
-  return {
-    repositoryId: repository.rowId,
-    branches: repository.refs.nodes.map((ref) => ({
-      name: ref.name,
-      sha: ref.target?.oid ?? "",
-      isDefault: ref.name === defaultBranchName,
-    })),
-  };
-}
-
 function NewPullRequestPage() {
   const { owner, repo } = Route.useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const branchesQuery = useQuery({
-    queryKey: ["branches", owner, repo],
-    queryFn: () => fetchBranches(owner, repo),
-  });
+  const branchesQuery = useQuery(
+    repositoryWithBranchesOptions({ ownerSlug: owner, repoSlug: repo }),
+  );
 
-  const branches = branchesQuery.data?.branches ?? [];
-  const repositoryId = branchesQuery.data?.repositoryId ?? null;
+  const repository = branchesQuery.data?.repositories?.nodes?.[0] ?? null;
+  const repositoryId = repository?.rowId ?? null;
+  const defaultBranchName =
+    repository?.defaultBranchRef?.name ?? repository?.defaultBranch ?? "master";
+
+  const branches: Branch[] = (repository?.refs?.nodes ?? []).map((ref) => ({
+    name: ref.name,
+    sha: ref.target && "oid" in ref.target ? ref.target.oid : "",
+    isDefault: ref.name === defaultBranchName,
+  }));
   const defaultBranch =
     branches.find((b) => b.isDefault)?.name ?? branches[0]?.name ?? "master";
 
