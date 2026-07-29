@@ -7,14 +7,19 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  PersonalAccessTokenPermission,
   useCreatePersonalAccessTokenMutation,
   useDeletePersonalAccessTokenMutation,
+  useRepositoriesQuery,
 } from "@/generated/graphql";
 import personalAccessTokensOptions from "@/lib/options/personalAccessTokens.options";
 
 export const Route = createFileRoute("/_app/settings/tokens")({
   component: TokensPage,
 });
+
+/** Upper bound on repositories offered in the scope picker */
+const REPOSITORY_PICKER_LIMIT = 100;
 
 /** Format a nullable ISO datetime for display, or a fallback when absent */
 const formatDate = (value: Date | string | null | undefined) => {
@@ -28,6 +33,7 @@ const formatDate = (value: Date | string | null | undefined) => {
 
 function TokensPage() {
   const queryClient = useQueryClient();
+  const { session } = Route.useRouteContext();
 
   const tokensQuery = useQuery(personalAccessTokensOptions());
   const tokens = tokensQuery.data?.personalAccessTokens?.nodes ?? [];
@@ -35,6 +41,10 @@ function TokensPage() {
   // Create form state
   const [name, setName] = useState("");
   const [expiresInDays, setExpiresInDays] = useState("");
+  const [permission, setPermission] = useState<"read" | "write">("write");
+  // Empty means the token is not confined and reaches every repository its
+  // owner can reach, which matches how the API reads an empty whitelist
+  const [scopedRepositoryIds, setScopedRepositoryIds] = useState<string[]>([]);
   const [createError, setCreateError] = useState<string | null>(null);
   // The plaintext token is returned exactly once by the API. Hold it in local
   // state only for the one-time display, never persist it anywhere
@@ -49,10 +59,35 @@ function TokensPage() {
       queryKey: personalAccessTokensOptions().queryKey,
     });
 
+  // Repositories the user can confine a token to
+  const repositoriesQuery = useQuery({
+    queryKey: useRepositoriesQuery.getKey({
+      userId: session!.user.rowId!,
+      limit: REPOSITORY_PICKER_LIMIT,
+    }),
+    queryFn: useRepositoriesQuery.fetcher({
+      userId: session!.user.rowId!,
+      limit: REPOSITORY_PICKER_LIMIT,
+    }),
+  });
+  const selectableRepositories =
+    repositoriesQuery.data?.repositories?.nodes ?? [];
+
+  const toggleRepository = (rowId: string) =>
+    setScopedRepositoryIds((current) =>
+      current.includes(rowId)
+        ? current.filter((id) => id !== rowId)
+        : [...current, rowId],
+    );
+
   const createMutation = useMutation({
     mutationKey: useCreatePersonalAccessTokenMutation.getKey(),
-    mutationFn: (variables: { name: string; expiresInDays?: number }) =>
-      useCreatePersonalAccessTokenMutation.fetcher(variables)(),
+    mutationFn: (variables: {
+      name: string;
+      expiresInDays?: number;
+      permission: PersonalAccessTokenPermission;
+      repositoryIds?: string[];
+    }) => useCreatePersonalAccessTokenMutation.fetcher(variables)(),
     onSuccess: (result) => {
       const token = result.createPersonalAccessToken?.token;
       if (!token) {
@@ -64,6 +99,8 @@ function TokensPage() {
       setCopied(false);
       setName("");
       setExpiresInDays("");
+      setPermission("write");
+      setScopedRepositoryIds([]);
       invalidateTokens();
     },
     onError: () => {
@@ -90,6 +127,14 @@ function TokensPage() {
     createMutation.mutate({
       name: trimmed,
       expiresInDays: days && days > 0 ? days : undefined,
+      permission:
+        permission === "read"
+          ? PersonalAccessTokenPermission.Read
+          : PersonalAccessTokenPermission.Write,
+      // omit entirely when nothing is selected, so the token stays unconfined
+      repositoryIds: scopedRepositoryIds.length
+        ? scopedRepositoryIds
+        : undefined,
     });
   };
 
@@ -208,6 +253,103 @@ function TokensPage() {
               </p>
             </div>
 
+            <fieldset>
+              <legend className="mb-1.5 block font-medium text-sm">
+                Access
+              </legend>
+              <div className="flex flex-wrap gap-4">
+                {(
+                  [
+                    {
+                      value: "write",
+                      label: "Read and write",
+                      hint: "Clone, fetch, and push",
+                    },
+                    {
+                      value: "read",
+                      label: "Read only",
+                      hint: "Clone and fetch, no pushing",
+                    },
+                  ] as const
+                ).map((option) => (
+                  <label
+                    key={option.value}
+                    className="flex items-start gap-2 text-sm"
+                  >
+                    <input
+                      type="radio"
+                      name="token-permission"
+                      className="mt-1"
+                      value={option.value}
+                      checked={permission === option.value}
+                      onChange={() => setPermission(option.value)}
+                    />
+                    <span>
+                      <span className="font-medium">{option.label}</span>
+                      <span className="block text-muted-foreground text-xs">
+                        {option.hint}
+                      </span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend className="mb-1.5 block font-medium text-sm">
+                Repository access
+              </legend>
+              <p className="mb-2 text-muted-foreground text-xs">
+                {scopedRepositoryIds.length === 0
+                  ? "All repositories you can reach. Select repositories below to limit this token to them."
+                  : `Limited to ${scopedRepositoryIds.length} ${
+                      scopedRepositoryIds.length === 1
+                        ? "repository"
+                        : "repositories"
+                    }.`}
+              </p>
+
+              {repositoriesQuery.isLoading ? (
+                <p className="text-muted-foreground text-sm">
+                  Loading repositories...
+                </p>
+              ) : selectableRepositories.length === 0 ? (
+                <p className="text-muted-foreground text-sm">
+                  No repositories yet.
+                </p>
+              ) : (
+                <div className="max-h-48 space-y-1 overflow-y-auto rounded-md border p-2">
+                  {selectableRepositories.map((repository) => (
+                    <label
+                      key={repository.rowId}
+                      className="flex items-center gap-2 rounded px-1 py-0.5 text-sm hover:bg-muted"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={scopedRepositoryIds.includes(repository.rowId)}
+                        onChange={() => toggleRepository(repository.rowId)}
+                      />
+                      <span className="truncate">
+                        {repository.owner?.username}/{repository.slug}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              )}
+
+              {scopedRepositoryIds.length > 0 && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="mt-2"
+                  onClick={() => setScopedRepositoryIds([])}
+                >
+                  Clear selection
+                </Button>
+              )}
+            </fieldset>
+
             {createError && (
               <p className="text-destructive text-sm">{createError}</p>
             )}
@@ -242,6 +384,8 @@ function TokensPage() {
                 const lastUsed = formatDate(token.lastUsedAt);
                 const created = formatDate(token.createdAt);
                 const isConfirming = confirmingRevoke === token.rowId;
+                const confinedCount =
+                  token.personalAccessTokenRepositories?.totalCount ?? 0;
 
                 return (
                   <li
@@ -255,6 +399,22 @@ function TokensPage() {
                       <code className="break-all font-mono text-muted-foreground text-xs">
                         {token.tokenPrefix}
                       </code>
+                      <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                        <span className="rounded border px-1.5 py-0.5 text-xs">
+                          {token.permission === "read"
+                            ? "Read only"
+                            : "Read and write"}
+                        </span>
+                        <span className="rounded border px-1.5 py-0.5 text-xs">
+                          {confinedCount === 0
+                            ? "All repositories"
+                            : `${confinedCount} ${
+                                confinedCount === 1
+                                  ? "repository"
+                                  : "repositories"
+                              }`}
+                        </span>
+                      </div>
                       <div className="mt-1 flex flex-wrap gap-x-4 gap-y-0.5 text-muted-foreground text-xs">
                         {created && <span>Created {created}</span>}
                         <span>Last used {lastUsed ? lastUsed : "never"}</span>

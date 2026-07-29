@@ -1,10 +1,21 @@
-mutation CreatePersonalAccessToken($name: String!, $expiresInDays: Int) {
-  createPersonalAccessToken(name: $name, expiresInDays: $expiresInDays) {
+mutation CreatePersonalAccessToken(
+  $name: String!
+  $expiresInDays: Int
+  $permission: PersonalAccessTokenPermission
+  $repositoryIds: [UUID!]
+) {
+  createPersonalAccessToken(
+    name: $name
+    expiresInDays: $expiresInDays
+    permission: $permission
+    repositoryIds: $repositoryIds
+  ) {
     rowId
     name
     tokenPrefix
     expiresAt
     createdAt
+    permission
     token
   }
 }

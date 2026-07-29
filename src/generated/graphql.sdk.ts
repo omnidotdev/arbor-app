@@ -374,6 +374,8 @@ export enum AgentOrderBy {
   PersonalAccessTokensDistinctCountLastUsedAtDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_LAST_USED_AT_DESC',
   PersonalAccessTokensDistinctCountNameAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_NAME_ASC',
   PersonalAccessTokensDistinctCountNameDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_NAME_DESC',
+  PersonalAccessTokensDistinctCountPermissionAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_PERMISSION_ASC',
+  PersonalAccessTokensDistinctCountPermissionDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_PERMISSION_DESC',
   PersonalAccessTokensDistinctCountRowIdAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_ROW_ID_ASC',
   PersonalAccessTokensDistinctCountRowIdDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_ROW_ID_DESC',
   PersonalAccessTokensDistinctCountTokenPrefixAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_TOKEN_PREFIX_ASC',
@@ -1391,6 +1393,8 @@ export type CreatePersonalAccessTokenPayload = {
   expiresAt?: Maybe<Scalars['Datetime']['output']>;
   /** The user-facing token label. */
   name: Scalars['String']['output'];
+  /** Furthest operation the token may perform: "read" or "write". */
+  permission: Scalars['String']['output'];
   /** The created token row ID. */
   rowId: Scalars['UUID']['output'];
   /**
@@ -4031,6 +4035,8 @@ export type MutationCreateOrganizationArgs = {
 export type MutationCreatePersonalAccessTokenArgs = {
   expiresInDays?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
+  permission?: InputMaybe<PersonalAccessTokenPermission>;
+  repositoryIds?: InputMaybe<Array<Scalars['UUID']['input']>>;
 };
 
 
@@ -4976,9 +4982,24 @@ export type PersonalAccessToken = {
   expiresAt?: Maybe<Scalars['Datetime']['output']>;
   lastUsedAt?: Maybe<Scalars['Datetime']['output']>;
   name: Scalars['String']['output'];
+  permission: Scalars['String']['output'];
+  /** Reads and enables pagination through a set of `PersonalAccessTokenRepository`. */
+  personalAccessTokenRepositories: PersonalAccessTokenRepositoryConnection;
   rowId: Scalars['UUID']['output'];
   tokenPrefix: Scalars['String']['output'];
   userId: Scalars['UUID']['output'];
+};
+
+
+export type PersonalAccessTokenPersonalAccessTokenRepositoriesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<PersonalAccessTokenRepositoryCondition>;
+  filter?: InputMaybe<PersonalAccessTokenRepositoryFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<PersonalAccessTokenRepositoryOrderBy>>;
 };
 
 export type PersonalAccessTokenAggregates = {
@@ -5011,6 +5032,8 @@ export type PersonalAccessTokenCondition = {
   lastUsedAt?: InputMaybe<Scalars['Datetime']['input']>;
   /** Checks for equality with the object’s `name` field. */
   name?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `permission` field. */
+  permission?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `rowId` field. */
   rowId?: InputMaybe<Scalars['UUID']['input']>;
   /** Checks for equality with the object’s `tokenPrefix` field. */
@@ -5049,6 +5072,7 @@ export type PersonalAccessTokenDistinctCountAggregateFilter = {
   expiresAt?: InputMaybe<BigIntFilter>;
   lastUsedAt?: InputMaybe<BigIntFilter>;
   name?: InputMaybe<BigIntFilter>;
+  permission?: InputMaybe<BigIntFilter>;
   rowId?: InputMaybe<BigIntFilter>;
   tokenPrefix?: InputMaybe<BigIntFilter>;
   userId?: InputMaybe<BigIntFilter>;
@@ -5066,6 +5090,8 @@ export type PersonalAccessTokenDistinctCountAggregates = {
   lastUsedAt?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of name across the matching connection */
   name?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of permission across the matching connection */
+  permission?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of rowId across the matching connection */
   rowId?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of tokenPrefix across the matching connection */
@@ -5105,6 +5131,12 @@ export type PersonalAccessTokenFilter = {
   not?: InputMaybe<PersonalAccessTokenFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<PersonalAccessTokenFilter>>;
+  /** Filter by the object’s `permission` field. */
+  permission?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `personalAccessTokenRepositories` relation. */
+  personalAccessTokenRepositories?: InputMaybe<PersonalAccessTokenToManyPersonalAccessTokenRepositoryFilter>;
+  /** Some related `personalAccessTokenRepositories` exist. */
+  personalAccessTokenRepositoriesExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `rowId` field. */
   rowId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `tokenPrefix` field. */
@@ -5128,6 +5160,7 @@ export enum PersonalAccessTokenGroupBy {
   LastUsedAtTruncatedToDay = 'LAST_USED_AT_TRUNCATED_TO_DAY',
   LastUsedAtTruncatedToHour = 'LAST_USED_AT_TRUNCATED_TO_HOUR',
   Name = 'NAME',
+  Permission = 'PERMISSION',
   TokenPrefix = 'TOKEN_PREFIX',
   UserId = 'USER_ID'
 }
@@ -5214,6 +5247,18 @@ export enum PersonalAccessTokenOrderBy {
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
+  PermissionAsc = 'PERMISSION_ASC',
+  PermissionDesc = 'PERMISSION_DESC',
+  PersonalAccessTokenRepositoriesCountAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_COUNT_ASC',
+  PersonalAccessTokenRepositoriesCountDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_COUNT_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountCreatedAtAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountCreatedAtDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountPersonalAccessTokenIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PERSONAL_ACCESS_TOKEN_ID_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountPersonalAccessTokenIdDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PERSONAL_ACCESS_TOKEN_ID_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountRepositoryIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountRepositoryIdDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountRowIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_ROW_ID_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountRowIdDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_ROW_ID_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   RowIdAsc = 'ROW_ID_ASC',
@@ -5223,6 +5268,213 @@ export enum PersonalAccessTokenOrderBy {
   UserIdAsc = 'USER_ID_ASC',
   UserIdDesc = 'USER_ID_DESC'
 }
+
+/** Furthest operation an access token may perform. */
+export enum PersonalAccessTokenPermission {
+  Read = 'READ',
+  Write = 'WRITE'
+}
+
+export type PersonalAccessTokenRepository = {
+  __typename?: 'PersonalAccessTokenRepository';
+  createdAt: Scalars['Datetime']['output'];
+  personalAccessTokenId: Scalars['UUID']['output'];
+  /** Reads a single `Repository` that is related to this `PersonalAccessTokenRepository`. */
+  repository?: Maybe<Repository>;
+  repositoryId: Scalars['UUID']['output'];
+  rowId: Scalars['UUID']['output'];
+};
+
+export type PersonalAccessTokenRepositoryAggregates = {
+  __typename?: 'PersonalAccessTokenRepositoryAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<PersonalAccessTokenRepositoryDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/** A filter to be used against aggregates of `PersonalAccessTokenRepository` object types. */
+export type PersonalAccessTokenRepositoryAggregatesFilter = {
+  /** Distinct count aggregate over matching `PersonalAccessTokenRepository` objects. */
+  distinctCount?: InputMaybe<PersonalAccessTokenRepositoryDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `PersonalAccessTokenRepository` object to be included within the aggregate. */
+  filter?: InputMaybe<PersonalAccessTokenRepositoryFilter>;
+};
+
+/**
+ * A condition to be used against `PersonalAccessTokenRepository` object types. All
+ * fields are tested for equality and combined with a logical ‘and.’
+ */
+export type PersonalAccessTokenRepositoryCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `personalAccessTokenId` field. */
+  personalAccessTokenId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+/** A connection to a list of `PersonalAccessTokenRepository` values. */
+export type PersonalAccessTokenRepositoryConnection = {
+  __typename?: 'PersonalAccessTokenRepositoryConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<PersonalAccessTokenRepositoryAggregates>;
+  /** A list of edges which contains the `PersonalAccessTokenRepository` and cursor to aid in pagination. */
+  edges: Array<PersonalAccessTokenRepositoryEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<PersonalAccessTokenRepositoryAggregates>>;
+  /** A list of `PersonalAccessTokenRepository` objects. */
+  nodes: Array<PersonalAccessTokenRepository>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `PersonalAccessTokenRepository` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `PersonalAccessTokenRepository` values. */
+export type PersonalAccessTokenRepositoryConnectionGroupedAggregatesArgs = {
+  groupBy: Array<PersonalAccessTokenRepositoryGroupBy>;
+  having?: InputMaybe<PersonalAccessTokenRepositoryHavingInput>;
+};
+
+export type PersonalAccessTokenRepositoryDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  personalAccessTokenId?: InputMaybe<BigIntFilter>;
+  repositoryId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+};
+
+export type PersonalAccessTokenRepositoryDistinctCountAggregates = {
+  __typename?: 'PersonalAccessTokenRepositoryDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of personalAccessTokenId across the matching connection */
+  personalAccessTokenId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of repositoryId across the matching connection */
+  repositoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `PersonalAccessTokenRepository` edge in the connection. */
+export type PersonalAccessTokenRepositoryEdge = {
+  __typename?: 'PersonalAccessTokenRepositoryEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `PersonalAccessTokenRepository` at the end of the edge. */
+  node: PersonalAccessTokenRepository;
+};
+
+/** A filter to be used against `PersonalAccessTokenRepository` object types. All fields are combined with a logical ‘and.’ */
+export type PersonalAccessTokenRepositoryFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<PersonalAccessTokenRepositoryFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<PersonalAccessTokenRepositoryFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<PersonalAccessTokenRepositoryFilter>>;
+  /** Filter by the object’s `personalAccessToken` relation. */
+  personalAccessToken?: InputMaybe<PersonalAccessTokenFilter>;
+  /** Filter by the object’s `personalAccessTokenId` field. */
+  personalAccessTokenId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `repository` relation. */
+  repository?: InputMaybe<RepositoryFilter>;
+  /** Filter by the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+};
+
+/** Grouping methods for `PersonalAccessTokenRepository` for usage during aggregation. */
+export enum PersonalAccessTokenRepositoryGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  PersonalAccessTokenId = 'PERSONAL_ACCESS_TOKEN_ID',
+  RepositoryId = 'REPOSITORY_ID'
+}
+
+export type PersonalAccessTokenRepositoryHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenRepositoryHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `PersonalAccessTokenRepository` aggregates. */
+export type PersonalAccessTokenRepositoryHavingInput = {
+  AND?: InputMaybe<Array<PersonalAccessTokenRepositoryHavingInput>>;
+  OR?: InputMaybe<Array<PersonalAccessTokenRepositoryHavingInput>>;
+  average?: InputMaybe<PersonalAccessTokenRepositoryHavingAverageInput>;
+  distinctCount?: InputMaybe<PersonalAccessTokenRepositoryHavingDistinctCountInput>;
+  max?: InputMaybe<PersonalAccessTokenRepositoryHavingMaxInput>;
+  min?: InputMaybe<PersonalAccessTokenRepositoryHavingMinInput>;
+  stddevPopulation?: InputMaybe<PersonalAccessTokenRepositoryHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<PersonalAccessTokenRepositoryHavingStddevSampleInput>;
+  sum?: InputMaybe<PersonalAccessTokenRepositoryHavingSumInput>;
+  variancePopulation?: InputMaybe<PersonalAccessTokenRepositoryHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<PersonalAccessTokenRepositoryHavingVarianceSampleInput>;
+};
+
+export type PersonalAccessTokenRepositoryHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenRepositoryHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenRepositoryHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenRepositoryHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenRepositoryHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenRepositoryHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type PersonalAccessTokenRepositoryHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Methods to use when ordering `PersonalAccessTokenRepository`. */
+export enum PersonalAccessTokenRepositoryOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  Natural = 'NATURAL',
+  PersonalAccessTokenIdAsc = 'PERSONAL_ACCESS_TOKEN_ID_ASC',
+  PersonalAccessTokenIdDesc = 'PERSONAL_ACCESS_TOKEN_ID_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RepositoryIdAsc = 'REPOSITORY_ID_ASC',
+  RepositoryIdDesc = 'REPOSITORY_ID_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC'
+}
+
+/** A filter to be used against many `PersonalAccessTokenRepository` object types. All fields are combined with a logical ‘and.’ */
+export type PersonalAccessTokenToManyPersonalAccessTokenRepositoryFilter = {
+  /** Aggregates across related `PersonalAccessTokenRepository` match the filter criteria. */
+  aggregates?: InputMaybe<PersonalAccessTokenRepositoryAggregatesFilter>;
+  /** Every related `PersonalAccessTokenRepository` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<PersonalAccessTokenRepositoryFilter>;
+  /** No related `PersonalAccessTokenRepository` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<PersonalAccessTokenRepositoryFilter>;
+  /** Some related `PersonalAccessTokenRepository` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<PersonalAccessTokenRepositoryFilter>;
+};
 
 /** Input for processing a repository's merge queue. */
 export type ProcessMergeQueueInput = {
@@ -7360,6 +7612,8 @@ export type Query = Node & {
   organizationByIdpOrganizationId?: Maybe<Organization>;
   /** Reads and enables pagination through a set of `Organization`. */
   organizations?: Maybe<OrganizationConnection>;
+  /** Reads and enables pagination through a set of `PersonalAccessTokenRepository`. */
+  personalAccessTokenRepositories?: Maybe<PersonalAccessTokenRepositoryConnection>;
   /** Reads and enables pagination through a set of `PersonalAccessToken`. */
   personalAccessTokens?: Maybe<PersonalAccessTokenConnection>;
   /** Get a single `Project`. */
@@ -7615,6 +7869,19 @@ export type QueryOrganizationsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<OrganizationOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryPersonalAccessTokenRepositoriesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<PersonalAccessTokenRepositoryCondition>;
+  filter?: InputMaybe<PersonalAccessTokenRepositoryFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<PersonalAccessTokenRepositoryOrderBy>>;
 };
 
 
@@ -8847,6 +9114,16 @@ export enum RepositoryOrderBy {
   OrganizationIdDesc = 'ORGANIZATION_ID_DESC',
   OwnerIdAsc = 'OWNER_ID_ASC',
   OwnerIdDesc = 'OWNER_ID_DESC',
+  PersonalAccessTokenRepositoriesCountAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_COUNT_ASC',
+  PersonalAccessTokenRepositoriesCountDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_COUNT_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountCreatedAtAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountCreatedAtDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountPersonalAccessTokenIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PERSONAL_ACCESS_TOKEN_ID_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountPersonalAccessTokenIdDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PERSONAL_ACCESS_TOKEN_ID_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountRepositoryIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountRepositoryIdDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountRowIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_ROW_ID_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountRowIdDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_ROW_ID_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   ProjectRepositoriesCountAsc = 'PROJECT_REPOSITORIES_COUNT_ASC',
@@ -11915,6 +12192,8 @@ export enum UserOrderBy {
   PersonalAccessTokensDistinctCountLastUsedAtDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_LAST_USED_AT_DESC',
   PersonalAccessTokensDistinctCountNameAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_NAME_ASC',
   PersonalAccessTokensDistinctCountNameDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_NAME_DESC',
+  PersonalAccessTokensDistinctCountPermissionAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_PERMISSION_ASC',
+  PersonalAccessTokensDistinctCountPermissionDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_PERMISSION_DESC',
   PersonalAccessTokensDistinctCountRowIdAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_ROW_ID_ASC',
   PersonalAccessTokensDistinctCountRowIdDesc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_ROW_ID_DESC',
   PersonalAccessTokensDistinctCountTokenPrefixAsc = 'PERSONAL_ACCESS_TOKENS_DISTINCT_COUNT_TOKEN_PREFIX_ASC',
@@ -12650,6 +12929,11 @@ export type Permission =
   | 'read'
   | 'write';
 
+/** Furthest operation an access token may perform. */
+export type PersonalAccessTokenPermission =
+  | 'READ'
+  | 'WRITE';
+
 /** An input for mutations affecting `Project` */
 export type ProjectInput = {
   createdAt?: Date | null | undefined;
@@ -12801,10 +13085,12 @@ export type CreateOrganizationMutation = { createOrganization: { organization: {
 export type CreatePersonalAccessTokenMutationVariables = Exact<{
   name: string;
   expiresInDays?: number | null | undefined;
+  permission?: PersonalAccessTokenPermission | null | undefined;
+  repositoryIds?: Array<string> | string | null | undefined;
 }>;
 
 
-export type CreatePersonalAccessTokenMutation = { createPersonalAccessToken: { rowId: string, name: string, tokenPrefix: string, expiresAt: Date | null, createdAt: Date, token: string } | null };
+export type CreatePersonalAccessTokenMutation = { createPersonalAccessToken: { rowId: string, name: string, tokenPrefix: string, expiresAt: Date | null, createdAt: Date, permission: string, token: string } | null };
 
 export type DeletePersonalAccessTokenMutationVariables = Exact<{
   input: DeletePersonalAccessTokenInput;
@@ -12931,7 +13217,7 @@ export type OrganizationsQuery = { organizations: { totalCount: number, nodes: A
 export type PersonalAccessTokensQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PersonalAccessTokensQuery = { personalAccessTokens: { nodes: Array<{ rowId: string, name: string, tokenPrefix: string, lastUsedAt: Date | null, expiresAt: Date | null, createdAt: Date }> } | null };
+export type PersonalAccessTokensQuery = { personalAccessTokens: { nodes: Array<{ rowId: string, name: string, tokenPrefix: string, lastUsedAt: Date | null, expiresAt: Date | null, createdAt: Date, permission: string, personalAccessTokenRepositories: { totalCount: number, nodes: Array<{ repository: { rowId: string, slug: string, owner: { username: string } | null } | null }> } }> } | null };
 
 export type CreateProjectMutationVariables = Exact<{
   input: CreateProjectInput;
@@ -13104,13 +13390,19 @@ export const CreateOrganizationDocument = gql`
 }
     `;
 export const CreatePersonalAccessTokenDocument = gql`
-    mutation CreatePersonalAccessToken($name: String!, $expiresInDays: Int) {
-  createPersonalAccessToken(name: $name, expiresInDays: $expiresInDays) {
+    mutation CreatePersonalAccessToken($name: String!, $expiresInDays: Int, $permission: PersonalAccessTokenPermission, $repositoryIds: [UUID!]) {
+  createPersonalAccessToken(
+    name: $name
+    expiresInDays: $expiresInDays
+    permission: $permission
+    repositoryIds: $repositoryIds
+  ) {
     rowId
     name
     tokenPrefix
     expiresAt
     createdAt
+    permission
     token
   }
 }
@@ -13459,6 +13751,19 @@ export const PersonalAccessTokensDocument = gql`
       lastUsedAt
       expiresAt
       createdAt
+      permission
+      personalAccessTokenRepositories {
+        totalCount
+        nodes {
+          repository {
+            rowId
+            slug
+            owner {
+              username
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -7,6 +7,19 @@ query PersonalAccessTokens {
       lastUsedAt
       expiresAt
       createdAt
+      permission
+      personalAccessTokenRepositories {
+        totalCount
+        nodes {
+          repository {
+            rowId
+            slug
+            owner {
+              username
+            }
+          }
+        }
+      }
     }
   }
 }
