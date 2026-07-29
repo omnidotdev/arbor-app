@@ -12034,10 +12034,8 @@ export type User = Node & {
   avatarUrl?: Maybe<Scalars['String']['output']>;
   bio?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Datetime']['output'];
-  email: Scalars['String']['output'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   id: Scalars['ID']['output'];
-  identityProviderId: Scalars['UUID']['output'];
   name: Scalars['String']['output'];
   /** Reads and enables pagination through a set of `OrganizationMember`. */
   organizationMembers: OrganizationMemberConnection;
@@ -12191,10 +12189,6 @@ export type UserCondition = {
   bio?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `email` field. */
-  email?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `identityProviderId` field. */
-  identityProviderId?: InputMaybe<Scalars['UUID']['input']>;
   /** Checks for equality with the object’s `name` field. */
   name?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `rowId` field. */
@@ -12237,10 +12231,6 @@ export type UserDistinctCountAggregates = {
   bio?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of createdAt across the matching connection */
   createdAt?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of email across the matching connection */
-  email?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of identityProviderId across the matching connection */
-  identityProviderId?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of name across the matching connection */
   name?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of rowId across the matching connection */
@@ -12286,10 +12276,6 @@ export type UserFilter = {
   bio?: InputMaybe<StringFilter>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `email` field. */
-  email?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `identityProviderId` field. */
-  identityProviderId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `name` field. */
   name?: InputMaybe<StringFilter>;
   /** Negates the expression. */
@@ -12406,8 +12392,6 @@ export type UserInput = {
   avatarUrl?: InputMaybe<Scalars['String']['input']>;
   bio?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  email: Scalars['String']['input'];
-  identityProviderId: Scalars['UUID']['input'];
   name: Scalars['String']['input'];
   rowId?: InputMaybe<Scalars['UUID']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
@@ -12556,10 +12540,6 @@ export enum UserOrderBy {
   BioDesc = 'BIO_DESC',
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
-  EmailAsc = 'EMAIL_ASC',
-  EmailDesc = 'EMAIL_DESC',
-  IdentityProviderIdAsc = 'IDENTITY_PROVIDER_ID_ASC',
-  IdentityProviderIdDesc = 'IDENTITY_PROVIDER_ID_DESC',
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
@@ -12732,8 +12712,6 @@ export type UserPatch = {
   avatarUrl?: InputMaybe<Scalars['String']['input']>;
   bio?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  email?: InputMaybe<Scalars['String']['input']>;
-  identityProviderId?: InputMaybe<Scalars['UUID']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   rowId?: InputMaybe<Scalars['UUID']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
@@ -13731,13 +13709,6 @@ export type ObserverQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ObserverQuery = { observer: { rowId: string } | null };
 
-export type UserByIdentityProviderIdQueryVariables = Exact<{
-  identityProviderId: string;
-}>;
-
-
-export type UserByIdentityProviderIdQuery = { userByIdentityProviderId: { rowId: string, email: string, name: string, avatarUrl: string | null, createdAt: Date } | null };
-
 export type PullRequestCommentChangedSubscriptionVariables = Exact<{
   pullRequestId: string;
 }>;
@@ -14713,17 +14684,6 @@ export const ObserverDocument = gql`
   }
 }
     `;
-export const UserByIdentityProviderIdDocument = gql`
-    query UserByIdentityProviderId($identityProviderId: UUID!) {
-  userByIdentityProviderId(identityProviderId: $identityProviderId) {
-    rowId
-    email
-    name
-    avatarUrl
-    createdAt
-  }
-}
-    `;
 export const PullRequestCommentChangedDocument = gql`
     subscription PullRequestCommentChanged($pullRequestId: UUID!) {
   pullRequestCommentChanged(pullRequestId: $pullRequestId) {
@@ -14848,9 +14808,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Observer(variables?: ObserverQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<ObserverQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<ObserverQuery>({ document: ObserverDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Observer', 'query', variables);
-    },
-    UserByIdentityProviderId(variables: UserByIdentityProviderIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<UserByIdentityProviderIdQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<UserByIdentityProviderIdQuery>({ document: UserByIdentityProviderIdDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'UserByIdentityProviderId', 'query', variables);
     },
     PullRequestCommentChanged(variables: PullRequestCommentChangedSubscriptionVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<PullRequestCommentChangedSubscription> {
       return withWrapper((wrappedRequestHeaders) => client.request<PullRequestCommentChangedSubscription>({ document: PullRequestCommentChangedDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'PullRequestCommentChanged', 'subscription', variables);
