@@ -12,7 +12,7 @@ query CommitFileDiff(
     first: 1
   ) {
     nodes {
-      id
+      rowId
       commit(sha: $oid) {
         oid
         fileDiff(path: $path) {

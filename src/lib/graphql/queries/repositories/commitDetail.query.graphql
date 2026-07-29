@@ -7,7 +7,7 @@ query CommitDetail($ownerSlug: String!, $repoSlug: String!, $oid: String!) {
     first: 1
   ) {
     nodes {
-      id
+      rowId
       commit(sha: $oid) {
         oid
         message

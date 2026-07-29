@@ -2358,17 +2358,6 @@ export type DeleteRefPayload = {
   success: Scalars['Boolean']['output'];
 };
 
-/** All input for the `deleteRepositoryById` mutation. */
-export type DeleteRepositoryByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Repository` to be deleted. */
-  id: Scalars['ID']['input'];
-};
-
 /** All input for the `deleteRepositoryCollaborator` mutation. */
 export type DeleteRepositoryCollaboratorInput = {
   /**
@@ -2421,7 +2410,6 @@ export type DeleteRepositoryPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']['output']>;
-  deletedRepositoryId?: Maybe<Scalars['ID']['output']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
   /** The `Repository` that was deleted by this mutation. */
@@ -3948,8 +3936,6 @@ export type Mutation = {
   deleteRef?: Maybe<DeleteRefPayload>;
   /** Deletes a single `Repository` using a unique key. */
   deleteRepository?: Maybe<DeleteRepositoryPayload>;
-  /** Deletes a single `Repository` using its globally unique id. */
-  deleteRepositoryById?: Maybe<DeleteRepositoryPayload>;
   /** Deletes a single `RepositoryCollaborator` using a unique key. */
   deleteRepositoryCollaborator?: Maybe<DeleteRepositoryCollaboratorPayload>;
   /** Deletes a single `RepositoryRelationship` using a unique key. */
@@ -4030,8 +4016,6 @@ export type Mutation = {
   updatePullRequestReview?: Maybe<UpdatePullRequestReviewPayload>;
   /** Updates a single `Repository` using a unique key and a patch. */
   updateRepository?: Maybe<UpdateRepositoryPayload>;
-  /** Updates a single `Repository` using its globally unique id and a patch. */
-  updateRepositoryById?: Maybe<UpdateRepositoryPayload>;
   /** Updates a single `RepositoryCollaborator` using a unique key and a patch. */
   updateRepositoryCollaborator?: Maybe<UpdateRepositoryCollaboratorPayload>;
   /** Updates a single `RepositoryRelationship` using a unique key and a patch. */
@@ -4275,12 +4259,6 @@ export type MutationDeleteRepositoryArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteRepositoryByIdArgs = {
-  input: DeleteRepositoryByIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteRepositoryCollaboratorArgs = {
   input: DeleteRepositoryCollaboratorInput;
 };
@@ -4439,12 +4417,6 @@ export type MutationUpdatePullRequestReviewArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateRepositoryArgs = {
   input: UpdateRepositoryInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateRepositoryByIdArgs = {
-  input: UpdateRepositoryByIdInput;
 };
 
 
@@ -8019,10 +7991,6 @@ export type Query = Node & {
   query: Query;
   /** Reads and enables pagination through a set of `Repository`. */
   repositories?: Maybe<RepositoryConnection>;
-  /** Get a single `Repository`. */
-  repository?: Maybe<Repository>;
-  /** Reads a single `Repository` using its globally unique `ID`. */
-  repositoryById?: Maybe<Repository>;
   /** Get a single `RepositoryCollaborator`. */
   repositoryCollaborator?: Maybe<RepositoryCollaborator>;
   /** Reads a single `RepositoryCollaborator` using its globally unique `ID`. */
@@ -8428,18 +8396,6 @@ export type QueryRepositoriesArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryRepositoryArgs = {
-  rowId: Scalars['UUID']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryRepositoryByIdArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
 export type QueryRepositoryCollaboratorArgs = {
   repositoryId: Scalars['UUID']['input'];
   userId: Scalars['UUID']['input'];
@@ -8679,7 +8635,7 @@ export type RenameRepositoryPayload = {
   repository?: Maybe<Repository>;
 };
 
-export type Repository = Node & {
+export type Repository = {
   __typename?: 'Repository';
   /** Reads and enables pagination through a set of `Change`. */
   changes: ChangeConnection;
@@ -8692,8 +8648,6 @@ export type Repository = Node & {
   description?: Maybe<Scalars['String']['output']>;
   /** Reads and enables pagination through a set of `ExternalDependency`. */
   externalDependencies: ExternalDependencyConnection;
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  id: Scalars['ID']['output'];
   /** Reads and enables pagination through a set of `MergeBatch`. */
   mergeBatches: MergeBatchConnection;
   /** Reads and enables pagination through a set of `MergeQueueEntry`. */
@@ -11794,19 +11748,6 @@ export type UpdatePullRequestReviewPayloadPullRequestReviewEdgeArgs = {
   orderBy?: Array<PullRequestReviewOrderBy>;
 };
 
-/** All input for the `updateRepositoryById` mutation. */
-export type UpdateRepositoryByIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The globally unique `ID` which will identify a single `Repository` to be updated. */
-  id: Scalars['ID']['input'];
-  /** An object where the defined keys will be set on the `Repository` being updated. */
-  patch: RepositoryPatch;
-};
-
 /** All input for the `updateRepositoryCollaborator` mutation. */
 export type UpdateRepositoryCollaboratorInput = {
   /**
@@ -13720,7 +13661,7 @@ export type CommitDetailQueryVariables = Exact<{
 }>;
 
 
-export type CommitDetailQuery = { repositories: { nodes: Array<{ id: string, commit: { oid: string, message: string, messageHeadline: string, committedDate: Date | null, authoredDate: Date | null, author: { name: string | null, email: string | null } | null, parents: Array<{ oid: string }>, changedFiles: Array<{ path: string, oldPath: string | null, status: DiffStatus, oldOid: string | null, newOid: string | null, isBinary: boolean, isImage: boolean, additions: number, deletions: number }> } | null }> } | null };
+export type CommitDetailQuery = { repositories: { nodes: Array<{ rowId: string, commit: { oid: string, message: string, messageHeadline: string, committedDate: Date | null, authoredDate: Date | null, author: { name: string | null, email: string | null } | null, parents: Array<{ oid: string }>, changedFiles: Array<{ path: string, oldPath: string | null, status: DiffStatus, oldOid: string | null, newOid: string | null, isBinary: boolean, isImage: boolean, additions: number, deletions: number }> } | null }> } | null };
 
 export type CommitFileDiffQueryVariables = Exact<{
   ownerSlug: string;
@@ -13730,7 +13671,7 @@ export type CommitFileDiffQueryVariables = Exact<{
 }>;
 
 
-export type CommitFileDiffQuery = { repositories: { nodes: Array<{ id: string, commit: { oid: string, fileDiff: { path: string, status: DiffStatus, isBinary: boolean, oldText: string | null, newText: string | null } | null } | null }> } | null };
+export type CommitFileDiffQuery = { repositories: { nodes: Array<{ rowId: string, commit: { oid: string, fileDiff: { path: string, status: DiffStatus, isBinary: boolean, oldText: string | null, newText: string | null } | null } | null }> } | null };
 
 export type RepositoriesQueryVariables = Exact<{
   userId: string;
@@ -13739,13 +13680,6 @@ export type RepositoriesQueryVariables = Exact<{
 
 
 export type RepositoriesQuery = { repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null }> } | null };
-
-export type RepositoryQueryVariables = Exact<{
-  rowId: string;
-}>;
-
-
-export type RepositoryQuery = { repository: { rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null, repositoryCollaborators: { nodes: Array<{ userId: string, permission: Permission, user: { rowId: string, username: string, avatarUrl: string | null } | null }> } } | null };
 
 export type RepositoryBySlugQueryVariables = Exact<{
   ownerSlug: string;
@@ -14478,7 +14412,7 @@ export const CommitDetailDocument = gql`
     first: 1
   ) {
     nodes {
-      id
+      rowId
       commit(sha: $oid) {
         oid
         message
@@ -14515,7 +14449,7 @@ export const CommitFileDiffDocument = gql`
     first: 1
   ) {
     nodes {
-      id
+      rowId
       commit(sha: $oid) {
         oid
         fileDiff(path: $path) {
@@ -14558,41 +14492,6 @@ export const RepositoriesDocument = gql`
       }
     }
     totalCount
-  }
-}
-    `;
-export const RepositoryDocument = gql`
-    query Repository($rowId: UUID!) {
-  repository(rowId: $rowId) {
-    rowId
-    name
-    slug
-    description
-    visibility
-    defaultBranch
-    createdAt
-    updatedAt
-    owner {
-      rowId
-      username
-      avatarUrl
-    }
-    organization {
-      rowId
-      idpOrganizationId
-      avatarUrl
-    }
-    repositoryCollaborators {
-      nodes {
-        userId
-        permission
-        user {
-          rowId
-          username
-          avatarUrl
-        }
-      }
-    }
   }
 }
     `;
@@ -14931,9 +14830,6 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Repositories(variables: RepositoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoriesQuery>({ document: RepositoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Repositories', 'query', variables);
-    },
-    Repository(variables: RepositoryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<RepositoryQuery>({ document: RepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Repository', 'query', variables);
     },
     RepositoryBySlug(variables: RepositoryBySlugQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryBySlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoryBySlugQuery>({ document: RepositoryBySlugDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RepositoryBySlug', 'query', variables);
