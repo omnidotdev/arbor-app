@@ -1821,39 +1821,6 @@ export type CreateStackPayloadStackEdgeArgs = {
   orderBy?: Array<StackOrderBy>;
 };
 
-/** All input for the create `User` mutation. */
-export type CreateUserInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `User` to be created by this mutation. */
-  user: UserInput;
-};
-
-/** The output of our create `User` mutation. */
-export type CreateUserPayload = {
-  __typename?: 'CreateUserPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-  /** The `User` that was created by this mutation. */
-  user?: Maybe<User>;
-  /** An edge for our `User`. May be used by Relay 1. */
-  userEdge?: Maybe<UserEdge>;
-};
-
-
-/** The output of our create `User` mutation. */
-export type CreateUserPayloadUserEdgeArgs = {
-  orderBy?: Array<UserOrderBy>;
-};
-
 /** All input for the create `VerificationCheck` mutation. */
 export type CreateVerificationCheckInput = {
   /**
@@ -2574,7 +2541,6 @@ export type DeleteUserPayload = {
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']['output']>;
-  deletedUserId?: Maybe<Scalars['ID']['output']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
   /** The `User` that was deleted by this mutation. */
@@ -3902,8 +3868,6 @@ export type Mutation = {
   createRepositoryWithGit?: Maybe<CreateRepositoryWithGitPayload>;
   /** Creates a single `Stack`. */
   createStack?: Maybe<CreateStackPayload>;
-  /** Creates a single `User`. */
-  createUser?: Maybe<CreateUserPayload>;
   /** Creates a single `VerificationCheck`. */
   createVerificationCheck?: Maybe<CreateVerificationCheckPayload>;
   /** Deletes a single `Agent` using a unique key. */
@@ -4153,12 +4117,6 @@ export type MutationCreateRepositoryWithGitArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateStackArgs = {
   input: CreateStackInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateUserArgs = {
-  input: CreateUserInput;
 };
 
 
@@ -8023,18 +7981,6 @@ export type Query = Node & {
   stackMergeability?: Maybe<StackMergeabilityResult>;
   /** Reads and enables pagination through a set of `Stack`. */
   stacks?: Maybe<StackConnection>;
-  /** Get a single `User`. */
-  user?: Maybe<User>;
-  /** Get a single `User`. */
-  userByEmail?: Maybe<User>;
-  /** Reads a single `User` using its globally unique `ID`. */
-  userById?: Maybe<User>;
-  /** Get a single `User`. */
-  userByIdentityProviderId?: Maybe<User>;
-  /** Get a single `User`. */
-  userByUsername?: Maybe<User>;
-  /** Reads and enables pagination through a set of `User`. */
-  users?: Maybe<UserConnection>;
   /** Get a single `VerificationCheck`. */
   verificationCheck?: Maybe<VerificationCheck>;
   /** Reads a single `VerificationCheck` using its globally unique `ID`. */
@@ -8524,49 +8470,6 @@ export type QueryStacksArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<StackOrderBy>>;
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserArgs = {
-  rowId: Scalars['UUID']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserByEmailArgs = {
-  email: Scalars['String']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserByIdArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserByIdentityProviderIdArgs = {
-  identityProviderId: Scalars['UUID']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUserByUsernameArgs = {
-  username: Scalars['String']['input'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryUsersArgs = {
-  after?: InputMaybe<Scalars['Cursor']['input']>;
-  before?: InputMaybe<Scalars['Cursor']['input']>;
-  condition?: InputMaybe<UserCondition>;
-  filter?: InputMaybe<UserFilter>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  last?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<UserOrderBy>>;
 };
 
 
@@ -12021,7 +11924,7 @@ export type UpdateVerificationCheckPayloadVerificationCheckEdgeArgs = {
   orderBy?: Array<VerificationCheckOrderBy>;
 };
 
-export type User = Node & {
+export type User = {
   __typename?: 'User';
   /** Reads and enables pagination through a set of `Agent`. */
   agentsByOwnerId: AgentConnection;
@@ -12034,8 +11937,6 @@ export type User = Node & {
   avatarUrl?: Maybe<Scalars['String']['output']>;
   bio?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['Datetime']['output'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   /** Reads and enables pagination through a set of `OrganizationMember`. */
   organizationMembers: OrganizationMemberConnection;
@@ -12174,73 +12075,6 @@ export type UserReviewedPullRequestReviewsArgs = {
   orderBy?: InputMaybe<Array<PullRequestReviewOrderBy>>;
 };
 
-export type UserAggregates = {
-  __typename?: 'UserAggregates';
-  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  distinctCount?: Maybe<UserDistinctCountAggregates>;
-  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
-};
-
-/** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type UserCondition = {
-  /** Checks for equality with the object’s `avatarUrl` field. */
-  avatarUrl?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `bio` field. */
-  bio?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `name` field. */
-  name?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `rowId` field. */
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  /** Checks for equality with the object’s `updatedAt` field. */
-  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-  /** Checks for equality with the object’s `username` field. */
-  username?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** A connection to a list of `User` values. */
-export type UserConnection = {
-  __typename?: 'UserConnection';
-  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  aggregates?: Maybe<UserAggregates>;
-  /** A list of edges which contains the `User` and cursor to aid in pagination. */
-  edges: Array<UserEdge>;
-  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
-  groupedAggregates?: Maybe<Array<UserAggregates>>;
-  /** A list of `User` objects. */
-  nodes: Array<User>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `User` you could get from the connection. */
-  totalCount: Scalars['Int']['output'];
-};
-
-
-/** A connection to a list of `User` values. */
-export type UserConnectionGroupedAggregatesArgs = {
-  groupBy: Array<UserGroupBy>;
-  having?: InputMaybe<UserHavingInput>;
-};
-
-export type UserDistinctCountAggregates = {
-  __typename?: 'UserDistinctCountAggregates';
-  /** Distinct count of avatarUrl across the matching connection */
-  avatarUrl?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of bio across the matching connection */
-  bio?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of createdAt across the matching connection */
-  createdAt?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of name across the matching connection */
-  name?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of rowId across the matching connection */
-  rowId?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of updatedAt across the matching connection */
-  updatedAt?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of username across the matching connection */
-  username?: Maybe<Scalars['BigInt']['output']>;
-};
-
 /** A `User` edge in the connection. */
 export type UserEdge = {
   __typename?: 'UserEdge';
@@ -12312,90 +12146,6 @@ export type UserFilter = {
   updatedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `username` field. */
   username?: InputMaybe<StringFilter>;
-};
-
-/** Grouping methods for `User` for usage during aggregation. */
-export enum UserGroupBy {
-  AvatarUrl = 'AVATAR_URL',
-  Bio = 'BIO',
-  CreatedAt = 'CREATED_AT',
-  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
-  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
-  Name = 'NAME',
-  UpdatedAt = 'UPDATED_AT',
-  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
-  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
-}
-
-export type UserHavingAverageInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type UserHavingDistinctCountInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** Conditions for `User` aggregates. */
-export type UserHavingInput = {
-  AND?: InputMaybe<Array<UserHavingInput>>;
-  OR?: InputMaybe<Array<UserHavingInput>>;
-  average?: InputMaybe<UserHavingAverageInput>;
-  distinctCount?: InputMaybe<UserHavingDistinctCountInput>;
-  max?: InputMaybe<UserHavingMaxInput>;
-  min?: InputMaybe<UserHavingMinInput>;
-  stddevPopulation?: InputMaybe<UserHavingStddevPopulationInput>;
-  stddevSample?: InputMaybe<UserHavingStddevSampleInput>;
-  sum?: InputMaybe<UserHavingSumInput>;
-  variancePopulation?: InputMaybe<UserHavingVariancePopulationInput>;
-  varianceSample?: InputMaybe<UserHavingVarianceSampleInput>;
-};
-
-export type UserHavingMaxInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type UserHavingMinInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type UserHavingStddevPopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type UserHavingStddevSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type UserHavingSumInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type UserHavingVariancePopulationInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-export type UserHavingVarianceSampleInput = {
-  createdAt?: InputMaybe<HavingDatetimeFilter>;
-  updatedAt?: InputMaybe<HavingDatetimeFilter>;
-};
-
-/** An input for mutations affecting `User` */
-export type UserInput = {
-  avatarUrl?: InputMaybe<Scalars['String']['input']>;
-  bio?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  name: Scalars['String']['input'];
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-  username: Scalars['String']['input'];
 };
 
 /** Methods to use when ordering `User`. */
