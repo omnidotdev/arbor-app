@@ -4045,6 +4045,7 @@ export type MutationCreatePersonalAccessTokenArgs = {
   name: Scalars['String']['input'];
   permission?: InputMaybe<PersonalAccessTokenPermission>;
   repositoryIds?: InputMaybe<Array<Scalars['UUID']['input']>>;
+  repositoryScopes?: InputMaybe<Array<PersonalAccessTokenRepositoryScopeInput>>;
 };
 
 
@@ -5543,8 +5544,12 @@ export enum PersonalAccessTokenOrderBy {
   PersonalAccessTokenRepositoriesCountDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_COUNT_DESC',
   PersonalAccessTokenRepositoriesDistinctCountCreatedAtAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_ASC',
   PersonalAccessTokenRepositoriesDistinctCountCreatedAtDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountPathPatternsAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PATH_PATTERNS_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountPathPatternsDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PATH_PATTERNS_DESC',
   PersonalAccessTokenRepositoriesDistinctCountPersonalAccessTokenIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PERSONAL_ACCESS_TOKEN_ID_ASC',
   PersonalAccessTokenRepositoriesDistinctCountPersonalAccessTokenIdDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PERSONAL_ACCESS_TOKEN_ID_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountRefPatternsAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REF_PATTERNS_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountRefPatternsDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REF_PATTERNS_DESC',
   PersonalAccessTokenRepositoriesDistinctCountRepositoryIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
   PersonalAccessTokenRepositoriesDistinctCountRepositoryIdDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
   PersonalAccessTokenRepositoriesDistinctCountRowIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_ROW_ID_ASC',
@@ -5568,7 +5573,9 @@ export enum PersonalAccessTokenPermission {
 export type PersonalAccessTokenRepository = {
   __typename?: 'PersonalAccessTokenRepository';
   createdAt: Scalars['Datetime']['output'];
+  pathPatterns?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   personalAccessTokenId: Scalars['UUID']['output'];
+  refPatterns?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   /** Reads a single `Repository` that is related to this `PersonalAccessTokenRepository`. */
   repository?: Maybe<Repository>;
   repositoryId: Scalars['UUID']['output'];
@@ -5631,7 +5638,9 @@ export type PersonalAccessTokenRepositoryConnectionGroupedAggregatesArgs = {
 
 export type PersonalAccessTokenRepositoryDistinctCountAggregateFilter = {
   createdAt?: InputMaybe<BigIntFilter>;
+  pathPatterns?: InputMaybe<BigIntFilter>;
   personalAccessTokenId?: InputMaybe<BigIntFilter>;
+  refPatterns?: InputMaybe<BigIntFilter>;
   repositoryId?: InputMaybe<BigIntFilter>;
   rowId?: InputMaybe<BigIntFilter>;
 };
@@ -5640,8 +5649,12 @@ export type PersonalAccessTokenRepositoryDistinctCountAggregates = {
   __typename?: 'PersonalAccessTokenRepositoryDistinctCountAggregates';
   /** Distinct count of createdAt across the matching connection */
   createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of pathPatterns across the matching connection */
+  pathPatterns?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of personalAccessTokenId across the matching connection */
   personalAccessTokenId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of refPatterns across the matching connection */
+  refPatterns?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of repositoryId across the matching connection */
   repositoryId?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of rowId across the matching connection */
@@ -5667,10 +5680,14 @@ export type PersonalAccessTokenRepositoryFilter = {
   not?: InputMaybe<PersonalAccessTokenRepositoryFilter>;
   /** Checks for any expressions in this list. */
   or?: InputMaybe<Array<PersonalAccessTokenRepositoryFilter>>;
+  /** Filter by the object’s `pathPatterns` field. */
+  pathPatterns?: InputMaybe<StringListFilter>;
   /** Filter by the object’s `personalAccessToken` relation. */
   personalAccessToken?: InputMaybe<PersonalAccessTokenFilter>;
   /** Filter by the object’s `personalAccessTokenId` field. */
   personalAccessTokenId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `refPatterns` field. */
+  refPatterns?: InputMaybe<StringListFilter>;
   /** Filter by the object’s `repository` relation. */
   repository?: InputMaybe<RepositoryFilter>;
   /** Filter by the object’s `repositoryId` field. */
@@ -5684,7 +5701,9 @@ export enum PersonalAccessTokenRepositoryGroupBy {
   CreatedAt = 'CREATED_AT',
   CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
   CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  PathPatterns = 'PATH_PATTERNS',
   PersonalAccessTokenId = 'PERSONAL_ACCESS_TOKEN_ID',
+  RefPatterns = 'REF_PATTERNS',
   RepositoryId = 'REPOSITORY_ID'
 }
 
@@ -5753,6 +5772,26 @@ export enum PersonalAccessTokenRepositoryOrderBy {
   RowIdAsc = 'ROW_ID_ASC',
   RowIdDesc = 'ROW_ID_DESC'
 }
+
+/**
+ * Per-repository confinement for an access token, limiting the refs and paths
+ * it may touch within that repository. Enforced against real pushes by the
+ * git credential boundary and against in-process ref moves (e.g. merges).
+ */
+export type PersonalAccessTokenRepositoryScopeInput = {
+  /**
+   * Repo-relative path globs the token may modify (e.g. "src/**"). Omit for
+   * every path in the repository.
+   */
+  pathPatterns?: InputMaybe<Array<Scalars['String']['input']>>;
+  /**
+   * Full-form ref globs the token may touch (e.g. "refs/heads/agent/*").
+   * Omit for every ref in the repository.
+   */
+  refPatterns?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** The repository this confinement applies to. */
+  repositoryId: Scalars['UUID']['input'];
+};
 
 /** A filter to be used against many `PersonalAccessTokenRepository` object types. All fields are combined with a logical ‘and.’ */
 export type PersonalAccessTokenToManyPersonalAccessTokenRepositoryFilter = {
@@ -9352,8 +9391,12 @@ export enum RepositoryOrderBy {
   PersonalAccessTokenRepositoriesCountDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_COUNT_DESC',
   PersonalAccessTokenRepositoriesDistinctCountCreatedAtAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_ASC',
   PersonalAccessTokenRepositoriesDistinctCountCreatedAtDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountPathPatternsAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PATH_PATTERNS_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountPathPatternsDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PATH_PATTERNS_DESC',
   PersonalAccessTokenRepositoriesDistinctCountPersonalAccessTokenIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PERSONAL_ACCESS_TOKEN_ID_ASC',
   PersonalAccessTokenRepositoriesDistinctCountPersonalAccessTokenIdDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_PERSONAL_ACCESS_TOKEN_ID_DESC',
+  PersonalAccessTokenRepositoriesDistinctCountRefPatternsAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REF_PATTERNS_ASC',
+  PersonalAccessTokenRepositoriesDistinctCountRefPatternsDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REF_PATTERNS_DESC',
   PersonalAccessTokenRepositoriesDistinctCountRepositoryIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
   PersonalAccessTokenRepositoriesDistinctCountRepositoryIdDesc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
   PersonalAccessTokenRepositoriesDistinctCountRowIdAsc = 'PERSONAL_ACCESS_TOKEN_REPOSITORIES_DISTINCT_COUNT_ROW_ID_ASC',
@@ -11176,6 +11219,46 @@ export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']['input']>;
   /** Starts with the specified string (case-insensitive). */
   startsWithInsensitive?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** A filter to be used against String List fields. All fields are combined with a logical ‘and.’ */
+export type StringListFilter = {
+  /** Any array item is equal to the specified value. */
+  anyEqualTo?: InputMaybe<Scalars['String']['input']>;
+  /** Any array item is greater than the specified value. */
+  anyGreaterThan?: InputMaybe<Scalars['String']['input']>;
+  /** Any array item is greater than or equal to the specified value. */
+  anyGreaterThanOrEqualTo?: InputMaybe<Scalars['String']['input']>;
+  /** Any array item is less than the specified value. */
+  anyLessThan?: InputMaybe<Scalars['String']['input']>;
+  /** Any array item is less than or equal to the specified value. */
+  anyLessThanOrEqualTo?: InputMaybe<Scalars['String']['input']>;
+  /** Any array item is not equal to the specified value. */
+  anyNotEqualTo?: InputMaybe<Scalars['String']['input']>;
+  /** Contained by the specified list of values. */
+  containedBy?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Contains the specified list of values. */
+  contains?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Not equal to the specified value, treating null like an ordinary value. */
+  distinctFrom?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Equal to the specified value. */
+  equalTo?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Greater than the specified value. */
+  greaterThan?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Greater than or equal to the specified value. */
+  greaterThanOrEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Is null (if `true` is specified) or is not null (if `false` is specified). */
+  isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than the specified value. */
+  lessThan?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Less than or equal to the specified value. */
+  lessThanOrEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Equal to the specified value, treating null like an ordinary value. */
+  notDistinctFrom?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Not equal to the specified value. */
+  notEqualTo?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  /** Overlaps the specified list of values. */
+  overlaps?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 /** The root subscription type: contains realtime events you can subscribe to with the `subscription` operation. */
@@ -13060,6 +13143,26 @@ export type PersonalAccessTokenPermission =
   | 'READ'
   | 'WRITE';
 
+/**
+ * Per-repository confinement for an access token, limiting the refs and paths
+ * it may touch within that repository. Enforced against real pushes by the
+ * git credential boundary and against in-process ref moves (e.g. merges).
+ */
+export type PersonalAccessTokenRepositoryScopeInput = {
+  /**
+   * Repo-relative path globs the token may modify (e.g. "src/**"). Omit for
+   * every path in the repository.
+   */
+  pathPatterns?: Array<string> | null | undefined;
+  /**
+   * Full-form ref globs the token may touch (e.g. "refs/heads/agent/*").
+   * Omit for every ref in the repository.
+   */
+  refPatterns?: Array<string> | null | undefined;
+  /** The repository this confinement applies to. */
+  repositoryId: string;
+};
+
 /** An input for mutations affecting `Project` */
 export type ProjectInput = {
   createdAt?: Date | null | undefined;
@@ -13199,6 +13302,7 @@ export type CreatePersonalAccessTokenMutationVariables = Exact<{
   expiresInDays?: number | null | undefined;
   permission?: PersonalAccessTokenPermission | null | undefined;
   repositoryIds?: Array<string> | string | null | undefined;
+  repositoryScopes?: Array<PersonalAccessTokenRepositoryScopeInput> | PersonalAccessTokenRepositoryScopeInput | null | undefined;
 }>;
 
 
@@ -13322,7 +13426,7 @@ export type OrganizationsQuery = { organizations: { totalCount: number, nodes: A
 export type PersonalAccessTokensQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type PersonalAccessTokensQuery = { personalAccessTokens: { nodes: Array<{ rowId: string, name: string, tokenPrefix: string, lastUsedAt: Date | null, expiresAt: Date | null, createdAt: Date, permission: string, personalAccessTokenRepositories: { totalCount: number, nodes: Array<{ repository: { rowId: string, slug: string, owner: { username: string } | null } | null }> } }> } | null };
+export type PersonalAccessTokensQuery = { personalAccessTokens: { nodes: Array<{ rowId: string, name: string, tokenPrefix: string, lastUsedAt: Date | null, expiresAt: Date | null, createdAt: Date, permission: string, personalAccessTokenRepositories: { totalCount: number, nodes: Array<{ refPatterns: Array<string | null> | null, pathPatterns: Array<string | null> | null, repository: { rowId: string, slug: string, owner: { username: string } | null } | null }> } }> } | null };
 
 export type CreateProjectMutationVariables = Exact<{
   input: CreateProjectInput;
@@ -13519,12 +13623,13 @@ useCreateOrganizationMutation.getKey = () => ['CreateOrganization'];
 useCreateOrganizationMutation.fetcher = (variables: CreateOrganizationMutationVariables, options?: RequestInit['headers']) => graphqlFetch<CreateOrganizationMutation, CreateOrganizationMutationVariables>(CreateOrganizationDocument, variables, options);
 
 export const CreatePersonalAccessTokenDocument = new TypedDocumentString(`
-    mutation CreatePersonalAccessToken($name: String!, $expiresInDays: Int, $permission: PersonalAccessTokenPermission, $repositoryIds: [UUID!]) {
+    mutation CreatePersonalAccessToken($name: String!, $expiresInDays: Int, $permission: PersonalAccessTokenPermission, $repositoryIds: [UUID!], $repositoryScopes: [PersonalAccessTokenRepositoryScopeInput!]) {
   createPersonalAccessToken(
     name: $name
     expiresInDays: $expiresInDays
     permission: $permission
     repositoryIds: $repositoryIds
+    repositoryScopes: $repositoryScopes
   ) {
     rowId
     name
@@ -14435,6 +14540,8 @@ export const PersonalAccessTokensDocument = new TypedDocumentString(`
       personalAccessTokenRepositories {
         totalCount
         nodes {
+          refPatterns
+          pathPatterns
           repository {
             rowId
             slug

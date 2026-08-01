@@ -14,6 +14,31 @@ import {
 } from "@/generated/graphql";
 import personalAccessTokensOptions from "@/lib/options/personalAccessTokens.options";
 
+import type { PersonalAccessTokenRepositoryScopeInput } from "@/generated/graphql";
+
+/** Draft ref/path pattern text for one repository in the create form */
+interface RepositoryScopeDraft {
+  refPatterns: string;
+  pathPatterns: string;
+}
+
+/** Textarea styling mirroring the Input component (there is no Textarea primitive) */
+const PATTERN_TEXTAREA_CLASS =
+  "flex min-h-16 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
+
+/**
+ * Parse a textarea of glob patterns (one per line, or comma-separated) into the
+ * API shape. Returns null when empty, which the API reads as "every ref/path in
+ * this repository".
+ */
+const parsePatterns = (raw: string): string[] | null => {
+  const patterns = raw
+    .split(/[\n,]/)
+    .map((pattern) => pattern.trim())
+    .filter(Boolean);
+  return patterns.length ? patterns : null;
+};
+
 export const Route = createFileRoute("/_app/settings/tokens")({
   component: TokensPage,
 });
@@ -42,9 +67,13 @@ function TokensPage() {
   const [name, setName] = useState("");
   const [expiresInDays, setExpiresInDays] = useState("");
   const [permission, setPermission] = useState<"read" | "write">("write");
-  // Empty means the token is not confined and reaches every repository its
-  // owner can reach, which matches how the API reads an empty whitelist
-  const [scopedRepositoryIds, setScopedRepositoryIds] = useState<string[]>([]);
+  // Keyed by repository rowId. A key present means the token is confined to that
+  // repository; its draft holds optional ref/path globs (blank = the whole
+  // repository). No keys means unconfined, reaching every repository its owner
+  // can reach, which matches how the API reads an empty whitelist
+  const [repositoryScopes, setRepositoryScopes] = useState<
+    Record<string, RepositoryScopeDraft>
+  >({});
   const [createError, setCreateError] = useState<string | null>(null);
   // The plaintext token is returned exactly once by the API. Hold it in local
   // state only for the one-time display, never persist it anywhere
@@ -73,12 +102,27 @@ function TokensPage() {
   const selectableRepositories =
     repositoriesQuery.data?.repositories?.nodes ?? [];
 
+  const selectedRepositoryCount = Object.keys(repositoryScopes).length;
+
   const toggleRepository = (rowId: string) =>
-    setScopedRepositoryIds((current) =>
-      current.includes(rowId)
-        ? current.filter((id) => id !== rowId)
-        : [...current, rowId],
-    );
+    setRepositoryScopes((current) => {
+      if (rowId in current) {
+        const { [rowId]: _removed, ...rest } = current;
+        return rest;
+      }
+      return { ...current, [rowId]: { refPatterns: "", pathPatterns: "" } };
+    });
+
+  const setRepositoryPattern = (
+    rowId: string,
+    field: keyof RepositoryScopeDraft,
+    value: string,
+  ) =>
+    setRepositoryScopes((current) => {
+      const draft = current[rowId];
+      if (!draft) return current;
+      return { ...current, [rowId]: { ...draft, [field]: value } };
+    });
 
   const createMutation = useMutation({
     mutationKey: useCreatePersonalAccessTokenMutation.getKey(),
@@ -86,7 +130,7 @@ function TokensPage() {
       name: string;
       expiresInDays?: number;
       permission: PersonalAccessTokenPermission;
-      repositoryIds?: string[];
+      repositoryScopes?: PersonalAccessTokenRepositoryScopeInput[];
     }) => useCreatePersonalAccessTokenMutation.fetcher(variables)(),
     onSuccess: (result) => {
       const token = result.createPersonalAccessToken?.token;
@@ -100,7 +144,7 @@ function TokensPage() {
       setName("");
       setExpiresInDays("");
       setPermission("write");
-      setScopedRepositoryIds([]);
+      setRepositoryScopes({});
       invalidateTokens();
     },
     onError: () => {
@@ -124,6 +168,16 @@ function TokensPage() {
     const trimmed = name.trim();
     if (!trimmed) return;
     const days = expiresInDays.trim() ? Number(expiresInDays) : undefined;
+    // Build one confinement per selected repository; blank pattern fields become
+    // null so the API leaves that dimension (ref or path) unconfined there
+    const scopes: PersonalAccessTokenRepositoryScopeInput[] = Object.entries(
+      repositoryScopes,
+    ).map(([repositoryId, draft]) => ({
+      repositoryId,
+      refPatterns: parsePatterns(draft.refPatterns),
+      pathPatterns: parsePatterns(draft.pathPatterns),
+    }));
+
     createMutation.mutate({
       name: trimmed,
       expiresInDays: days && days > 0 ? days : undefined,
@@ -132,9 +186,7 @@ function TokensPage() {
           ? PersonalAccessTokenPermission.Read
           : PersonalAccessTokenPermission.Write,
       // omit entirely when nothing is selected, so the token stays unconfined
-      repositoryIds: scopedRepositoryIds.length
-        ? scopedRepositoryIds
-        : undefined,
+      repositoryScopes: scopes.length ? scopes : undefined,
     });
   };
 
@@ -300,10 +352,10 @@ function TokensPage() {
                 Repository access
               </legend>
               <p className="mb-2 text-muted-foreground text-xs">
-                {scopedRepositoryIds.length === 0
-                  ? "All repositories you can reach. Select repositories below to limit this token to them."
-                  : `Limited to ${scopedRepositoryIds.length} ${
-                      scopedRepositoryIds.length === 1
+                {selectedRepositoryCount === 0
+                  ? "All repositories you can reach. Select repositories below to limit this token to them, and optionally to specific refs and paths within each."
+                  : `Limited to ${selectedRepositoryCount} ${
+                      selectedRepositoryCount === 1
                         ? "repository"
                         : "repositories"
                     }.`}
@@ -318,32 +370,84 @@ function TokensPage() {
                   No repositories yet.
                 </p>
               ) : (
-                <div className="max-h-48 space-y-1 overflow-y-auto rounded-md border p-2">
-                  {selectableRepositories.map((repository) => (
-                    <label
-                      key={repository.rowId}
-                      className="flex items-center gap-2 rounded px-1 py-0.5 text-sm hover:bg-muted"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={scopedRepositoryIds.includes(repository.rowId)}
-                        onChange={() => toggleRepository(repository.rowId)}
-                      />
-                      <span className="truncate">
-                        {repository.owner?.username}/{repository.slug}
-                      </span>
-                    </label>
-                  ))}
+                <div className="max-h-80 space-y-1 overflow-y-auto rounded-md border p-2">
+                  {selectableRepositories.map((repository) => {
+                    const draft = repositoryScopes[repository.rowId];
+                    const selected = draft !== undefined;
+
+                    return (
+                      <div key={repository.rowId} className="rounded">
+                        <label className="flex items-center gap-2 rounded px-1 py-0.5 text-sm hover:bg-muted">
+                          <input
+                            type="checkbox"
+                            checked={selected}
+                            onChange={() => toggleRepository(repository.rowId)}
+                          />
+                          <span className="truncate">
+                            {repository.owner?.username}/{repository.slug}
+                          </span>
+                        </label>
+
+                        {selected && (
+                          <div className="mt-1 mb-2 ml-6 space-y-2 border-l pl-3">
+                            <div>
+                              <label
+                                htmlFor={`ref-${repository.rowId}`}
+                                className="mb-1 block text-muted-foreground text-xs"
+                              >
+                                Ref patterns (one per line, blank for all refs)
+                              </label>
+                              <textarea
+                                id={`ref-${repository.rowId}`}
+                                className={PATTERN_TEXTAREA_CLASS}
+                                value={draft.refPatterns}
+                                onChange={(e) =>
+                                  setRepositoryPattern(
+                                    repository.rowId,
+                                    "refPatterns",
+                                    e.target.value,
+                                  )
+                                }
+                                placeholder={"refs/heads/agent/*"}
+                              />
+                            </div>
+                            <div>
+                              <label
+                                htmlFor={`path-${repository.rowId}`}
+                                className="mb-1 block text-muted-foreground text-xs"
+                              >
+                                Path patterns (one per line, blank for all
+                                paths)
+                              </label>
+                              <textarea
+                                id={`path-${repository.rowId}`}
+                                className={PATTERN_TEXTAREA_CLASS}
+                                value={draft.pathPatterns}
+                                onChange={(e) =>
+                                  setRepositoryPattern(
+                                    repository.rowId,
+                                    "pathPatterns",
+                                    e.target.value,
+                                  )
+                                }
+                                placeholder={"src/**"}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
 
-              {scopedRepositoryIds.length > 0 && (
+              {selectedRepositoryCount > 0 && (
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
                   className="mt-2"
-                  onClick={() => setScopedRepositoryIds([])}
+                  onClick={() => setRepositoryScopes({})}
                 >
                   Clear selection
                 </Button>
@@ -386,6 +490,8 @@ function TokensPage() {
                 const isConfirming = confirmingRevoke === token.rowId;
                 const confinedCount =
                   token.personalAccessTokenRepositories?.totalCount ?? 0;
+                const scopedRepositories =
+                  token.personalAccessTokenRepositories?.nodes ?? [];
 
                 return (
                   <li
@@ -415,6 +521,35 @@ function TokensPage() {
                               }`}
                         </span>
                       </div>
+
+                      {scopedRepositories.length > 0 && (
+                        <ul className="mt-1.5 space-y-1">
+                          {scopedRepositories.map((scope) => {
+                            const refs = scope.refPatterns ?? [];
+                            const paths = scope.pathPatterns ?? [];
+                            return (
+                              <li
+                                key={scope.repository?.rowId}
+                                className="text-muted-foreground text-xs"
+                              >
+                                <span className="font-mono">
+                                  {scope.repository?.owner?.username}/
+                                  {scope.repository?.slug}
+                                </span>
+                                {refs.length > 0 && (
+                                  <span> · refs: {refs.join(", ")}</span>
+                                )}
+                                {paths.length > 0 && (
+                                  <span> · paths: {paths.join(", ")}</span>
+                                )}
+                                {refs.length === 0 && paths.length === 0 && (
+                                  <span> · full repository</span>
+                                )}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      )}
                       <div className="mt-1 flex flex-wrap gap-x-4 gap-y-0.5 text-muted-foreground text-xs">
                         {created && <span>Created {created}</span>}
                         <span>Last used {lastUsed ? lastUsed : "never"}</span>

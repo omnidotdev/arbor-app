@@ -32,7 +32,7 @@ export const mockCreateOrganizationMutation = (resolver: GraphQLResponseResolver
  * @example
  * mockCreatePersonalAccessTokenMutation(
  *   ({ query, variables }) => {
- *     const { name, expiresInDays, permission, repositoryIds } = variables;
+ *     const { name, expiresInDays, permission, repositoryIds, repositoryScopes } = variables;
  *     return HttpResponse.json({
  *       data: { createPersonalAccessToken }
  *     })

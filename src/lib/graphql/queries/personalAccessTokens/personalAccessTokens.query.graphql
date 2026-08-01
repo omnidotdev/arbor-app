@@ -11,6 +11,8 @@ query PersonalAccessTokens {
       personalAccessTokenRepositories {
         totalCount
         nodes {
+          refPatterns
+          pathPatterns
           repository {
             rowId
             slug

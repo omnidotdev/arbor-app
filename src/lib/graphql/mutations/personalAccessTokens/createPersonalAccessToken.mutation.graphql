@@ -3,12 +3,14 @@ mutation CreatePersonalAccessToken(
   $expiresInDays: Int
   $permission: PersonalAccessTokenPermission
   $repositoryIds: [UUID!]
+  $repositoryScopes: [PersonalAccessTokenRepositoryScopeInput!]
 ) {
   createPersonalAccessToken(
     name: $name
     expiresInDays: $expiresInDays
     permission: $permission
     repositoryIds: $repositoryIds
+    repositoryScopes: $repositoryScopes
   ) {
     rowId
     name
