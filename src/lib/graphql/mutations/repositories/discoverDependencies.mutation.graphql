@@ -1,0 +1,7 @@
+mutation DiscoverDependencies($input: DiscoverDependenciesInput!) {
+  discoverDependencies(input: $input) {
+    internalDependencies
+    externalDependencies
+    error
+  }
+}

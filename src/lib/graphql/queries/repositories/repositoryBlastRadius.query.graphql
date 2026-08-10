@@ -1,0 +1,10 @@
+query RepositoryBlastRadius($repositoryId: UUID!) {
+  repositoryBlastRadius(repositoryId: $repositoryId) {
+    repositoryId
+    name
+    slug
+    ownerUsername
+    organizationSlug
+    depth
+  }
+}

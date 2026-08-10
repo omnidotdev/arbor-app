@@ -26,6 +26,7 @@ import {
   FileViewer,
   LatestCommitBar,
   ReadmeDisplay,
+  RepositoryBlastRadiusPanel,
 } from "@/components/repository";
 import { Button } from "@/components/ui/button";
 import {
@@ -517,6 +518,11 @@ git push -u origin master`}
                 filename={readmeEntry.path}
               />
             </div>
+          )}
+
+          {/* Blast radius: repositories affected by a change to this one */}
+          {!path && repository?.rowId && (
+            <RepositoryBlastRadiusPanel repositoryId={repository.rowId} />
           )}
         </div>
       )}

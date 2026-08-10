@@ -1,0 +1,5 @@
+mutation RemoveProjectRepository($input: DeleteProjectRepositoryInput!) {
+  deleteProjectRepository(input: $input) {
+    deletedProjectRepositoryId
+  }
+}

@@ -9,6 +9,7 @@ import {
   Layers,
   ListChecks,
   Lock,
+  Network,
   Settings,
   ShieldCheck,
 } from "lucide-react";
@@ -20,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import {
   Visibility,
   useDeleteRepositoryMutation,
+  useDiscoverDependenciesMutation,
   useRenameRepositoryMutation,
   useUpdateRepositoryMutation,
 } from "@/generated/graphql";
@@ -147,6 +149,30 @@ function RepositorySettingsPage() {
     onSuccess: () => {
       navigate({ to: "/repositories" });
     },
+  });
+
+  const [discoverMessage, setDiscoverMessage] = useState<string | null>(null);
+  const discoverMutation = useMutation({
+    mutationKey: useDiscoverDependenciesMutation.getKey(),
+    mutationFn: (repositoryId: string) =>
+      useDiscoverDependenciesMutation.fetcher({
+        input: { repositoryId },
+      })(),
+    onSuccess: (result) => {
+      const payload = result.discoverDependencies;
+      if (payload?.error) {
+        setDiscoverMessage(payload.error);
+        return;
+      }
+      const internal = payload?.internalDependencies ?? 0;
+      const external = payload?.externalDependencies ?? 0;
+      setDiscoverMessage(
+        `Detected ${internal} internal ${internal === 1 ? "dependency" : "dependencies"} and ${external} external ${external === 1 ? "package" : "packages"}.`,
+      );
+      invalidateRepository();
+    },
+    onError: () =>
+      setDiscoverMessage("Could not scan dependencies. Please try again."),
   });
 
   const handleRename = (e: React.FormEvent) => {
@@ -445,6 +471,39 @@ function RepositorySettingsPage() {
                 </option>
               ))}
             </select>
+          </section>
+
+          {/* Dependencies */}
+          <section className="space-y-4 rounded-lg border p-6">
+            <div>
+              <h2 className="flex items-center gap-2 font-semibold text-lg">
+                <Network className="h-5 w-5" />
+                Dependencies
+              </h2>
+              <p className="text-muted-foreground text-sm">
+                Scan this repository's package manifests (package.json,
+                Cargo.toml, go.mod, requirements.txt) on the default branch to
+                detect dependencies. Links to other repositories become graph
+                edges; the rest are recorded as external packages. Manually
+                added edges are kept.
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              disabled={discoverMutation.isPending}
+              onClick={() => {
+                setDiscoverMessage(null);
+                discoverMutation.mutate(repository.rowId);
+              }}
+            >
+              <Network className="mr-2 h-4 w-4" />
+              {discoverMutation.isPending
+                ? "Scanning..."
+                : "Detect dependencies"}
+            </Button>
+            {discoverMessage && (
+              <p className="text-muted-foreground text-sm">{discoverMessage}</p>
+            )}
           </section>
 
           {/* Danger zone */}

@@ -570,6 +570,26 @@ export type BigIntFilter = {
   notIn?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
+/**
+ * A repository affected by a change to another repository, with its shortest
+ * dependency distance from it.
+ */
+export type BlastRadiusRepository = {
+  __typename?: 'BlastRadiusRepository';
+  /** Dependency distance from the changed repository (1 = a direct dependent). */
+  depth?: Maybe<Scalars['Int']['output']>;
+  /** The affected repository's name. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The organization slug, for an organization repository. */
+  organizationSlug?: Maybe<Scalars['String']['output']>;
+  /** The owner username, for a personal repository. */
+  ownerUsername?: Maybe<Scalars['String']['output']>;
+  /** The affected repository's row id. */
+  repositoryId?: Maybe<Scalars['UUID']['output']>;
+  /** The affected repository's slug. */
+  slug?: Maybe<Scalars['String']['output']>;
+};
+
 /** A Git blob (file content). */
 export type Blob = GitObject & {
   __typename?: 'Blob';
@@ -2598,6 +2618,23 @@ export enum DiffStatus {
   TypeChanged = 'TYPE_CHANGED'
 }
 
+/** Input for discovering a repository's dependencies from its manifest. */
+export type DiscoverDependenciesInput = {
+  /** The repository to scan. */
+  repositoryId: Scalars['UUID']['input'];
+};
+
+/** Payload for the discoverDependencies mutation. */
+export type DiscoverDependenciesPayload = {
+  __typename?: 'DiscoverDependenciesPayload';
+  /** A non-fatal reason discovery produced nothing (e.g. no manifest). */
+  error?: Maybe<Scalars['String']['output']>;
+  /** The number of external (non-Arbor) package dependencies detected. */
+  externalDependencies?: Maybe<Scalars['Int']['output']>;
+  /** The number of internal repository-to-repository edges detected. */
+  internalDependencies?: Maybe<Scalars['Int']['output']>;
+};
+
 /** Input for enqueuing a stack onto its repository's merge queue. */
 export type EnqueueStackInput = {
   /** The stack ID to enqueue. */
@@ -3915,6 +3952,11 @@ export type Mutation = {
   /** Deletes a single `VerificationCheck` using a unique key. */
   deleteVerificationCheck?: Maybe<DeleteVerificationCheckPayload>;
   /**
+   * Scan a repository's package manifest at its default branch and reconcile
+   * its dependency graph, replacing previously auto-detected dependencies.
+   */
+  discoverDependencies?: Maybe<DiscoverDependenciesPayload>;
+  /**
    * Enqueue a stack onto its repository's merge queue.
    * Idempotent: an already-queued stack returns its existing entry. Requires
    * write access to the repository.
@@ -4256,6 +4298,12 @@ export type MutationDeleteUserArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteVerificationCheckArgs = {
   input: DeleteVerificationCheckInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDiscoverDependenciesArgs = {
+  input: DiscoverDependenciesInput;
 };
 
 
@@ -7988,6 +8036,11 @@ export type Query = Node & {
   query: Query;
   /** Reads and enables pagination through a set of `Repository`. */
   repositories?: Maybe<RepositoryConnection>;
+  /**
+   * The repositories transitively affected by a change to the given
+   * repository, nearest first. Only repositories the caller may see appear.
+   */
+  repositoryBlastRadius?: Maybe<Array<BlastRadiusRepository>>;
   /** Get a single `RepositoryCollaborator`. */
   repositoryCollaborator?: Maybe<RepositoryCollaborator>;
   /** Reads a single `RepositoryCollaborator` using its globally unique `ID`. */
@@ -8377,6 +8430,12 @@ export type QueryRepositoriesArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<RepositoryOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepositoryBlastRadiusArgs = {
+  repositoryId: Scalars['UUID']['input'];
 };
 
 
@@ -13031,6 +13090,17 @@ export type CreateProjectInput = {
   project: ProjectInput;
 };
 
+/** All input for the create `ProjectRepository` mutation. */
+export type CreateProjectRepositoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  /** The `ProjectRepository` to be created by this mutation. */
+  projectRepository: ProjectRepositoryInput;
+};
+
 /** All input for the create `PullRequestComment` mutation. */
 export type CreatePullRequestCommentInput = {
   /**
@@ -13074,6 +13144,16 @@ export type DeletePersonalAccessTokenInput = {
   rowId: string;
 };
 
+/** All input for the `deleteProjectRepository` mutation. */
+export type DeleteProjectRepositoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  rowId: string;
+};
+
 /** All input for the `deletePullRequestComment` mutation. */
 export type DeletePullRequestCommentInput = {
   /**
@@ -13102,6 +13182,12 @@ export type DiffStatus =
   | 'MODIFIED'
   | 'RENAMED'
   | 'TYPE_CHANGED';
+
+/** Input for discovering a repository's dependencies from its manifest. */
+export type DiscoverDependenciesInput = {
+  /** The repository to scan. */
+  repositoryId: string;
+};
 
 /** Input for opening a pull request. */
 export type OpenPullRequestInput = {
@@ -13174,6 +13260,14 @@ export type ProjectInput = {
   slug: string;
   updatedAt?: Date | null | undefined;
   visibility?: Visibility | null | undefined;
+};
+
+/** An input for mutations affecting `ProjectRepository` */
+export type ProjectRepositoryInput = {
+  createdAt?: Date | null | undefined;
+  projectId: string;
+  repositoryId: string;
+  rowId?: string | null | undefined;
 };
 
 /** The kind of change delivered on a pullRequestCommentChanged event. */
@@ -13315,6 +13409,20 @@ export type DeletePersonalAccessTokenMutationVariables = Exact<{
 
 export type DeletePersonalAccessTokenMutation = { deletePersonalAccessToken: { personalAccessToken: { rowId: string } | null } | null };
 
+export type AddProjectRepositoryMutationVariables = Exact<{
+  input: CreateProjectRepositoryInput;
+}>;
+
+
+export type AddProjectRepositoryMutation = { createProjectRepository: { projectRepository: { rowId: string, projectId: string, repositoryId: string } | null } | null };
+
+export type RemoveProjectRepositoryMutationVariables = Exact<{
+  input: DeleteProjectRepositoryInput;
+}>;
+
+
+export type RemoveProjectRepositoryMutation = { deleteProjectRepository: { deletedProjectRepositoryId: string | null } | null };
+
 export type CreatePullRequestCommentMutationVariables = Exact<{
   input: CreatePullRequestCommentInput;
 }>;
@@ -13356,6 +13464,13 @@ export type DeleteRepositoryMutationVariables = Exact<{
 
 
 export type DeleteRepositoryMutation = { deleteRepository: { repository: { rowId: string } | null } | null };
+
+export type DiscoverDependenciesMutationVariables = Exact<{
+  input: DiscoverDependenciesInput;
+}>;
+
+
+export type DiscoverDependenciesMutation = { discoverDependencies: { internalDependencies: number | null, externalDependencies: number | null, error: string | null } | null };
 
 export type RenameRepositoryMutationVariables = Exact<{
   input: RenameRepositoryInput;
@@ -13513,6 +13628,13 @@ export type RepositoriesQueryVariables = Exact<{
 
 export type RepositoriesQuery = { repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null }> } | null };
 
+export type RepositoryBlastRadiusQueryVariables = Exact<{
+  repositoryId: string;
+}>;
+
+
+export type RepositoryBlastRadiusQuery = { repositoryBlastRadius: Array<{ repositoryId: string | null, name: string | null, slug: string | null, ownerUsername: string | null, organizationSlug: string | null, depth: number | null }> | null };
+
 export type RepositoryBySlugQueryVariables = Exact<{
   ownerSlug: string;
   repoSlug: string;
@@ -13612,6 +13734,24 @@ export const DeletePersonalAccessTokenDocument = gql`
   }
 }
     `;
+export const AddProjectRepositoryDocument = gql`
+    mutation AddProjectRepository($input: CreateProjectRepositoryInput!) {
+  createProjectRepository(input: $input) {
+    projectRepository {
+      rowId
+      projectId
+      repositoryId
+    }
+  }
+}
+    `;
+export const RemoveProjectRepositoryDocument = gql`
+    mutation RemoveProjectRepository($input: DeleteProjectRepositoryInput!) {
+  deleteProjectRepository(input: $input) {
+    deletedProjectRepositoryId
+  }
+}
+    `;
 export const CreatePullRequestCommentDocument = gql`
     mutation CreatePullRequestComment($input: CreatePullRequestCommentInput!) {
   createPullRequestComment(input: $input) {
@@ -13693,6 +13833,15 @@ export const DeleteRepositoryDocument = gql`
     repository {
       rowId
     }
+  }
+}
+    `;
+export const DiscoverDependenciesDocument = gql`
+    mutation DiscoverDependencies($input: DiscoverDependenciesInput!) {
+  discoverDependencies(input: $input) {
+    internalDependencies
+    externalDependencies
+    error
   }
 }
     `;
@@ -14323,6 +14472,18 @@ export const RepositoriesDocument = gql`
   }
 }
     `;
+export const RepositoryBlastRadiusDocument = gql`
+    query RepositoryBlastRadius($repositoryId: UUID!) {
+  repositoryBlastRadius(repositoryId: $repositoryId) {
+    repositoryId
+    name
+    slug
+    ownerUsername
+    organizationSlug
+    depth
+  }
+}
+    `;
 export const RepositoryBySlugDocument = gql`
     query RepositoryBySlug($ownerSlug: String!, $repoSlug: String!) {
   repositories(
@@ -14570,6 +14731,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     DeletePersonalAccessToken(variables: DeletePersonalAccessTokenMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<DeletePersonalAccessTokenMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeletePersonalAccessTokenMutation>({ document: DeletePersonalAccessTokenDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'DeletePersonalAccessToken', 'mutation', variables);
     },
+    AddProjectRepository(variables: AddProjectRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<AddProjectRepositoryMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AddProjectRepositoryMutation>({ document: AddProjectRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'AddProjectRepository', 'mutation', variables);
+    },
+    RemoveProjectRepository(variables: RemoveProjectRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RemoveProjectRepositoryMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RemoveProjectRepositoryMutation>({ document: RemoveProjectRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RemoveProjectRepository', 'mutation', variables);
+    },
     CreatePullRequestComment(variables: CreatePullRequestCommentMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreatePullRequestCommentMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreatePullRequestCommentMutation>({ document: CreatePullRequestCommentDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CreatePullRequestComment', 'mutation', variables);
     },
@@ -14587,6 +14754,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     DeleteRepository(variables: DeleteRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<DeleteRepositoryMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeleteRepositoryMutation>({ document: DeleteRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'DeleteRepository', 'mutation', variables);
+    },
+    DiscoverDependencies(variables: DiscoverDependenciesMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<DiscoverDependenciesMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<DiscoverDependenciesMutation>({ document: DiscoverDependenciesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'DiscoverDependencies', 'mutation', variables);
     },
     RenameRepository(variables: RenameRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RenameRepositoryMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<RenameRepositoryMutation>({ document: RenameRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RenameRepository', 'mutation', variables);
@@ -14647,6 +14817,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Repositories(variables: RepositoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoriesQuery>({ document: RepositoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Repositories', 'query', variables);
+    },
+    RepositoryBlastRadius(variables: RepositoryBlastRadiusQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryBlastRadiusQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RepositoryBlastRadiusQuery>({ document: RepositoryBlastRadiusDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RepositoryBlastRadius', 'query', variables);
     },
     RepositoryBySlug(variables: RepositoryBySlugQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryBySlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoryBySlugQuery>({ document: RepositoryBySlugDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RepositoryBySlug', 'query', variables);

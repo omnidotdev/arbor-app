@@ -13,3 +13,4 @@ export { FileIcon } from "./FileIcon";
 export { FileViewer } from "./FileViewer";
 export { LatestCommitBar } from "./LatestCommitBar";
 export { ReadmeDisplay } from "./ReadmeDisplay";
+export { RepositoryBlastRadiusPanel } from "./RepositoryBlastRadiusPanel";
