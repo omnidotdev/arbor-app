@@ -14,7 +14,10 @@ import {
 import { useState } from "react";
 
 import { ProjectGraphView } from "@/components/graph";
-import { AddRepositoryToProjectDialog } from "@/components/project";
+import {
+  AddRepositoryToProjectDialog,
+  ProjectVersionDriftPanel,
+} from "@/components/project";
 import { Button } from "@/components/ui/button";
 import {
   useAddProjectRepositoryMutation,
@@ -264,6 +267,9 @@ function ProjectDetailPage() {
           it depends on.
         </p>
       </div>
+
+      {/* Version drift across the project's repositories */}
+      <ProjectVersionDriftPanel projectId={project.rowId} />
 
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Member repositories */}
