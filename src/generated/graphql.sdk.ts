@@ -570,6 +570,26 @@ export type BigIntFilter = {
   notIn?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
+/**
+ * A repository affected by a change to another repository, with its shortest
+ * dependency distance from it.
+ */
+export type BlastRadiusRepository = {
+  __typename?: 'BlastRadiusRepository';
+  /** Dependency distance from the changed repository (1 = a direct dependent). */
+  depth?: Maybe<Scalars['Int']['output']>;
+  /** The affected repository's name. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The organization slug, for an organization repository. */
+  organizationSlug?: Maybe<Scalars['String']['output']>;
+  /** The owner username, for a personal repository. */
+  ownerUsername?: Maybe<Scalars['String']['output']>;
+  /** The affected repository's row id. */
+  repositoryId?: Maybe<Scalars['UUID']['output']>;
+  /** The affected repository's slug. */
+  slug?: Maybe<Scalars['String']['output']>;
+};
+
 /** A Git blob (file content). */
 export type Blob = GitObject & {
   __typename?: 'Blob';
@@ -8016,6 +8036,11 @@ export type Query = Node & {
   query: Query;
   /** Reads and enables pagination through a set of `Repository`. */
   repositories?: Maybe<RepositoryConnection>;
+  /**
+   * The repositories transitively affected by a change to the given
+   * repository, nearest first. Only repositories the caller may see appear.
+   */
+  repositoryBlastRadius?: Maybe<Array<BlastRadiusRepository>>;
   /** Get a single `RepositoryCollaborator`. */
   repositoryCollaborator?: Maybe<RepositoryCollaborator>;
   /** Reads a single `RepositoryCollaborator` using its globally unique `ID`. */
@@ -8405,6 +8430,12 @@ export type QueryRepositoriesArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<RepositoryOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepositoryBlastRadiusArgs = {
+  repositoryId: Scalars['UUID']['input'];
 };
 
 
@@ -13597,6 +13628,13 @@ export type RepositoriesQueryVariables = Exact<{
 
 export type RepositoriesQuery = { repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null }> } | null };
 
+export type RepositoryBlastRadiusQueryVariables = Exact<{
+  repositoryId: string;
+}>;
+
+
+export type RepositoryBlastRadiusQuery = { repositoryBlastRadius: Array<{ repositoryId: string | null, name: string | null, slug: string | null, ownerUsername: string | null, organizationSlug: string | null, depth: number | null }> | null };
+
 export type RepositoryBySlugQueryVariables = Exact<{
   ownerSlug: string;
   repoSlug: string;
@@ -14434,6 +14472,18 @@ export const RepositoriesDocument = gql`
   }
 }
     `;
+export const RepositoryBlastRadiusDocument = gql`
+    query RepositoryBlastRadius($repositoryId: UUID!) {
+  repositoryBlastRadius(repositoryId: $repositoryId) {
+    repositoryId
+    name
+    slug
+    ownerUsername
+    organizationSlug
+    depth
+  }
+}
+    `;
 export const RepositoryBySlugDocument = gql`
     query RepositoryBySlug($ownerSlug: String!, $repoSlug: String!) {
   repositories(
@@ -14767,6 +14817,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     Repositories(variables: RepositoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoriesQuery>({ document: RepositoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Repositories', 'query', variables);
+    },
+    RepositoryBlastRadius(variables: RepositoryBlastRadiusQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryBlastRadiusQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RepositoryBlastRadiusQuery>({ document: RepositoryBlastRadiusDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RepositoryBlastRadius', 'query', variables);
     },
     RepositoryBySlug(variables: RepositoryBySlugQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryBySlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoryBySlugQuery>({ document: RepositoryBySlugDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RepositoryBySlug', 'query', variables);

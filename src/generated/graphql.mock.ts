@@ -711,6 +711,28 @@ export const mockRepositoriesQuery = (resolver: GraphQLResponseResolver<Types.Re
  * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
  * @see https://mswjs.io/docs/basics/response-resolver
  * @example
+ * mockRepositoryBlastRadiusQuery(
+ *   ({ query, variables }) => {
+ *     const { repositoryId } = variables;
+ *     return HttpResponse.json({
+ *       data: { repositoryBlastRadius }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockRepositoryBlastRadiusQuery = (resolver: GraphQLResponseResolver<Types.RepositoryBlastRadiusQuery, Types.RepositoryBlastRadiusQueryVariables>, options?: RequestHandlerOptions) =>
+  graphql.query<Types.RepositoryBlastRadiusQuery, Types.RepositoryBlastRadiusQueryVariables>(
+    'RepositoryBlastRadius',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
  * mockRepositoryBySlugQuery(
  *   ({ query, variables }) => {
  *     const { ownerSlug, repoSlug } = variables;

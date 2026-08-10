@@ -570,6 +570,26 @@ export type BigIntFilter = {
   notIn?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
+/**
+ * A repository affected by a change to another repository, with its shortest
+ * dependency distance from it.
+ */
+export type BlastRadiusRepository = {
+  __typename?: 'BlastRadiusRepository';
+  /** Dependency distance from the changed repository (1 = a direct dependent). */
+  depth?: Maybe<Scalars['Int']['output']>;
+  /** The affected repository's name. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The organization slug, for an organization repository. */
+  organizationSlug?: Maybe<Scalars['String']['output']>;
+  /** The owner username, for a personal repository. */
+  ownerUsername?: Maybe<Scalars['String']['output']>;
+  /** The affected repository's row id. */
+  repositoryId?: Maybe<Scalars['UUID']['output']>;
+  /** The affected repository's slug. */
+  slug?: Maybe<Scalars['String']['output']>;
+};
+
 /** A Git blob (file content). */
 export type Blob = GitObject & {
   __typename?: 'Blob';
@@ -8016,6 +8036,11 @@ export type Query = Node & {
   query: Query;
   /** Reads and enables pagination through a set of `Repository`. */
   repositories?: Maybe<RepositoryConnection>;
+  /**
+   * The repositories transitively affected by a change to the given
+   * repository, nearest first. Only repositories the caller may see appear.
+   */
+  repositoryBlastRadius?: Maybe<Array<BlastRadiusRepository>>;
   /** Get a single `RepositoryCollaborator`. */
   repositoryCollaborator?: Maybe<RepositoryCollaborator>;
   /** Reads a single `RepositoryCollaborator` using its globally unique `ID`. */
@@ -8405,6 +8430,12 @@ export type QueryRepositoriesArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<RepositoryOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryRepositoryBlastRadiusArgs = {
+  repositoryId: Scalars['UUID']['input'];
 };
 
 
@@ -13597,6 +13628,13 @@ export type RepositoriesQueryVariables = Exact<{
 
 export type RepositoriesQuery = { repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null }> } | null };
 
+export type RepositoryBlastRadiusQueryVariables = Exact<{
+  repositoryId: string;
+}>;
+
+
+export type RepositoryBlastRadiusQuery = { repositoryBlastRadius: Array<{ repositoryId: string | null, name: string | null, slug: string | null, ownerUsername: string | null, organizationSlug: string | null, depth: number | null }> | null };
+
 export type RepositoryBySlugQueryVariables = Exact<{
   ownerSlug: string;
   repoSlug: string;
@@ -15942,6 +15980,100 @@ useSuspenseInfiniteRepositoriesQuery.getKey = (variables: RepositoriesQueryVaria
 
 
 useRepositoriesQuery.fetcher = (variables: RepositoriesQueryVariables, options?: RequestInit['headers']) => graphqlFetch<RepositoriesQuery, RepositoriesQueryVariables>(RepositoriesDocument, variables, options);
+
+export const RepositoryBlastRadiusDocument = new TypedDocumentString(`
+    query RepositoryBlastRadius($repositoryId: UUID!) {
+  repositoryBlastRadius(repositoryId: $repositoryId) {
+    repositoryId
+    name
+    slug
+    ownerUsername
+    organizationSlug
+    depth
+  }
+}
+    `);
+
+export const useRepositoryBlastRadiusQuery = <
+      TData = RepositoryBlastRadiusQuery,
+      TError = unknown
+    >(
+      variables: RepositoryBlastRadiusQueryVariables,
+      options?: Omit<UseQueryOptions<RepositoryBlastRadiusQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<RepositoryBlastRadiusQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<RepositoryBlastRadiusQuery, TError, TData>(
+      {
+    queryKey: ['RepositoryBlastRadius', variables],
+    queryFn: graphqlFetch<RepositoryBlastRadiusQuery, RepositoryBlastRadiusQueryVariables>(RepositoryBlastRadiusDocument, variables),
+    ...options
+  }
+    )};
+
+useRepositoryBlastRadiusQuery.getKey = (variables: RepositoryBlastRadiusQueryVariables) => ['RepositoryBlastRadius', variables];
+
+export const useSuspenseRepositoryBlastRadiusQuery = <
+      TData = RepositoryBlastRadiusQuery,
+      TError = unknown
+    >(
+      variables: RepositoryBlastRadiusQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<RepositoryBlastRadiusQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<RepositoryBlastRadiusQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<RepositoryBlastRadiusQuery, TError, TData>(
+      {
+    queryKey: ['RepositoryBlastRadius', variables],
+    queryFn: graphqlFetch<RepositoryBlastRadiusQuery, RepositoryBlastRadiusQueryVariables>(RepositoryBlastRadiusDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseRepositoryBlastRadiusQuery.getKey = (variables: RepositoryBlastRadiusQueryVariables) => ['RepositoryBlastRadius', variables];
+
+export const useInfiniteRepositoryBlastRadiusQuery = <
+      TData = InfiniteData<RepositoryBlastRadiusQuery>,
+      TError = unknown
+    >(
+      variables: RepositoryBlastRadiusQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<RepositoryBlastRadiusQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<RepositoryBlastRadiusQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<RepositoryBlastRadiusQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['RepositoryBlastRadius.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<RepositoryBlastRadiusQuery, RepositoryBlastRadiusQueryVariables>(RepositoryBlastRadiusDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteRepositoryBlastRadiusQuery.getKey = (variables: RepositoryBlastRadiusQueryVariables) => ['RepositoryBlastRadius.infinite', variables];
+
+export const useSuspenseInfiniteRepositoryBlastRadiusQuery = <
+      TData = InfiniteData<RepositoryBlastRadiusQuery>,
+      TError = unknown
+    >(
+      variables: RepositoryBlastRadiusQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<RepositoryBlastRadiusQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<RepositoryBlastRadiusQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<RepositoryBlastRadiusQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['RepositoryBlastRadius.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<RepositoryBlastRadiusQuery, RepositoryBlastRadiusQueryVariables>(RepositoryBlastRadiusDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteRepositoryBlastRadiusQuery.getKey = (variables: RepositoryBlastRadiusQueryVariables) => ['RepositoryBlastRadius.infinite', variables];
+
+
+useRepositoryBlastRadiusQuery.fetcher = (variables: RepositoryBlastRadiusQueryVariables, options?: RequestInit['headers']) => graphqlFetch<RepositoryBlastRadiusQuery, RepositoryBlastRadiusQueryVariables>(RepositoryBlastRadiusDocument, variables, options);
 
 export const RepositoryBySlugDocument = new TypedDocumentString(`
     query RepositoryBySlug($ownerSlug: String!, $repoSlug: String!) {
