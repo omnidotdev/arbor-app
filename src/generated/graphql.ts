@@ -13031,6 +13031,17 @@ export type CreateProjectInput = {
   project: ProjectInput;
 };
 
+/** All input for the create `ProjectRepository` mutation. */
+export type CreateProjectRepositoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  /** The `ProjectRepository` to be created by this mutation. */
+  projectRepository: ProjectRepositoryInput;
+};
+
 /** All input for the create `PullRequestComment` mutation. */
 export type CreatePullRequestCommentInput = {
   /**
@@ -13066,6 +13077,16 @@ export type CreateStackInput = {
 
 /** All input for the `deletePersonalAccessToken` mutation. */
 export type DeletePersonalAccessTokenInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  rowId: string;
+};
+
+/** All input for the `deleteProjectRepository` mutation. */
+export type DeleteProjectRepositoryInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -13174,6 +13195,14 @@ export type ProjectInput = {
   slug: string;
   updatedAt?: Date | null | undefined;
   visibility?: Visibility | null | undefined;
+};
+
+/** An input for mutations affecting `ProjectRepository` */
+export type ProjectRepositoryInput = {
+  createdAt?: Date | null | undefined;
+  projectId: string;
+  repositoryId: string;
+  rowId?: string | null | undefined;
 };
 
 /** The kind of change delivered on a pullRequestCommentChanged event. */
@@ -13314,6 +13343,20 @@ export type DeletePersonalAccessTokenMutationVariables = Exact<{
 
 
 export type DeletePersonalAccessTokenMutation = { deletePersonalAccessToken: { personalAccessToken: { rowId: string } | null } | null };
+
+export type AddProjectRepositoryMutationVariables = Exact<{
+  input: CreateProjectRepositoryInput;
+}>;
+
+
+export type AddProjectRepositoryMutation = { createProjectRepository: { projectRepository: { rowId: string, projectId: string, repositoryId: string } | null } | null };
+
+export type RemoveProjectRepositoryMutationVariables = Exact<{
+  input: DeleteProjectRepositoryInput;
+}>;
+
+
+export type RemoveProjectRepositoryMutation = { deleteProjectRepository: { deletedProjectRepositoryId: string | null } | null };
 
 export type CreatePullRequestCommentMutationVariables = Exact<{
   input: CreatePullRequestCommentInput;
@@ -13687,6 +13730,62 @@ useDeletePersonalAccessTokenMutation.getKey = () => ['DeletePersonalAccessToken'
 
 
 useDeletePersonalAccessTokenMutation.fetcher = (variables: DeletePersonalAccessTokenMutationVariables, options?: RequestInit['headers']) => graphqlFetch<DeletePersonalAccessTokenMutation, DeletePersonalAccessTokenMutationVariables>(DeletePersonalAccessTokenDocument, variables, options);
+
+export const AddProjectRepositoryDocument = new TypedDocumentString(`
+    mutation AddProjectRepository($input: CreateProjectRepositoryInput!) {
+  createProjectRepository(input: $input) {
+    projectRepository {
+      rowId
+      projectId
+      repositoryId
+    }
+  }
+}
+    `);
+
+export const useAddProjectRepositoryMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<AddProjectRepositoryMutation, TError, AddProjectRepositoryMutationVariables, TContext>) => {
+    
+    return useMutation<AddProjectRepositoryMutation, TError, AddProjectRepositoryMutationVariables, TContext>(
+      {
+    mutationKey: ['AddProjectRepository'],
+    mutationFn: (variables?: AddProjectRepositoryMutationVariables) => graphqlFetch<AddProjectRepositoryMutation, AddProjectRepositoryMutationVariables>(AddProjectRepositoryDocument, variables)(),
+    ...options
+  }
+    )};
+
+useAddProjectRepositoryMutation.getKey = () => ['AddProjectRepository'];
+
+
+useAddProjectRepositoryMutation.fetcher = (variables: AddProjectRepositoryMutationVariables, options?: RequestInit['headers']) => graphqlFetch<AddProjectRepositoryMutation, AddProjectRepositoryMutationVariables>(AddProjectRepositoryDocument, variables, options);
+
+export const RemoveProjectRepositoryDocument = new TypedDocumentString(`
+    mutation RemoveProjectRepository($input: DeleteProjectRepositoryInput!) {
+  deleteProjectRepository(input: $input) {
+    deletedProjectRepositoryId
+  }
+}
+    `);
+
+export const useRemoveProjectRepositoryMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<RemoveProjectRepositoryMutation, TError, RemoveProjectRepositoryMutationVariables, TContext>) => {
+    
+    return useMutation<RemoveProjectRepositoryMutation, TError, RemoveProjectRepositoryMutationVariables, TContext>(
+      {
+    mutationKey: ['RemoveProjectRepository'],
+    mutationFn: (variables?: RemoveProjectRepositoryMutationVariables) => graphqlFetch<RemoveProjectRepositoryMutation, RemoveProjectRepositoryMutationVariables>(RemoveProjectRepositoryDocument, variables)(),
+    ...options
+  }
+    )};
+
+useRemoveProjectRepositoryMutation.getKey = () => ['RemoveProjectRepository'];
+
+
+useRemoveProjectRepositoryMutation.fetcher = (variables: RemoveProjectRepositoryMutationVariables, options?: RequestInit['headers']) => graphqlFetch<RemoveProjectRepositoryMutation, RemoveProjectRepositoryMutationVariables>(RemoveProjectRepositoryDocument, variables, options);
 
 export const CreatePullRequestCommentDocument = new TypedDocumentString(`
     mutation CreatePullRequestComment($input: CreatePullRequestCommentInput!) {

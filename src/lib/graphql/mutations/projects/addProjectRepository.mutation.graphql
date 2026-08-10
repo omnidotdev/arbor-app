@@ -1,0 +1,9 @@
+mutation AddProjectRepository($input: CreateProjectRepositoryInput!) {
+  createProjectRepository(input: $input) {
+    projectRepository {
+      rowId
+      projectId
+      repositoryId
+    }
+  }
+}

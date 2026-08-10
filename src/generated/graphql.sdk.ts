@@ -13031,6 +13031,17 @@ export type CreateProjectInput = {
   project: ProjectInput;
 };
 
+/** All input for the create `ProjectRepository` mutation. */
+export type CreateProjectRepositoryInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  /** The `ProjectRepository` to be created by this mutation. */
+  projectRepository: ProjectRepositoryInput;
+};
+
 /** All input for the create `PullRequestComment` mutation. */
 export type CreatePullRequestCommentInput = {
   /**
@@ -13066,6 +13077,16 @@ export type CreateStackInput = {
 
 /** All input for the `deletePersonalAccessToken` mutation. */
 export type DeletePersonalAccessTokenInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: string | null | undefined;
+  rowId: string;
+};
+
+/** All input for the `deleteProjectRepository` mutation. */
+export type DeleteProjectRepositoryInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
@@ -13174,6 +13195,14 @@ export type ProjectInput = {
   slug: string;
   updatedAt?: Date | null | undefined;
   visibility?: Visibility | null | undefined;
+};
+
+/** An input for mutations affecting `ProjectRepository` */
+export type ProjectRepositoryInput = {
+  createdAt?: Date | null | undefined;
+  projectId: string;
+  repositoryId: string;
+  rowId?: string | null | undefined;
 };
 
 /** The kind of change delivered on a pullRequestCommentChanged event. */
@@ -13314,6 +13343,20 @@ export type DeletePersonalAccessTokenMutationVariables = Exact<{
 
 
 export type DeletePersonalAccessTokenMutation = { deletePersonalAccessToken: { personalAccessToken: { rowId: string } | null } | null };
+
+export type AddProjectRepositoryMutationVariables = Exact<{
+  input: CreateProjectRepositoryInput;
+}>;
+
+
+export type AddProjectRepositoryMutation = { createProjectRepository: { projectRepository: { rowId: string, projectId: string, repositoryId: string } | null } | null };
+
+export type RemoveProjectRepositoryMutationVariables = Exact<{
+  input: DeleteProjectRepositoryInput;
+}>;
+
+
+export type RemoveProjectRepositoryMutation = { deleteProjectRepository: { deletedProjectRepositoryId: string | null } | null };
 
 export type CreatePullRequestCommentMutationVariables = Exact<{
   input: CreatePullRequestCommentInput;
@@ -13609,6 +13652,24 @@ export const DeletePersonalAccessTokenDocument = gql`
     personalAccessToken {
       rowId
     }
+  }
+}
+    `;
+export const AddProjectRepositoryDocument = gql`
+    mutation AddProjectRepository($input: CreateProjectRepositoryInput!) {
+  createProjectRepository(input: $input) {
+    projectRepository {
+      rowId
+      projectId
+      repositoryId
+    }
+  }
+}
+    `;
+export const RemoveProjectRepositoryDocument = gql`
+    mutation RemoveProjectRepository($input: DeleteProjectRepositoryInput!) {
+  deleteProjectRepository(input: $input) {
+    deletedProjectRepositoryId
   }
 }
     `;
@@ -14569,6 +14630,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     DeletePersonalAccessToken(variables: DeletePersonalAccessTokenMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<DeletePersonalAccessTokenMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<DeletePersonalAccessTokenMutation>({ document: DeletePersonalAccessTokenDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'DeletePersonalAccessToken', 'mutation', variables);
+    },
+    AddProjectRepository(variables: AddProjectRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<AddProjectRepositoryMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AddProjectRepositoryMutation>({ document: AddProjectRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'AddProjectRepository', 'mutation', variables);
+    },
+    RemoveProjectRepository(variables: RemoveProjectRepositoryMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RemoveProjectRepositoryMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<RemoveProjectRepositoryMutation>({ document: RemoveProjectRepositoryDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RemoveProjectRepository', 'mutation', variables);
     },
     CreatePullRequestComment(variables: CreatePullRequestCommentMutationVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CreatePullRequestCommentMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreatePullRequestCommentMutation>({ document: CreatePullRequestCommentDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'CreatePullRequestComment', 'mutation', variables);
