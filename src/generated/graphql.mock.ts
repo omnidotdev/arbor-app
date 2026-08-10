@@ -250,6 +250,28 @@ export const mockDeleteRepositoryMutation = (resolver: GraphQLResponseResolver<T
  * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
  * @see https://mswjs.io/docs/basics/response-resolver
  * @example
+ * mockDiscoverDependenciesMutation(
+ *   ({ query, variables }) => {
+ *     const { input } = variables;
+ *     return HttpResponse.json({
+ *       data: { discoverDependencies }
+ *     })
+ *   },
+ *   requestOptions
+ * )
+ */
+export const mockDiscoverDependenciesMutation = (resolver: GraphQLResponseResolver<Types.DiscoverDependenciesMutation, Types.DiscoverDependenciesMutationVariables>, options?: RequestHandlerOptions) =>
+  graphql.mutation<Types.DiscoverDependenciesMutation, Types.DiscoverDependenciesMutationVariables>(
+    'DiscoverDependencies',
+    resolver,
+    options
+  )
+
+/**
+ * @param resolver A function that accepts [resolver arguments](https://mswjs.io/docs/api/graphql#resolver-argument) and must always return the instruction on what to do with the intercepted request. ([see more](https://mswjs.io/docs/concepts/response-resolver#resolver-instructions))
+ * @param options Options object to customize the behavior of the mock. ([see more](https://mswjs.io/docs/api/graphql#handler-options))
+ * @see https://mswjs.io/docs/basics/response-resolver
+ * @example
  * mockRenameRepositoryMutation(
  *   ({ query, variables }) => {
  *     const { input } = variables;

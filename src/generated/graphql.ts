@@ -2598,6 +2598,23 @@ export enum DiffStatus {
   TypeChanged = 'TYPE_CHANGED'
 }
 
+/** Input for discovering a repository's dependencies from its manifest. */
+export type DiscoverDependenciesInput = {
+  /** The repository to scan. */
+  repositoryId: Scalars['UUID']['input'];
+};
+
+/** Payload for the discoverDependencies mutation. */
+export type DiscoverDependenciesPayload = {
+  __typename?: 'DiscoverDependenciesPayload';
+  /** A non-fatal reason discovery produced nothing (e.g. no manifest). */
+  error?: Maybe<Scalars['String']['output']>;
+  /** The number of external (non-Arbor) package dependencies detected. */
+  externalDependencies?: Maybe<Scalars['Int']['output']>;
+  /** The number of internal repository-to-repository edges detected. */
+  internalDependencies?: Maybe<Scalars['Int']['output']>;
+};
+
 /** Input for enqueuing a stack onto its repository's merge queue. */
 export type EnqueueStackInput = {
   /** The stack ID to enqueue. */
@@ -3915,6 +3932,11 @@ export type Mutation = {
   /** Deletes a single `VerificationCheck` using a unique key. */
   deleteVerificationCheck?: Maybe<DeleteVerificationCheckPayload>;
   /**
+   * Scan a repository's package manifest at its default branch and reconcile
+   * its dependency graph, replacing previously auto-detected dependencies.
+   */
+  discoverDependencies?: Maybe<DiscoverDependenciesPayload>;
+  /**
    * Enqueue a stack onto its repository's merge queue.
    * Idempotent: an already-queued stack returns its existing entry. Requires
    * write access to the repository.
@@ -4256,6 +4278,12 @@ export type MutationDeleteUserArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteVerificationCheckArgs = {
   input: DeleteVerificationCheckInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDiscoverDependenciesArgs = {
+  input: DiscoverDependenciesInput;
 };
 
 
@@ -13124,6 +13152,12 @@ export type DiffStatus =
   | 'RENAMED'
   | 'TYPE_CHANGED';
 
+/** Input for discovering a repository's dependencies from its manifest. */
+export type DiscoverDependenciesInput = {
+  /** The repository to scan. */
+  repositoryId: string;
+};
+
 /** Input for opening a pull request. */
 export type OpenPullRequestInput = {
   /** Optional description (Markdown). */
@@ -13399,6 +13433,13 @@ export type DeleteRepositoryMutationVariables = Exact<{
 
 
 export type DeleteRepositoryMutation = { deleteRepository: { repository: { rowId: string } | null } | null };
+
+export type DiscoverDependenciesMutationVariables = Exact<{
+  input: DiscoverDependenciesInput;
+}>;
+
+
+export type DiscoverDependenciesMutation = { discoverDependencies: { internalDependencies: number | null, externalDependencies: number | null, error: string | null } | null };
 
 export type RenameRepositoryMutationVariables = Exact<{
   input: RenameRepositoryInput;
@@ -13984,6 +14025,34 @@ useDeleteRepositoryMutation.getKey = () => ['DeleteRepository'];
 
 
 useDeleteRepositoryMutation.fetcher = (variables: DeleteRepositoryMutationVariables, options?: RequestInit['headers']) => graphqlFetch<DeleteRepositoryMutation, DeleteRepositoryMutationVariables>(DeleteRepositoryDocument, variables, options);
+
+export const DiscoverDependenciesDocument = new TypedDocumentString(`
+    mutation DiscoverDependencies($input: DiscoverDependenciesInput!) {
+  discoverDependencies(input: $input) {
+    internalDependencies
+    externalDependencies
+    error
+  }
+}
+    `);
+
+export const useDiscoverDependenciesMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<DiscoverDependenciesMutation, TError, DiscoverDependenciesMutationVariables, TContext>) => {
+    
+    return useMutation<DiscoverDependenciesMutation, TError, DiscoverDependenciesMutationVariables, TContext>(
+      {
+    mutationKey: ['DiscoverDependencies'],
+    mutationFn: (variables?: DiscoverDependenciesMutationVariables) => graphqlFetch<DiscoverDependenciesMutation, DiscoverDependenciesMutationVariables>(DiscoverDependenciesDocument, variables)(),
+    ...options
+  }
+    )};
+
+useDiscoverDependenciesMutation.getKey = () => ['DiscoverDependencies'];
+
+
+useDiscoverDependenciesMutation.fetcher = (variables: DiscoverDependenciesMutationVariables, options?: RequestInit['headers']) => graphqlFetch<DiscoverDependenciesMutation, DiscoverDependenciesMutationVariables>(DiscoverDependenciesDocument, variables, options);
 
 export const RenameRepositoryDocument = new TypedDocumentString(`
     mutation RenameRepository($input: RenameRepositoryInput!) {
