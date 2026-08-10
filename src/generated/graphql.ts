@@ -3991,6 +3991,12 @@ export type Mutation = {
    */
   processMergeQueue?: Maybe<ProcessMergeQueuePayload>;
   /**
+   * Apply a repository's arbor.project.json, linking it to the projects it
+   * declares (and its owner holds) and unlinking descriptor memberships it no
+   * longer declares. Manually added memberships are left untouched.
+   */
+  reconcileProjectMembership?: Maybe<ReconcileProjectMembershipPayload>;
+  /**
    * Rename a repository, moving its on-disk git storage to match the new
    * slug so the database row and storage never diverge. Requires the
    * repository owner or an admin collaborator.
@@ -4340,6 +4346,12 @@ export type MutationOpenPullRequestArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationProcessMergeQueueArgs = {
   input: ProcessMergeQueueInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationReconcileProjectMembershipArgs = {
+  input: ReconcileProjectMembershipInput;
 };
 
 
@@ -6153,6 +6165,8 @@ export enum ProjectOrderBy {
   ProjectRepositoriesCountDesc = 'PROJECT_REPOSITORIES_COUNT_DESC',
   ProjectRepositoriesDistinctCountCreatedAtAsc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_ASC',
   ProjectRepositoriesDistinctCountCreatedAtDesc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_DESC',
+  ProjectRepositoriesDistinctCountDetectionSourceAsc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_DETECTION_SOURCE_ASC',
+  ProjectRepositoriesDistinctCountDetectionSourceDesc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_DETECTION_SOURCE_DESC',
   ProjectRepositoriesDistinctCountProjectIdAsc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_PROJECT_ID_ASC',
   ProjectRepositoriesDistinctCountProjectIdDesc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_PROJECT_ID_DESC',
   ProjectRepositoriesDistinctCountRepositoryIdAsc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
@@ -6183,6 +6197,7 @@ export type ProjectPatch = {
 export type ProjectRepository = Node & {
   __typename?: 'ProjectRepository';
   createdAt: Scalars['Datetime']['output'];
+  detectionSource: Scalars['String']['output'];
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   id: Scalars['ID']['output'];
   /** Reads a single `Project` that is related to this `ProjectRepository`. */
@@ -6216,6 +6231,8 @@ export type ProjectRepositoryAggregatesFilter = {
 export type ProjectRepositoryCondition = {
   /** Checks for equality with the object’s `createdAt` field. */
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `detectionSource` field. */
+  detectionSource?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `projectId` field. */
   projectId?: InputMaybe<Scalars['UUID']['input']>;
   /** Checks for equality with the object’s `repositoryId` field. */
@@ -6250,6 +6267,7 @@ export type ProjectRepositoryConnectionGroupedAggregatesArgs = {
 
 export type ProjectRepositoryDistinctCountAggregateFilter = {
   createdAt?: InputMaybe<BigIntFilter>;
+  detectionSource?: InputMaybe<BigIntFilter>;
   projectId?: InputMaybe<BigIntFilter>;
   repositoryId?: InputMaybe<BigIntFilter>;
   rowId?: InputMaybe<BigIntFilter>;
@@ -6259,6 +6277,8 @@ export type ProjectRepositoryDistinctCountAggregates = {
   __typename?: 'ProjectRepositoryDistinctCountAggregates';
   /** Distinct count of createdAt across the matching connection */
   createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of detectionSource across the matching connection */
+  detectionSource?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of projectId across the matching connection */
   projectId?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of repositoryId across the matching connection */
@@ -6282,6 +6302,8 @@ export type ProjectRepositoryFilter = {
   and?: InputMaybe<Array<ProjectRepositoryFilter>>;
   /** Filter by the object’s `createdAt` field. */
   createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `detectionSource` field. */
+  detectionSource?: InputMaybe<StringFilter>;
   /** Negates the expression. */
   not?: InputMaybe<ProjectRepositoryFilter>;
   /** Checks for any expressions in this list. */
@@ -6303,6 +6325,7 @@ export enum ProjectRepositoryGroupBy {
   CreatedAt = 'CREATED_AT',
   CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
   CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  DetectionSource = 'DETECTION_SOURCE',
   ProjectId = 'PROJECT_ID',
   RepositoryId = 'REPOSITORY_ID'
 }
@@ -6361,6 +6384,7 @@ export type ProjectRepositoryHavingVarianceSampleInput = {
 /** An input for mutations affecting `ProjectRepository` */
 export type ProjectRepositoryInput = {
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  detectionSource?: InputMaybe<Scalars['String']['input']>;
   projectId: Scalars['UUID']['input'];
   repositoryId: Scalars['UUID']['input'];
   rowId?: InputMaybe<Scalars['UUID']['input']>;
@@ -6370,6 +6394,8 @@ export type ProjectRepositoryInput = {
 export enum ProjectRepositoryOrderBy {
   CreatedAtAsc = 'CREATED_AT_ASC',
   CreatedAtDesc = 'CREATED_AT_DESC',
+  DetectionSourceAsc = 'DETECTION_SOURCE_ASC',
+  DetectionSourceDesc = 'DETECTION_SOURCE_DESC',
   Natural = 'NATURAL',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
@@ -6384,6 +6410,7 @@ export enum ProjectRepositoryOrderBy {
 /** Represents an update to a `ProjectRepository`. Fields that are set will be updated. */
 export type ProjectRepositoryPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  detectionSource?: InputMaybe<Scalars['String']['input']>;
   projectId?: InputMaybe<Scalars['UUID']['input']>;
   repositoryId?: InputMaybe<Scalars['UUID']['input']>;
   rowId?: InputMaybe<Scalars['UUID']['input']>;
@@ -8009,6 +8036,12 @@ export type Query = Node & {
   projectRepository?: Maybe<ProjectRepository>;
   /** Reads a single `ProjectRepository` using its globally unique `ID`. */
   projectRepositoryById?: Maybe<ProjectRepository>;
+  /**
+   * External packages the project's repositories depend on at inconsistent
+   * versions, one row per package/version/repository. Only repositories the
+   * caller may see appear.
+   */
+  projectVersionDrift?: Maybe<Array<VersionDriftEntry>>;
   /** Reads and enables pagination through a set of `Project`. */
   projects?: Maybe<ProjectConnection>;
   /** Get a single `PullRequest`. */
@@ -8333,6 +8366,12 @@ export type QueryProjectRepositoryByIdArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryProjectVersionDriftArgs = {
+  projectId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryProjectsArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -8593,6 +8632,21 @@ export type QueryVerificationChecksArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<VerificationCheckOrderBy>>;
+};
+
+/** Input for reconciling a repository's project memberships from its descriptor. */
+export type ReconcileProjectMembershipInput = {
+  /** The repository whose arbor.project.json to apply. */
+  repositoryId: Scalars['UUID']['input'];
+};
+
+/** Payload for the reconcileProjectMembership mutation. */
+export type ReconcileProjectMembershipPayload = {
+  __typename?: 'ReconcileProjectMembershipPayload';
+  /** A non-fatal reason reconciliation produced nothing (e.g. no descriptor). */
+  error?: Maybe<Scalars['String']['output']>;
+  /** The number of projects the repository is now linked to via its descriptor. */
+  linkedProjects?: Maybe<Scalars['Int']['output']>;
 };
 
 /** A Git reference (branch or tag). */
@@ -9466,6 +9520,8 @@ export enum RepositoryOrderBy {
   ProjectRepositoriesCountDesc = 'PROJECT_REPOSITORIES_COUNT_DESC',
   ProjectRepositoriesDistinctCountCreatedAtAsc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_ASC',
   ProjectRepositoriesDistinctCountCreatedAtDesc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_CREATED_AT_DESC',
+  ProjectRepositoriesDistinctCountDetectionSourceAsc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_DETECTION_SOURCE_ASC',
+  ProjectRepositoriesDistinctCountDetectionSourceDesc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_DETECTION_SOURCE_DESC',
   ProjectRepositoriesDistinctCountProjectIdAsc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_PROJECT_ID_ASC',
   ProjectRepositoriesDistinctCountProjectIdDesc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_PROJECT_ID_DESC',
   ProjectRepositoriesDistinctCountRepositoryIdAsc = 'PROJECT_REPOSITORIES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
@@ -13012,6 +13068,27 @@ export type VerificationCheckPatch = {
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
+/** One (package, version, repository) cell of a project's version-drift view. */
+export type VersionDriftEntry = {
+  __typename?: 'VersionDriftEntry';
+  /** The depending repository's name. */
+  name?: Maybe<Scalars['String']['output']>;
+  /** The organization slug, for an organization repository. */
+  organizationSlug?: Maybe<Scalars['String']['output']>;
+  /** The owner username, for a personal repository. */
+  ownerUsername?: Maybe<Scalars['String']['output']>;
+  /** The package manager (npm, cargo, go, pip). */
+  packageManager?: Maybe<Scalars['String']['output']>;
+  /** The package name. */
+  packageName?: Maybe<Scalars['String']['output']>;
+  /** The depending repository's row id. */
+  repositoryId?: Maybe<Scalars['UUID']['output']>;
+  /** The depending repository's slug. */
+  slug?: Maybe<Scalars['String']['output']>;
+  /** The version constraint this repository declares (null = unpinned). */
+  versionConstraint?: Maybe<Scalars['String']['output']>;
+};
+
 export enum Visibility {
   Private = 'private',
   Public = 'public'
@@ -13265,6 +13342,7 @@ export type ProjectInput = {
 /** An input for mutations affecting `ProjectRepository` */
 export type ProjectRepositoryInput = {
   createdAt?: Date | null | undefined;
+  detectionSource?: string | null | undefined;
   projectId: string;
   repositoryId: string;
   rowId?: string | null | undefined;
@@ -13557,6 +13635,13 @@ export type ProjectBySlugQueryVariables = Exact<{
 
 
 export type ProjectBySlugQuery = { projects: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, createdAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null, projectRepositories: { totalCount: number, nodes: Array<{ rowId: string, repository: { rowId: string, name: string, slug: string, visibility: Visibility, owner: { username: string } | null, organization: { idpOrganizationId: string } | null, memberships: { totalCount: number }, outgoingRelationships: { nodes: Array<{ rowId: string, confidence: number, versionConstraint: string | null, targetRepository: { rowId: string, name: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null, relationshipType: { rowId: string, name: string, isDirected: boolean } | null }> }, incomingRelationships: { nodes: Array<{ rowId: string, confidence: number, versionConstraint: string | null, sourceRepository: { rowId: string, name: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null, relationshipType: { rowId: string, name: string, isDirected: boolean } | null }> } } | null }> } }> } | null };
+
+export type ProjectVersionDriftQueryVariables = Exact<{
+  projectId: string;
+}>;
+
+
+export type ProjectVersionDriftQuery = { projectVersionDrift: Array<{ packageManager: string | null, packageName: string | null, versionConstraint: string | null, repositoryId: string | null, name: string | null, slug: string | null, ownerUsername: string | null, organizationSlug: string | null }> | null };
 
 export type ProjectsQueryVariables = Exact<{
   userId: string;
@@ -15055,6 +15140,102 @@ useSuspenseInfiniteProjectBySlugQuery.getKey = (variables: ProjectBySlugQueryVar
 
 
 useProjectBySlugQuery.fetcher = (variables: ProjectBySlugQueryVariables, options?: RequestInit['headers']) => graphqlFetch<ProjectBySlugQuery, ProjectBySlugQueryVariables>(ProjectBySlugDocument, variables, options);
+
+export const ProjectVersionDriftDocument = new TypedDocumentString(`
+    query ProjectVersionDrift($projectId: UUID!) {
+  projectVersionDrift(projectId: $projectId) {
+    packageManager
+    packageName
+    versionConstraint
+    repositoryId
+    name
+    slug
+    ownerUsername
+    organizationSlug
+  }
+}
+    `);
+
+export const useProjectVersionDriftQuery = <
+      TData = ProjectVersionDriftQuery,
+      TError = unknown
+    >(
+      variables: ProjectVersionDriftQueryVariables,
+      options?: Omit<UseQueryOptions<ProjectVersionDriftQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<ProjectVersionDriftQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<ProjectVersionDriftQuery, TError, TData>(
+      {
+    queryKey: ['ProjectVersionDrift', variables],
+    queryFn: graphqlFetch<ProjectVersionDriftQuery, ProjectVersionDriftQueryVariables>(ProjectVersionDriftDocument, variables),
+    ...options
+  }
+    )};
+
+useProjectVersionDriftQuery.getKey = (variables: ProjectVersionDriftQueryVariables) => ['ProjectVersionDrift', variables];
+
+export const useSuspenseProjectVersionDriftQuery = <
+      TData = ProjectVersionDriftQuery,
+      TError = unknown
+    >(
+      variables: ProjectVersionDriftQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<ProjectVersionDriftQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<ProjectVersionDriftQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<ProjectVersionDriftQuery, TError, TData>(
+      {
+    queryKey: ['ProjectVersionDrift', variables],
+    queryFn: graphqlFetch<ProjectVersionDriftQuery, ProjectVersionDriftQueryVariables>(ProjectVersionDriftDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseProjectVersionDriftQuery.getKey = (variables: ProjectVersionDriftQueryVariables) => ['ProjectVersionDrift', variables];
+
+export const useInfiniteProjectVersionDriftQuery = <
+      TData = InfiniteData<ProjectVersionDriftQuery>,
+      TError = unknown
+    >(
+      variables: ProjectVersionDriftQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<ProjectVersionDriftQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<ProjectVersionDriftQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<ProjectVersionDriftQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['ProjectVersionDrift.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<ProjectVersionDriftQuery, ProjectVersionDriftQueryVariables>(ProjectVersionDriftDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteProjectVersionDriftQuery.getKey = (variables: ProjectVersionDriftQueryVariables) => ['ProjectVersionDrift.infinite', variables];
+
+export const useSuspenseInfiniteProjectVersionDriftQuery = <
+      TData = InfiniteData<ProjectVersionDriftQuery>,
+      TError = unknown
+    >(
+      variables: ProjectVersionDriftQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<ProjectVersionDriftQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<ProjectVersionDriftQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<ProjectVersionDriftQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['ProjectVersionDrift.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<ProjectVersionDriftQuery, ProjectVersionDriftQueryVariables>(ProjectVersionDriftDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteProjectVersionDriftQuery.getKey = (variables: ProjectVersionDriftQueryVariables) => ['ProjectVersionDrift.infinite', variables];
+
+
+useProjectVersionDriftQuery.fetcher = (variables: ProjectVersionDriftQueryVariables, options?: RequestInit['headers']) => graphqlFetch<ProjectVersionDriftQuery, ProjectVersionDriftQueryVariables>(ProjectVersionDriftDocument, variables, options);
 
 export const ProjectsDocument = new TypedDocumentString(`
     query Projects($userId: UUID!, $organizationId: UUID, $limit: Int) {

@@ -1,0 +1,12 @@
+query ProjectVersionDrift($projectId: UUID!) {
+  projectVersionDrift(projectId: $projectId) {
+    packageManager
+    packageName
+    versionConstraint
+    repositoryId
+    name
+    slug
+    ownerUsername
+    organizationSlug
+  }
+}
