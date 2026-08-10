@@ -481,10 +481,11 @@ function RepositorySettingsPage() {
                 Dependencies
               </h2>
               <p className="text-muted-foreground text-sm">
-                Scan this repository's package.json and Cargo.toml on the
-                default branch to detect dependencies. Links to other
-                repositories become graph edges; the rest are recorded as
-                external packages. Manually added edges are kept.
+                Scan this repository's package manifests (package.json,
+                Cargo.toml, go.mod, requirements.txt) on the default branch to
+                detect dependencies. Links to other repositories become graph
+                edges; the rest are recorded as external packages. Manually
+                added edges are kept.
               </p>
             </div>
             <Button
