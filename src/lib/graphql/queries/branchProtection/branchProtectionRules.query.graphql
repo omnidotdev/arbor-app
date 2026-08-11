@@ -1,0 +1,10 @@
+query BranchProtectionRules($repositoryId: UUID!) {
+  branchProtectionRules(condition: { repositoryId: $repositoryId }) {
+    nodes {
+      rowId
+      refPattern
+      requiredApprovals
+      requirePassingChecks
+    }
+  }
+}

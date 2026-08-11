@@ -629,6 +629,382 @@ export type BooleanFilter = {
   notIn?: InputMaybe<Array<Scalars['Boolean']['input']>>;
 };
 
+export type BranchProtectionRule = Node & {
+  __typename?: 'BranchProtectionRule';
+  createdAt: Scalars['Datetime']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  refPattern: Scalars['String']['output'];
+  /** Reads a single `Repository` that is related to this `BranchProtectionRule`. */
+  repository?: Maybe<Repository>;
+  repositoryId: Scalars['UUID']['output'];
+  requirePassingChecks: Scalars['Boolean']['output'];
+  requiredApprovals: Scalars['Int']['output'];
+  rowId: Scalars['UUID']['output'];
+  updatedAt: Scalars['Datetime']['output'];
+};
+
+export type BranchProtectionRuleAggregates = {
+  __typename?: 'BranchProtectionRuleAggregates';
+  /** Mean average aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  average?: Maybe<BranchProtectionRuleAverageAggregates>;
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<BranchProtectionRuleDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** Maximum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  max?: Maybe<BranchProtectionRuleMaxAggregates>;
+  /** Minimum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  min?: Maybe<BranchProtectionRuleMinAggregates>;
+  /** Population standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevPopulation?: Maybe<BranchProtectionRuleStddevPopulationAggregates>;
+  /** Sample standard deviation aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  stddevSample?: Maybe<BranchProtectionRuleStddevSampleAggregates>;
+  /** Sum aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  sum?: Maybe<BranchProtectionRuleSumAggregates>;
+  /** Population variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  variancePopulation?: Maybe<BranchProtectionRuleVariancePopulationAggregates>;
+  /** Sample variance aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  varianceSample?: Maybe<BranchProtectionRuleVarianceSampleAggregates>;
+};
+
+/** A filter to be used against aggregates of `BranchProtectionRule` object types. */
+export type BranchProtectionRuleAggregatesFilter = {
+  /** Mean average aggregate over matching `BranchProtectionRule` objects. */
+  average?: InputMaybe<BranchProtectionRuleAverageAggregateFilter>;
+  /** Distinct count aggregate over matching `BranchProtectionRule` objects. */
+  distinctCount?: InputMaybe<BranchProtectionRuleDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `BranchProtectionRule` object to be included within the aggregate. */
+  filter?: InputMaybe<BranchProtectionRuleFilter>;
+  /** Maximum aggregate over matching `BranchProtectionRule` objects. */
+  max?: InputMaybe<BranchProtectionRuleMaxAggregateFilter>;
+  /** Minimum aggregate over matching `BranchProtectionRule` objects. */
+  min?: InputMaybe<BranchProtectionRuleMinAggregateFilter>;
+  /** Population standard deviation aggregate over matching `BranchProtectionRule` objects. */
+  stddevPopulation?: InputMaybe<BranchProtectionRuleStddevPopulationAggregateFilter>;
+  /** Sample standard deviation aggregate over matching `BranchProtectionRule` objects. */
+  stddevSample?: InputMaybe<BranchProtectionRuleStddevSampleAggregateFilter>;
+  /** Sum aggregate over matching `BranchProtectionRule` objects. */
+  sum?: InputMaybe<BranchProtectionRuleSumAggregateFilter>;
+  /** Population variance aggregate over matching `BranchProtectionRule` objects. */
+  variancePopulation?: InputMaybe<BranchProtectionRuleVariancePopulationAggregateFilter>;
+  /** Sample variance aggregate over matching `BranchProtectionRule` objects. */
+  varianceSample?: InputMaybe<BranchProtectionRuleVarianceSampleAggregateFilter>;
+};
+
+export type BranchProtectionRuleAverageAggregateFilter = {
+  requiredApprovals?: InputMaybe<BigFloatFilter>;
+};
+
+export type BranchProtectionRuleAverageAggregates = {
+  __typename?: 'BranchProtectionRuleAverageAggregates';
+  /** Mean average of requiredApprovals across the matching connection */
+  requiredApprovals?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+/**
+ * A condition to be used against `BranchProtectionRule` object types. All fields
+ * are tested for equality and combined with a logical ‘and.’
+ */
+export type BranchProtectionRuleCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `refPattern` field. */
+  refPattern?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `requirePassingChecks` field. */
+  requirePassingChecks?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Checks for equality with the object’s `requiredApprovals` field. */
+  requiredApprovals?: InputMaybe<Scalars['Int']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** A connection to a list of `BranchProtectionRule` values. */
+export type BranchProtectionRuleConnection = {
+  __typename?: 'BranchProtectionRuleConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<BranchProtectionRuleAggregates>;
+  /** A list of edges which contains the `BranchProtectionRule` and cursor to aid in pagination. */
+  edges: Array<BranchProtectionRuleEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<BranchProtectionRuleAggregates>>;
+  /** A list of `BranchProtectionRule` objects. */
+  nodes: Array<BranchProtectionRule>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `BranchProtectionRule` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `BranchProtectionRule` values. */
+export type BranchProtectionRuleConnectionGroupedAggregatesArgs = {
+  groupBy: Array<BranchProtectionRuleGroupBy>;
+  having?: InputMaybe<BranchProtectionRuleHavingInput>;
+};
+
+export type BranchProtectionRuleDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  refPattern?: InputMaybe<BigIntFilter>;
+  repositoryId?: InputMaybe<BigIntFilter>;
+  requirePassingChecks?: InputMaybe<BigIntFilter>;
+  requiredApprovals?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+};
+
+export type BranchProtectionRuleDistinctCountAggregates = {
+  __typename?: 'BranchProtectionRuleDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of refPattern across the matching connection */
+  refPattern?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of repositoryId across the matching connection */
+  repositoryId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of requirePassingChecks across the matching connection */
+  requirePassingChecks?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of requiredApprovals across the matching connection */
+  requiredApprovals?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `BranchProtectionRule` edge in the connection. */
+export type BranchProtectionRuleEdge = {
+  __typename?: 'BranchProtectionRuleEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `BranchProtectionRule` at the end of the edge. */
+  node: BranchProtectionRule;
+};
+
+/** A filter to be used against `BranchProtectionRule` object types. All fields are combined with a logical ‘and.’ */
+export type BranchProtectionRuleFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<BranchProtectionRuleFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<BranchProtectionRuleFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<BranchProtectionRuleFilter>>;
+  /** Filter by the object’s `refPattern` field. */
+  refPattern?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `repository` relation. */
+  repository?: InputMaybe<RepositoryFilter>;
+  /** Filter by the object’s `repositoryId` field. */
+  repositoryId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `requirePassingChecks` field. */
+  requirePassingChecks?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `requiredApprovals` field. */
+  requiredApprovals?: InputMaybe<IntFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** Grouping methods for `BranchProtectionRule` for usage during aggregation. */
+export enum BranchProtectionRuleGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  RefPattern = 'REF_PATTERN',
+  RepositoryId = 'REPOSITORY_ID',
+  RequiredApprovals = 'REQUIRED_APPROVALS',
+  RequirePassingChecks = 'REQUIRE_PASSING_CHECKS',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+}
+
+export type BranchProtectionRuleHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  requiredApprovals?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BranchProtectionRuleHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  requiredApprovals?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `BranchProtectionRule` aggregates. */
+export type BranchProtectionRuleHavingInput = {
+  AND?: InputMaybe<Array<BranchProtectionRuleHavingInput>>;
+  OR?: InputMaybe<Array<BranchProtectionRuleHavingInput>>;
+  average?: InputMaybe<BranchProtectionRuleHavingAverageInput>;
+  distinctCount?: InputMaybe<BranchProtectionRuleHavingDistinctCountInput>;
+  max?: InputMaybe<BranchProtectionRuleHavingMaxInput>;
+  min?: InputMaybe<BranchProtectionRuleHavingMinInput>;
+  stddevPopulation?: InputMaybe<BranchProtectionRuleHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<BranchProtectionRuleHavingStddevSampleInput>;
+  sum?: InputMaybe<BranchProtectionRuleHavingSumInput>;
+  variancePopulation?: InputMaybe<BranchProtectionRuleHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<BranchProtectionRuleHavingVarianceSampleInput>;
+};
+
+export type BranchProtectionRuleHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  requiredApprovals?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BranchProtectionRuleHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  requiredApprovals?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BranchProtectionRuleHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  requiredApprovals?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BranchProtectionRuleHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  requiredApprovals?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BranchProtectionRuleHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  requiredApprovals?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BranchProtectionRuleHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  requiredApprovals?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type BranchProtectionRuleHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  requiredApprovals?: InputMaybe<HavingIntFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `BranchProtectionRule` */
+export type BranchProtectionRuleInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  refPattern: Scalars['String']['input'];
+  repositoryId: Scalars['UUID']['input'];
+  requirePassingChecks?: InputMaybe<Scalars['Boolean']['input']>;
+  requiredApprovals?: InputMaybe<Scalars['Int']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type BranchProtectionRuleMaxAggregateFilter = {
+  requiredApprovals?: InputMaybe<IntFilter>;
+};
+
+export type BranchProtectionRuleMaxAggregates = {
+  __typename?: 'BranchProtectionRuleMaxAggregates';
+  /** Maximum of requiredApprovals across the matching connection */
+  requiredApprovals?: Maybe<Scalars['Int']['output']>;
+};
+
+export type BranchProtectionRuleMinAggregateFilter = {
+  requiredApprovals?: InputMaybe<IntFilter>;
+};
+
+export type BranchProtectionRuleMinAggregates = {
+  __typename?: 'BranchProtectionRuleMinAggregates';
+  /** Minimum of requiredApprovals across the matching connection */
+  requiredApprovals?: Maybe<Scalars['Int']['output']>;
+};
+
+/** Methods to use when ordering `BranchProtectionRule`. */
+export enum BranchProtectionRuleOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RefPatternAsc = 'REF_PATTERN_ASC',
+  RefPatternDesc = 'REF_PATTERN_DESC',
+  RepositoryIdAsc = 'REPOSITORY_ID_ASC',
+  RepositoryIdDesc = 'REPOSITORY_ID_DESC',
+  RequiredApprovalsAsc = 'REQUIRED_APPROVALS_ASC',
+  RequiredApprovalsDesc = 'REQUIRED_APPROVALS_DESC',
+  RequirePassingChecksAsc = 'REQUIRE_PASSING_CHECKS_ASC',
+  RequirePassingChecksDesc = 'REQUIRE_PASSING_CHECKS_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
+/** Represents an update to a `BranchProtectionRule`. Fields that are set will be updated. */
+export type BranchProtectionRulePatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  refPattern?: InputMaybe<Scalars['String']['input']>;
+  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
+  requirePassingChecks?: InputMaybe<Scalars['Boolean']['input']>;
+  requiredApprovals?: InputMaybe<Scalars['Int']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type BranchProtectionRuleStddevPopulationAggregateFilter = {
+  requiredApprovals?: InputMaybe<BigFloatFilter>;
+};
+
+export type BranchProtectionRuleStddevPopulationAggregates = {
+  __typename?: 'BranchProtectionRuleStddevPopulationAggregates';
+  /** Population standard deviation of requiredApprovals across the matching connection */
+  requiredApprovals?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+export type BranchProtectionRuleStddevSampleAggregateFilter = {
+  requiredApprovals?: InputMaybe<BigFloatFilter>;
+};
+
+export type BranchProtectionRuleStddevSampleAggregates = {
+  __typename?: 'BranchProtectionRuleStddevSampleAggregates';
+  /** Sample standard deviation of requiredApprovals across the matching connection */
+  requiredApprovals?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+export type BranchProtectionRuleSumAggregateFilter = {
+  requiredApprovals?: InputMaybe<BigIntFilter>;
+};
+
+export type BranchProtectionRuleSumAggregates = {
+  __typename?: 'BranchProtectionRuleSumAggregates';
+  /** Sum of requiredApprovals across the matching connection */
+  requiredApprovals: Scalars['BigInt']['output'];
+};
+
+export type BranchProtectionRuleVariancePopulationAggregateFilter = {
+  requiredApprovals?: InputMaybe<BigFloatFilter>;
+};
+
+export type BranchProtectionRuleVariancePopulationAggregates = {
+  __typename?: 'BranchProtectionRuleVariancePopulationAggregates';
+  /** Population variance of requiredApprovals across the matching connection */
+  requiredApprovals?: Maybe<Scalars['BigFloat']['output']>;
+};
+
+export type BranchProtectionRuleVarianceSampleAggregateFilter = {
+  requiredApprovals?: InputMaybe<BigFloatFilter>;
+};
+
+export type BranchProtectionRuleVarianceSampleAggregates = {
+  __typename?: 'BranchProtectionRuleVarianceSampleAggregates';
+  /** Sample variance of requiredApprovals across the matching connection */
+  requiredApprovals?: Maybe<Scalars['BigFloat']['output']>;
+};
+
 export type Change = Node & {
   __typename?: 'Change';
   commitSha?: Maybe<Scalars['String']['output']>;
@@ -1241,6 +1617,39 @@ export type CreateAgentPayloadAgentEdgeArgs = {
   orderBy?: Array<AgentOrderBy>;
 };
 
+/** All input for the create `BranchProtectionRule` mutation. */
+export type CreateBranchProtectionRuleInput = {
+  /** The `BranchProtectionRule` to be created by this mutation. */
+  branchProtectionRule: BranchProtectionRuleInput;
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** The output of our create `BranchProtectionRule` mutation. */
+export type CreateBranchProtectionRulePayload = {
+  __typename?: 'CreateBranchProtectionRulePayload';
+  /** The `BranchProtectionRule` that was created by this mutation. */
+  branchProtectionRule?: Maybe<BranchProtectionRule>;
+  /** An edge for our `BranchProtectionRule`. May be used by Relay 1. */
+  branchProtectionRuleEdge?: Maybe<BranchProtectionRuleEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our create `BranchProtectionRule` mutation. */
+export type CreateBranchProtectionRulePayloadBranchProtectionRuleEdgeArgs = {
+  orderBy?: Array<BranchProtectionRuleOrderBy>;
+};
+
 /** All input for the create `Change` mutation. */
 export type CreateChangeInput = {
   /** The `Change` to be created by this mutation. */
@@ -1841,6 +2250,72 @@ export type CreateStackPayloadStackEdgeArgs = {
   orderBy?: Array<StackOrderBy>;
 };
 
+/** All input for the create `Topic` mutation. */
+export type CreateTopicInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `Topic` to be created by this mutation. */
+  topic: TopicInput;
+};
+
+/** The output of our create `Topic` mutation. */
+export type CreateTopicPayload = {
+  __typename?: 'CreateTopicPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Topic` that was created by this mutation. */
+  topic?: Maybe<Topic>;
+  /** An edge for our `Topic`. May be used by Relay 1. */
+  topicEdge?: Maybe<TopicEdge>;
+};
+
+
+/** The output of our create `Topic` mutation. */
+export type CreateTopicPayloadTopicEdgeArgs = {
+  orderBy?: Array<TopicOrderBy>;
+};
+
+/** All input for the create `TopicPullRequest` mutation. */
+export type CreateTopicPullRequestInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** The `TopicPullRequest` to be created by this mutation. */
+  topicPullRequest: TopicPullRequestInput;
+};
+
+/** The output of our create `TopicPullRequest` mutation. */
+export type CreateTopicPullRequestPayload = {
+  __typename?: 'CreateTopicPullRequestPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `TopicPullRequest` that was created by this mutation. */
+  topicPullRequest?: Maybe<TopicPullRequest>;
+  /** An edge for our `TopicPullRequest`. May be used by Relay 1. */
+  topicPullRequestEdge?: Maybe<TopicPullRequestEdge>;
+};
+
+
+/** The output of our create `TopicPullRequest` mutation. */
+export type CreateTopicPullRequestPayloadTopicPullRequestEdgeArgs = {
+  orderBy?: Array<TopicPullRequestOrderBy>;
+};
+
 /** All input for the create `VerificationCheck` mutation. */
 export type CreateVerificationCheckInput = {
   /**
@@ -1931,6 +2406,39 @@ export type DeleteAgentPayload = {
 /** The output of our delete `Agent` mutation. */
 export type DeleteAgentPayloadAgentEdgeArgs = {
   orderBy?: Array<AgentOrderBy>;
+};
+
+/** All input for the `deleteBranchProtectionRule` mutation. */
+export type DeleteBranchProtectionRuleInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `BranchProtectionRule` mutation. */
+export type DeleteBranchProtectionRulePayload = {
+  __typename?: 'DeleteBranchProtectionRulePayload';
+  /** The `BranchProtectionRule` that was deleted by this mutation. */
+  branchProtectionRule?: Maybe<BranchProtectionRule>;
+  /** An edge for our `BranchProtectionRule`. May be used by Relay 1. */
+  branchProtectionRuleEdge?: Maybe<BranchProtectionRuleEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedBranchProtectionRuleId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our delete `BranchProtectionRule` mutation. */
+export type DeleteBranchProtectionRulePayloadBranchProtectionRuleEdgeArgs = {
+  orderBy?: Array<BranchProtectionRuleOrderBy>;
 };
 
 /** All input for the `deleteChange` mutation. */
@@ -2541,6 +3049,72 @@ export type DeleteStackPayload = {
 /** The output of our delete `Stack` mutation. */
 export type DeleteStackPayloadStackEdgeArgs = {
   orderBy?: Array<StackOrderBy>;
+};
+
+/** All input for the `deleteTopic` mutation. */
+export type DeleteTopicInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `Topic` mutation. */
+export type DeleteTopicPayload = {
+  __typename?: 'DeleteTopicPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedTopicId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Topic` that was deleted by this mutation. */
+  topic?: Maybe<Topic>;
+  /** An edge for our `Topic`. May be used by Relay 1. */
+  topicEdge?: Maybe<TopicEdge>;
+};
+
+
+/** The output of our delete `Topic` mutation. */
+export type DeleteTopicPayloadTopicEdgeArgs = {
+  orderBy?: Array<TopicOrderBy>;
+};
+
+/** All input for the `deleteTopicPullRequest` mutation. */
+export type DeleteTopicPullRequestInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our delete `TopicPullRequest` mutation. */
+export type DeleteTopicPullRequestPayload = {
+  __typename?: 'DeleteTopicPullRequestPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  deletedTopicPullRequestId?: Maybe<Scalars['ID']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `TopicPullRequest` that was deleted by this mutation. */
+  topicPullRequest?: Maybe<TopicPullRequest>;
+  /** An edge for our `TopicPullRequest`. May be used by Relay 1. */
+  topicPullRequestEdge?: Maybe<TopicPullRequestEdge>;
+};
+
+
+/** The output of our delete `TopicPullRequest` mutation. */
+export type DeleteTopicPullRequestPayloadTopicPullRequestEdgeArgs = {
+  orderBy?: Array<TopicPullRequestOrderBy>;
 };
 
 /** All input for the `deleteUser` mutation. */
@@ -3860,6 +4434,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** Creates a single `Agent`. */
   createAgent?: Maybe<CreateAgentPayload>;
+  /** Creates a single `BranchProtectionRule`. */
+  createBranchProtectionRule?: Maybe<CreateBranchProtectionRulePayload>;
   /** Creates a single `Change`. */
   createChange?: Maybe<CreateChangePayload>;
   /** Creates a single `ExternalDependency`. */
@@ -3905,10 +4481,16 @@ export type Mutation = {
   createRepositoryWithGit?: Maybe<CreateRepositoryWithGitPayload>;
   /** Creates a single `Stack`. */
   createStack?: Maybe<CreateStackPayload>;
+  /** Creates a single `Topic`. */
+  createTopic?: Maybe<CreateTopicPayload>;
+  /** Creates a single `TopicPullRequest`. */
+  createTopicPullRequest?: Maybe<CreateTopicPullRequestPayload>;
   /** Creates a single `VerificationCheck`. */
   createVerificationCheck?: Maybe<CreateVerificationCheckPayload>;
   /** Deletes a single `Agent` using a unique key. */
   deleteAgent?: Maybe<DeleteAgentPayload>;
+  /** Deletes a single `BranchProtectionRule` using a unique key. */
+  deleteBranchProtectionRule?: Maybe<DeleteBranchProtectionRulePayload>;
   /** Deletes a single `Change` using a unique key. */
   deleteChange?: Maybe<DeleteChangePayload>;
   /** Deletes a single `ExternalDependency` using a unique key. */
@@ -3947,6 +4529,10 @@ export type Mutation = {
   deleteRepositoryRelationshipType?: Maybe<DeleteRepositoryRelationshipTypePayload>;
   /** Deletes a single `Stack` using a unique key. */
   deleteStack?: Maybe<DeleteStackPayload>;
+  /** Deletes a single `Topic` using a unique key. */
+  deleteTopic?: Maybe<DeleteTopicPayload>;
+  /** Deletes a single `TopicPullRequest` using a unique key. */
+  deleteTopicPullRequest?: Maybe<DeleteTopicPullRequestPayload>;
   /** Deletes a single `User` using a unique key. */
   deleteUser?: Maybe<DeleteUserPayload>;
   /** Deletes a single `VerificationCheck` using a unique key. */
@@ -4004,6 +4590,8 @@ export type Mutation = {
   renameRepository?: Maybe<RenameRepositoryPayload>;
   /** Updates a single `Agent` using a unique key and a patch. */
   updateAgent?: Maybe<UpdateAgentPayload>;
+  /** Updates a single `BranchProtectionRule` using a unique key and a patch. */
+  updateBranchProtectionRule?: Maybe<UpdateBranchProtectionRulePayload>;
   /** Updates a single `Change` using a unique key and a patch. */
   updateChange?: Maybe<UpdateChangePayload>;
   /** Updates a single `ExternalDependency` using a unique key and a patch. */
@@ -4038,6 +4626,10 @@ export type Mutation = {
   updateRepositoryRelationshipType?: Maybe<UpdateRepositoryRelationshipTypePayload>;
   /** Updates a single `Stack` using a unique key and a patch. */
   updateStack?: Maybe<UpdateStackPayload>;
+  /** Updates a single `Topic` using a unique key and a patch. */
+  updateTopic?: Maybe<UpdateTopicPayload>;
+  /** Updates a single `TopicPullRequest` using a unique key and a patch. */
+  updateTopicPullRequest?: Maybe<UpdateTopicPullRequestPayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
   /** Updates a single `VerificationCheck` using a unique key and a patch. */
@@ -4048,6 +4640,12 @@ export type Mutation = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateAgentArgs = {
   input: CreateAgentInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateBranchProtectionRuleArgs = {
+  input: CreateBranchProtectionRuleInput;
 };
 
 
@@ -4170,6 +4768,18 @@ export type MutationCreateStackArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateTopicArgs = {
+  input: CreateTopicInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateTopicPullRequestArgs = {
+  input: CreateTopicPullRequestInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateVerificationCheckArgs = {
   input: CreateVerificationCheckInput;
 };
@@ -4178,6 +4788,12 @@ export type MutationCreateVerificationCheckArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteAgentArgs = {
   input: DeleteAgentInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteBranchProtectionRuleArgs = {
+  input: DeleteBranchProtectionRuleInput;
 };
 
 
@@ -4296,6 +4912,18 @@ export type MutationDeleteStackArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteTopicArgs = {
+  input: DeleteTopicInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationDeleteTopicPullRequestArgs = {
+  input: DeleteTopicPullRequestInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteUserArgs = {
   input: DeleteUserInput;
 };
@@ -4364,6 +4992,12 @@ export type MutationRenameRepositoryArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateAgentArgs = {
   input: UpdateAgentInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateBranchProtectionRuleArgs = {
+  input: UpdateBranchProtectionRuleInput;
 };
 
 
@@ -4470,6 +5104,18 @@ export type MutationUpdateStackArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTopicArgs = {
+  input: UpdateTopicInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationUpdateTopicPullRequestArgs = {
+  input: UpdateTopicPullRequestInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
@@ -4545,6 +5191,8 @@ export type Organization = Node & {
   rowId: Scalars['UUID']['output'];
   slug?: Maybe<Scalars['String']['output']>;
   subscriptionId?: Maybe<Scalars['String']['output']>;
+  /** Reads and enables pagination through a set of `Topic`. */
+  topics: TopicConnection;
   updatedAt: Scalars['Datetime']['output'];
 };
 
@@ -4606,6 +5254,18 @@ export type OrganizationRepositoryRelationshipTypesArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<RepositoryRelationshipTypeOrderBy>>;
+};
+
+
+export type OrganizationTopicsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<TopicCondition>;
+  filter?: InputMaybe<TopicFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TopicOrderBy>>;
 };
 
 export type OrganizationAggregates = {
@@ -4757,6 +5417,10 @@ export type OrganizationFilter = {
   slug?: InputMaybe<StringFilter>;
   /** Filter by the object’s `subscriptionId` field. */
   subscriptionId?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `topics` relation. */
+  topics?: InputMaybe<OrganizationToManyTopicFilter>;
+  /** Some related `topics` exist. */
+  topicsExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
 };
@@ -5199,6 +5863,24 @@ export enum OrganizationOrderBy {
   SlugDesc = 'SLUG_DESC',
   SubscriptionIdAsc = 'SUBSCRIPTION_ID_ASC',
   SubscriptionIdDesc = 'SUBSCRIPTION_ID_DESC',
+  TopicsCountAsc = 'TOPICS_COUNT_ASC',
+  TopicsCountDesc = 'TOPICS_COUNT_DESC',
+  TopicsDistinctCountCreatedAtAsc = 'TOPICS_DISTINCT_COUNT_CREATED_AT_ASC',
+  TopicsDistinctCountCreatedAtDesc = 'TOPICS_DISTINCT_COUNT_CREATED_AT_DESC',
+  TopicsDistinctCountDescriptionAsc = 'TOPICS_DISTINCT_COUNT_DESCRIPTION_ASC',
+  TopicsDistinctCountDescriptionDesc = 'TOPICS_DISTINCT_COUNT_DESCRIPTION_DESC',
+  TopicsDistinctCountOrganizationIdAsc = 'TOPICS_DISTINCT_COUNT_ORGANIZATION_ID_ASC',
+  TopicsDistinctCountOrganizationIdDesc = 'TOPICS_DISTINCT_COUNT_ORGANIZATION_ID_DESC',
+  TopicsDistinctCountOwnerIdAsc = 'TOPICS_DISTINCT_COUNT_OWNER_ID_ASC',
+  TopicsDistinctCountOwnerIdDesc = 'TOPICS_DISTINCT_COUNT_OWNER_ID_DESC',
+  TopicsDistinctCountRowIdAsc = 'TOPICS_DISTINCT_COUNT_ROW_ID_ASC',
+  TopicsDistinctCountRowIdDesc = 'TOPICS_DISTINCT_COUNT_ROW_ID_DESC',
+  TopicsDistinctCountStatusAsc = 'TOPICS_DISTINCT_COUNT_STATUS_ASC',
+  TopicsDistinctCountStatusDesc = 'TOPICS_DISTINCT_COUNT_STATUS_DESC',
+  TopicsDistinctCountTitleAsc = 'TOPICS_DISTINCT_COUNT_TITLE_ASC',
+  TopicsDistinctCountTitleDesc = 'TOPICS_DISTINCT_COUNT_TITLE_DESC',
+  TopicsDistinctCountUpdatedAtAsc = 'TOPICS_DISTINCT_COUNT_UPDATED_AT_ASC',
+  TopicsDistinctCountUpdatedAtDesc = 'TOPICS_DISTINCT_COUNT_UPDATED_AT_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
@@ -5277,6 +5959,18 @@ export type OrganizationToManyRepositoryRelationshipTypeFilter = {
   none?: InputMaybe<RepositoryRelationshipTypeFilter>;
   /** Some related `RepositoryRelationshipType` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<RepositoryRelationshipTypeFilter>;
+};
+
+/** A filter to be used against many `Topic` object types. All fields are combined with a logical ‘and.’ */
+export type OrganizationToManyTopicFilter = {
+  /** Aggregates across related `Topic` match the filter criteria. */
+  aggregates?: InputMaybe<TopicAggregatesFilter>;
+  /** Every related `Topic` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<TopicFilter>;
+  /** No related `Topic` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<TopicFilter>;
+  /** Some related `Topic` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<TopicFilter>;
 };
 
 /** Information about pagination in a connection. */
@@ -6470,6 +7164,8 @@ export type PullRequest = Node & {
   state: Scalars['String']['output'];
   targetBranch: Scalars['String']['output'];
   title: Scalars['String']['output'];
+  /** Reads and enables pagination through a set of `TopicPullRequest`. */
+  topicPullRequests: TopicPullRequestConnection;
   updatedAt: Scalars['Datetime']['output'];
 };
 
@@ -6524,6 +7220,18 @@ export type PullRequestPullRequestReviewsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<PullRequestReviewOrderBy>>;
+};
+
+
+export type PullRequestTopicPullRequestsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<TopicPullRequestCondition>;
+  filter?: InputMaybe<TopicPullRequestFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TopicPullRequestOrderBy>>;
 };
 
 export type PullRequestAggregates = {
@@ -7226,6 +7934,10 @@ export type PullRequestFilter = {
   targetBranch?: InputMaybe<StringFilter>;
   /** Filter by the object’s `title` field. */
   title?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `topicPullRequests` relation. */
+  topicPullRequests?: InputMaybe<PullRequestToManyTopicPullRequestFilter>;
+  /** Some related `topicPullRequests` exist. */
+  topicPullRequestsExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
 };
@@ -7561,6 +8273,16 @@ export enum PullRequestOrderBy {
   TargetBranchDesc = 'TARGET_BRANCH_DESC',
   TitleAsc = 'TITLE_ASC',
   TitleDesc = 'TITLE_DESC',
+  TopicPullRequestsCountAsc = 'TOPIC_PULL_REQUESTS_COUNT_ASC',
+  TopicPullRequestsCountDesc = 'TOPIC_PULL_REQUESTS_COUNT_DESC',
+  TopicPullRequestsDistinctCountCreatedAtAsc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_CREATED_AT_ASC',
+  TopicPullRequestsDistinctCountCreatedAtDesc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_CREATED_AT_DESC',
+  TopicPullRequestsDistinctCountPullRequestIdAsc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_PULL_REQUEST_ID_ASC',
+  TopicPullRequestsDistinctCountPullRequestIdDesc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_PULL_REQUEST_ID_DESC',
+  TopicPullRequestsDistinctCountRowIdAsc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_ROW_ID_ASC',
+  TopicPullRequestsDistinctCountRowIdDesc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_ROW_ID_DESC',
+  TopicPullRequestsDistinctCountTopicIdAsc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_TOPIC_ID_ASC',
+  TopicPullRequestsDistinctCountTopicIdDesc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_TOPIC_ID_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
@@ -7946,6 +8668,18 @@ export type PullRequestToManyPullRequestReviewFilter = {
   some?: InputMaybe<PullRequestReviewFilter>;
 };
 
+/** A filter to be used against many `TopicPullRequest` object types. All fields are combined with a logical ‘and.’ */
+export type PullRequestToManyTopicPullRequestFilter = {
+  /** Aggregates across related `TopicPullRequest` match the filter criteria. */
+  aggregates?: InputMaybe<TopicPullRequestAggregatesFilter>;
+  /** Every related `TopicPullRequest` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<TopicPullRequestFilter>;
+  /** No related `TopicPullRequest` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<TopicPullRequestFilter>;
+  /** Some related `TopicPullRequest` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<TopicPullRequestFilter>;
+};
+
 export type PullRequestVariancePopulationAggregateFilter = {
   number?: InputMaybe<BigFloatFilter>;
 };
@@ -7975,6 +8709,12 @@ export type Query = Node & {
   agentById?: Maybe<Agent>;
   /** Reads and enables pagination through a set of `Agent`. */
   agents?: Maybe<AgentConnection>;
+  /** Get a single `BranchProtectionRule`. */
+  branchProtectionRule?: Maybe<BranchProtectionRule>;
+  /** Reads a single `BranchProtectionRule` using its globally unique `ID`. */
+  branchProtectionRuleById?: Maybe<BranchProtectionRule>;
+  /** Reads and enables pagination through a set of `BranchProtectionRule`. */
+  branchProtectionRules?: Maybe<BranchProtectionRuleConnection>;
   /** Get a single `Change`. */
   change?: Maybe<Change>;
   /** Reads a single `Change` using its globally unique `ID`. */
@@ -8106,6 +8846,23 @@ export type Query = Node & {
   stackMergeability?: Maybe<StackMergeabilityResult>;
   /** Reads and enables pagination through a set of `Stack`. */
   stacks?: Maybe<StackConnection>;
+  /** Get a single `Topic`. */
+  topic?: Maybe<Topic>;
+  /** Reads a single `Topic` using its globally unique `ID`. */
+  topicById?: Maybe<Topic>;
+  /** Get a single `TopicPullRequest`. */
+  topicPullRequest?: Maybe<TopicPullRequest>;
+  /** Reads a single `TopicPullRequest` using its globally unique `ID`. */
+  topicPullRequestById?: Maybe<TopicPullRequest>;
+  /** Reads and enables pagination through a set of `TopicPullRequest`. */
+  topicPullRequests?: Maybe<TopicPullRequestConnection>;
+  /**
+   * Whether the topic is ready to submit as one all-or-nothing unit. Only
+   * member pull requests the caller may see are considered.
+   */
+  topicReadiness?: Maybe<TopicReadiness>;
+  /** Reads and enables pagination through a set of `Topic`. */
+  topics?: Maybe<TopicConnection>;
   /** Get a single `VerificationCheck`. */
   verificationCheck?: Maybe<VerificationCheck>;
   /** Reads a single `VerificationCheck` using its globally unique `ID`. */
@@ -8137,6 +8894,31 @@ export type QueryAgentsArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<AgentOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryBranchProtectionRuleArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryBranchProtectionRuleByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryBranchProtectionRulesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<BranchProtectionRuleCondition>;
+  filter?: InputMaybe<BranchProtectionRuleFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<BranchProtectionRuleOrderBy>>;
 };
 
 
@@ -8611,6 +9393,62 @@ export type QueryStacksArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
+export type QueryTopicArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTopicByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTopicPullRequestArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTopicPullRequestByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTopicPullRequestsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<TopicPullRequestCondition>;
+  filter?: InputMaybe<TopicPullRequestFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TopicPullRequestOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTopicReadinessArgs = {
+  topicId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTopicsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<TopicCondition>;
+  filter?: InputMaybe<TopicFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TopicOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
 export type QueryVerificationCheckArgs = {
   rowId: Scalars['UUID']['input'];
 };
@@ -8692,6 +9530,8 @@ export type RenameRepositoryPayload = {
 
 export type Repository = {
   __typename?: 'Repository';
+  /** Reads and enables pagination through a set of `BranchProtectionRule`. */
+  branchProtectionRules: BranchProtectionRuleConnection;
   /** Reads and enables pagination through a set of `Change`. */
   changes: ChangeConnection;
   /** Fetch a commit by its SHA. */
@@ -8734,6 +9574,18 @@ export type Repository = {
   stacks: StackConnection;
   updatedAt: Scalars['Datetime']['output'];
   visibility: Visibility;
+};
+
+
+export type RepositoryBranchProtectionRulesArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<BranchProtectionRuleCondition>;
+  filter?: InputMaybe<BranchProtectionRuleFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<BranchProtectionRuleOrderBy>>;
 };
 
 
@@ -9222,6 +10074,10 @@ export type RepositoryEdge = {
 export type RepositoryFilter = {
   /** Checks for all expressions in this list. */
   and?: InputMaybe<Array<RepositoryFilter>>;
+  /** Filter by the object’s `branchProtectionRules` relation. */
+  branchProtectionRules?: InputMaybe<RepositoryToManyBranchProtectionRuleFilter>;
+  /** Some related `branchProtectionRules` exist. */
+  branchProtectionRulesExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `changes` relation. */
   changes?: InputMaybe<RepositoryToManyChangeFilter>;
   /** Some related `changes` exist. */
@@ -9373,6 +10229,38 @@ export type RepositoryHavingVarianceSampleInput = {
 
 /** Methods to use when ordering `Repository`. */
 export enum RepositoryOrderBy {
+  BranchProtectionRulesAverageRequiredApprovalsAsc = 'BRANCH_PROTECTION_RULES_AVERAGE_REQUIRED_APPROVALS_ASC',
+  BranchProtectionRulesAverageRequiredApprovalsDesc = 'BRANCH_PROTECTION_RULES_AVERAGE_REQUIRED_APPROVALS_DESC',
+  BranchProtectionRulesCountAsc = 'BRANCH_PROTECTION_RULES_COUNT_ASC',
+  BranchProtectionRulesCountDesc = 'BRANCH_PROTECTION_RULES_COUNT_DESC',
+  BranchProtectionRulesDistinctCountCreatedAtAsc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_CREATED_AT_ASC',
+  BranchProtectionRulesDistinctCountCreatedAtDesc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_CREATED_AT_DESC',
+  BranchProtectionRulesDistinctCountRefPatternAsc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_REF_PATTERN_ASC',
+  BranchProtectionRulesDistinctCountRefPatternDesc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_REF_PATTERN_DESC',
+  BranchProtectionRulesDistinctCountRepositoryIdAsc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_REPOSITORY_ID_ASC',
+  BranchProtectionRulesDistinctCountRepositoryIdDesc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_REPOSITORY_ID_DESC',
+  BranchProtectionRulesDistinctCountRequiredApprovalsAsc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_REQUIRED_APPROVALS_ASC',
+  BranchProtectionRulesDistinctCountRequiredApprovalsDesc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_REQUIRED_APPROVALS_DESC',
+  BranchProtectionRulesDistinctCountRequirePassingChecksAsc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_REQUIRE_PASSING_CHECKS_ASC',
+  BranchProtectionRulesDistinctCountRequirePassingChecksDesc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_REQUIRE_PASSING_CHECKS_DESC',
+  BranchProtectionRulesDistinctCountRowIdAsc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_ROW_ID_ASC',
+  BranchProtectionRulesDistinctCountRowIdDesc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_ROW_ID_DESC',
+  BranchProtectionRulesDistinctCountUpdatedAtAsc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_UPDATED_AT_ASC',
+  BranchProtectionRulesDistinctCountUpdatedAtDesc = 'BRANCH_PROTECTION_RULES_DISTINCT_COUNT_UPDATED_AT_DESC',
+  BranchProtectionRulesMaxRequiredApprovalsAsc = 'BRANCH_PROTECTION_RULES_MAX_REQUIRED_APPROVALS_ASC',
+  BranchProtectionRulesMaxRequiredApprovalsDesc = 'BRANCH_PROTECTION_RULES_MAX_REQUIRED_APPROVALS_DESC',
+  BranchProtectionRulesMinRequiredApprovalsAsc = 'BRANCH_PROTECTION_RULES_MIN_REQUIRED_APPROVALS_ASC',
+  BranchProtectionRulesMinRequiredApprovalsDesc = 'BRANCH_PROTECTION_RULES_MIN_REQUIRED_APPROVALS_DESC',
+  BranchProtectionRulesStddevPopulationRequiredApprovalsAsc = 'BRANCH_PROTECTION_RULES_STDDEV_POPULATION_REQUIRED_APPROVALS_ASC',
+  BranchProtectionRulesStddevPopulationRequiredApprovalsDesc = 'BRANCH_PROTECTION_RULES_STDDEV_POPULATION_REQUIRED_APPROVALS_DESC',
+  BranchProtectionRulesStddevSampleRequiredApprovalsAsc = 'BRANCH_PROTECTION_RULES_STDDEV_SAMPLE_REQUIRED_APPROVALS_ASC',
+  BranchProtectionRulesStddevSampleRequiredApprovalsDesc = 'BRANCH_PROTECTION_RULES_STDDEV_SAMPLE_REQUIRED_APPROVALS_DESC',
+  BranchProtectionRulesSumRequiredApprovalsAsc = 'BRANCH_PROTECTION_RULES_SUM_REQUIRED_APPROVALS_ASC',
+  BranchProtectionRulesSumRequiredApprovalsDesc = 'BRANCH_PROTECTION_RULES_SUM_REQUIRED_APPROVALS_DESC',
+  BranchProtectionRulesVariancePopulationRequiredApprovalsAsc = 'BRANCH_PROTECTION_RULES_VARIANCE_POPULATION_REQUIRED_APPROVALS_ASC',
+  BranchProtectionRulesVariancePopulationRequiredApprovalsDesc = 'BRANCH_PROTECTION_RULES_VARIANCE_POPULATION_REQUIRED_APPROVALS_DESC',
+  BranchProtectionRulesVarianceSampleRequiredApprovalsAsc = 'BRANCH_PROTECTION_RULES_VARIANCE_SAMPLE_REQUIRED_APPROVALS_ASC',
+  BranchProtectionRulesVarianceSampleRequiredApprovalsDesc = 'BRANCH_PROTECTION_RULES_VARIANCE_SAMPLE_REQUIRED_APPROVALS_DESC',
   ChangesAveragePositionAsc = 'CHANGES_AVERAGE_POSITION_ASC',
   ChangesAveragePositionDesc = 'CHANGES_AVERAGE_POSITION_DESC',
   ChangesCountAsc = 'CHANGES_COUNT_ASC',
@@ -10696,6 +11584,18 @@ export type RepositoryRelationshipVarianceSampleAggregates = {
   confidence?: Maybe<Scalars['Float']['output']>;
 };
 
+/** A filter to be used against many `BranchProtectionRule` object types. All fields are combined with a logical ‘and.’ */
+export type RepositoryToManyBranchProtectionRuleFilter = {
+  /** Aggregates across related `BranchProtectionRule` match the filter criteria. */
+  aggregates?: InputMaybe<BranchProtectionRuleAggregatesFilter>;
+  /** Every related `BranchProtectionRule` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<BranchProtectionRuleFilter>;
+  /** No related `BranchProtectionRule` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<BranchProtectionRuleFilter>;
+  /** Some related `BranchProtectionRule` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<BranchProtectionRuleFilter>;
+};
+
 /** A filter to be used against many `Change` object types. All fields are combined with a logical ‘and.’ */
 export type RepositoryToManyChangeFilter = {
   /** Aggregates across related `Change` match the filter criteria. */
@@ -11389,6 +12289,535 @@ export type SubscriptionPullRequestCommentChangedArgs = {
   pullRequestId: Scalars['UUID']['input'];
 };
 
+export type Topic = Node & {
+  __typename?: 'Topic';
+  createdAt: Scalars['Datetime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  /** Reads a single `Organization` that is related to this `Topic`. */
+  organization?: Maybe<Organization>;
+  organizationId?: Maybe<Scalars['UUID']['output']>;
+  /** Reads a single `User` that is related to this `Topic`. */
+  owner?: Maybe<User>;
+  ownerId: Scalars['UUID']['output'];
+  rowId: Scalars['UUID']['output'];
+  status: Scalars['String']['output'];
+  title: Scalars['String']['output'];
+  /** Reads and enables pagination through a set of `TopicPullRequest`. */
+  topicPullRequests: TopicPullRequestConnection;
+  updatedAt: Scalars['Datetime']['output'];
+};
+
+
+export type TopicTopicPullRequestsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<TopicPullRequestCondition>;
+  filter?: InputMaybe<TopicPullRequestFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TopicPullRequestOrderBy>>;
+};
+
+export type TopicAggregates = {
+  __typename?: 'TopicAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<TopicDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/** A filter to be used against aggregates of `Topic` object types. */
+export type TopicAggregatesFilter = {
+  /** Distinct count aggregate over matching `Topic` objects. */
+  distinctCount?: InputMaybe<TopicDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `Topic` object to be included within the aggregate. */
+  filter?: InputMaybe<TopicFilter>;
+};
+
+/** A condition to be used against `Topic` object types. All fields are tested for equality and combined with a logical ‘and.’ */
+export type TopicCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `description` field. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `organizationId` field. */
+  organizationId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `ownerId` field. */
+  ownerId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `status` field. */
+  status?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `title` field. */
+  title?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** A connection to a list of `Topic` values. */
+export type TopicConnection = {
+  __typename?: 'TopicConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<TopicAggregates>;
+  /** A list of edges which contains the `Topic` and cursor to aid in pagination. */
+  edges: Array<TopicEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<TopicAggregates>>;
+  /** A list of `Topic` objects. */
+  nodes: Array<Topic>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Topic` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `Topic` values. */
+export type TopicConnectionGroupedAggregatesArgs = {
+  groupBy: Array<TopicGroupBy>;
+  having?: InputMaybe<TopicHavingInput>;
+};
+
+export type TopicDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  description?: InputMaybe<BigIntFilter>;
+  organizationId?: InputMaybe<BigIntFilter>;
+  ownerId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  status?: InputMaybe<BigIntFilter>;
+  title?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+};
+
+export type TopicDistinctCountAggregates = {
+  __typename?: 'TopicDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of description across the matching connection */
+  description?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of organizationId across the matching connection */
+  organizationId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of ownerId across the matching connection */
+  ownerId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of status across the matching connection */
+  status?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of title across the matching connection */
+  title?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `Topic` edge in the connection. */
+export type TopicEdge = {
+  __typename?: 'TopicEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `Topic` at the end of the edge. */
+  node: Topic;
+};
+
+/** A filter to be used against `Topic` object types. All fields are combined with a logical ‘and.’ */
+export type TopicFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<TopicFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `description` field. */
+  description?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<TopicFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<TopicFilter>>;
+  /** Filter by the object’s `organization` relation. */
+  organization?: InputMaybe<OrganizationFilter>;
+  /** A related `organization` exists. */
+  organizationExists?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `organizationId` field. */
+  organizationId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `owner` relation. */
+  owner?: InputMaybe<UserFilter>;
+  /** Filter by the object’s `ownerId` field. */
+  ownerId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `title` field. */
+  title?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `topicPullRequests` relation. */
+  topicPullRequests?: InputMaybe<TopicToManyTopicPullRequestFilter>;
+  /** Some related `topicPullRequests` exist. */
+  topicPullRequestsExist?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+};
+
+/** Grouping methods for `Topic` for usage during aggregation. */
+export enum TopicGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  Description = 'DESCRIPTION',
+  OrganizationId = 'ORGANIZATION_ID',
+  OwnerId = 'OWNER_ID',
+  Status = 'STATUS',
+  Title = 'TITLE',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
+}
+
+export type TopicHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `Topic` aggregates. */
+export type TopicHavingInput = {
+  AND?: InputMaybe<Array<TopicHavingInput>>;
+  OR?: InputMaybe<Array<TopicHavingInput>>;
+  average?: InputMaybe<TopicHavingAverageInput>;
+  distinctCount?: InputMaybe<TopicHavingDistinctCountInput>;
+  max?: InputMaybe<TopicHavingMaxInput>;
+  min?: InputMaybe<TopicHavingMinInput>;
+  stddevPopulation?: InputMaybe<TopicHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<TopicHavingStddevSampleInput>;
+  sum?: InputMaybe<TopicHavingSumInput>;
+  variancePopulation?: InputMaybe<TopicHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<TopicHavingVarianceSampleInput>;
+};
+
+export type TopicHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `Topic` */
+export type TopicInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  organizationId?: InputMaybe<Scalars['UUID']['input']>;
+  ownerId: Scalars['UUID']['input'];
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  title: Scalars['String']['input'];
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+/** Methods to use when ordering `Topic`. */
+export enum TopicOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  DescriptionAsc = 'DESCRIPTION_ASC',
+  DescriptionDesc = 'DESCRIPTION_DESC',
+  Natural = 'NATURAL',
+  OrganizationIdAsc = 'ORGANIZATION_ID_ASC',
+  OrganizationIdDesc = 'ORGANIZATION_ID_DESC',
+  OwnerIdAsc = 'OWNER_ID_ASC',
+  OwnerIdDesc = 'OWNER_ID_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  StatusAsc = 'STATUS_ASC',
+  StatusDesc = 'STATUS_DESC',
+  TitleAsc = 'TITLE_ASC',
+  TitleDesc = 'TITLE_DESC',
+  TopicPullRequestsCountAsc = 'TOPIC_PULL_REQUESTS_COUNT_ASC',
+  TopicPullRequestsCountDesc = 'TOPIC_PULL_REQUESTS_COUNT_DESC',
+  TopicPullRequestsDistinctCountCreatedAtAsc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_CREATED_AT_ASC',
+  TopicPullRequestsDistinctCountCreatedAtDesc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_CREATED_AT_DESC',
+  TopicPullRequestsDistinctCountPullRequestIdAsc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_PULL_REQUEST_ID_ASC',
+  TopicPullRequestsDistinctCountPullRequestIdDesc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_PULL_REQUEST_ID_DESC',
+  TopicPullRequestsDistinctCountRowIdAsc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_ROW_ID_ASC',
+  TopicPullRequestsDistinctCountRowIdDesc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_ROW_ID_DESC',
+  TopicPullRequestsDistinctCountTopicIdAsc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_TOPIC_ID_ASC',
+  TopicPullRequestsDistinctCountTopicIdDesc = 'TOPIC_PULL_REQUESTS_DISTINCT_COUNT_TOPIC_ID_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC'
+}
+
+/** Represents an update to a `Topic`. Fields that are set will be updated. */
+export type TopicPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  organizationId?: InputMaybe<Scalars['UUID']['input']>;
+  ownerId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+};
+
+export type TopicPullRequest = Node & {
+  __typename?: 'TopicPullRequest';
+  createdAt: Scalars['Datetime']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  /** Reads a single `PullRequest` that is related to this `TopicPullRequest`. */
+  pullRequest?: Maybe<PullRequest>;
+  pullRequestId: Scalars['UUID']['output'];
+  rowId: Scalars['UUID']['output'];
+  /** Reads a single `Topic` that is related to this `TopicPullRequest`. */
+  topic?: Maybe<Topic>;
+  topicId: Scalars['UUID']['output'];
+};
+
+export type TopicPullRequestAggregates = {
+  __typename?: 'TopicPullRequestAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<TopicPullRequestDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/** A filter to be used against aggregates of `TopicPullRequest` object types. */
+export type TopicPullRequestAggregatesFilter = {
+  /** Distinct count aggregate over matching `TopicPullRequest` objects. */
+  distinctCount?: InputMaybe<TopicPullRequestDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `TopicPullRequest` object to be included within the aggregate. */
+  filter?: InputMaybe<TopicPullRequestFilter>;
+};
+
+/**
+ * A condition to be used against `TopicPullRequest` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type TopicPullRequestCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `pullRequestId` field. */
+  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `topicId` field. */
+  topicId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+/** A connection to a list of `TopicPullRequest` values. */
+export type TopicPullRequestConnection = {
+  __typename?: 'TopicPullRequestConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<TopicPullRequestAggregates>;
+  /** A list of edges which contains the `TopicPullRequest` and cursor to aid in pagination. */
+  edges: Array<TopicPullRequestEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<TopicPullRequestAggregates>>;
+  /** A list of `TopicPullRequest` objects. */
+  nodes: Array<TopicPullRequest>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `TopicPullRequest` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `TopicPullRequest` values. */
+export type TopicPullRequestConnectionGroupedAggregatesArgs = {
+  groupBy: Array<TopicPullRequestGroupBy>;
+  having?: InputMaybe<TopicPullRequestHavingInput>;
+};
+
+export type TopicPullRequestDistinctCountAggregateFilter = {
+  createdAt?: InputMaybe<BigIntFilter>;
+  pullRequestId?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  topicId?: InputMaybe<BigIntFilter>;
+};
+
+export type TopicPullRequestDistinctCountAggregates = {
+  __typename?: 'TopicPullRequestDistinctCountAggregates';
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of pullRequestId across the matching connection */
+  pullRequestId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of topicId across the matching connection */
+  topicId?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `TopicPullRequest` edge in the connection. */
+export type TopicPullRequestEdge = {
+  __typename?: 'TopicPullRequestEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `TopicPullRequest` at the end of the edge. */
+  node: TopicPullRequest;
+};
+
+/** A filter to be used against `TopicPullRequest` object types. All fields are combined with a logical ‘and.’ */
+export type TopicPullRequestFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<TopicPullRequestFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<TopicPullRequestFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<TopicPullRequestFilter>>;
+  /** Filter by the object’s `pullRequest` relation. */
+  pullRequest?: InputMaybe<PullRequestFilter>;
+  /** Filter by the object’s `pullRequestId` field. */
+  pullRequestId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `topic` relation. */
+  topic?: InputMaybe<TopicFilter>;
+  /** Filter by the object’s `topicId` field. */
+  topicId?: InputMaybe<UuidFilter>;
+};
+
+/** Grouping methods for `TopicPullRequest` for usage during aggregation. */
+export enum TopicPullRequestGroupBy {
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  PullRequestId = 'PULL_REQUEST_ID',
+  TopicId = 'TOPIC_ID'
+}
+
+export type TopicPullRequestHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicPullRequestHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `TopicPullRequest` aggregates. */
+export type TopicPullRequestHavingInput = {
+  AND?: InputMaybe<Array<TopicPullRequestHavingInput>>;
+  OR?: InputMaybe<Array<TopicPullRequestHavingInput>>;
+  average?: InputMaybe<TopicPullRequestHavingAverageInput>;
+  distinctCount?: InputMaybe<TopicPullRequestHavingDistinctCountInput>;
+  max?: InputMaybe<TopicPullRequestHavingMaxInput>;
+  min?: InputMaybe<TopicPullRequestHavingMinInput>;
+  stddevPopulation?: InputMaybe<TopicPullRequestHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<TopicPullRequestHavingStddevSampleInput>;
+  sum?: InputMaybe<TopicPullRequestHavingSumInput>;
+  variancePopulation?: InputMaybe<TopicPullRequestHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<TopicPullRequestHavingVarianceSampleInput>;
+};
+
+export type TopicPullRequestHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicPullRequestHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicPullRequestHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicPullRequestHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicPullRequestHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicPullRequestHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TopicPullRequestHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** An input for mutations affecting `TopicPullRequest` */
+export type TopicPullRequestInput = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  pullRequestId: Scalars['UUID']['input'];
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  topicId: Scalars['UUID']['input'];
+};
+
+/** Methods to use when ordering `TopicPullRequest`. */
+export enum TopicPullRequestOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  PullRequestIdAsc = 'PULL_REQUEST_ID_ASC',
+  PullRequestIdDesc = 'PULL_REQUEST_ID_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  TopicIdAsc = 'TOPIC_ID_ASC',
+  TopicIdDesc = 'TOPIC_ID_DESC'
+}
+
+/** Represents an update to a `TopicPullRequest`. Fields that are set will be updated. */
+export type TopicPullRequestPatch = {
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  topicId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+/** Whether a topic can submit all-or-nothing, and the members blocking it. */
+export type TopicReadiness = {
+  __typename?: 'TopicReadiness';
+  /** The member pull requests that cannot land yet, by row id. */
+  blockingPullRequestIds?: Maybe<Array<Scalars['UUID']['output']>>;
+  /** True when every member pull request is landable (merged or open). */
+  ready?: Maybe<Scalars['Boolean']['output']>;
+};
+
+/** A filter to be used against many `TopicPullRequest` object types. All fields are combined with a logical ‘and.’ */
+export type TopicToManyTopicPullRequestFilter = {
+  /** Aggregates across related `TopicPullRequest` match the filter criteria. */
+  aggregates?: InputMaybe<TopicPullRequestAggregatesFilter>;
+  /** Every related `TopicPullRequest` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<TopicPullRequestFilter>;
+  /** No related `TopicPullRequest` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<TopicPullRequestFilter>;
+  /** Some related `TopicPullRequest` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<TopicPullRequestFilter>;
+};
+
 /** A Git tree (directory). */
 export type Tree = GitObject & {
   __typename?: 'Tree';
@@ -11473,6 +12902,40 @@ export type UpdateAgentPayload = {
 /** The output of our update `Agent` mutation. */
 export type UpdateAgentPayloadAgentEdgeArgs = {
   orderBy?: Array<AgentOrderBy>;
+};
+
+/** All input for the `updateBranchProtectionRule` mutation. */
+export type UpdateBranchProtectionRuleInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `BranchProtectionRule` being updated. */
+  patch: BranchProtectionRulePatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `BranchProtectionRule` mutation. */
+export type UpdateBranchProtectionRulePayload = {
+  __typename?: 'UpdateBranchProtectionRulePayload';
+  /** The `BranchProtectionRule` that was updated by this mutation. */
+  branchProtectionRule?: Maybe<BranchProtectionRule>;
+  /** An edge for our `BranchProtectionRule`. May be used by Relay 1. */
+  branchProtectionRuleEdge?: Maybe<BranchProtectionRuleEdge>;
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+};
+
+
+/** The output of our update `BranchProtectionRule` mutation. */
+export type UpdateBranchProtectionRulePayloadBranchProtectionRuleEdgeArgs = {
+  orderBy?: Array<BranchProtectionRuleOrderBy>;
 };
 
 /** All input for the `updateChange` mutation. */
@@ -12054,6 +13517,74 @@ export type UpdateStackPayloadStackEdgeArgs = {
   orderBy?: Array<StackOrderBy>;
 };
 
+/** All input for the `updateTopic` mutation. */
+export type UpdateTopicInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `Topic` being updated. */
+  patch: TopicPatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `Topic` mutation. */
+export type UpdateTopicPayload = {
+  __typename?: 'UpdateTopicPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `Topic` that was updated by this mutation. */
+  topic?: Maybe<Topic>;
+  /** An edge for our `Topic`. May be used by Relay 1. */
+  topicEdge?: Maybe<TopicEdge>;
+};
+
+
+/** The output of our update `Topic` mutation. */
+export type UpdateTopicPayloadTopicEdgeArgs = {
+  orderBy?: Array<TopicOrderBy>;
+};
+
+/** All input for the `updateTopicPullRequest` mutation. */
+export type UpdateTopicPullRequestInput = {
+  /**
+   * An arbitrary string value with no semantic meaning. Will be included in the
+   * payload verbatim. May be used to track mutations by the client.
+   */
+  clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  /** An object where the defined keys will be set on the `TopicPullRequest` being updated. */
+  patch: TopicPullRequestPatch;
+  rowId: Scalars['UUID']['input'];
+};
+
+/** The output of our update `TopicPullRequest` mutation. */
+export type UpdateTopicPullRequestPayload = {
+  __typename?: 'UpdateTopicPullRequestPayload';
+  /**
+   * The exact same `clientMutationId` that was provided in the mutation input,
+   * unchanged and unused. May be used by a client to track mutations.
+   */
+  clientMutationId?: Maybe<Scalars['String']['output']>;
+  /** Our root query field type. Allows us to run any query from our mutation payload. */
+  query?: Maybe<Query>;
+  /** The `TopicPullRequest` that was updated by this mutation. */
+  topicPullRequest?: Maybe<TopicPullRequest>;
+  /** An edge for our `TopicPullRequest`. May be used by Relay 1. */
+  topicPullRequestEdge?: Maybe<TopicPullRequestEdge>;
+};
+
+
+/** The output of our update `TopicPullRequest` mutation. */
+export type UpdateTopicPullRequestPayloadTopicPullRequestEdgeArgs = {
+  orderBy?: Array<TopicPullRequestOrderBy>;
+};
+
 /** All input for the `updateUser` mutation. */
 export type UpdateUserInput = {
   /**
@@ -12149,6 +13680,8 @@ export type User = {
   /** Reads and enables pagination through a set of `PullRequestReview`. */
   reviewedPullRequestReviews: PullRequestReviewConnection;
   rowId: Scalars['UUID']['output'];
+  /** Reads and enables pagination through a set of `Topic`. */
+  topicsByOwnerId: TopicConnection;
   updatedAt: Scalars['Datetime']['output'];
   username: Scalars['String']['output'];
 };
@@ -12273,6 +13806,18 @@ export type UserReviewedPullRequestReviewsArgs = {
   orderBy?: InputMaybe<Array<PullRequestReviewOrderBy>>;
 };
 
+
+export type UserTopicsByOwnerIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<TopicCondition>;
+  filter?: InputMaybe<TopicFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TopicOrderBy>>;
+};
+
 /** A `User` edge in the connection. */
 export type UserEdge = {
   __typename?: 'UserEdge';
@@ -12340,6 +13885,10 @@ export type UserFilter = {
   reviewedPullRequestReviewsExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `rowId` field. */
   rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `topicsByOwnerId` relation. */
+  topicsByOwnerId?: InputMaybe<UserToManyTopicFilter>;
+  /** Some related `topicsByOwnerId` exist. */
+  topicsByOwnerIdExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<DatetimeFilter>;
   /** Filter by the object’s `username` field. */
@@ -12649,6 +14198,24 @@ export enum UserOrderBy {
   ReviewedPullRequestReviewsDistinctCountUpdatedAtDesc = 'REVIEWED_PULL_REQUEST_REVIEWS_DISTINCT_COUNT_UPDATED_AT_DESC',
   RowIdAsc = 'ROW_ID_ASC',
   RowIdDesc = 'ROW_ID_DESC',
+  TopicsByOwnerIdCountAsc = 'TOPICS_BY_OWNER_ID_COUNT_ASC',
+  TopicsByOwnerIdCountDesc = 'TOPICS_BY_OWNER_ID_COUNT_DESC',
+  TopicsByOwnerIdDistinctCountCreatedAtAsc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
+  TopicsByOwnerIdDistinctCountCreatedAtDesc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_CREATED_AT_DESC',
+  TopicsByOwnerIdDistinctCountDescriptionAsc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_DESCRIPTION_ASC',
+  TopicsByOwnerIdDistinctCountDescriptionDesc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_DESCRIPTION_DESC',
+  TopicsByOwnerIdDistinctCountOrganizationIdAsc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_ORGANIZATION_ID_ASC',
+  TopicsByOwnerIdDistinctCountOrganizationIdDesc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_ORGANIZATION_ID_DESC',
+  TopicsByOwnerIdDistinctCountOwnerIdAsc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_OWNER_ID_ASC',
+  TopicsByOwnerIdDistinctCountOwnerIdDesc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_OWNER_ID_DESC',
+  TopicsByOwnerIdDistinctCountRowIdAsc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_ROW_ID_ASC',
+  TopicsByOwnerIdDistinctCountRowIdDesc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_ROW_ID_DESC',
+  TopicsByOwnerIdDistinctCountStatusAsc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_STATUS_ASC',
+  TopicsByOwnerIdDistinctCountStatusDesc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_STATUS_DESC',
+  TopicsByOwnerIdDistinctCountTitleAsc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_TITLE_ASC',
+  TopicsByOwnerIdDistinctCountTitleDesc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_TITLE_DESC',
+  TopicsByOwnerIdDistinctCountUpdatedAtAsc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_UPDATED_AT_ASC',
+  TopicsByOwnerIdDistinctCountUpdatedAtDesc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_UPDATED_AT_DESC',
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC',
   UsernameAsc = 'USERNAME_ASC',
@@ -12772,6 +14339,18 @@ export type UserToManyStackFilter = {
   none?: InputMaybe<StackFilter>;
   /** Some related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<StackFilter>;
+};
+
+/** A filter to be used against many `Topic` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyTopicFilter = {
+  /** Aggregates across related `Topic` match the filter criteria. */
+  aggregates?: InputMaybe<TopicAggregatesFilter>;
+  /** Every related `Topic` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<TopicFilter>;
+  /** No related `Topic` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<TopicFilter>;
+  /** Some related `Topic` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<TopicFilter>;
 };
 
 export type VerificationCheck = Node & {
@@ -13134,6 +14713,17 @@ export type AgentInput = {
   vendor?: string | null | undefined;
 };
 
+/** An input for mutations affecting `BranchProtectionRule` */
+export type BranchProtectionRuleInput = {
+  createdAt?: Date | null | undefined;
+  refPattern: string;
+  repositoryId: string;
+  requirePassingChecks?: boolean | null | undefined;
+  requiredApprovals?: number | null | undefined;
+  rowId?: string | null | undefined;
+  updatedAt?: Date | null | undefined;
+};
+
 /** All input for the create `Agent` mutation. */
 export type CreateAgentInput = {
   /** The `Agent` to be created by this mutation. */
@@ -13462,6 +15052,20 @@ export type Visibility =
   | 'private'
   | 'public';
 
+export type CreateBranchProtectionRuleMutationVariables = Exact<{
+  input: BranchProtectionRuleInput;
+}>;
+
+
+export type CreateBranchProtectionRuleMutation = { createBranchProtectionRule: { branchProtectionRule: { rowId: string, refPattern: string, requiredApprovals: number, requirePassingChecks: boolean } | null } | null };
+
+export type DeleteBranchProtectionRuleMutationVariables = Exact<{
+  rowId: string;
+}>;
+
+
+export type DeleteBranchProtectionRuleMutation = { deleteBranchProtectionRule: { clientMutationId: string | null } | null };
+
 export type CreateOrganizationMutationVariables = Exact<{
   input: CreateOrganizationInput;
 }>;
@@ -13593,6 +15197,13 @@ export type CreateAgentMutationVariables = Exact<{
 
 
 export type CreateAgentMutation = { createAgent: { agent: { rowId: string, name: string, slug: string, description: string | null, model: string | null, vendor: string | null, createdAt: Date, owner: { username: string } | null } | null } | null };
+
+export type BranchProtectionRulesQueryVariables = Exact<{
+  repositoryId: string;
+}>;
+
+
+export type BranchProtectionRulesQuery = { branchProtectionRules: { nodes: Array<{ rowId: string, refPattern: string, requiredApprovals: number, requirePassingChecks: boolean }> } | null };
 
 export type RepositoryGraphQueryVariables = Exact<{
   userId: string;
@@ -13796,6 +15407,63 @@ export class TypedDocumentString<TResult, TVariables>
     return this.value;
   }
 }
+
+export const CreateBranchProtectionRuleDocument = new TypedDocumentString(`
+    mutation CreateBranchProtectionRule($input: BranchProtectionRuleInput!) {
+  createBranchProtectionRule(input: {branchProtectionRule: $input}) {
+    branchProtectionRule {
+      rowId
+      refPattern
+      requiredApprovals
+      requirePassingChecks
+    }
+  }
+}
+    `);
+
+export const useCreateBranchProtectionRuleMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<CreateBranchProtectionRuleMutation, TError, CreateBranchProtectionRuleMutationVariables, TContext>) => {
+    
+    return useMutation<CreateBranchProtectionRuleMutation, TError, CreateBranchProtectionRuleMutationVariables, TContext>(
+      {
+    mutationKey: ['CreateBranchProtectionRule'],
+    mutationFn: (variables?: CreateBranchProtectionRuleMutationVariables) => graphqlFetch<CreateBranchProtectionRuleMutation, CreateBranchProtectionRuleMutationVariables>(CreateBranchProtectionRuleDocument, variables)(),
+    ...options
+  }
+    )};
+
+useCreateBranchProtectionRuleMutation.getKey = () => ['CreateBranchProtectionRule'];
+
+
+useCreateBranchProtectionRuleMutation.fetcher = (variables: CreateBranchProtectionRuleMutationVariables, options?: RequestInit['headers']) => graphqlFetch<CreateBranchProtectionRuleMutation, CreateBranchProtectionRuleMutationVariables>(CreateBranchProtectionRuleDocument, variables, options);
+
+export const DeleteBranchProtectionRuleDocument = new TypedDocumentString(`
+    mutation DeleteBranchProtectionRule($rowId: UUID!) {
+  deleteBranchProtectionRule(input: {rowId: $rowId}) {
+    clientMutationId
+  }
+}
+    `);
+
+export const useDeleteBranchProtectionRuleMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteBranchProtectionRuleMutation, TError, DeleteBranchProtectionRuleMutationVariables, TContext>) => {
+    
+    return useMutation<DeleteBranchProtectionRuleMutation, TError, DeleteBranchProtectionRuleMutationVariables, TContext>(
+      {
+    mutationKey: ['DeleteBranchProtectionRule'],
+    mutationFn: (variables?: DeleteBranchProtectionRuleMutationVariables) => graphqlFetch<DeleteBranchProtectionRuleMutation, DeleteBranchProtectionRuleMutationVariables>(DeleteBranchProtectionRuleDocument, variables)(),
+    ...options
+  }
+    )};
+
+useDeleteBranchProtectionRuleMutation.getKey = () => ['DeleteBranchProtectionRule'];
+
+
+useDeleteBranchProtectionRuleMutation.fetcher = (variables: DeleteBranchProtectionRuleMutationVariables, options?: RequestInit['headers']) => graphqlFetch<DeleteBranchProtectionRuleMutation, DeleteBranchProtectionRuleMutationVariables>(DeleteBranchProtectionRuleDocument, variables, options);
 
 export const CreateOrganizationDocument = new TypedDocumentString(`
     mutation CreateOrganization($input: CreateOrganizationInput!) {
@@ -14474,6 +16142,100 @@ useCreateAgentMutation.getKey = () => ['CreateAgent'];
 
 
 useCreateAgentMutation.fetcher = (variables: CreateAgentMutationVariables, options?: RequestInit['headers']) => graphqlFetch<CreateAgentMutation, CreateAgentMutationVariables>(CreateAgentDocument, variables, options);
+
+export const BranchProtectionRulesDocument = new TypedDocumentString(`
+    query BranchProtectionRules($repositoryId: UUID!) {
+  branchProtectionRules(condition: {repositoryId: $repositoryId}) {
+    nodes {
+      rowId
+      refPattern
+      requiredApprovals
+      requirePassingChecks
+    }
+  }
+}
+    `);
+
+export const useBranchProtectionRulesQuery = <
+      TData = BranchProtectionRulesQuery,
+      TError = unknown
+    >(
+      variables: BranchProtectionRulesQueryVariables,
+      options?: Omit<UseQueryOptions<BranchProtectionRulesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<BranchProtectionRulesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<BranchProtectionRulesQuery, TError, TData>(
+      {
+    queryKey: ['BranchProtectionRules', variables],
+    queryFn: graphqlFetch<BranchProtectionRulesQuery, BranchProtectionRulesQueryVariables>(BranchProtectionRulesDocument, variables),
+    ...options
+  }
+    )};
+
+useBranchProtectionRulesQuery.getKey = (variables: BranchProtectionRulesQueryVariables) => ['BranchProtectionRules', variables];
+
+export const useSuspenseBranchProtectionRulesQuery = <
+      TData = BranchProtectionRulesQuery,
+      TError = unknown
+    >(
+      variables: BranchProtectionRulesQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<BranchProtectionRulesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<BranchProtectionRulesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<BranchProtectionRulesQuery, TError, TData>(
+      {
+    queryKey: ['BranchProtectionRules', variables],
+    queryFn: graphqlFetch<BranchProtectionRulesQuery, BranchProtectionRulesQueryVariables>(BranchProtectionRulesDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseBranchProtectionRulesQuery.getKey = (variables: BranchProtectionRulesQueryVariables) => ['BranchProtectionRules', variables];
+
+export const useInfiniteBranchProtectionRulesQuery = <
+      TData = InfiniteData<BranchProtectionRulesQuery>,
+      TError = unknown
+    >(
+      variables: BranchProtectionRulesQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<BranchProtectionRulesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<BranchProtectionRulesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<BranchProtectionRulesQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['BranchProtectionRules.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<BranchProtectionRulesQuery, BranchProtectionRulesQueryVariables>(BranchProtectionRulesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteBranchProtectionRulesQuery.getKey = (variables: BranchProtectionRulesQueryVariables) => ['BranchProtectionRules.infinite', variables];
+
+export const useSuspenseInfiniteBranchProtectionRulesQuery = <
+      TData = InfiniteData<BranchProtectionRulesQuery>,
+      TError = unknown
+    >(
+      variables: BranchProtectionRulesQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<BranchProtectionRulesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<BranchProtectionRulesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<BranchProtectionRulesQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['BranchProtectionRules.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<BranchProtectionRulesQuery, BranchProtectionRulesQueryVariables>(BranchProtectionRulesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteBranchProtectionRulesQuery.getKey = (variables: BranchProtectionRulesQueryVariables) => ['BranchProtectionRules.infinite', variables];
+
+
+useBranchProtectionRulesQuery.fetcher = (variables: BranchProtectionRulesQueryVariables, options?: RequestInit['headers']) => graphqlFetch<BranchProtectionRulesQuery, BranchProtectionRulesQueryVariables>(BranchProtectionRulesDocument, variables, options);
 
 export const RepositoryGraphDocument = new TypedDocumentString(`
     query RepositoryGraph($userId: UUID!, $organizationId: UUID) {

@@ -20,6 +20,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Visibility,
+  useBranchProtectionRulesQuery,
+  useCreateBranchProtectionRuleMutation,
+  useDeleteBranchProtectionRuleMutation,
   useDeleteRepositoryMutation,
   useDiscoverDependenciesMutation,
   useRenameRepositoryMutation,
@@ -174,6 +177,63 @@ function RepositorySettingsPage() {
     onError: () =>
       setDiscoverMessage("Could not scan dependencies. Please try again."),
   });
+
+  // Branch protection: a per-branch merge policy (required approvals / checks),
+  // enforced server-side at the merge queue. Admin-gated, so only shown here
+  const repositoryId = repository?.rowId;
+  const rulesQuery = useBranchProtectionRulesQuery(
+    { repositoryId: repositoryId ?? "" },
+    { enabled: !!repositoryId },
+  );
+  const rules = rulesQuery.data?.branchProtectionRules?.nodes ?? [];
+
+  const [newPattern, setNewPattern] = useState("");
+  const [newApprovals, setNewApprovals] = useState(1);
+  const [newRequireChecks, setNewRequireChecks] = useState(true);
+  const [bpError, setBpError] = useState<string | null>(null);
+
+  const invalidateRules = () =>
+    queryClient.invalidateQueries({
+      queryKey: useBranchProtectionRulesQuery.getKey({
+        repositoryId: repositoryId ?? "",
+      }),
+    });
+
+  const createRuleMutation = useMutation({
+    mutationKey: useCreateBranchProtectionRuleMutation.getKey(),
+    mutationFn: (input: {
+      repositoryId: string;
+      refPattern: string;
+      requiredApprovals: number;
+      requirePassingChecks: boolean;
+    }) => useCreateBranchProtectionRuleMutation.fetcher({ input })(),
+    onSuccess: () => {
+      invalidateRules();
+      setNewPattern("");
+      setNewApprovals(1);
+      setNewRequireChecks(true);
+      setBpError(null);
+    },
+    onError: () => setBpError("Unable to add rule. Please try again."),
+  });
+
+  const deleteRuleMutation = useMutation({
+    mutationKey: useDeleteBranchProtectionRuleMutation.getKey(),
+    mutationFn: (rowId: string) =>
+      useDeleteBranchProtectionRuleMutation.fetcher({ rowId })(),
+    onSuccess: invalidateRules,
+  });
+
+  const handleAddRule = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!repositoryId || !newPattern) return;
+    createRuleMutation.mutate({
+      repositoryId,
+      refPattern: newPattern,
+      requiredApprovals: newApprovals,
+      requirePassingChecks: newRequireChecks,
+    });
+  };
 
   const handleRename = (e: React.FormEvent) => {
     e.preventDefault();
@@ -504,6 +564,106 @@ function RepositorySettingsPage() {
             {discoverMessage && (
               <p className="text-muted-foreground text-sm">{discoverMessage}</p>
             )}
+          </section>
+
+          {/* Branch protection */}
+          <section className="space-y-4 rounded-lg border p-6">
+            <div>
+              <h2 className="font-semibold text-lg">Branch protection</h2>
+              <p className="text-muted-foreground text-sm">
+                Require approvals or passing checks before a change may land on
+                branches matching a pattern (<code>main</code>,{" "}
+                <code>release/*</code>, <code>**</code>). Enforced at the merge
+                queue.
+              </p>
+            </div>
+
+            {rules.length > 0 ? (
+              <ul className="divide-y rounded-md border">
+                {rules.map((rule) => (
+                  <li
+                    key={rule.rowId}
+                    className="flex items-center justify-between gap-4 px-4 py-3"
+                  >
+                    <div className="min-w-0">
+                      <code className="font-medium text-sm">
+                        {rule.refPattern}
+                      </code>
+                      <p className="text-muted-foreground text-xs">
+                        {rule.requiredApprovals} approval
+                        {rule.requiredApprovals === 1 ? "" : "s"}
+                        {rule.requirePassingChecks ? " · checks must pass" : ""}
+                      </p>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={deleteRuleMutation.isPending}
+                      onClick={() => deleteRuleMutation.mutate(rule.rowId)}
+                    >
+                      Remove
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-muted-foreground text-sm">
+                No protection rules. Branches are unprotected.
+              </p>
+            )}
+
+            <form
+              onSubmit={handleAddRule}
+              className="flex flex-wrap items-end gap-3 border-t pt-4"
+            >
+              <div className="min-w-[12rem] flex-1">
+                <label
+                  htmlFor="bp-pattern"
+                  className="mb-1.5 block font-medium text-sm"
+                >
+                  Branch pattern
+                </label>
+                <Input
+                  id="bp-pattern"
+                  value={newPattern}
+                  placeholder="main"
+                  onChange={(e) => setNewPattern(e.target.value)}
+                />
+              </div>
+              <div className="w-28">
+                <label
+                  htmlFor="bp-approvals"
+                  className="mb-1.5 block font-medium text-sm"
+                >
+                  Approvals
+                </label>
+                <Input
+                  id="bp-approvals"
+                  type="number"
+                  min={0}
+                  value={newApprovals}
+                  onChange={(e) =>
+                    setNewApprovals(Math.max(0, Number(e.target.value) || 0))
+                  }
+                />
+              </div>
+              <label className="flex items-center gap-2 pb-2.5 text-sm">
+                <input
+                  type="checkbox"
+                  checked={newRequireChecks}
+                  onChange={(e) => setNewRequireChecks(e.target.checked)}
+                />
+                Require checks
+              </label>
+              <Button
+                type="submit"
+                disabled={createRuleMutation.isPending || !newPattern}
+              >
+                {createRuleMutation.isPending ? "Adding..." : "Add rule"}
+              </Button>
+            </form>
+
+            {bpError && <p className="text-destructive text-sm">{bpError}</p>}
           </section>
 
           {/* Danger zone */}

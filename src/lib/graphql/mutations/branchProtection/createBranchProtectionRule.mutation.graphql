@@ -1,0 +1,10 @@
+mutation CreateBranchProtectionRule($input: BranchProtectionRuleInput!) {
+  createBranchProtectionRule(input: { branchProtectionRule: $input }) {
+    branchProtectionRule {
+      rowId
+      refPattern
+      requiredApprovals
+      requirePassingChecks
+    }
+  }
+}

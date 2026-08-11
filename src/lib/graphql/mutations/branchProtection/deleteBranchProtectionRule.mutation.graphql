@@ -1,0 +1,5 @@
+mutation DeleteBranchProtectionRule($rowId: UUID!) {
+  deleteBranchProtectionRule(input: { rowId: $rowId }) {
+    clientMutationId
+  }
+}
