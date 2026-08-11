@@ -13,6 +13,7 @@ import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 
+import CommandPalette from "@/components/CommandPalette";
 import { DefaultCatchBoundary, Footer, Header } from "@/components/layout";
 import app from "@/lib/config/app.config";
 import { isDevEnv } from "@/lib/config/env.config";
@@ -237,7 +238,10 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <HeadContent />
       </head>
       <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <ThemeProvider theme={theme}>
+          <CommandPalette />
+          {children}
+        </ThemeProvider>
 
         <Toaster
           theme={theme === "dark" ? "dark" : "light"}
