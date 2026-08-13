@@ -3,10 +3,14 @@
  */
 const app = {
   name: "Arbor",
+  // Product symbol, mirrors the omni-api catalog SSOT (`catalog/products.ts`
+  // arbor `icon`). Used in the "Made with <symbol> by Omni" footer credit.
+  icon: "🌲",
   description: "A code forge",
   url: "https://arbor.omni.dev",
   organization: {
     name: "Omni",
+    url: "https://omni.dev",
     website: "https://omni.dev",
     discord: "https://discord.gg/omnidotdev",
     x: "https://x.com/omnidotdev",
