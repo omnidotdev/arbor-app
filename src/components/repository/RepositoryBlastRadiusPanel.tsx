@@ -2,7 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Network } from "lucide-react";
 
+import { GraphTierUpgradePrompt } from "@/components/graph";
 import { useRepositoryBlastRadiusQuery } from "@/generated/graphql";
+import { getGraphTierRequirement } from "@/lib/util/graphTier";
 import { pluralize } from "@/lib/util/pluralize";
 
 interface RepositoryBlastRadiusPanelProps {
@@ -18,10 +20,23 @@ interface RepositoryBlastRadiusPanelProps {
 export function RepositoryBlastRadiusPanel({
   repositoryId,
 }: RepositoryBlastRadiusPanelProps) {
-  const { data } = useQuery({
+  const { data, error } = useQuery({
     queryKey: useRepositoryBlastRadiusQuery.getKey({ repositoryId }),
     queryFn: useRepositoryBlastRadiusQuery.fetcher({ repositoryId }),
   });
+
+  // The org may be below the tier this feature requires. Show a labeled upgrade
+  // prompt instead of hiding the surface or surfacing a raw error
+  const tierRequirement = getGraphTierRequirement(error);
+  if (tierRequirement) {
+    return (
+      <GraphTierUpgradePrompt
+        className="mt-6"
+        requirement={tierRequirement}
+        feature="Blast radius maps every repository a change here would ripple out to, directly or transitively."
+      />
+    );
+  }
 
   const affected = data?.repositoryBlastRadius ?? [];
   if (affected.length === 0) return null;

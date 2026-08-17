@@ -15981,7 +15981,7 @@ export const PullRequestConversationDocument = gql`
   pullRequestComments(
     condition: {pullRequestId: $pullRequestId}
     orderBy: [CREATED_AT_ASC]
-    first: 500
+    first: 50
   ) {
     nodes {
       id
@@ -16006,7 +16006,7 @@ export const PullRequestConversationDocument = gql`
   pullRequestReviews(
     condition: {pullRequestId: $pullRequestId}
     orderBy: [CREATED_AT_ASC]
-    first: 200
+    first: 50
   ) {
     nodes {
       id

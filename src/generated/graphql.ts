@@ -17118,7 +17118,7 @@ export const PullRequestConversationDocument = new TypedDocumentString(`
   pullRequestComments(
     condition: {pullRequestId: $pullRequestId}
     orderBy: [CREATED_AT_ASC]
-    first: 500
+    first: 50
   ) {
     nodes {
       id
@@ -17143,7 +17143,7 @@ export const PullRequestConversationDocument = new TypedDocumentString(`
   pullRequestReviews(
     condition: {pullRequestId: $pullRequestId}
     orderBy: [CREATED_AT_ASC]
-    first: 200
+    first: 50
   ) {
     nodes {
       id

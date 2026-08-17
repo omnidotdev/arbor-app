@@ -9,11 +9,6 @@ import { API_GRAPHQL_URL } from "@/lib/config/env.config";
 
 import type { ResolveRowIdFn } from "@omnidotdev/providers/auth";
 
-export type {
-  GetAuthSession,
-  OrganizationClaim,
-} from "@omnidotdev/providers/auth";
-
 /**
  * Resolve the app's user-row UUID from the GraphQL API for the authenticated
  * caller. Uses the `observer` query, which the API resolves from the bearer
