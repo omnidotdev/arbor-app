@@ -7,6 +7,8 @@ import type { KnipConfig } from "knip";
 const knipConfig: KnipConfig = {
   entry: [
     "src/routes/**/*.{ts,tsx}",
+    "src/router.tsx",
+    "src/start.ts",
     "src/lib/graphql/graphqlFetch.ts",
     "src/lib/providers/billing/index.ts",
     "src/server/functions/*.ts",
@@ -22,11 +24,17 @@ const knipConfig: KnipConfig = {
   ignoreExportsUsedInFile: true,
   ignore: [
     "src/generated/**",
+    "src/routeTree.gen.ts",
     "src/components/emails/**",
+    "src/components/ui/**",
     "src/lib/config/env.config.ts",
     // WIP: Pull request components not yet integrated
     "src/components/pullRequest/**",
+    "src/lib/util/**",
     "src/lib/options/**",
+    "src/server/middleware.ts",
+    // WIP: Pricing components
+    "src/components/pricing/**",
     // WIP: Invite infrastructure (ready for members page)
     "src/lib/hooks/useOrganizationMembers.ts",
     "src/lib/validation/invitation.ts",

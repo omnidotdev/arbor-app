@@ -61,6 +61,21 @@ const graphqlCodegenConfig: CodegenConfig = {
     },
   },
   generates: {
+    // mocks for testing
+    "src/generated/graphql.mock.ts": {
+      // https://github.com/dotansimha/graphql-code-generator/discussions/9972#discussioncomment-9892339
+      preset: "import-types",
+      plugins: [
+        // filter in only the shared `add` plugin config
+        ...sharedPlugins.filter((plugin) =>
+          Object.keys(plugin).includes("add"),
+        ),
+        "typescript-msw",
+      ],
+      presetConfig: {
+        typesPath: "./generated",
+      },
+    },
     // TypeScript SDK
     "src/generated/graphql.sdk.ts": {
       plugins: [...sharedPlugins, "typescript-graphql-request"],

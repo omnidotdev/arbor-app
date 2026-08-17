@@ -24,8 +24,8 @@ export const FREE_PRICE: Price = {
     name: "Free",
     description: "Start for free",
     marketing_features: [
-      { name: "Unlimited public and private repositories" },
-      { name: "Per-repository dependency graph" },
+      { name: "Unlimited private repositories" },
+      { name: "Basic graph visualization" },
       { name: "Up to 5 collaborators per repository" },
       { name: "1 GB storage" },
       { name: "Community support" },
@@ -42,7 +42,7 @@ const faqItems = [
   {
     question: "What happens to my data if I cancel?",
     answer:
-      "You can export all your data at any time, and your repositories stay accessible through the end of your current billing period. Export anything you want to keep before it ends.",
+      "You can export all your data at any time. After cancellation, your data will be retained for 30 days before being permanently deleted.",
   },
   {
     question: "Can I switch between plans?",
@@ -52,7 +52,7 @@ const faqItems = [
   {
     question: "Do you offer discounts for open source projects?",
     answer:
-      "We run a case-by-case program for open source projects, reviewed and granted at our discretion. Contact us with your project details to apply. Approval is not automatic.",
+      "Yes! Open source projects qualify for free Team tier access. Contact us with your project details to apply.",
   },
 ];
 

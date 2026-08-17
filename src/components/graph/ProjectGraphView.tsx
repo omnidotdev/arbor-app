@@ -186,12 +186,8 @@ export function ProjectGraphView({ repositories }: ProjectGraphViewProps) {
         <Background />
         <Controls />
         <MiniMap
-          // theme-aware so it does not render as a bright white box in dark mode
-          style={{ backgroundColor: "var(--card)" }}
-          maskColor="color-mix(in oklch, var(--background) 70%, transparent)"
-          nodeStrokeColor="var(--border)"
           nodeColor={(node) => {
-            if (node.id === "placeholder") return "var(--muted-foreground)";
+            if (node.id === "placeholder") return "var(--muted)";
             return "var(--primary)";
           }}
         />

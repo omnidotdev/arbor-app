@@ -3,10 +3,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Filter, Network, RefreshCw } from "lucide-react";
 import { useState } from "react";
 
-import { GraphTierUpgradePrompt, GraphView } from "@/components/graph";
+import { GraphView } from "@/components/graph";
 import { Button } from "@/components/ui/button";
 import { useRepositoryGraphQuery } from "@/generated/graphql";
-import { getGraphTierRequirement } from "@/lib/util/graphTier";
 import { pluralize } from "@/lib/util/pluralize";
 
 export const Route = createFileRoute("/_app/graph")({
@@ -17,7 +16,7 @@ function GraphPage() {
   const { session } = Route.useRouteContext();
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
 
-  const { data, isLoading, error, refetch, isRefetching } = useQuery({
+  const { data, isLoading, refetch, isRefetching } = useQuery({
     queryKey: useRepositoryGraphQuery.getKey({
       userId: session!.user.rowId!,
     }),
@@ -25,11 +24,6 @@ function GraphPage() {
       userId: session!.user.rowId!,
     }),
   });
-
-  // The org-wide polyrepo graph is a paid capability. When the org is below the
-  // required tier the API returns GRAPH_TIER_REQUIRED, so render a labeled upgrade
-  // prompt in place of the graph rather than a raw error
-  const tierRequirement = getGraphTierRequirement(error);
 
   const repositories = data?.repositories?.nodes ?? [];
   const relationshipTypes = data?.repositoryRelationshipTypes?.nodes ?? [];
@@ -136,15 +130,7 @@ function GraphPage() {
         )}
       </div>
 
-      {tierRequirement ? (
-        <div className="flex h-150 items-center justify-center rounded-lg border bg-card p-6">
-          <GraphTierUpgradePrompt
-            className="max-w-lg items-center border-0 bg-transparent text-center shadow-none"
-            requirement={tierRequirement}
-            feature="The org-wide polyrepo graph maps every repository and the dependencies between them across your whole organization."
-          />
-        </div>
-      ) : isLoading ? (
+      {isLoading ? (
         <div className="flex h-150 items-center justify-center rounded-lg border bg-card">
           <div className="text-center">
             <Network className="mx-auto h-12 w-12 animate-pulse text-muted-foreground" />

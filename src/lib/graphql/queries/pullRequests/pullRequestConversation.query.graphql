@@ -1,14 +1,8 @@
-# Page sizes are bounded to stay under the API's GraphQL Armor query-cost
-# ceiling: each connection multiplies its per-node field cost by `first`, and
-# both connections plus their nested author/reviewer relations sum together, so
-# large values (the combined document 500s above ~85 total) exceed the ceiling
-# and the panel fails to load. 50 each leaves ample margin. Proper pagination is
-# the follow-up for conversations that exceed a page.
 query PullRequestConversation($pullRequestId: UUID!) {
   pullRequestComments(
     condition: { pullRequestId: $pullRequestId }
     orderBy: [CREATED_AT_ASC]
-    first: 50
+    first: 500
   ) {
     nodes {
       id
@@ -33,7 +27,7 @@ query PullRequestConversation($pullRequestId: UUID!) {
   pullRequestReviews(
     condition: { pullRequestId: $pullRequestId }
     orderBy: [CREATED_AT_ASC]
-    first: 50
+    first: 200
   ) {
     nodes {
       id
