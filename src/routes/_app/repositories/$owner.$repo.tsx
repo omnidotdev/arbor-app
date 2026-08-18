@@ -3,6 +3,7 @@ import {
   Link,
   Outlet,
   createFileRoute,
+  useLocation,
   useNavigate,
 } from "@tanstack/react-router";
 import {
@@ -155,8 +156,10 @@ function RepositoryDetailPage() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  // Check if we're on a child route by checking the current pathname
-  const currentPath = window.location.pathname;
+  // Check if we're on a child route by checking the current pathname. Use the
+  // router location (SSR-safe) rather than window, which is undefined on the
+  // server and would throw during the streaming render (React error #419)
+  const currentPath = useLocation({ select: (l) => l.pathname });
   const basePath = `/repositories/${owner}/${repo}`;
   const isChildRoute =
     currentPath !== basePath && currentPath.startsWith(`${basePath}/`);
