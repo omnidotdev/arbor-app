@@ -1,4 +1,8 @@
 query RepositoryGraph($userId: UUID!, $organizationId: UUID) {
+  # Paid tier gate for the org-wide polyrepo graph. Non-null, so when the viewer
+  # is below the Pro tier the API throws GRAPH_TIER_REQUIRED and nulls the whole
+  # response, and the page renders the upgrade prompt instead of the graph
+  polyrepoGraphAccess
   repositories(
     filter: {
       or: [

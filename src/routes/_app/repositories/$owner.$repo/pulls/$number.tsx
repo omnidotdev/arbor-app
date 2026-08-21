@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   GitBranch,
@@ -9,6 +9,7 @@ import {
   ListChecks,
 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import {
   ChangedFileTree,
@@ -20,6 +21,10 @@ import {
   useViewedFiles,
 } from "@/components/pullRequest";
 import { Button } from "@/components/ui/button";
+import {
+  useClosePullRequestMutation,
+  useReopenPullRequestMutation,
+} from "@/generated/graphql";
 import { usePullRequestCommentSubscription } from "@/lib/hooks/usePullRequestCommentSubscription";
 import { usePullRequestConversation } from "@/lib/hooks/usePullRequestConversation";
 import pullRequestFilesOptions from "@/lib/options/pullRequestFiles.options";
@@ -84,6 +89,68 @@ function PullRequestDetailPage() {
   usePullRequestCommentSubscription({
     pullRequestId: pullRequest?.rowId,
     accessToken: session?.accessToken,
+  });
+
+  const queryClient = useQueryClient();
+  const pullRequestId = pullRequest?.rowId;
+
+  // Refetch the pull request so its state (and the close/reopen controls) update
+  const refetchPullRequest = () =>
+    queryClient.invalidateQueries({
+      queryKey: pullRequestFilesOptions({
+        ownerSlug: owner,
+        repoSlug: repo,
+        number,
+      }).queryKey,
+    });
+
+  const closeMutation = useMutation({
+    mutationKey: useClosePullRequestMutation.getKey(),
+    mutationFn: async () => {
+      if (!pullRequestId) throw new Error("Pull request not found");
+      const result = await useClosePullRequestMutation.fetcher({
+        input: { pullRequestId },
+      })();
+      const payload = result.closePullRequest;
+      // Domain failures (unauthorized, merged) are reported in the payload
+      if (!payload || payload.error) {
+        throw new Error(payload?.error ?? "Failed to close pull request");
+      }
+      return payload;
+    },
+    onSuccess: () => {
+      toast.success("Pull request closed");
+      refetchPullRequest();
+    },
+    onError: (error) =>
+      toast.error(
+        error instanceof Error ? error.message : "Failed to close pull request",
+      ),
+  });
+
+  const reopenMutation = useMutation({
+    mutationKey: useReopenPullRequestMutation.getKey(),
+    mutationFn: async () => {
+      if (!pullRequestId) throw new Error("Pull request not found");
+      const result = await useReopenPullRequestMutation.fetcher({
+        input: { pullRequestId },
+      })();
+      const payload = result.reopenPullRequest;
+      if (!payload || payload.error) {
+        throw new Error(payload?.error ?? "Failed to reopen pull request");
+      }
+      return payload;
+    },
+    onSuccess: () => {
+      toast.success("Pull request reopened");
+      refetchPullRequest();
+    },
+    onError: (error) =>
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to reopen pull request",
+      ),
   });
 
   // group comments: path-anchored comments feed each file's diff, the rest
@@ -236,6 +303,14 @@ function PullRequestDetailPage() {
               pullRequest.mergedAt ? String(pullRequest.mergedAt) : undefined
             }
             mergedByName={pullRequest.mergedBy?.username}
+            onClose={() => {
+              // Guard rather than dropping the handler, so the button stays put
+              // (no flicker) while ignoring a double-click mid-request
+              if (!closeMutation.isPending) closeMutation.mutate();
+            }}
+            onReopen={() => {
+              if (!reopenMutation.isPending) reopenMutation.mutate();
+            }}
           />
 
           <ReviewSummaryBar

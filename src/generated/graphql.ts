@@ -4432,6 +4432,12 @@ export type MergeQueueEntryVarianceSampleAggregates = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
+  /**
+   * Close an open pull request without merging it. Requires the repository
+   * owner, a write/admin collaborator, or the pull request's author. A merged
+   * pull request cannot be closed.
+   */
+  closePullRequest?: Maybe<SetPullRequestStatePayload>;
   /** Creates a single `Agent`. */
   createAgent?: Maybe<CreateAgentPayload>;
   /** Creates a single `BranchProtectionRule`. */
@@ -4588,6 +4594,12 @@ export type Mutation = {
    * repository owner or an admin collaborator.
    */
   renameRepository?: Maybe<RenameRepositoryPayload>;
+  /**
+   * Reopen a closed pull request. Requires the repository owner, a
+   * write/admin collaborator, or the pull request's author. A merged pull
+   * request cannot be reopened.
+   */
+  reopenPullRequest?: Maybe<SetPullRequestStatePayload>;
   /** Updates a single `Agent` using a unique key and a patch. */
   updateAgent?: Maybe<UpdateAgentPayload>;
   /** Updates a single `BranchProtectionRule` using a unique key and a patch. */
@@ -4634,6 +4646,12 @@ export type Mutation = {
   updateUser?: Maybe<UpdateUserPayload>;
   /** Updates a single `VerificationCheck` using a unique key and a patch. */
   updateVerificationCheck?: Maybe<UpdateVerificationCheckPayload>;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationClosePullRequestArgs = {
+  input: SetPullRequestStateInput;
 };
 
 
@@ -4986,6 +5004,12 @@ export type MutationReconcileProjectMembershipArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationRenameRepositoryArgs = {
   input: RenameRepositoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationReopenPullRequestArgs = {
+  input: SetPullRequestStateInput;
 };
 
 
@@ -8766,6 +8790,14 @@ export type Query = Node & {
   personalAccessTokenRepositories?: Maybe<PersonalAccessTokenRepositoryConnection>;
   /** Reads and enables pagination through a set of `PersonalAccessToken`. */
   personalAccessTokens?: Maybe<PersonalAccessTokenConnection>;
+  /**
+   * Enforces access to the org-wide polyrepo graph, a paid graph capability
+   * (Pro tier). Resolves to true when the viewer's plan includes it and
+   * throws GRAPH_TIER_REQUIRED otherwise. Being non-null, a denial nulls the
+   * whole response so no graph data is returned below the tier. Request this
+   * alongside the polyrepo graph query.
+   */
+  polyrepoGraphAccess: Scalars['Boolean']['output'];
   /** Get a single `Project`. */
   project?: Maybe<Project>;
   /** Reads a single `Project` using its globally unique `ID`. */
@@ -11702,6 +11734,25 @@ export type RepositoryToManyStackFilter = {
   none?: InputMaybe<StackFilter>;
   /** Some related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<StackFilter>;
+};
+
+/** Input for closing or reopening a pull request. */
+export type SetPullRequestStateInput = {
+  /** The pull request to act on. */
+  pullRequestId: Scalars['UUID']['input'];
+};
+
+/** Payload for the closePullRequest / reopenPullRequest mutations. */
+export type SetPullRequestStatePayload = {
+  __typename?: 'SetPullRequestStatePayload';
+  /** Error message if the change failed. */
+  error?: Maybe<Scalars['String']['output']>;
+  /** The per-repository pull request number. */
+  number?: Maybe<Scalars['Int']['output']>;
+  /** The affected pull request row id. */
+  rowId?: Maybe<Scalars['UUID']['output']>;
+  /** The pull request's state after the change. */
+  state?: Maybe<Scalars['String']['output']>;
 };
 
 export type Stack = Node & {
@@ -15010,6 +15061,12 @@ export type RepositoryPatch = {
   visibility?: Visibility | null | undefined;
 };
 
+/** Input for closing or reopening a pull request. */
+export type SetPullRequestStateInput = {
+  /** The pull request to act on. */
+  pullRequestId: string;
+};
+
 /** An input for mutations affecting `Stack` */
 export type StackInput = {
   authorId: string;
@@ -15105,6 +15162,13 @@ export type RemoveProjectRepositoryMutationVariables = Exact<{
 
 export type RemoveProjectRepositoryMutation = { deleteProjectRepository: { deletedProjectRepositoryId: string | null } | null };
 
+export type ClosePullRequestMutationVariables = Exact<{
+  input: SetPullRequestStateInput;
+}>;
+
+
+export type ClosePullRequestMutation = { closePullRequest: { rowId: string | null, number: number | null, state: string | null, error: string | null } | null };
+
 export type CreatePullRequestCommentMutationVariables = Exact<{
   input: CreatePullRequestCommentInput;
 }>;
@@ -15132,6 +15196,13 @@ export type OpenPullRequestMutationVariables = Exact<{
 
 
 export type OpenPullRequestMutation = { openPullRequest: { rowId: string | null, number: number | null, error: string | null } | null };
+
+export type ReopenPullRequestMutationVariables = Exact<{
+  input: SetPullRequestStateInput;
+}>;
+
+
+export type ReopenPullRequestMutation = { reopenPullRequest: { rowId: string | null, number: number | null, state: string | null, error: string | null } | null };
 
 export type UpdatePullRequestCommentMutationVariables = Exact<{
   input: UpdatePullRequestCommentInput;
@@ -15211,7 +15282,7 @@ export type RepositoryGraphQueryVariables = Exact<{
 }>;
 
 
-export type RepositoryGraphQuery = { repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null, outgoingRelationships: { nodes: Array<{ rowId: string, confidence: number, versionConstraint: string | null, targetRepository: { rowId: string, name: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null, relationshipType: { rowId: string, name: string, isDirected: boolean } | null }> } }> } | null, repositoryRelationshipTypes: { nodes: Array<{ rowId: string, name: string, description: string | null, isDirected: boolean }> } | null };
+export type RepositoryGraphQuery = { polyrepoGraphAccess: boolean, repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null, outgoingRelationships: { nodes: Array<{ rowId: string, confidence: number, versionConstraint: string | null, targetRepository: { rowId: string, name: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null, relationshipType: { rowId: string, name: string, isDirected: boolean } | null }> } }> } | null, repositoryRelationshipTypes: { nodes: Array<{ rowId: string, name: string, description: string | null, isDirected: boolean }> } | null };
 
 export type OrganizationQueryVariables = Exact<{
   rowId: string;
@@ -15619,6 +15690,35 @@ useRemoveProjectRepositoryMutation.getKey = () => ['RemoveProjectRepository'];
 
 useRemoveProjectRepositoryMutation.fetcher = (variables: RemoveProjectRepositoryMutationVariables, options?: RequestInit['headers']) => graphqlFetch<RemoveProjectRepositoryMutation, RemoveProjectRepositoryMutationVariables>(RemoveProjectRepositoryDocument, variables, options);
 
+export const ClosePullRequestDocument = new TypedDocumentString(`
+    mutation ClosePullRequest($input: SetPullRequestStateInput!) {
+  closePullRequest(input: $input) {
+    rowId
+    number
+    state
+    error
+  }
+}
+    `);
+
+export const useClosePullRequestMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<ClosePullRequestMutation, TError, ClosePullRequestMutationVariables, TContext>) => {
+    
+    return useMutation<ClosePullRequestMutation, TError, ClosePullRequestMutationVariables, TContext>(
+      {
+    mutationKey: ['ClosePullRequest'],
+    mutationFn: (variables?: ClosePullRequestMutationVariables) => graphqlFetch<ClosePullRequestMutation, ClosePullRequestMutationVariables>(ClosePullRequestDocument, variables)(),
+    ...options
+  }
+    )};
+
+useClosePullRequestMutation.getKey = () => ['ClosePullRequest'];
+
+
+useClosePullRequestMutation.fetcher = (variables: ClosePullRequestMutationVariables, options?: RequestInit['headers']) => graphqlFetch<ClosePullRequestMutation, ClosePullRequestMutationVariables>(ClosePullRequestDocument, variables, options);
+
 export const CreatePullRequestCommentDocument = new TypedDocumentString(`
     mutation CreatePullRequestComment($input: CreatePullRequestCommentInput!) {
   createPullRequestComment(input: $input) {
@@ -15757,6 +15857,35 @@ useOpenPullRequestMutation.getKey = () => ['OpenPullRequest'];
 
 
 useOpenPullRequestMutation.fetcher = (variables: OpenPullRequestMutationVariables, options?: RequestInit['headers']) => graphqlFetch<OpenPullRequestMutation, OpenPullRequestMutationVariables>(OpenPullRequestDocument, variables, options);
+
+export const ReopenPullRequestDocument = new TypedDocumentString(`
+    mutation ReopenPullRequest($input: SetPullRequestStateInput!) {
+  reopenPullRequest(input: $input) {
+    rowId
+    number
+    state
+    error
+  }
+}
+    `);
+
+export const useReopenPullRequestMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<ReopenPullRequestMutation, TError, ReopenPullRequestMutationVariables, TContext>) => {
+    
+    return useMutation<ReopenPullRequestMutation, TError, ReopenPullRequestMutationVariables, TContext>(
+      {
+    mutationKey: ['ReopenPullRequest'],
+    mutationFn: (variables?: ReopenPullRequestMutationVariables) => graphqlFetch<ReopenPullRequestMutation, ReopenPullRequestMutationVariables>(ReopenPullRequestDocument, variables)(),
+    ...options
+  }
+    )};
+
+useReopenPullRequestMutation.getKey = () => ['ReopenPullRequest'];
+
+
+useReopenPullRequestMutation.fetcher = (variables: ReopenPullRequestMutationVariables, options?: RequestInit['headers']) => graphqlFetch<ReopenPullRequestMutation, ReopenPullRequestMutationVariables>(ReopenPullRequestDocument, variables, options);
 
 export const UpdatePullRequestCommentDocument = new TypedDocumentString(`
     mutation UpdatePullRequestComment($input: UpdatePullRequestCommentInput!) {
@@ -16239,6 +16368,7 @@ useBranchProtectionRulesQuery.fetcher = (variables: BranchProtectionRulesQueryVa
 
 export const RepositoryGraphDocument = new TypedDocumentString(`
     query RepositoryGraph($userId: UUID!, $organizationId: UUID) {
+  polyrepoGraphAccess
   repositories(
     filter: {or: [{ownerId: {equalTo: $userId}}, {repositoryCollaborators: {some: {userId: {equalTo: $userId}}}}, {organizationId: {equalTo: $organizationId}}]}
     orderBy: NAME_ASC

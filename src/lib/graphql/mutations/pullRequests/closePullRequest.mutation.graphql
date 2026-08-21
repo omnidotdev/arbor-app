@@ -1,0 +1,8 @@
+mutation ClosePullRequest($input: SetPullRequestStateInput!) {
+  closePullRequest(input: $input) {
+    rowId
+    number
+    state
+    error
+  }
+}

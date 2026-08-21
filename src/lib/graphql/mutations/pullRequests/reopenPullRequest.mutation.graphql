@@ -1,0 +1,8 @@
+mutation ReopenPullRequest($input: SetPullRequestStateInput!) {
+  reopenPullRequest(input: $input) {
+    rowId
+    number
+    state
+    error
+  }
+}

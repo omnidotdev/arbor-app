@@ -260,8 +260,9 @@ function RepositorySettingsPage() {
 
   const setDefaultBranch = (defaultBranch: string) => {
     if (!defaultBranch || repository?.defaultBranch === defaultBranch) return;
-    // NOTE: this only updates the stored default branch. Syncing the on-disk git
-    // HEAD to point at the new branch is a separate server-side follow-up
+    // updateRepository carries the new default branch; the server syncs the
+    // bare repo's on-disk git HEAD to it via a side effect on that mutation
+    // (arbor-api RepositoryDefaultBranchPlugin)
     updateMutation.mutate({ defaultBranch });
   };
 
