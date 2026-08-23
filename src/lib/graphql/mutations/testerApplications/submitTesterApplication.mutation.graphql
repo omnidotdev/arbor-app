@@ -1,0 +1,11 @@
+mutation SubmitTesterApplication($input: SubmitTesterApplicationInput!) {
+  submitTesterApplication(input: $input) {
+    rowId
+    status
+    reviewerNote
+    ndaVersion
+    ndaAcceptedAt
+    createdAt
+    updatedAt
+  }
+}

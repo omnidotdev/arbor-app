@@ -4600,6 +4600,11 @@ export type Mutation = {
    * request cannot be reopened.
    */
   reopenPullRequest?: Maybe<SetPullRequestStatePayload>;
+  /**
+   * Submit (or re-submit after a decline) the authenticated user's arbor
+   * closed-beta tester application. Requires accepting the beta terms.
+   */
+  submitTesterApplication?: Maybe<SubmitTesterApplicationPayload>;
   /** Updates a single `Agent` using a unique key and a patch. */
   updateAgent?: Maybe<UpdateAgentPayload>;
   /** Updates a single `BranchProtectionRule` using a unique key and a patch. */
@@ -5014,6 +5019,12 @@ export type MutationReopenPullRequestArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationSubmitTesterApplicationArgs = {
+  input: SubmitTesterApplicationInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateAgentArgs = {
   input: UpdateAgentInput;
 };
@@ -5148,6 +5159,25 @@ export type MutationUpdateUserArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateVerificationCheckArgs = {
   input: UpdateVerificationCheckInput;
+};
+
+/** The authenticated caller's own closed-beta tester application. */
+export type MyTesterApplication = {
+  __typename?: 'MyTesterApplication';
+  /** When the application was created. */
+  createdAt?: Maybe<Scalars['Datetime']['output']>;
+  /** When the beta terms were accepted. */
+  ndaAcceptedAt?: Maybe<Scalars['Datetime']['output']>;
+  /** The accepted beta terms version. */
+  ndaVersion?: Maybe<Scalars['String']['output']>;
+  /** Reviewer note, present after a decision. */
+  reviewerNote?: Maybe<Scalars['String']['output']>;
+  /** The application row ID. */
+  rowId?: Maybe<Scalars['UUID']['output']>;
+  /** Lifecycle status (pending, approved, declined). */
+  status?: Maybe<Scalars['String']['output']>;
+  /** When the application was last updated. */
+  updatedAt?: Maybe<Scalars['Datetime']['output']>;
 };
 
 /** An object with a globally unique `ID`. */
@@ -8765,6 +8795,11 @@ export type Query = Node & {
   mergeQueueEntry?: Maybe<MergeQueueEntry>;
   /** Reads a single `MergeQueueEntry` using its globally unique `ID`. */
   mergeQueueEntryById?: Maybe<MergeQueueEntry>;
+  /**
+   * Returns the authenticated caller's own closed-beta tester application, or
+   * null when they have not applied.
+   */
+  myTesterApplication?: Maybe<MyTesterApplication>;
   /** Fetches an object given its globally unique `ID`. */
   node?: Maybe<Node>;
   /**
@@ -12327,6 +12362,35 @@ export type StringListFilter = {
   overlaps?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
+/** Input for submitting a closed-beta tester application. */
+export type SubmitTesterApplicationInput = {
+  /** Free-form application form answers (use case, stack, team size, links, notes). */
+  answers?: InputMaybe<Scalars['JSON']['input']>;
+  /** Whether the applicant accepted the beta confidentiality terms. Must be true. */
+  ndaAccepted: Scalars['Boolean']['input'];
+  /** The version of the beta terms the applicant accepted. */
+  ndaVersion: Scalars['String']['input'];
+};
+
+/** Payload for the submitTesterApplication mutation, the applicant's row. */
+export type SubmitTesterApplicationPayload = {
+  __typename?: 'SubmitTesterApplicationPayload';
+  /** When the application was created. */
+  createdAt?: Maybe<Scalars['Datetime']['output']>;
+  /** When the beta terms were accepted. */
+  ndaAcceptedAt?: Maybe<Scalars['Datetime']['output']>;
+  /** The accepted beta terms version. */
+  ndaVersion?: Maybe<Scalars['String']['output']>;
+  /** Reviewer note, present after a decision. */
+  reviewerNote?: Maybe<Scalars['String']['output']>;
+  /** The application row ID. */
+  rowId?: Maybe<Scalars['UUID']['output']>;
+  /** Lifecycle status (pending, approved, declined). */
+  status?: Maybe<Scalars['String']['output']>;
+  /** When the application was last updated. */
+  updatedAt?: Maybe<Scalars['Datetime']['output']>;
+};
+
 /** The root subscription type: contains realtime events you can subscribe to with the `subscription` operation. */
 export type Subscription = {
   __typename?: 'Subscription';
@@ -15081,6 +15145,16 @@ export type StackInput = {
   updatedAt?: Date | null | undefined;
 };
 
+/** Input for submitting a closed-beta tester application. */
+export type SubmitTesterApplicationInput = {
+  /** Free-form application form answers (use case, stack, team size, links, notes). */
+  answers?: unknown;
+  /** Whether the applicant accepted the beta confidentiality terms. Must be true. */
+  ndaAccepted: boolean;
+  /** The version of the beta terms the applicant accepted. */
+  ndaVersion: string;
+};
+
 /** All input for the `updatePullRequestComment` mutation. */
 export type UpdatePullRequestCommentInput = {
   /**
@@ -15252,6 +15326,13 @@ export type MergeChangeMutationVariables = Exact<{
 
 
 export type MergeChangeMutation = { mergeChange: { success: boolean, changeId: string | null, mode: string | null, deferred: boolean, blockingChecks: Array<string> | null, error: string | null } | null };
+
+export type SubmitTesterApplicationMutationVariables = Exact<{
+  input: SubmitTesterApplicationInput;
+}>;
+
+
+export type SubmitTesterApplicationMutation = { submitTesterApplication: { rowId: string | null, status: string | null, reviewerNote: string | null, ndaVersion: string | null, ndaAcceptedAt: Date | null, createdAt: Date | null, updatedAt: Date | null } | null };
 
 export type AgentsQueryVariables = Exact<{
   userId: string;
@@ -15446,6 +15527,11 @@ export type StacksQueryVariables = Exact<{
 
 
 export type StacksQuery = { stacks: { nodes: Array<{ id: string, rowId: string, title: string, description: string | null, baseBranch: string, status: string, createdAt: Date, author: { rowId: string, username: string } | null, authoredByAgent: { rowId: string, name: string } | null, changes: { totalCount: number } }> } | null };
+
+export type MyTesterApplicationQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyTesterApplicationQuery = { myTesterApplication: { rowId: string | null, status: string | null, reviewerNote: string | null, ndaVersion: string | null, ndaAcceptedAt: Date | null, createdAt: Date | null, updatedAt: Date | null } | null };
 
 export type ObserverQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -16129,6 +16215,38 @@ useMergeChangeMutation.getKey = () => ['MergeChange'];
 
 
 useMergeChangeMutation.fetcher = (variables: MergeChangeMutationVariables, options?: RequestInit['headers']) => graphqlFetch<MergeChangeMutation, MergeChangeMutationVariables>(MergeChangeDocument, variables, options);
+
+export const SubmitTesterApplicationDocument = new TypedDocumentString(`
+    mutation SubmitTesterApplication($input: SubmitTesterApplicationInput!) {
+  submitTesterApplication(input: $input) {
+    rowId
+    status
+    reviewerNote
+    ndaVersion
+    ndaAcceptedAt
+    createdAt
+    updatedAt
+  }
+}
+    `);
+
+export const useSubmitTesterApplicationMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<SubmitTesterApplicationMutation, TError, SubmitTesterApplicationMutationVariables, TContext>) => {
+    
+    return useMutation<SubmitTesterApplicationMutation, TError, SubmitTesterApplicationMutationVariables, TContext>(
+      {
+    mutationKey: ['SubmitTesterApplication'],
+    mutationFn: (variables?: SubmitTesterApplicationMutationVariables) => graphqlFetch<SubmitTesterApplicationMutation, SubmitTesterApplicationMutationVariables>(SubmitTesterApplicationDocument, variables)(),
+    ...options
+  }
+    )};
+
+useSubmitTesterApplicationMutation.getKey = () => ['SubmitTesterApplication'];
+
+
+useSubmitTesterApplicationMutation.fetcher = (variables: SubmitTesterApplicationMutationVariables, options?: RequestInit['headers']) => graphqlFetch<SubmitTesterApplicationMutation, SubmitTesterApplicationMutationVariables>(SubmitTesterApplicationDocument, variables, options);
 
 export const AgentsDocument = new TypedDocumentString(`
     query Agents($userId: UUID!, $organizationId: UUID, $limit: Int) {
@@ -18768,6 +18886,101 @@ useSuspenseInfiniteStacksQuery.getKey = (variables: StacksQueryVariables) => ['S
 
 
 useStacksQuery.fetcher = (variables: StacksQueryVariables, options?: RequestInit['headers']) => graphqlFetch<StacksQuery, StacksQueryVariables>(StacksDocument, variables, options);
+
+export const MyTesterApplicationDocument = new TypedDocumentString(`
+    query MyTesterApplication {
+  myTesterApplication {
+    rowId
+    status
+    reviewerNote
+    ndaVersion
+    ndaAcceptedAt
+    createdAt
+    updatedAt
+  }
+}
+    `);
+
+export const useMyTesterApplicationQuery = <
+      TData = MyTesterApplicationQuery,
+      TError = unknown
+    >(
+      variables?: MyTesterApplicationQueryVariables,
+      options?: Omit<UseQueryOptions<MyTesterApplicationQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<MyTesterApplicationQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<MyTesterApplicationQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['MyTesterApplication'] : ['MyTesterApplication', variables],
+    queryFn: graphqlFetch<MyTesterApplicationQuery, MyTesterApplicationQueryVariables>(MyTesterApplicationDocument, variables),
+    ...options
+  }
+    )};
+
+useMyTesterApplicationQuery.getKey = (variables?: MyTesterApplicationQueryVariables) => variables === undefined ? ['MyTesterApplication'] : ['MyTesterApplication', variables];
+
+export const useSuspenseMyTesterApplicationQuery = <
+      TData = MyTesterApplicationQuery,
+      TError = unknown
+    >(
+      variables?: MyTesterApplicationQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<MyTesterApplicationQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<MyTesterApplicationQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<MyTesterApplicationQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['MyTesterApplication'] : ['MyTesterApplication', variables],
+    queryFn: graphqlFetch<MyTesterApplicationQuery, MyTesterApplicationQueryVariables>(MyTesterApplicationDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseMyTesterApplicationQuery.getKey = (variables?: MyTesterApplicationQueryVariables) => variables === undefined ? ['MyTesterApplication'] : ['MyTesterApplication', variables];
+
+export const useInfiniteMyTesterApplicationQuery = <
+      TData = InfiniteData<MyTesterApplicationQuery>,
+      TError = unknown
+    >(
+      variables: MyTesterApplicationQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<MyTesterApplicationQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<MyTesterApplicationQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<MyTesterApplicationQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? variables === undefined ? ['MyTesterApplication.infinite'] : ['MyTesterApplication.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<MyTesterApplicationQuery, MyTesterApplicationQueryVariables>(MyTesterApplicationDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteMyTesterApplicationQuery.getKey = (variables?: MyTesterApplicationQueryVariables) => variables === undefined ? ['MyTesterApplication.infinite'] : ['MyTesterApplication.infinite', variables];
+
+export const useSuspenseInfiniteMyTesterApplicationQuery = <
+      TData = InfiniteData<MyTesterApplicationQuery>,
+      TError = unknown
+    >(
+      variables: MyTesterApplicationQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<MyTesterApplicationQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<MyTesterApplicationQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<MyTesterApplicationQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? variables === undefined ? ['MyTesterApplication.infinite'] : ['MyTesterApplication.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<MyTesterApplicationQuery, MyTesterApplicationQueryVariables>(MyTesterApplicationDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteMyTesterApplicationQuery.getKey = (variables?: MyTesterApplicationQueryVariables) => variables === undefined ? ['MyTesterApplication.infinite'] : ['MyTesterApplication.infinite', variables];
+
+
+useMyTesterApplicationQuery.fetcher = (variables?: MyTesterApplicationQueryVariables, options?: RequestInit['headers']) => graphqlFetch<MyTesterApplicationQuery, MyTesterApplicationQueryVariables>(MyTesterApplicationDocument, variables, options);
 
 export const ObserverDocument = new TypedDocumentString(`
     query Observer {

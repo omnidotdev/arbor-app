@@ -1,0 +1,11 @@
+query MyTesterApplication {
+  myTesterApplication {
+    rowId
+    status
+    reviewerNote
+    ndaVersion
+    ndaAcceptedAt
+    createdAt
+    updatedAt
+  }
+}
