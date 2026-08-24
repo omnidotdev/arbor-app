@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as BetaTermsRouteImport } from './routes/beta-terms'
+import { Route as ApplyRouteImport } from './routes/apply'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiHealthzRouteImport } from './routes/api/healthz'
@@ -45,6 +46,11 @@ const PricingRoute = PricingRouteImport.update({
 const BetaTermsRoute = BetaTermsRouteImport.update({
   id: '/beta-terms',
   path: '/beta-terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApplyRoute = ApplyRouteImport.update({
+  id: '/apply',
+  path: '/apply',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -186,6 +192,7 @@ const AppRepositoriesOwnerRepoCommitOidRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/apply': typeof ApplyRoute
   '/beta-terms': typeof BetaTermsRoute
   '/pricing': typeof PricingRoute
   '/graph': typeof AppGraphRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/apply': typeof ApplyRoute
   '/beta-terms': typeof BetaTermsRoute
   '/pricing': typeof PricingRoute
   '/graph': typeof AppGraphRoute
@@ -244,6 +252,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
+  '/apply': typeof ApplyRoute
   '/beta-terms': typeof BetaTermsRoute
   '/pricing': typeof PricingRoute
   '/_app/graph': typeof AppGraphRoute
@@ -274,6 +283,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/apply'
     | '/beta-terms'
     | '/pricing'
     | '/graph'
@@ -302,6 +312,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/apply'
     | '/beta-terms'
     | '/pricing'
     | '/graph'
@@ -331,6 +342,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_app'
+    | '/apply'
     | '/beta-terms'
     | '/pricing'
     | '/_app/graph'
@@ -361,6 +373,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
+  ApplyRoute: typeof ApplyRoute
   BetaTermsRoute: typeof BetaTermsRoute
   PricingRoute: typeof PricingRoute
   ApiHealthzRoute: typeof ApiHealthzRoute
@@ -383,6 +396,13 @@ declare module '@tanstack/react-router' {
       path: '/beta-terms'
       fullPath: '/beta-terms'
       preLoaderRoute: typeof BetaTermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apply': {
+      id: '/apply'
+      path: '/apply'
+      fullPath: '/apply'
+      preLoaderRoute: typeof ApplyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app': {
@@ -633,6 +653,7 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
+  ApplyRoute: ApplyRoute,
   BetaTermsRoute: BetaTermsRoute,
   PricingRoute: PricingRoute,
   ApiHealthzRoute: ApiHealthzRoute,
