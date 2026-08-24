@@ -1,3 +1,5 @@
+import { getGraphqlErrorEntries } from "@/lib/util/graphqlError";
+
 /**
  * Graph capability tiers enforced by the API. When an organization is below the
  * tier a graph feature requires, the API returns a GraphQL error carrying this
@@ -37,25 +39,13 @@ export interface GraphTierRequirement {
 export const getGraphTierRequirement = (
   error: unknown,
 ): GraphTierRequirement | null => {
-  if (!error || typeof error !== "object") return null;
-
-  const errors = (
-    error as {
-      response?: {
-        errors?: Array<{
-          message?: string;
-          extensions?: { code?: string; requiredLevel?: number };
-        }>;
-      };
-    }
-  ).response?.errors;
-
-  const gated = errors?.find(
+  const gated = getGraphqlErrorEntries(error).find(
     (entry) => entry.extensions?.code === GRAPH_TIER_ERROR_CODE,
   );
   if (!gated) return null;
 
-  const requiredLevel = gated.extensions?.requiredLevel ?? GRAPH_LEVEL.PRO;
+  const requiredLevel =
+    (gated.extensions?.requiredLevel as number | undefined) ?? GRAPH_LEVEL.PRO;
   const plan = PLAN_BY_LEVEL[requiredLevel] ?? "Pro";
 
   return {

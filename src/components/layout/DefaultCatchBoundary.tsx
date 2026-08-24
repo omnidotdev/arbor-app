@@ -3,45 +3,9 @@ import { useEffect } from "react";
 
 import signIn from "@/lib/auth/signIn";
 import { isBetaAccessError, redirectToApply } from "@/lib/beta/betaAccessError";
+import { isSessionAuthError } from "@/lib/util/graphqlError";
 
 import type { ErrorComponentProps } from "@tanstack/react-router";
-
-/**
- * Detect an expired or missing session surfaced as a GraphQL authorization
- * error. graphql-request throws a ClientError carrying the raw response, so
- * check the response status and the per-error extension codes, then fall back
- * to matching the serialized message
- */
-const isAuthError = (error: unknown): boolean => {
-  if (!error || typeof error !== "object") return false;
-
-  const response = (
-    error as {
-      response?: {
-        status?: number;
-        errors?: Array<{
-          extensions?: { code?: string; http?: { status?: number } };
-        }>;
-      };
-    }
-  ).response;
-
-  if (response?.status === 401) return true;
-  if (
-    response?.errors?.some(
-      (entry) =>
-        entry.extensions?.code === "UNAUTHORIZED_FIELD_OR_TYPE" ||
-        entry.extensions?.http?.status === 401,
-    )
-  ) {
-    return true;
-  }
-
-  const message = (error as Error)?.message ?? "";
-  return /unauthorized field or type|unauthorized_field_or_type|\b401\b/i.test(
-    message,
-  );
-};
 
 /**
  * Default error boundary for caught route errors.
@@ -68,7 +32,7 @@ const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
 
   // An expired session reads as an authorization error; offer re-auth back to
   // the current location instead of a dead-end generic error
-  if (isAuthError(error)) {
+  if (isSessionAuthError(error)) {
     const handleSignIn = () => {
       const redirectUrl =
         typeof window !== "undefined"
