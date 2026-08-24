@@ -1,8 +1,14 @@
-import { MutationCache, QueryClient, matchQuery } from "@tanstack/react-query";
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  matchQuery,
+} from "@tanstack/react-query";
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
 import { setupRouterSsrQueryIntegration } from "@tanstack/react-router-ssr-query";
 
 import { DefaultCatchBoundary, NotFound } from "@/components/layout";
+import { isBetaAccessError, redirectToApply } from "@/lib/beta/betaAccessError";
 import { routeTree } from "./routeTree.gen";
 
 import type { QueryKey } from "@tanstack/react-query";
@@ -26,6 +32,14 @@ export function getRouter() {
         refetchOnReconnect: false,
       },
     },
+    // The single choke point for query errors: a non-whitelisted user's gated
+    // query fails with BETA_ACCESS_REQUIRED, so send them to the apply flow.
+    // Loader-thrown errors render the catch boundary, which redirects too
+    queryCache: new QueryCache({
+      onError: (error) => {
+        if (isBetaAccessError(error)) redirectToApply();
+      },
+    }),
     mutationCache: new MutationCache({
       onSettled: (_data, _error, _variables, _context, mutation) => {
         queryClient.invalidateQueries({

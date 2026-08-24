@@ -70,12 +70,17 @@ const AppSidebar = ({ user, ...rest }: Props) => {
   return (
     <Sidebar collapsible="icon" side={isMobile ? "right" : "left"} {...rest}>
       <SidebarHeader className="gap-2">
-        <div className="px-1 py-1">
+        <div className="flex items-center gap-2 px-1 py-1">
           <LogoLockup
             logo={<img src="/logo.png" alt="" className="size-5 shrink-0" />}
             name={app.name}
             nameClassName="font-bold tracking-tight group-data-[collapsible=icon]:hidden"
           />
+
+          {/* Closed-beta surface marker (access-gated-features rule) */}
+          <span className="rounded-full bg-muted px-2 py-0.5 font-medium text-muted-foreground text-xs group-data-[collapsible=icon]:hidden">
+            Beta
+          </span>
         </div>
 
         <div className="group-data-[collapsible=icon]:hidden">

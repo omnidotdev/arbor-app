@@ -2,6 +2,7 @@ import { rootRouteId, useMatch, useRouter } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 import signIn from "@/lib/auth/signIn";
+import { isBetaAccessError, redirectToApply } from "@/lib/beta/betaAccessError";
 
 import type { ErrorComponentProps } from "@tanstack/react-router";
 
@@ -55,6 +56,15 @@ const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
   useEffect(() => {
     console.error(error);
   }, [error]);
+
+  // A non-whitelisted user's gated query surfaced here: send them to the apply
+  // flow. Done in an effect so it runs on the client after hydration
+  useEffect(() => {
+    if (isBetaAccessError(error)) redirectToApply();
+  }, [error]);
+
+  // Non-whitelisted callers are redirected to /apply; render nothing meanwhile
+  if (isBetaAccessError(error)) return null;
 
   // An expired session reads as an authorization error; offer re-auth back to
   // the current location instead of a dead-end generic error
