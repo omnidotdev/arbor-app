@@ -14,7 +14,12 @@ import { useEffect, useState } from "react";
 import { Toaster } from "sonner";
 
 import CommandPalette from "@/components/CommandPalette";
-import { DefaultCatchBoundary, Footer, Header } from "@/components/layout";
+import {
+  DefaultCatchBoundary,
+  Footer,
+  Header,
+  NotFound,
+} from "@/components/layout";
 import app from "@/lib/config/app.config";
 import { isDevEnv } from "@/lib/config/env.config";
 import { fetchMaintenanceMode } from "@/lib/flags";
@@ -140,6 +145,10 @@ export const Route = createRootRouteWithContext<{
     ],
   }),
   errorComponent: DefaultCatchBoundary,
+  // Render 404s in-shell: a thrown `notFound()` renders here inside RootDocument
+  // (globals + layout), not as a bare unstyled page. Pairs with the router's
+  // `defaultNotFoundComponent` for unmatched routes.
+  notFoundComponent: () => <NotFound />,
   component: RootComponent,
 });
 
