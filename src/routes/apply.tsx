@@ -56,7 +56,7 @@ function ApplyPage() {
           className="mt-6"
           onClick={() => signIn({ redirectUrl: `${BASE_URL}/apply` })}
         >
-          Continue with Omni
+          Sign In
         </Button>
       </div>
     );
