@@ -1,5 +1,6 @@
 "use client";
 
+import { accountUrl } from "@omnidotdev/providers/react";
 import { LogoLockup } from "@omnidotdev/thornberry/logo-lockup";
 import { Link, useRouteContext, useRouterState } from "@tanstack/react-router";
 import {
@@ -34,7 +35,7 @@ import { Button } from "@/components/ui/button";
 import signIn from "@/lib/auth/signIn";
 import signOut from "@/lib/auth/signOut";
 import app from "@/lib/config/app.config";
-import { BASE_URL, CONSOLE_URL } from "@/lib/config/env.config";
+import { ACCOUNT_URL, BASE_URL } from "@/lib/config/env.config";
 import { cn } from "@/lib/utils";
 import { ModeToggle } from "./ModeToggle";
 
@@ -169,9 +170,9 @@ export function Header() {
                   {session.user.name || session.user.email}
                 </span>
               </div>
-              {CONSOLE_URL && (
+              {ACCOUNT_URL && (
                 <a
-                  href={CONSOLE_URL}
+                  href={accountUrl(ACCOUNT_URL)}
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Manage account"
@@ -276,9 +277,9 @@ export function Header() {
                 </a>
                 {isAuthenticated ? (
                   <>
-                    {CONSOLE_URL && (
+                    {ACCOUNT_URL && (
                       <a
-                        href={CONSOLE_URL}
+                        href={accountUrl(ACCOUNT_URL)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"

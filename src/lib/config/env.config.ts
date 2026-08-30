@@ -47,6 +47,7 @@ export const BILLING_BASE_URL =
 export const API_GRAPHQL_URL = `${API_BASE_URL}/graphql`;
 export const AUTH_ISSUER_URL = `${AUTH_BASE_URL}/api/auth`;
 export const CONSOLE_URL = import.meta.env.VITE_CONSOLE_URL;
+export const ACCOUNT_URL = import.meta.env.VITE_ACCOUNT_URL;
 
 // environment helpers
 export const isDevEnv = import.meta.env.DEV;
