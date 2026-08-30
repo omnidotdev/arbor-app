@@ -1,3 +1,4 @@
+import { accountUrl } from "@omnidotdev/providers/react";
 import {
   AvatarFallback,
   AvatarImage,
@@ -32,7 +33,7 @@ import { ModeToggle } from "@/components/layout/ModeToggle";
 import WorkspaceSwitcher from "@/components/layout/WorkspaceSwitcher";
 import signOut from "@/lib/auth/signOut";
 import app from "@/lib/config/app.config";
-import { CONSOLE_URL } from "@/lib/config/env.config";
+import { ACCOUNT_URL } from "@/lib/config/env.config";
 import { cn } from "@/lib/utils";
 
 import type { ComponentProps } from "react";
@@ -153,10 +154,14 @@ const AppSidebar = ({ user, ...rest }: Props) => {
             </SidebarMenuButton>
           </SidebarMenuItem>
 
-          {CONSOLE_URL && (
+          {ACCOUNT_URL && (
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Manage account">
-                <a href={CONSOLE_URL} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={accountUrl(ACCOUNT_URL)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <ExternalLink className="size-4" />
                   <span>Manage account</span>
                 </a>
