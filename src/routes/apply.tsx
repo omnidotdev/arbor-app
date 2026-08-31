@@ -69,7 +69,7 @@ function ApplyPage() {
 }
 
 function ApplyInner() {
-  const { session, arborLaunched } = Route.useRouteContext();
+  const { session, canAccessArbor } = Route.useRouteContext();
   const { data, isLoading, refetch } = useMyTesterApplicationQuery();
   const application = data?.myTesterApplication ?? null;
 
@@ -156,7 +156,7 @@ function ApplyInner() {
       )}
 
       {application?.status === "approved" ? (
-        arborLaunched ? (
+        canAccessArbor ? (
           <div className="mt-8 rounded-2xl border border-border bg-card/50 p-5">
             <p className="font-medium text-sm">You're in the closed beta</p>
             <p className="mt-1 text-muted-foreground text-sm">

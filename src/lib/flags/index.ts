@@ -1,6 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 
-import { ARBOR_LAUNCHED } from "@/lib/config/env.config";
+import {
+  ARBOR_FOUNDER_USER_IDS,
+  ARBOR_LAUNCHED,
+} from "@/lib/config/env.config";
 import { isEnabled } from "./client";
 
 import type { FlagContext } from "./client";
@@ -25,10 +28,19 @@ export const fetchMaintenanceMode = createServerFn({ method: "GET" })
   });
 
 /**
- * Whether arbor is launched, resolved server-side. VITE_ARBOR_LAUNCHED is a
- * runtime env (deploy env), not baked into the client bundle, so the client
- * must read the value through the SSR context rather than import.meta.env
+ * Whether the current user may reach arbor, resolved server-side: true when
+ * arbor is launched, or when the user is a founder (ARBOR_FOUNDER_USER_IDS), so
+ * the /apply approved state shows "you're in" for them and "coming soon" for
+ * everyone else pre-launch. Resolved here because the launch/founder env is
+ * runtime-only (not baked into the client bundle); the client reads the result
+ * through SSR context. Checks both the Gatekeeper sub and the row id so it works
+ * regardless of which the whitelist holds
  */
-export const fetchArborLaunched = createServerFn({ method: "GET" }).handler(
-  () => ({ arborLaunched: ARBOR_LAUNCHED }),
-);
+export const fetchArborAccess = createServerFn({ method: "GET" })
+  .validator((data: { userId?: string; rowId?: string } | undefined) => data)
+  .handler(({ data }) => {
+    const isFounder =
+      (!!data?.userId && ARBOR_FOUNDER_USER_IDS.includes(data.userId)) ||
+      (!!data?.rowId && ARBOR_FOUNDER_USER_IDS.includes(data.rowId));
+    return { canAccessArbor: ARBOR_LAUNCHED || isFounder };
+  });

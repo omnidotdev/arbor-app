@@ -72,7 +72,7 @@ export function getRouter() {
       session: null,
       isMaintenanceMode: false,
       // placeholder; the real value is resolved server-side in __root beforeLoad
-      arborLaunched: false,
+      canAccessArbor: false,
     },
     defaultPreload: "intent",
     // delegate caching to React Query instead of router's built-in cache

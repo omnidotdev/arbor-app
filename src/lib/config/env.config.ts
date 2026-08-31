@@ -24,6 +24,15 @@ export const {
 // Defaults to launched (true) so non-prod is unaffected
 export const ARBOR_LAUNCHED = env.VITE_ARBOR_LAUNCHED !== "false";
 
+// Founder user ids that can reach arbor even pre-launch, so the /apply "you're
+// in" state shows for them while everyone else sees coming soon. Mirrors
+// arbor-api ARBOR_BETA_WHITELIST_USER_IDS; server-only (read in a server fn),
+// never exposed to the client bundle
+export const ARBOR_FOUNDER_USER_IDS = (env.ARBOR_FOUNDER_USER_IDS ?? "")
+  .split(",")
+  .map((id: string) => id.trim())
+  .filter(Boolean);
+
 // Server-side URLs - prefer non-VITE versions for server functions
 export const API_BASE_URL = env.API_BASE_URL || env.VITE_API_BASE_URL;
 export const AUTH_BASE_URL = env.AUTH_BASE_URL || env.VITE_AUTH_BASE_URL;

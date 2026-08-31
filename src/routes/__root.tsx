@@ -22,7 +22,7 @@ import {
 } from "@/components/layout";
 import app from "@/lib/config/app.config";
 import { isDevEnv } from "@/lib/config/env.config";
-import { fetchArborLaunched, fetchMaintenanceMode } from "@/lib/flags";
+import { fetchArborAccess, fetchMaintenanceMode } from "@/lib/flags";
 import { setAccessToken } from "@/lib/graphql/graphqlClientFactory";
 import appCss from "@/lib/styles/globals.css?url";
 import createMetaTags from "@/lib/util/createMetaTags";
@@ -75,7 +75,7 @@ export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   session: ExtendedSession | null;
   isMaintenanceMode: boolean;
-  arborLaunched: boolean;
+  canAccessArbor: boolean;
 }>()({
   beforeLoad: async () => {
     const { session } = await fetchSession();
@@ -86,9 +86,14 @@ export const Route = createRootRouteWithContext<{
         email: typedSession?.user?.email,
       },
     });
-    const { arborLaunched } = await fetchArborLaunched();
+    const { canAccessArbor } = await fetchArborAccess({
+      data: {
+        userId: typedSession?.user?.identityProviderId,
+        rowId: typedSession?.user?.rowId,
+      },
+    });
 
-    return { session: typedSession, isMaintenanceMode, arborLaunched };
+    return { session: typedSession, isMaintenanceMode, canAccessArbor };
   },
   loader: () => getTheme(),
   head: () => ({
