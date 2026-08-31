@@ -11,7 +11,7 @@ import {
 } from "@/generated/graphql";
 import signIn from "@/lib/auth/signIn";
 import { BETA_TERMS_VERSION } from "@/lib/beta/terms";
-import { BASE_URL } from "@/lib/config/env.config";
+import { ARBOR_LAUNCHED, BASE_URL } from "@/lib/config/env.config";
 import createMetaTags from "@/lib/util/createMetaTags";
 
 export const Route = createFileRoute("/apply")({
@@ -156,16 +156,26 @@ function ApplyInner() {
       )}
 
       {application?.status === "approved" ? (
-        <div className="mt-8 rounded-2xl border border-border bg-card/50 p-5">
-          <p className="font-medium text-sm">You're in the closed beta</p>
-          <p className="mt-1 text-muted-foreground text-sm">
-            You're all set. Head to your repositories to get started.
-          </p>
+        ARBOR_LAUNCHED ? (
+          <div className="mt-8 rounded-2xl border border-border bg-card/50 p-5">
+            <p className="font-medium text-sm">You're in the closed beta</p>
+            <p className="mt-1 text-muted-foreground text-sm">
+              You're all set. Head to your repositories to get started.
+            </p>
 
-          <Button className="mt-4" asChild>
-            <Link to="/repositories">Go to Arbor</Link>
-          </Button>
-        </div>
+            <Button className="mt-4" asChild>
+              <Link to="/repositories">Go to Arbor</Link>
+            </Button>
+          </div>
+        ) : (
+          <div className="mt-8 rounded-2xl border border-border bg-card/50 p-5">
+            <p className="font-medium text-sm">You're on the list</p>
+            <p className="mt-1 text-muted-foreground text-sm">
+              Arbor is coming soon. We'll let you know the moment your spot is
+              ready.
+            </p>
+          </div>
+        )
       ) : application?.status === "pending" ? (
         <div className="mt-8 rounded-2xl border border-border bg-card/50 p-5">
           <p className="font-medium text-sm">

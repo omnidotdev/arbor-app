@@ -19,6 +19,11 @@ export const {
   VITE_FLAGS_CLIENT_KEY: FLAGS_CLIENT_KEY,
 } = env;
 
+// Pre-launch "coming soon" switch (mirrors arbor-api ARBOR_LAUNCHED). When
+// "false", the /apply approved state shows "coming soon" rather than app access.
+// Defaults to launched (true) so non-prod is unaffected
+export const ARBOR_LAUNCHED = env.VITE_ARBOR_LAUNCHED !== "false";
+
 // Server-side URLs - prefer non-VITE versions for server functions
 export const API_BASE_URL = env.API_BASE_URL || env.VITE_API_BASE_URL;
 export const AUTH_BASE_URL = env.AUTH_BASE_URL || env.VITE_AUTH_BASE_URL;
