@@ -21,6 +21,7 @@ export const Route = createFileRoute("/apply")({
         title: "Apply for the closed beta",
         description: "Apply to join the arbor closed beta.",
         url: `${BASE_URL}/apply`,
+        image: `${BASE_URL}/arbor_og_apply.png`,
       }),
     ],
   }),
