@@ -67,7 +67,13 @@ export function getRouter() {
 
   const router = createTanStackRouter({
     routeTree,
-    context: { queryClient, session: null, isMaintenanceMode: false },
+    context: {
+      queryClient,
+      session: null,
+      isMaintenanceMode: false,
+      // placeholder; the real value is resolved server-side in __root beforeLoad
+      arborLaunched: false,
+    },
     defaultPreload: "intent",
     // delegate caching to React Query instead of router's built-in cache
     defaultPreloadStaleTime: 0,

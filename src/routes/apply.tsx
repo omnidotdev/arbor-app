@@ -11,7 +11,7 @@ import {
 } from "@/generated/graphql";
 import signIn from "@/lib/auth/signIn";
 import { BETA_TERMS_VERSION } from "@/lib/beta/terms";
-import { ARBOR_LAUNCHED, BASE_URL } from "@/lib/config/env.config";
+import { BASE_URL } from "@/lib/config/env.config";
 import createMetaTags from "@/lib/util/createMetaTags";
 
 export const Route = createFileRoute("/apply")({
@@ -69,7 +69,7 @@ function ApplyPage() {
 }
 
 function ApplyInner() {
-  const { session } = Route.useRouteContext();
+  const { session, arborLaunched } = Route.useRouteContext();
   const { data, isLoading, refetch } = useMyTesterApplicationQuery();
   const application = data?.myTesterApplication ?? null;
 
@@ -146,7 +146,7 @@ function ApplyInner() {
       </div>
 
       <p className="mt-3 text-muted-foreground text-sm">
-        Applying as{" "}
+        {application ? "Applied as" : "Applying as"}{" "}
         <span className="font-medium text-foreground">{displayName}</span>
         {email ? ` (${email})` : null}.
       </p>
@@ -156,7 +156,7 @@ function ApplyInner() {
       )}
 
       {application?.status === "approved" ? (
-        ARBOR_LAUNCHED ? (
+        arborLaunched ? (
           <div className="mt-8 rounded-2xl border border-border bg-card/50 p-5">
             <p className="font-medium text-sm">You're in the closed beta</p>
             <p className="mt-1 text-muted-foreground text-sm">
