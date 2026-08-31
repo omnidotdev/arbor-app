@@ -23,8 +23,8 @@ export const ApplicantCount = ({ className }: { className?: string }) => {
 
   return (
     <p className={cn("text-muted-foreground text-sm", className)}>
-      Join {count.toLocaleString()} {count === 1 ? "builder" : "builders"} on
-      Omni
+      Join {count.toLocaleString()} {count === 1 ? "builder" : "builders"} who
+      signed up
     </p>
   );
 };
