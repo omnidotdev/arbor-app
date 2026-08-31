@@ -17,6 +17,14 @@ export const Route = createFileRoute(
   component: MergeQueuePage,
 });
 
+/** Space out camelCase/snake_case status values so CSS `capitalize` renders each word. */
+const humanizeLabel = (value: string): string =>
+  value
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
 const stateStyles: Record<string, string> = {
   queued: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300",
   testing: "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300",
@@ -199,7 +207,7 @@ function MergeQueuePage() {
                   </span>
                   {entry.batch?.ciStatus && (
                     <span className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs capitalize">
-                      batch {entry.batch.ciStatus}
+                      batch {humanizeLabel(entry.batch.ciStatus)}
                     </span>
                   )}
                 </div>

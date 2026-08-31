@@ -18,6 +18,14 @@ export const Route = createFileRoute("/_app/workspaces/")({
   component: WorkspacesPage,
 });
 
+/** Space out camelCase/snake_case values so CSS `capitalize` renders each word. */
+const humanizeLabel = (value: string): string =>
+  value
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
 function WorkspacesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const orgContext = useOrganization();
@@ -123,7 +131,7 @@ function WorkspacesPage() {
                         {workspace.name}
                       </span>
                       <Badge className="border-primary-500/20 bg-primary-500/10 text-primary-600 text-xs capitalize dark:text-primary-400">
-                        {workspace.type}
+                        {humanizeLabel(workspace.type)}
                       </Badge>
                     </div>
                     <p className="truncate text-muted-foreground text-sm">
