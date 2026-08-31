@@ -15,6 +15,7 @@ import {
   Workflow,
 } from "lucide-react";
 
+import { ApplicantCount } from "@/components/beta/ApplicantCount";
 import { Button } from "@/components/ui/button";
 import signIn from "@/lib/auth/signIn";
 import { BASE_URL } from "@/lib/config/env.config";
@@ -252,9 +253,15 @@ function Home() {
               </>
             ) : (
               <>
-                <Button size="lg" onClick={handleSignIn}>
+                <Button size="lg" asChild>
+                  <Link to="/apply">
+                    <Lock className="mr-2 h-4 w-4" />
+                    Apply for beta access
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" onClick={handleSignIn}>
                   <GitBranch className="mr-2 h-4 w-4" />
-                  Get Started
+                  Sign in
                 </Button>
                 <Button size="lg" variant="outline" asChild>
                   <Link to="/pricing">View Pricing</Link>
@@ -262,6 +269,7 @@ function Home() {
               </>
             )}
           </div>
+          {!isAuthenticated && <ApplicantCount />}
         </div>
 
         <div className="mt-12 md:mt-0">
@@ -357,10 +365,18 @@ function Home() {
                 </Link>
               </Button>
             ) : (
-              <Button size="lg" onClick={handleSignIn}>
-                <GitBranch className="mr-2 h-4 w-4" />
-                Get Started
-              </Button>
+              <>
+                <Button size="lg" asChild>
+                  <Link to="/apply">
+                    <Lock className="mr-2 h-4 w-4" />
+                    Apply for beta access
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" onClick={handleSignIn}>
+                  <GitBranch className="mr-2 h-4 w-4" />
+                  Sign in
+                </Button>
+              </>
             )}
           </div>
         </div>

@@ -2,6 +2,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowLeftIcon } from "lucide-react";
 import { useState } from "react";
 
+import { ApplicantCount } from "@/components/beta/ApplicantCount";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -58,6 +59,8 @@ function ApplyPage() {
         >
           Sign In
         </Button>
+
+        <ApplicantCount className="mt-6" />
       </div>
     );
   }
@@ -147,6 +150,10 @@ function ApplyInner() {
         <span className="font-medium text-foreground">{displayName}</span>
         {email ? ` (${email})` : null}.
       </p>
+
+      {application?.status !== "approved" && (
+        <ApplicantCount className="mt-3" />
+      )}
 
       {application?.status === "approved" ? (
         <div className="mt-8 rounded-2xl border border-border bg-card/50 p-5">
