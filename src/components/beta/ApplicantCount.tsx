@@ -4,11 +4,13 @@ import { getApplicantCount } from "@/lib/beta/applicantCount";
 import { cn } from "@/lib/utils";
 
 /**
- * Social-proof line showing how many builders have applied to the closed beta.
+ * Social-proof line showing how many builders are on Omni.
  *
- * Reads the public unauthenticated count and hides itself entirely when the
- * count is unavailable or zero, so an empty beta never renders a bare "0"
- * (mirrors thrivestream's Origin count treatment).
+ * The public count is the fleet-wide Omni userbase (not applicants to arbor's
+ * closed beta), so the copy invites joining the ecosystem rather than claiming
+ * anyone applied here. Hides itself entirely when the count is unavailable or
+ * zero, so an empty state never renders a bare "0" (mirrors thrivestream's
+ * Origin count treatment).
  */
 export const ApplicantCount = ({ className }: { className?: string }) => {
   const { data: count } = useQuery({
@@ -21,7 +23,8 @@ export const ApplicantCount = ({ className }: { className?: string }) => {
 
   return (
     <p className={cn("text-muted-foreground text-sm", className)}>
-      {count} {count === 1 ? "builder has" : "builders have"} applied so far
+      Join {count.toLocaleString()} {count === 1 ? "builder" : "builders"} on
+      Omni
     </p>
   );
 };
