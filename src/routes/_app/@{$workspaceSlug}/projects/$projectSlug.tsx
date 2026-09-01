@@ -32,13 +32,15 @@ import { pluralize } from "@/lib/util/pluralize";
 
 import type { ProjectGraphRepository } from "@/components/graph";
 
-export const Route = createFileRoute("/_app/projects/$owner/$slug")({
+export const Route = createFileRoute(
+  "/_app/@{$workspaceSlug}/projects/$projectSlug",
+)({
   head: ({ params }) => ({
     meta: [
       ...createMetaTags({
-        title: `${params.owner}/${params.slug}`,
+        title: `${params.workspaceSlug}/${params.projectSlug}`,
         description: "Project on Arbor",
-        url: `${BASE_URL}/projects/${params.owner}/${params.slug}`,
+        url: `${BASE_URL}/@${params.workspaceSlug}/projects/${params.projectSlug}`,
       }),
     ],
   }),
@@ -54,7 +56,7 @@ function repoOwnerSlug(repo: {
 }
 
 function ProjectDetailPage() {
-  const { owner, slug } = Route.useParams();
+  const { workspaceSlug: owner, projectSlug: slug } = Route.useParams();
   const { session } = Route.useRouteContext();
   const queryClient = useQueryClient();
 

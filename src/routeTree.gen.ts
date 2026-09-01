@@ -26,7 +26,7 @@ import { Route as AppSettingsTokensRouteImport } from './routes/_app/settings/to
 import { Route as AppSettingsAgentsRouteImport } from './routes/_app/settings/agents'
 import { Route as AppAtChar123workspaceSlugChar125RepoSlugRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug'
 import { Route as AppAtChar123workspaceSlugChar125RepoSlugIndexRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/index'
-import { Route as AppProjectsOwnerSlugRouteImport } from './routes/_app/projects/$owner.$slug'
+import { Route as AppAtChar123workspaceSlugChar125ProjectsProjectSlugRouteImport } from './routes/_app/@{$workspaceSlug}/projects/$projectSlug'
 import { Route as AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/merge-queue'
 import { Route as AppAtChar123workspaceSlugChar125RepoSlugCommitsRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/commits'
 import { Route as AppAtChar123workspaceSlugChar125RepoSlugBranchesRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/branches'
@@ -128,11 +128,12 @@ const AppAtChar123workspaceSlugChar125RepoSlugIndexRoute =
     path: '/',
     getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
   } as any)
-const AppProjectsOwnerSlugRoute = AppProjectsOwnerSlugRouteImport.update({
-  id: '/projects/$owner/$slug',
-  path: '/projects/$owner/$slug',
-  getParentRoute: () => AppRoute,
-} as any)
+const AppAtChar123workspaceSlugChar125ProjectsProjectSlugRoute =
+  AppAtChar123workspaceSlugChar125ProjectsProjectSlugRouteImport.update({
+    id: '/projects/$projectSlug',
+    path: '/projects/$projectSlug',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125Route,
+  } as any)
 const AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute =
   AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRouteImport.update({
     id: '/merge-queue',
@@ -223,7 +224,7 @@ export interface FileRoutesByFullPath {
   '/@{$workspaceSlug}/$repoSlug/branches': typeof AppAtChar123workspaceSlugChar125RepoSlugBranchesRoute
   '/@{$workspaceSlug}/$repoSlug/commits': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitsRoute
   '/@{$workspaceSlug}/$repoSlug/merge-queue': typeof AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute
-  '/projects/$owner/$slug': typeof AppProjectsOwnerSlugRoute
+  '/@{$workspaceSlug}/projects/$projectSlug': typeof AppAtChar123workspaceSlugChar125ProjectsProjectSlugRoute
   '/@{$workspaceSlug}/$repoSlug/': typeof AppAtChar123workspaceSlugChar125RepoSlugIndexRoute
   '/@{$workspaceSlug}/$repoSlug/commit/$oid': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitOidRoute
   '/@{$workspaceSlug}/$repoSlug/pulls/$number': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRoute
@@ -252,7 +253,7 @@ export interface FileRoutesByTo {
   '/@{$workspaceSlug}/$repoSlug/branches': typeof AppAtChar123workspaceSlugChar125RepoSlugBranchesRoute
   '/@{$workspaceSlug}/$repoSlug/commits': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitsRoute
   '/@{$workspaceSlug}/$repoSlug/merge-queue': typeof AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute
-  '/projects/$owner/$slug': typeof AppProjectsOwnerSlugRoute
+  '/@{$workspaceSlug}/projects/$projectSlug': typeof AppAtChar123workspaceSlugChar125ProjectsProjectSlugRoute
   '/@{$workspaceSlug}/$repoSlug': typeof AppAtChar123workspaceSlugChar125RepoSlugIndexRoute
   '/@{$workspaceSlug}/$repoSlug/commit/$oid': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitOidRoute
   '/@{$workspaceSlug}/$repoSlug/pulls/$number': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRoute
@@ -285,7 +286,7 @@ export interface FileRoutesById {
   '/_app/@{$workspaceSlug}/$repoSlug/branches': typeof AppAtChar123workspaceSlugChar125RepoSlugBranchesRoute
   '/_app/@{$workspaceSlug}/$repoSlug/commits': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitsRoute
   '/_app/@{$workspaceSlug}/$repoSlug/merge-queue': typeof AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute
-  '/_app/projects/$owner/$slug': typeof AppProjectsOwnerSlugRoute
+  '/_app/@{$workspaceSlug}/projects/$projectSlug': typeof AppAtChar123workspaceSlugChar125ProjectsProjectSlugRoute
   '/_app/@{$workspaceSlug}/$repoSlug/': typeof AppAtChar123workspaceSlugChar125RepoSlugIndexRoute
   '/_app/@{$workspaceSlug}/$repoSlug/commit/$oid': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitOidRoute
   '/_app/@{$workspaceSlug}/$repoSlug/pulls/$number': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRoute
@@ -318,7 +319,7 @@ export interface FileRouteTypes {
     | '/@{$workspaceSlug}/$repoSlug/branches'
     | '/@{$workspaceSlug}/$repoSlug/commits'
     | '/@{$workspaceSlug}/$repoSlug/merge-queue'
-    | '/projects/$owner/$slug'
+    | '/@{$workspaceSlug}/projects/$projectSlug'
     | '/@{$workspaceSlug}/$repoSlug/'
     | '/@{$workspaceSlug}/$repoSlug/commit/$oid'
     | '/@{$workspaceSlug}/$repoSlug/pulls/$number'
@@ -347,7 +348,7 @@ export interface FileRouteTypes {
     | '/@{$workspaceSlug}/$repoSlug/branches'
     | '/@{$workspaceSlug}/$repoSlug/commits'
     | '/@{$workspaceSlug}/$repoSlug/merge-queue'
-    | '/projects/$owner/$slug'
+    | '/@{$workspaceSlug}/projects/$projectSlug'
     | '/@{$workspaceSlug}/$repoSlug'
     | '/@{$workspaceSlug}/$repoSlug/commit/$oid'
     | '/@{$workspaceSlug}/$repoSlug/pulls/$number'
@@ -379,7 +380,7 @@ export interface FileRouteTypes {
     | '/_app/@{$workspaceSlug}/$repoSlug/branches'
     | '/_app/@{$workspaceSlug}/$repoSlug/commits'
     | '/_app/@{$workspaceSlug}/$repoSlug/merge-queue'
-    | '/_app/projects/$owner/$slug'
+    | '/_app/@{$workspaceSlug}/projects/$projectSlug'
     | '/_app/@{$workspaceSlug}/$repoSlug/'
     | '/_app/@{$workspaceSlug}/$repoSlug/commit/$oid'
     | '/_app/@{$workspaceSlug}/$repoSlug/pulls/$number'
@@ -525,12 +526,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugIndexRouteImport
       parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
     }
-    '/_app/projects/$owner/$slug': {
-      id: '/_app/projects/$owner/$slug'
-      path: '/projects/$owner/$slug'
-      fullPath: '/projects/$owner/$slug'
-      preLoaderRoute: typeof AppProjectsOwnerSlugRouteImport
-      parentRoute: typeof AppRoute
+    '/_app/@{$workspaceSlug}/projects/$projectSlug': {
+      id: '/_app/@{$workspaceSlug}/projects/$projectSlug'
+      path: '/projects/$projectSlug'
+      fullPath: '/@{$workspaceSlug}/projects/$projectSlug'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125ProjectsProjectSlugRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125Route
     }
     '/_app/@{$workspaceSlug}/$repoSlug/merge-queue': {
       id: '/_app/@{$workspaceSlug}/$repoSlug/merge-queue'
@@ -667,6 +668,7 @@ const AppAtChar123workspaceSlugChar125RepoSlugRouteWithChildren =
 interface AppAtChar123workspaceSlugChar125RouteChildren {
   AppAtChar123workspaceSlugChar125RepoSlugRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRouteWithChildren
   AppAtChar123workspaceSlugChar125IndexRoute: typeof AppAtChar123workspaceSlugChar125IndexRoute
+  AppAtChar123workspaceSlugChar125ProjectsProjectSlugRoute: typeof AppAtChar123workspaceSlugChar125ProjectsProjectSlugRoute
 }
 
 const AppAtChar123workspaceSlugChar125RouteChildren: AppAtChar123workspaceSlugChar125RouteChildren =
@@ -675,6 +677,8 @@ const AppAtChar123workspaceSlugChar125RouteChildren: AppAtChar123workspaceSlugCh
       AppAtChar123workspaceSlugChar125RepoSlugRouteWithChildren,
     AppAtChar123workspaceSlugChar125IndexRoute:
       AppAtChar123workspaceSlugChar125IndexRoute,
+    AppAtChar123workspaceSlugChar125ProjectsProjectSlugRoute:
+      AppAtChar123workspaceSlugChar125ProjectsProjectSlugRoute,
   }
 
 const AppAtChar123workspaceSlugChar125RouteWithChildren =
@@ -690,7 +694,6 @@ interface AppRouteChildren {
   AppProjectsIndexRoute: typeof AppProjectsIndexRoute
   AppRepositoriesIndexRoute: typeof AppRepositoriesIndexRoute
   AppWorkspacesIndexRoute: typeof AppWorkspacesIndexRoute
-  AppProjectsOwnerSlugRoute: typeof AppProjectsOwnerSlugRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -702,7 +705,6 @@ const AppRouteChildren: AppRouteChildren = {
   AppProjectsIndexRoute: AppProjectsIndexRoute,
   AppRepositoriesIndexRoute: AppRepositoriesIndexRoute,
   AppWorkspacesIndexRoute: AppWorkspacesIndexRoute,
-  AppProjectsOwnerSlugRoute: AppProjectsOwnerSlugRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

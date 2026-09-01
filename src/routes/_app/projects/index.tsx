@@ -89,8 +89,8 @@ function ProjectsPage() {
           project.owner?.username ??
           "";
         navigate({
-          to: "/projects/$owner/$slug",
-          params: { owner, slug: project.slug },
+          to: "/@{$workspaceSlug}/projects/$projectSlug",
+          params: { workspaceSlug: owner, projectSlug: project.slug },
         });
       }
     },
@@ -172,8 +172,11 @@ function ProjectsPage() {
                   <div className="min-w-0 space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <Link
-                        to="/projects/$owner/$slug"
-                        params={{ owner, slug: project.slug }}
+                        to="/@{$workspaceSlug}/projects/$projectSlug"
+                        params={{
+                          workspaceSlug: owner,
+                          projectSlug: project.slug,
+                        }}
                         className="break-all font-semibold text-xl hover:underline"
                       >
                         {owner}/{project.name}
