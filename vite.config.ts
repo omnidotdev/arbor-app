@@ -27,7 +27,12 @@ const viteConfig = defineConfig(({ command }) => ({
     nitroV2Plugin({
       preset: "node-server",
       compatibilityDate: "2026-06-23",
-      externals: { inline: ["srvx", "react-dom"] },
+      // Inline modules to avoid resolution issues with the Node runtime;
+      // better-auth 1.7 ships subpath ESM (@better-auth/utils) that nitro must
+      // inline or the server build fails at runtime with ERR_MODULE_NOT_FOUND
+      externals: {
+        inline: ["srvx", "react-dom", "better-auth", "@better-auth"],
+      },
       routeRules: {
         "/**": {
           headers: {

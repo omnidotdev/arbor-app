@@ -15,6 +15,21 @@ import {
 
 const { AUTH_SECRET } = process.env;
 
+// better-auth 1.7 narrowed genericOAuth's `authorizationUrlParams` to a plain
+// `Record<string, string>`, but the shared helper still returns it as a
+// function (a `screen_hint` signup hook this app does not use). Override it to
+// `undefined` so the config matches the 1.7 contract instead of silently
+// passing a function the runtime would spread to nothing
+const omniOAuthConfig = {
+  ...createOmniOAuthConfig({
+    clientId: AUTH_CLIENT_ID!,
+    clientSecret: AUTH_CLIENT_SECRET!,
+    authBaseUrl: AUTH_BASE_URL!,
+    authInternalUrl: AUTH_INTERNAL_URL!,
+  }),
+  authorizationUrlParams: undefined,
+};
+
 /**
  * Auth server client.
  */
@@ -51,14 +66,7 @@ const auth = betterAuth({
   },
   plugins: [
     genericOAuth({
-      config: [
-        createOmniOAuthConfig({
-          clientId: AUTH_CLIENT_ID!,
-          clientSecret: AUTH_CLIENT_SECRET!,
-          authBaseUrl: AUTH_BASE_URL!,
-          authInternalUrl: AUTH_INTERNAL_URL!,
-        }),
-      ],
+      config: [omniOAuthConfig],
     }),
     customSession(async ({ user, session }) => {
       // Try to get cached auth data (rowId, identityProviderId)
