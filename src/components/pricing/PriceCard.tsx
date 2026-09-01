@@ -25,17 +25,27 @@ import {
 import signIn from "@/lib/auth/signIn";
 import { BASE_URL, hasBilling } from "@/lib/config/env.config";
 import capitalizeFirstLetter from "@/lib/util/capitalizeFirstLetter";
+import getTierFromEntitlements from "@/lib/util/getTierFromEntitlements";
 import { cn } from "@/lib/utils";
 import { createCheckoutWithWorkspace } from "@/server/functions/subscriptions";
 
-import type { Price, Subscription } from "@/lib/providers/billing";
+import type {
+  EntitlementsResponse,
+  Price,
+  Subscription,
+} from "@/lib/providers/billing";
 
 interface Props {
   price: Price;
   orgSubscriptions?: Record<string, Subscription | null>;
+  orgEntitlements?: Record<string, EntitlementsResponse | null>;
 }
 
-export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
+export const PriceCard = ({
+  price,
+  orgSubscriptions = {},
+  orgEntitlements = {},
+}: Props) => {
   const { session } = useRouteContext({ strict: false });
   const navigate = useNavigate();
   const search = useSearch({ strict: false }) as { tier?: string };
@@ -52,14 +62,23 @@ export const PriceCard = ({ price, orgSubscriptions = {} }: Props) => {
   const isTeamTier = tier === "team";
   const isFreeTier = tier === "free";
 
-  // Helper to get tier from subscription
+  // Resolve an org's tier, preferring the live Stripe subscription and falling
+  // back to its billing entitlement. A null subscription (failed lookup, or a
+  // comped/manually granted tier with no Stripe subscription) must not read as
+  // "free" when the org actually holds a paid entitlement
   const getOrgTier = (orgId: string): string => {
     const subscription = orgSubscriptions[orgId];
-    if (!subscription) return "free";
-    // Product name is like "Arbor Pro" or "Arbor Team"
-    const productName = subscription.product?.name?.toLowerCase() ?? "";
-    if (productName.includes("team")) return "team";
-    if (productName.includes("pro")) return "pro";
+    if (subscription) {
+      // Product name is like "Arbor Pro" or "Arbor Team"
+      const productName = subscription.product?.name?.toLowerCase() ?? "";
+      if (productName.includes("team")) return "team";
+      if (productName.includes("pro")) return "pro";
+    }
+    // Fall back to the entitlement tier (lowercased to match the app's keys)
+    const entitlementTier = getTierFromEntitlements(
+      orgEntitlements[orgId],
+    )?.toLowerCase();
+    if (entitlementTier) return entitlementTier;
     return "free";
   };
 

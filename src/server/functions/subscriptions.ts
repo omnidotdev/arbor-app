@@ -63,6 +63,25 @@ export const getSubscription = createServerFn()
   });
 
 /**
+ * Get entitlements for an organization.
+ *
+ * Used alongside {@link getSubscription} so the pricing page can resolve an org's
+ * tier even when there is no live Stripe subscription (comped or manually granted
+ * plans), where the subscription lookup returns null.
+ */
+export const getEntitlements = createServerFn()
+  .middleware([authMiddleware])
+  .validator((data) => organizationSchema.parse(data))
+  .handler(async ({ data, context }) => {
+    return billing.getEntitlements(
+      "organization",
+      data.organizationId,
+      undefined,
+      requireAccessToken(context.session.accessToken),
+    );
+  });
+
+/**
  * Cancel a subscription for an organization.
  * @knipignore
  */

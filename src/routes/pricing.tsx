@@ -8,9 +8,16 @@ import { Button } from "@/components/ui/button";
 import { BASE_URL } from "@/lib/config/env.config";
 import pricesOptions from "@/lib/options/prices.options";
 import createMetaTags from "@/lib/util/createMetaTags";
-import { getSubscription } from "@/server/functions/subscriptions";
+import {
+  getEntitlements,
+  getSubscription,
+} from "@/server/functions/subscriptions";
 
-import type { Price, Subscription } from "@/lib/providers/billing";
+import type {
+  EntitlementsResponse,
+  Price,
+  Subscription,
+} from "@/lib/providers/billing";
 
 export const FREE_PRICE: Price = {
   id: "free",
@@ -74,34 +81,40 @@ export const Route = createFileRoute("/pricing")({
   loader: async ({ context: { queryClient, session } }) => {
     const prices = await queryClient.ensureQueryData(pricesOptions());
 
-    // Fetch subscriptions for all user organizations to determine current tiers
+    // Fetch subscriptions and entitlements for all user organizations to
+    // determine current tiers. Entitlements are the fallback for comped or
+    // manually granted plans that have no live Stripe subscription, where the
+    // subscription lookup returns null
     const orgSubscriptions: Record<string, Subscription | null> = {};
+    const orgEntitlements: Record<string, EntitlementsResponse | null> = {};
 
     if (session?.organizations) {
-      const subscriptionPromises = session.organizations.map(async (org) => {
-        try {
-          const subscription = await getSubscription({
-            data: { organizationId: org.id },
-          });
-          return { orgId: org.id, subscription };
-        } catch {
-          return { orgId: org.id, subscription: null };
-        }
+      const orgTierPromises = session.organizations.map(async (org) => {
+        const [subscription, entitlements] = await Promise.all([
+          getSubscription({ data: { organizationId: org.id } }).catch(
+            () => null,
+          ),
+          getEntitlements({ data: { organizationId: org.id } }).catch(
+            () => null,
+          ),
+        ]);
+        return { orgId: org.id, subscription, entitlements };
       });
 
-      const results = await Promise.all(subscriptionPromises);
-      for (const { orgId, subscription } of results) {
+      const results = await Promise.all(orgTierPromises);
+      for (const { orgId, subscription, entitlements } of results) {
         orgSubscriptions[orgId] = subscription;
+        orgEntitlements[orgId] = entitlements;
       }
     }
 
-    return { prices, orgSubscriptions };
+    return { prices, orgSubscriptions, orgEntitlements };
   },
   component: PricingPage,
 });
 
 function PricingPage() {
-  const { prices, orgSubscriptions } = Route.useLoaderData();
+  const { prices, orgSubscriptions, orgEntitlements } = Route.useLoaderData();
   const [billingInterval, setBillingInterval] = useState<"month" | "year">(
     "month",
   );
@@ -154,13 +167,18 @@ function PricingPage() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-4">
-          <PriceCard price={FREE_PRICE} orgSubscriptions={orgSubscriptions} />
+          <PriceCard
+            price={FREE_PRICE}
+            orgSubscriptions={orgSubscriptions}
+            orgEntitlements={orgEntitlements}
+          />
 
           {filteredPrices.map((price: Price) => (
             <PriceCard
               key={price.id}
               price={price}
               orgSubscriptions={orgSubscriptions}
+              orgEntitlements={orgEntitlements}
             />
           ))}
         </div>
