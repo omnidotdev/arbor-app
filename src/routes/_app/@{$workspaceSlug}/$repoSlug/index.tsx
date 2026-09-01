@@ -1,11 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  Link,
-  Outlet,
-  createFileRoute,
-  useLocation,
-  useNavigate,
-} from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   Copy,
   GitBranch,
@@ -34,10 +28,9 @@ import {
   useDeleteRepositoryMutation,
   useRepositoriesQuery,
 } from "@/generated/graphql";
-import { API_BASE_URL, BASE_URL, GIT_BASE_URL } from "@/lib/config/env.config";
+import { API_BASE_URL, GIT_BASE_URL } from "@/lib/config/env.config";
 import repositoryBySlugOptions from "@/lib/options/repositoryBySlug.options";
 import repositoryWithBranchesOptions from "@/lib/options/repositoryWithBranches.options";
-import createMetaTags from "@/lib/util/createMetaTags";
 import { getRepositoryAccess } from "@/lib/util/repositoryAccess";
 
 const searchSchema = z.object({
@@ -45,18 +38,8 @@ const searchSchema = z.object({
   path: z.string().optional(),
 });
 
-export const Route = createFileRoute("/_app/repositories/$owner/$repo")({
+export const Route = createFileRoute("/_app/@{$workspaceSlug}/$repoSlug/")({
   validateSearch: searchSchema,
-  head: ({ params }) => ({
-    meta: [
-      ...createMetaTags({
-        title: `${params.owner}/${params.repo}`,
-        description: `Repository on Arbor`,
-        image: `${BASE_URL}/api/og/repo/${params.owner}/${params.repo}`,
-        url: `${BASE_URL}/repositories/${params.owner}/${params.repo}`,
-      }),
-    ],
-  }),
   component: RepositoryDetailPage,
 });
 
@@ -150,19 +133,11 @@ async function fetchBlob(
 }
 
 function RepositoryDetailPage() {
-  const { owner, repo } = Route.useParams();
+  const { workspaceSlug: owner, repoSlug: repo } = Route.useParams();
   const { ref, path } = Route.useSearch();
   const { session } = Route.useRouteContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
-  // Check if we're on a child route by checking the current pathname. Use the
-  // router location (SSR-safe) rather than window, which is undefined on the
-  // server and would throw during the streaming render (React error #419)
-  const currentPath = useLocation({ select: (l) => l.pathname });
-  const basePath = `/repositories/${owner}/${repo}`;
-  const isChildRoute =
-    currentPath !== basePath && currentPath.startsWith(`${basePath}/`);
 
   const [_showDeleteDialog, _setShowDeleteDialog] = useState(false);
 
@@ -269,8 +244,8 @@ function RepositoryDetailPage() {
 
   const handleBranchChange = (branch: string) => {
     navigate({
-      to: "/repositories/$owner/$repo",
-      params: { owner, repo },
+      to: "/@{$workspaceSlug}/$repoSlug",
+      params: { workspaceSlug: owner, repoSlug: repo },
       search: { ref: branch, path },
     });
   };
@@ -289,11 +264,6 @@ function RepositoryDetailPage() {
   // Only show empty state if branches loaded and are empty, and we're not viewing a file
   const isEmptyRepo =
     !branchesQuery.isLoading && branches.length === 0 && !viewingFile;
-
-  // If we're on a child route, just render the Outlet
-  if (isChildRoute) {
-    return <Outlet />;
-  }
 
   return (
     <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6">
@@ -315,8 +285,8 @@ function RepositoryDetailPage() {
           {canManage && (
             <Button asChild variant="outline" size="sm">
               <Link
-                to="/repositories/$owner/$repo/settings"
-                params={{ owner, repo }}
+                to="/@{$workspaceSlug}/$repoSlug/~/settings"
+                params={{ workspaceSlug: owner, repoSlug: repo }}
               >
                 <Settings className="mr-2 h-4 w-4" />
                 Settings
@@ -333,8 +303,8 @@ function RepositoryDetailPage() {
           Code
         </span>
         <Link
-          to="/repositories/$owner/$repo/commits"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/commits"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           search={{ ref: currentBranch }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
@@ -342,32 +312,32 @@ function RepositoryDetailPage() {
           Commits
         </Link>
         <Link
-          to="/repositories/$owner/$repo/branches"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/branches"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitFork className="h-4 w-4" />
           Branches
         </Link>
         <Link
-          to="/repositories/$owner/$repo/pulls"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/pulls"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitPullRequest className="h-4 w-4" />
           Pull Requests
         </Link>
         <Link
-          to="/repositories/$owner/$repo/stacks"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/stacks"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <Layers className="h-4 w-4" />
           Stacks
         </Link>
         <Link
-          to="/repositories/$owner/$repo/merge-queue"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/merge-queue"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <ListChecks className="h-4 w-4" />

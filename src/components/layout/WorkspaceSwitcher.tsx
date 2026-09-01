@@ -87,7 +87,7 @@ const WorkspaceSwitcher = () => {
                 onSelect={() => {
                   orgContext?.setCurrentOrganization(org.id);
                   navigate({
-                    to: "/workspaces/$workspaceSlug",
+                    to: "/@{$workspaceSlug}",
                     params: { workspaceSlug: slug },
                   });
                 }}

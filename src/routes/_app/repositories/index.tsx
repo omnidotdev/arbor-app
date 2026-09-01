@@ -142,8 +142,8 @@ function RepositoriesPage() {
       if (data?.slug) {
         const owner = data.organizationSlug ?? data.ownerUsername ?? "";
         navigate({
-          to: "/repositories/$owner/$repo",
-          params: { owner, repo: data.slug },
+          to: "/@{$workspaceSlug}/$repoSlug",
+          params: { workspaceSlug: owner, repoSlug: data.slug },
         });
       }
     },
@@ -282,13 +282,13 @@ function RepositoriesPage() {
                   <div className="min-w-0 space-y-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <Link
-                        to="/repositories/$owner/$repo"
+                        to="/@{$workspaceSlug}/$repoSlug"
                         params={{
-                          owner:
+                          workspaceSlug:
                             repo.organization?.idpOrganizationId ??
                             repo.owner?.username ??
                             "",
-                          repo: repo.slug,
+                          repoSlug: repo.slug,
                         }}
                         className="break-all font-semibold text-xl hover:underline"
                       >

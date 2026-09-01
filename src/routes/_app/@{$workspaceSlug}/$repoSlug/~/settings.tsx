@@ -36,7 +36,7 @@ import { getRepositoryAccess } from "@/lib/util/repositoryAccess";
 import type { RepositoryPatch } from "@/generated/graphql";
 
 export const Route = createFileRoute(
-  "/_app/repositories/$owner/$repo/settings",
+  "/_app/@{$workspaceSlug}/$repoSlug/~/settings",
 )({
   component: RepositorySettingsPage,
 });
@@ -61,7 +61,7 @@ async function fetchBranches(owner: string, repo: string): Promise<Branch[]> {
 }
 
 function RepositorySettingsPage() {
-  const { owner, repo } = Route.useParams();
+  const { workspaceSlug: owner, repoSlug: repo } = Route.useParams();
   const { session } = Route.useRouteContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -124,8 +124,8 @@ function RepositorySettingsPage() {
           updated.owner?.username ??
           owner;
         navigate({
-          to: "/repositories/$owner/$repo/settings",
-          params: { owner: nextOwner, repo: updated.slug },
+          to: "/@{$workspaceSlug}/$repoSlug/~/settings",
+          params: { workspaceSlug: nextOwner, repoSlug: updated.slug },
         });
       }
     },
@@ -280,8 +280,8 @@ function RepositorySettingsPage() {
           </Link>
           <span className="mx-2 text-muted-foreground">/</span>
           <Link
-            to="/repositories/$owner/$repo"
-            params={{ owner, repo }}
+            to="/@{$workspaceSlug}/$repoSlug"
+            params={{ workspaceSlug: owner, repoSlug: repo }}
             className="hover:underline"
           >
             {repo}
@@ -292,16 +292,16 @@ function RepositorySettingsPage() {
       {/* Navigation tabs */}
       <div className="mb-6 flex gap-6 overflow-x-auto border-b [&>*]:shrink-0">
         <Link
-          to="/repositories/$owner/$repo"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitBranch className="h-4 w-4" />
           Code
         </Link>
         <Link
-          to="/repositories/$owner/$repo/commits"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/commits"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           search={{ ref: repository?.defaultBranch ?? "master" }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
@@ -309,32 +309,32 @@ function RepositorySettingsPage() {
           Commits
         </Link>
         <Link
-          to="/repositories/$owner/$repo/branches"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/branches"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitFork className="h-4 w-4" />
           Branches
         </Link>
         <Link
-          to="/repositories/$owner/$repo/pulls"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/pulls"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitPullRequest className="h-4 w-4" />
           Pull Requests
         </Link>
         <Link
-          to="/repositories/$owner/$repo/stacks"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/stacks"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <Layers className="h-4 w-4" />
           Stacks
         </Link>
         <Link
-          to="/repositories/$owner/$repo/merge-queue"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/merge-queue"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <ListChecks className="h-4 w-4" />

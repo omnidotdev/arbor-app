@@ -318,8 +318,11 @@ function ProjectDetailPage() {
                   >
                     <div className="flex flex-wrap items-center gap-2">
                       <Link
-                        to="/repositories/$owner/$repo"
-                        params={{ owner: repoOwner, repo: repo.slug }}
+                        to="/@{$workspaceSlug}/$repoSlug"
+                        params={{
+                          workspaceSlug: repoOwner,
+                          repoSlug: repo.slug,
+                        }}
                         className="break-all font-medium text-primary-600 hover:underline dark:text-primary-400"
                       >
                         {repoOwner}/{repo.name}
@@ -390,10 +393,10 @@ function ProjectDetailPage() {
                     className="rounded-lg border bg-card p-3 text-sm"
                   >
                     <Link
-                      to="/repositories/$owner/$repo"
+                      to="/@{$workspaceSlug}/$repoSlug"
                       params={{
-                        owner: consumerOwner,
-                        repo: entry.consumer.slug,
+                        workspaceSlug: consumerOwner,
+                        repoSlug: entry.consumer.slug,
                       }}
                       className="break-all font-medium text-primary-600 hover:underline dark:text-primary-400"
                     >
@@ -406,8 +409,11 @@ function ProjectDetailPage() {
                         : ""}{" "}
                       on{" "}
                       <Link
-                        to="/repositories/$owner/$repo"
-                        params={{ owner: targetOwner, repo: entry.target.slug }}
+                        to="/@{$workspaceSlug}/$repoSlug"
+                        params={{
+                          workspaceSlug: targetOwner,
+                          repoSlug: entry.target.slug,
+                        }}
                         className="text-primary-600 hover:underline dark:text-primary-400"
                       >
                         {entry.target.name}

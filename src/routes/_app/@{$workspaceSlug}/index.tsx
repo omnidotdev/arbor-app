@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { AUTH_BASE_URL, CONSOLE_URL } from "@/lib/config/env.config";
 import { getOrganizationBySlug } from "@/server/functions/organizations";
 
-export const Route = createFileRoute("/_app/workspaces/$workspaceSlug/")({
+export const Route = createFileRoute("/_app/@{$workspaceSlug}/")({
   component: WorkspaceDetailPage,
 });
 

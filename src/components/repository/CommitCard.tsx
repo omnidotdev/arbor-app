@@ -33,8 +33,8 @@ export function CommitCard({
 
   return (
     <Link
-      to="/repositories/$owner/$repo/commit/$oid"
-      params={{ owner, repo, oid: sha }}
+      to="/@{$workspaceSlug}/$repoSlug/commit/$oid"
+      params={{ workspaceSlug: owner, repoSlug: repo, oid: sha }}
       className="flex items-start gap-4 border-b px-4 py-3 transition-colors last:border-b-0 hover:bg-muted/50"
     >
       <div className="mt-1 rounded-full bg-muted p-2">

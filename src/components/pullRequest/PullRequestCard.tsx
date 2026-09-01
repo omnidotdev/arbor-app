@@ -59,8 +59,8 @@ export function PullRequestCard({
 
   return (
     <Link
-      to="/repositories/$owner/$repo/pulls/$number"
-      params={{ owner, repo, number: String(number) }}
+      to="/@{$workspaceSlug}/$repoSlug/pulls/$number"
+      params={{ workspaceSlug: owner, repoSlug: repo, number: String(number) }}
       className="flex items-start gap-4 border-b px-4 py-3 transition-colors last:border-b-0 hover:bg-muted/50"
     >
       <div className={`mt-1 rounded-full p-1.5 ${stateStyles[state]}`}>

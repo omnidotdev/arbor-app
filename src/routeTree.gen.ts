@@ -16,27 +16,29 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiHealthzRouteImport } from './routes/api/healthz'
 import { Route as AppGraphRouteImport } from './routes/_app/graph'
+import { Route as AppAtChar123workspaceSlugChar125RouteImport } from './routes/_app/@{$workspaceSlug}'
 import { Route as AppWorkspacesIndexRouteImport } from './routes/_app/workspaces/index'
 import { Route as AppRepositoriesIndexRouteImport } from './routes/_app/repositories/index'
 import { Route as AppProjectsIndexRouteImport } from './routes/_app/projects/index'
+import { Route as AppAtChar123workspaceSlugChar125IndexRouteImport } from './routes/_app/@{$workspaceSlug}/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AppSettingsTokensRouteImport } from './routes/_app/settings/tokens'
 import { Route as AppSettingsAgentsRouteImport } from './routes/_app/settings/agents'
-import { Route as AppWorkspacesWorkspaceSlugIndexRouteImport } from './routes/_app/workspaces/$workspaceSlug/index'
-import { Route as AppRepositoriesOwnerRepoRouteImport } from './routes/_app/repositories/$owner.$repo'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugIndexRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/index'
 import { Route as AppProjectsOwnerSlugRouteImport } from './routes/_app/projects/$owner.$slug'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/merge-queue'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugCommitsRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/commits'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugBranchesRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/branches'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugStacksIndexRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/stacks/index'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugPullsIndexRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/pulls/index'
 import { Route as ApiOgRepoOwnerRepoRouteImport } from './routes/api/og/repo.$owner.$repo'
-import { Route as AppRepositoriesOwnerRepoSettingsRouteImport } from './routes/_app/repositories/$owner.$repo/settings'
-import { Route as AppRepositoriesOwnerRepoMergeQueueRouteImport } from './routes/_app/repositories/$owner.$repo/merge-queue'
-import { Route as AppRepositoriesOwnerRepoCommitsRouteImport } from './routes/_app/repositories/$owner.$repo/commits'
-import { Route as AppRepositoriesOwnerRepoBranchesRouteImport } from './routes/_app/repositories/$owner.$repo/branches'
-import { Route as AppRepositoriesOwnerRepoStacksIndexRouteImport } from './routes/_app/repositories/$owner.$repo/stacks/index'
-import { Route as AppRepositoriesOwnerRepoPullsIndexRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/index'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugChar126SettingsRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/~/settings'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugStacksStackIdRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/stacks/$stackId'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugPullsNewRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/pulls/new'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/pulls/$number'
+import { Route as AppAtChar123workspaceSlugChar125RepoSlugCommitOidRouteImport } from './routes/_app/@{$workspaceSlug}/$repoSlug/commit.$oid'
 import { Route as ApiRawOwnerRepoOidSplatRouteImport } from './routes/api/raw/$owner.$repo.$oid.$'
-import { Route as AppRepositoriesOwnerRepoStacksStackIdRouteImport } from './routes/_app/repositories/$owner.$repo/stacks/$stackId'
-import { Route as AppRepositoriesOwnerRepoPullsNewRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/new'
-import { Route as AppRepositoriesOwnerRepoPullsNumberRouteImport } from './routes/_app/repositories/$owner.$repo/pulls/$number'
-import { Route as AppRepositoriesOwnerRepoCommitOidRouteImport } from './routes/_app/repositories/$owner.$repo/commit.$oid'
 
 const PricingRoute = PricingRouteImport.update({
   id: '/pricing',
@@ -72,6 +74,12 @@ const AppGraphRoute = AppGraphRouteImport.update({
   path: '/graph',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAtChar123workspaceSlugChar125Route =
+  AppAtChar123workspaceSlugChar125RouteImport.update({
+    id: '/@{$workspaceSlug}',
+    path: '/@{$workspaceSlug}',
+    getParentRoute: () => AppRoute,
+  } as any)
 const AppWorkspacesIndexRoute = AppWorkspacesIndexRouteImport.update({
   id: '/workspaces/',
   path: '/workspaces/',
@@ -87,6 +95,12 @@ const AppProjectsIndexRoute = AppProjectsIndexRouteImport.update({
   path: '/projects/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAtChar123workspaceSlugChar125IndexRoute =
+  AppAtChar123workspaceSlugChar125IndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125Route,
+  } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -102,122 +116,124 @@ const AppSettingsAgentsRoute = AppSettingsAgentsRouteImport.update({
   path: '/settings/agents',
   getParentRoute: () => AppRoute,
 } as any)
-const AppWorkspacesWorkspaceSlugIndexRoute =
-  AppWorkspacesWorkspaceSlugIndexRouteImport.update({
-    id: '/workspaces/$workspaceSlug/',
-    path: '/workspaces/$workspaceSlug/',
-    getParentRoute: () => AppRoute,
+const AppAtChar123workspaceSlugChar125RepoSlugRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugRouteImport.update({
+    id: '/$repoSlug',
+    path: '/$repoSlug',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125Route,
   } as any)
-const AppRepositoriesOwnerRepoRoute =
-  AppRepositoriesOwnerRepoRouteImport.update({
-    id: '/repositories/$owner/$repo',
-    path: '/repositories/$owner/$repo',
-    getParentRoute: () => AppRoute,
+const AppAtChar123workspaceSlugChar125RepoSlugIndexRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
   } as any)
 const AppProjectsOwnerSlugRoute = AppProjectsOwnerSlugRouteImport.update({
   id: '/projects/$owner/$slug',
   path: '/projects/$owner/$slug',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRouteImport.update({
+    id: '/merge-queue',
+    path: '/merge-queue',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
+  } as any)
+const AppAtChar123workspaceSlugChar125RepoSlugCommitsRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugCommitsRouteImport.update({
+    id: '/commits',
+    path: '/commits',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
+  } as any)
+const AppAtChar123workspaceSlugChar125RepoSlugBranchesRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugBranchesRouteImport.update({
+    id: '/branches',
+    path: '/branches',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
+  } as any)
+const AppAtChar123workspaceSlugChar125RepoSlugStacksIndexRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugStacksIndexRouteImport.update({
+    id: '/stacks/',
+    path: '/stacks/',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
+  } as any)
+const AppAtChar123workspaceSlugChar125RepoSlugPullsIndexRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugPullsIndexRouteImport.update({
+    id: '/pulls/',
+    path: '/pulls/',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
+  } as any)
 const ApiOgRepoOwnerRepoRoute = ApiOgRepoOwnerRepoRouteImport.update({
   id: '/api/og/repo/$owner/$repo',
   path: '/api/og/repo/$owner/$repo',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRepositoriesOwnerRepoSettingsRoute =
-  AppRepositoriesOwnerRepoSettingsRouteImport.update({
-    id: '/settings',
-    path: '/settings',
-    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
+const AppAtChar123workspaceSlugChar125RepoSlugChar126SettingsRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugChar126SettingsRouteImport.update({
+    id: '/~/settings',
+    path: '/~/settings',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
   } as any)
-const AppRepositoriesOwnerRepoMergeQueueRoute =
-  AppRepositoriesOwnerRepoMergeQueueRouteImport.update({
-    id: '/merge-queue',
-    path: '/merge-queue',
-    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
+const AppAtChar123workspaceSlugChar125RepoSlugStacksStackIdRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugStacksStackIdRouteImport.update({
+    id: '/stacks/$stackId',
+    path: '/stacks/$stackId',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
   } as any)
-const AppRepositoriesOwnerRepoCommitsRoute =
-  AppRepositoriesOwnerRepoCommitsRouteImport.update({
-    id: '/commits',
-    path: '/commits',
-    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
+const AppAtChar123workspaceSlugChar125RepoSlugPullsNewRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugPullsNewRouteImport.update({
+    id: '/pulls/new',
+    path: '/pulls/new',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
   } as any)
-const AppRepositoriesOwnerRepoBranchesRoute =
-  AppRepositoriesOwnerRepoBranchesRouteImport.update({
-    id: '/branches',
-    path: '/branches',
-    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
+const AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRouteImport.update({
+    id: '/pulls/$number',
+    path: '/pulls/$number',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
   } as any)
-const AppRepositoriesOwnerRepoStacksIndexRoute =
-  AppRepositoriesOwnerRepoStacksIndexRouteImport.update({
-    id: '/stacks/',
-    path: '/stacks/',
-    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
-  } as any)
-const AppRepositoriesOwnerRepoPullsIndexRoute =
-  AppRepositoriesOwnerRepoPullsIndexRouteImport.update({
-    id: '/pulls/',
-    path: '/pulls/',
-    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
+const AppAtChar123workspaceSlugChar125RepoSlugCommitOidRoute =
+  AppAtChar123workspaceSlugChar125RepoSlugCommitOidRouteImport.update({
+    id: '/commit/$oid',
+    path: '/commit/$oid',
+    getParentRoute: () => AppAtChar123workspaceSlugChar125RepoSlugRoute,
   } as any)
 const ApiRawOwnerRepoOidSplatRoute = ApiRawOwnerRepoOidSplatRouteImport.update({
   id: '/api/raw/$owner/$repo/$oid/$',
   path: '/api/raw/$owner/$repo/$oid/$',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppRepositoriesOwnerRepoStacksStackIdRoute =
-  AppRepositoriesOwnerRepoStacksStackIdRouteImport.update({
-    id: '/stacks/$stackId',
-    path: '/stacks/$stackId',
-    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
-  } as any)
-const AppRepositoriesOwnerRepoPullsNewRoute =
-  AppRepositoriesOwnerRepoPullsNewRouteImport.update({
-    id: '/pulls/new',
-    path: '/pulls/new',
-    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
-  } as any)
-const AppRepositoriesOwnerRepoPullsNumberRoute =
-  AppRepositoriesOwnerRepoPullsNumberRouteImport.update({
-    id: '/pulls/$number',
-    path: '/pulls/$number',
-    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
-  } as any)
-const AppRepositoriesOwnerRepoCommitOidRoute =
-  AppRepositoriesOwnerRepoCommitOidRouteImport.update({
-    id: '/commit/$oid',
-    path: '/commit/$oid',
-    getParentRoute: () => AppRepositoriesOwnerRepoRoute,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/apply': typeof ApplyRoute
   '/beta-terms': typeof BetaTermsRoute
   '/pricing': typeof PricingRoute
+  '/@{$workspaceSlug}': typeof AppAtChar123workspaceSlugChar125RouteWithChildren
   '/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
+  '/@{$workspaceSlug}/$repoSlug': typeof AppAtChar123workspaceSlugChar125RepoSlugRouteWithChildren
   '/settings/agents': typeof AppSettingsAgentsRoute
   '/settings/tokens': typeof AppSettingsTokensRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/@{$workspaceSlug}/': typeof AppAtChar123workspaceSlugChar125IndexRoute
   '/projects/': typeof AppProjectsIndexRoute
   '/repositories/': typeof AppRepositoriesIndexRoute
   '/workspaces/': typeof AppWorkspacesIndexRoute
+  '/@{$workspaceSlug}/$repoSlug/branches': typeof AppAtChar123workspaceSlugChar125RepoSlugBranchesRoute
+  '/@{$workspaceSlug}/$repoSlug/commits': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitsRoute
+  '/@{$workspaceSlug}/$repoSlug/merge-queue': typeof AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute
   '/projects/$owner/$slug': typeof AppProjectsOwnerSlugRoute
-  '/repositories/$owner/$repo': typeof AppRepositoriesOwnerRepoRouteWithChildren
-  '/workspaces/$workspaceSlug/': typeof AppWorkspacesWorkspaceSlugIndexRoute
-  '/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
-  '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
-  '/repositories/$owner/$repo/merge-queue': typeof AppRepositoriesOwnerRepoMergeQueueRoute
-  '/repositories/$owner/$repo/settings': typeof AppRepositoriesOwnerRepoSettingsRoute
+  '/@{$workspaceSlug}/$repoSlug/': typeof AppAtChar123workspaceSlugChar125RepoSlugIndexRoute
+  '/@{$workspaceSlug}/$repoSlug/commit/$oid': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitOidRoute
+  '/@{$workspaceSlug}/$repoSlug/pulls/$number': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRoute
+  '/@{$workspaceSlug}/$repoSlug/pulls/new': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNewRoute
+  '/@{$workspaceSlug}/$repoSlug/stacks/$stackId': typeof AppAtChar123workspaceSlugChar125RepoSlugStacksStackIdRoute
+  '/@{$workspaceSlug}/$repoSlug/~/settings': typeof AppAtChar123workspaceSlugChar125RepoSlugChar126SettingsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
-  '/repositories/$owner/$repo/commit/$oid': typeof AppRepositoriesOwnerRepoCommitOidRoute
-  '/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
-  '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
-  '/repositories/$owner/$repo/stacks/$stackId': typeof AppRepositoriesOwnerRepoStacksStackIdRoute
+  '/@{$workspaceSlug}/$repoSlug/pulls/': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsIndexRoute
+  '/@{$workspaceSlug}/$repoSlug/stacks/': typeof AppAtChar123workspaceSlugChar125RepoSlugStacksIndexRoute
   '/api/raw/$owner/$repo/$oid/$': typeof ApiRawOwnerRepoOidSplatRoute
-  '/repositories/$owner/$repo/pulls/': typeof AppRepositoriesOwnerRepoPullsIndexRoute
-  '/repositories/$owner/$repo/stacks/': typeof AppRepositoriesOwnerRepoStacksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -229,24 +245,24 @@ export interface FileRoutesByTo {
   '/settings/agents': typeof AppSettingsAgentsRoute
   '/settings/tokens': typeof AppSettingsTokensRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/@{$workspaceSlug}': typeof AppAtChar123workspaceSlugChar125IndexRoute
   '/projects': typeof AppProjectsIndexRoute
   '/repositories': typeof AppRepositoriesIndexRoute
   '/workspaces': typeof AppWorkspacesIndexRoute
+  '/@{$workspaceSlug}/$repoSlug/branches': typeof AppAtChar123workspaceSlugChar125RepoSlugBranchesRoute
+  '/@{$workspaceSlug}/$repoSlug/commits': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitsRoute
+  '/@{$workspaceSlug}/$repoSlug/merge-queue': typeof AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute
   '/projects/$owner/$slug': typeof AppProjectsOwnerSlugRoute
-  '/repositories/$owner/$repo': typeof AppRepositoriesOwnerRepoRouteWithChildren
-  '/workspaces/$workspaceSlug': typeof AppWorkspacesWorkspaceSlugIndexRoute
-  '/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
-  '/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
-  '/repositories/$owner/$repo/merge-queue': typeof AppRepositoriesOwnerRepoMergeQueueRoute
-  '/repositories/$owner/$repo/settings': typeof AppRepositoriesOwnerRepoSettingsRoute
+  '/@{$workspaceSlug}/$repoSlug': typeof AppAtChar123workspaceSlugChar125RepoSlugIndexRoute
+  '/@{$workspaceSlug}/$repoSlug/commit/$oid': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitOidRoute
+  '/@{$workspaceSlug}/$repoSlug/pulls/$number': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRoute
+  '/@{$workspaceSlug}/$repoSlug/pulls/new': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNewRoute
+  '/@{$workspaceSlug}/$repoSlug/stacks/$stackId': typeof AppAtChar123workspaceSlugChar125RepoSlugStacksStackIdRoute
+  '/@{$workspaceSlug}/$repoSlug/~/settings': typeof AppAtChar123workspaceSlugChar125RepoSlugChar126SettingsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
-  '/repositories/$owner/$repo/commit/$oid': typeof AppRepositoriesOwnerRepoCommitOidRoute
-  '/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
-  '/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
-  '/repositories/$owner/$repo/stacks/$stackId': typeof AppRepositoriesOwnerRepoStacksStackIdRoute
+  '/@{$workspaceSlug}/$repoSlug/pulls': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsIndexRoute
+  '/@{$workspaceSlug}/$repoSlug/stacks': typeof AppAtChar123workspaceSlugChar125RepoSlugStacksIndexRoute
   '/api/raw/$owner/$repo/$oid/$': typeof ApiRawOwnerRepoOidSplatRoute
-  '/repositories/$owner/$repo/pulls': typeof AppRepositoriesOwnerRepoPullsIndexRoute
-  '/repositories/$owner/$repo/stacks': typeof AppRepositoriesOwnerRepoStacksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -255,29 +271,31 @@ export interface FileRoutesById {
   '/apply': typeof ApplyRoute
   '/beta-terms': typeof BetaTermsRoute
   '/pricing': typeof PricingRoute
+  '/_app/@{$workspaceSlug}': typeof AppAtChar123workspaceSlugChar125RouteWithChildren
   '/_app/graph': typeof AppGraphRoute
   '/api/healthz': typeof ApiHealthzRoute
+  '/_app/@{$workspaceSlug}/$repoSlug': typeof AppAtChar123workspaceSlugChar125RepoSlugRouteWithChildren
   '/_app/settings/agents': typeof AppSettingsAgentsRoute
   '/_app/settings/tokens': typeof AppSettingsTokensRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/_app/@{$workspaceSlug}/': typeof AppAtChar123workspaceSlugChar125IndexRoute
   '/_app/projects/': typeof AppProjectsIndexRoute
   '/_app/repositories/': typeof AppRepositoriesIndexRoute
   '/_app/workspaces/': typeof AppWorkspacesIndexRoute
+  '/_app/@{$workspaceSlug}/$repoSlug/branches': typeof AppAtChar123workspaceSlugChar125RepoSlugBranchesRoute
+  '/_app/@{$workspaceSlug}/$repoSlug/commits': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitsRoute
+  '/_app/@{$workspaceSlug}/$repoSlug/merge-queue': typeof AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute
   '/_app/projects/$owner/$slug': typeof AppProjectsOwnerSlugRoute
-  '/_app/repositories/$owner/$repo': typeof AppRepositoriesOwnerRepoRouteWithChildren
-  '/_app/workspaces/$workspaceSlug/': typeof AppWorkspacesWorkspaceSlugIndexRoute
-  '/_app/repositories/$owner/$repo/branches': typeof AppRepositoriesOwnerRepoBranchesRoute
-  '/_app/repositories/$owner/$repo/commits': typeof AppRepositoriesOwnerRepoCommitsRoute
-  '/_app/repositories/$owner/$repo/merge-queue': typeof AppRepositoriesOwnerRepoMergeQueueRoute
-  '/_app/repositories/$owner/$repo/settings': typeof AppRepositoriesOwnerRepoSettingsRoute
+  '/_app/@{$workspaceSlug}/$repoSlug/': typeof AppAtChar123workspaceSlugChar125RepoSlugIndexRoute
+  '/_app/@{$workspaceSlug}/$repoSlug/commit/$oid': typeof AppAtChar123workspaceSlugChar125RepoSlugCommitOidRoute
+  '/_app/@{$workspaceSlug}/$repoSlug/pulls/$number': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRoute
+  '/_app/@{$workspaceSlug}/$repoSlug/pulls/new': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNewRoute
+  '/_app/@{$workspaceSlug}/$repoSlug/stacks/$stackId': typeof AppAtChar123workspaceSlugChar125RepoSlugStacksStackIdRoute
+  '/_app/@{$workspaceSlug}/$repoSlug/~/settings': typeof AppAtChar123workspaceSlugChar125RepoSlugChar126SettingsRoute
   '/api/og/repo/$owner/$repo': typeof ApiOgRepoOwnerRepoRoute
-  '/_app/repositories/$owner/$repo/commit/$oid': typeof AppRepositoriesOwnerRepoCommitOidRoute
-  '/_app/repositories/$owner/$repo/pulls/$number': typeof AppRepositoriesOwnerRepoPullsNumberRoute
-  '/_app/repositories/$owner/$repo/pulls/new': typeof AppRepositoriesOwnerRepoPullsNewRoute
-  '/_app/repositories/$owner/$repo/stacks/$stackId': typeof AppRepositoriesOwnerRepoStacksStackIdRoute
+  '/_app/@{$workspaceSlug}/$repoSlug/pulls/': typeof AppAtChar123workspaceSlugChar125RepoSlugPullsIndexRoute
+  '/_app/@{$workspaceSlug}/$repoSlug/stacks/': typeof AppAtChar123workspaceSlugChar125RepoSlugStacksIndexRoute
   '/api/raw/$owner/$repo/$oid/$': typeof ApiRawOwnerRepoOidSplatRoute
-  '/_app/repositories/$owner/$repo/pulls/': typeof AppRepositoriesOwnerRepoPullsIndexRoute
-  '/_app/repositories/$owner/$repo/stacks/': typeof AppRepositoriesOwnerRepoStacksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -286,29 +304,31 @@ export interface FileRouteTypes {
     | '/apply'
     | '/beta-terms'
     | '/pricing'
+    | '/@{$workspaceSlug}'
     | '/graph'
     | '/api/healthz'
+    | '/@{$workspaceSlug}/$repoSlug'
     | '/settings/agents'
     | '/settings/tokens'
     | '/api/auth/$'
+    | '/@{$workspaceSlug}/'
     | '/projects/'
     | '/repositories/'
     | '/workspaces/'
+    | '/@{$workspaceSlug}/$repoSlug/branches'
+    | '/@{$workspaceSlug}/$repoSlug/commits'
+    | '/@{$workspaceSlug}/$repoSlug/merge-queue'
     | '/projects/$owner/$slug'
-    | '/repositories/$owner/$repo'
-    | '/workspaces/$workspaceSlug/'
-    | '/repositories/$owner/$repo/branches'
-    | '/repositories/$owner/$repo/commits'
-    | '/repositories/$owner/$repo/merge-queue'
-    | '/repositories/$owner/$repo/settings'
+    | '/@{$workspaceSlug}/$repoSlug/'
+    | '/@{$workspaceSlug}/$repoSlug/commit/$oid'
+    | '/@{$workspaceSlug}/$repoSlug/pulls/$number'
+    | '/@{$workspaceSlug}/$repoSlug/pulls/new'
+    | '/@{$workspaceSlug}/$repoSlug/stacks/$stackId'
+    | '/@{$workspaceSlug}/$repoSlug/~/settings'
     | '/api/og/repo/$owner/$repo'
-    | '/repositories/$owner/$repo/commit/$oid'
-    | '/repositories/$owner/$repo/pulls/$number'
-    | '/repositories/$owner/$repo/pulls/new'
-    | '/repositories/$owner/$repo/stacks/$stackId'
+    | '/@{$workspaceSlug}/$repoSlug/pulls/'
+    | '/@{$workspaceSlug}/$repoSlug/stacks/'
     | '/api/raw/$owner/$repo/$oid/$'
-    | '/repositories/$owner/$repo/pulls/'
-    | '/repositories/$owner/$repo/stacks/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -320,24 +340,24 @@ export interface FileRouteTypes {
     | '/settings/agents'
     | '/settings/tokens'
     | '/api/auth/$'
+    | '/@{$workspaceSlug}'
     | '/projects'
     | '/repositories'
     | '/workspaces'
+    | '/@{$workspaceSlug}/$repoSlug/branches'
+    | '/@{$workspaceSlug}/$repoSlug/commits'
+    | '/@{$workspaceSlug}/$repoSlug/merge-queue'
     | '/projects/$owner/$slug'
-    | '/repositories/$owner/$repo'
-    | '/workspaces/$workspaceSlug'
-    | '/repositories/$owner/$repo/branches'
-    | '/repositories/$owner/$repo/commits'
-    | '/repositories/$owner/$repo/merge-queue'
-    | '/repositories/$owner/$repo/settings'
+    | '/@{$workspaceSlug}/$repoSlug'
+    | '/@{$workspaceSlug}/$repoSlug/commit/$oid'
+    | '/@{$workspaceSlug}/$repoSlug/pulls/$number'
+    | '/@{$workspaceSlug}/$repoSlug/pulls/new'
+    | '/@{$workspaceSlug}/$repoSlug/stacks/$stackId'
+    | '/@{$workspaceSlug}/$repoSlug/~/settings'
     | '/api/og/repo/$owner/$repo'
-    | '/repositories/$owner/$repo/commit/$oid'
-    | '/repositories/$owner/$repo/pulls/$number'
-    | '/repositories/$owner/$repo/pulls/new'
-    | '/repositories/$owner/$repo/stacks/$stackId'
+    | '/@{$workspaceSlug}/$repoSlug/pulls'
+    | '/@{$workspaceSlug}/$repoSlug/stacks'
     | '/api/raw/$owner/$repo/$oid/$'
-    | '/repositories/$owner/$repo/pulls'
-    | '/repositories/$owner/$repo/stacks'
   id:
     | '__root__'
     | '/'
@@ -345,29 +365,31 @@ export interface FileRouteTypes {
     | '/apply'
     | '/beta-terms'
     | '/pricing'
+    | '/_app/@{$workspaceSlug}'
     | '/_app/graph'
     | '/api/healthz'
+    | '/_app/@{$workspaceSlug}/$repoSlug'
     | '/_app/settings/agents'
     | '/_app/settings/tokens'
     | '/api/auth/$'
+    | '/_app/@{$workspaceSlug}/'
     | '/_app/projects/'
     | '/_app/repositories/'
     | '/_app/workspaces/'
+    | '/_app/@{$workspaceSlug}/$repoSlug/branches'
+    | '/_app/@{$workspaceSlug}/$repoSlug/commits'
+    | '/_app/@{$workspaceSlug}/$repoSlug/merge-queue'
     | '/_app/projects/$owner/$slug'
-    | '/_app/repositories/$owner/$repo'
-    | '/_app/workspaces/$workspaceSlug/'
-    | '/_app/repositories/$owner/$repo/branches'
-    | '/_app/repositories/$owner/$repo/commits'
-    | '/_app/repositories/$owner/$repo/merge-queue'
-    | '/_app/repositories/$owner/$repo/settings'
+    | '/_app/@{$workspaceSlug}/$repoSlug/'
+    | '/_app/@{$workspaceSlug}/$repoSlug/commit/$oid'
+    | '/_app/@{$workspaceSlug}/$repoSlug/pulls/$number'
+    | '/_app/@{$workspaceSlug}/$repoSlug/pulls/new'
+    | '/_app/@{$workspaceSlug}/$repoSlug/stacks/$stackId'
+    | '/_app/@{$workspaceSlug}/$repoSlug/~/settings'
     | '/api/og/repo/$owner/$repo'
-    | '/_app/repositories/$owner/$repo/commit/$oid'
-    | '/_app/repositories/$owner/$repo/pulls/$number'
-    | '/_app/repositories/$owner/$repo/pulls/new'
-    | '/_app/repositories/$owner/$repo/stacks/$stackId'
+    | '/_app/@{$workspaceSlug}/$repoSlug/pulls/'
+    | '/_app/@{$workspaceSlug}/$repoSlug/stacks/'
     | '/api/raw/$owner/$repo/$oid/$'
-    | '/_app/repositories/$owner/$repo/pulls/'
-    | '/_app/repositories/$owner/$repo/stacks/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -433,6 +455,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppGraphRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/@{$workspaceSlug}': {
+      id: '/_app/@{$workspaceSlug}'
+      path: '/@{$workspaceSlug}'
+      fullPath: '/@{$workspaceSlug}'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/workspaces/': {
       id: '/_app/workspaces/'
       path: '/workspaces'
@@ -453,6 +482,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/projects/'
       preLoaderRoute: typeof AppProjectsIndexRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/_app/@{$workspaceSlug}/': {
+      id: '/_app/@{$workspaceSlug}/'
+      path: '/'
+      fullPath: '/@{$workspaceSlug}/'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125IndexRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125Route
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -475,19 +511,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSettingsAgentsRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/workspaces/$workspaceSlug/': {
-      id: '/_app/workspaces/$workspaceSlug/'
-      path: '/workspaces/$workspaceSlug'
-      fullPath: '/workspaces/$workspaceSlug/'
-      preLoaderRoute: typeof AppWorkspacesWorkspaceSlugIndexRouteImport
-      parentRoute: typeof AppRoute
+    '/_app/@{$workspaceSlug}/$repoSlug': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug'
+      path: '/$repoSlug'
+      fullPath: '/@{$workspaceSlug}/$repoSlug'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125Route
     }
-    '/_app/repositories/$owner/$repo': {
-      id: '/_app/repositories/$owner/$repo'
-      path: '/repositories/$owner/$repo'
-      fullPath: '/repositories/$owner/$repo'
-      preLoaderRoute: typeof AppRepositoriesOwnerRepoRouteImport
-      parentRoute: typeof AppRoute
+    '/_app/@{$workspaceSlug}/$repoSlug/': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug/'
+      path: '/'
+      fullPath: '/@{$workspaceSlug}/$repoSlug/'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugIndexRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
     }
     '/_app/projects/$owner/$slug': {
       id: '/_app/projects/$owner/$slug'
@@ -496,6 +532,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProjectsOwnerSlugRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/@{$workspaceSlug}/$repoSlug/merge-queue': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug/merge-queue'
+      path: '/merge-queue'
+      fullPath: '/@{$workspaceSlug}/$repoSlug/merge-queue'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
+    }
+    '/_app/@{$workspaceSlug}/$repoSlug/commits': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug/commits'
+      path: '/commits'
+      fullPath: '/@{$workspaceSlug}/$repoSlug/commits'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugCommitsRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
+    }
+    '/_app/@{$workspaceSlug}/$repoSlug/branches': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug/branches'
+      path: '/branches'
+      fullPath: '/@{$workspaceSlug}/$repoSlug/branches'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugBranchesRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
+    }
+    '/_app/@{$workspaceSlug}/$repoSlug/stacks/': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug/stacks/'
+      path: '/stacks'
+      fullPath: '/@{$workspaceSlug}/$repoSlug/stacks/'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugStacksIndexRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
+    }
+    '/_app/@{$workspaceSlug}/$repoSlug/pulls/': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug/pulls/'
+      path: '/pulls'
+      fullPath: '/@{$workspaceSlug}/$repoSlug/pulls/'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugPullsIndexRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
+    }
     '/api/og/repo/$owner/$repo': {
       id: '/api/og/repo/$owner/$repo'
       path: '/api/og/repo/$owner/$repo'
@@ -503,47 +574,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiOgRepoOwnerRepoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/repositories/$owner/$repo/settings': {
-      id: '/_app/repositories/$owner/$repo/settings'
-      path: '/settings'
-      fullPath: '/repositories/$owner/$repo/settings'
-      preLoaderRoute: typeof AppRepositoriesOwnerRepoSettingsRouteImport
-      parentRoute: typeof AppRepositoriesOwnerRepoRoute
+    '/_app/@{$workspaceSlug}/$repoSlug/~/settings': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug/~/settings'
+      path: '/~/settings'
+      fullPath: '/@{$workspaceSlug}/$repoSlug/~/settings'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugChar126SettingsRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
     }
-    '/_app/repositories/$owner/$repo/merge-queue': {
-      id: '/_app/repositories/$owner/$repo/merge-queue'
-      path: '/merge-queue'
-      fullPath: '/repositories/$owner/$repo/merge-queue'
-      preLoaderRoute: typeof AppRepositoriesOwnerRepoMergeQueueRouteImport
-      parentRoute: typeof AppRepositoriesOwnerRepoRoute
+    '/_app/@{$workspaceSlug}/$repoSlug/stacks/$stackId': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug/stacks/$stackId'
+      path: '/stacks/$stackId'
+      fullPath: '/@{$workspaceSlug}/$repoSlug/stacks/$stackId'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugStacksStackIdRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
     }
-    '/_app/repositories/$owner/$repo/commits': {
-      id: '/_app/repositories/$owner/$repo/commits'
-      path: '/commits'
-      fullPath: '/repositories/$owner/$repo/commits'
-      preLoaderRoute: typeof AppRepositoriesOwnerRepoCommitsRouteImport
-      parentRoute: typeof AppRepositoriesOwnerRepoRoute
+    '/_app/@{$workspaceSlug}/$repoSlug/pulls/new': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug/pulls/new'
+      path: '/pulls/new'
+      fullPath: '/@{$workspaceSlug}/$repoSlug/pulls/new'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNewRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
     }
-    '/_app/repositories/$owner/$repo/branches': {
-      id: '/_app/repositories/$owner/$repo/branches'
-      path: '/branches'
-      fullPath: '/repositories/$owner/$repo/branches'
-      preLoaderRoute: typeof AppRepositoriesOwnerRepoBranchesRouteImport
-      parentRoute: typeof AppRepositoriesOwnerRepoRoute
+    '/_app/@{$workspaceSlug}/$repoSlug/pulls/$number': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug/pulls/$number'
+      path: '/pulls/$number'
+      fullPath: '/@{$workspaceSlug}/$repoSlug/pulls/$number'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
     }
-    '/_app/repositories/$owner/$repo/stacks/': {
-      id: '/_app/repositories/$owner/$repo/stacks/'
-      path: '/stacks'
-      fullPath: '/repositories/$owner/$repo/stacks/'
-      preLoaderRoute: typeof AppRepositoriesOwnerRepoStacksIndexRouteImport
-      parentRoute: typeof AppRepositoriesOwnerRepoRoute
-    }
-    '/_app/repositories/$owner/$repo/pulls/': {
-      id: '/_app/repositories/$owner/$repo/pulls/'
-      path: '/pulls'
-      fullPath: '/repositories/$owner/$repo/pulls/'
-      preLoaderRoute: typeof AppRepositoriesOwnerRepoPullsIndexRouteImport
-      parentRoute: typeof AppRepositoriesOwnerRepoRoute
+    '/_app/@{$workspaceSlug}/$repoSlug/commit/$oid': {
+      id: '/_app/@{$workspaceSlug}/$repoSlug/commit/$oid'
+      path: '/commit/$oid'
+      fullPath: '/@{$workspaceSlug}/$repoSlug/commit/$oid'
+      preLoaderRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugCommitOidRouteImport
+      parentRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRoute
     }
     '/api/raw/$owner/$repo/$oid/$': {
       id: '/api/raw/$owner/$repo/$oid/$'
@@ -552,79 +616,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiRawOwnerRepoOidSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_app/repositories/$owner/$repo/stacks/$stackId': {
-      id: '/_app/repositories/$owner/$repo/stacks/$stackId'
-      path: '/stacks/$stackId'
-      fullPath: '/repositories/$owner/$repo/stacks/$stackId'
-      preLoaderRoute: typeof AppRepositoriesOwnerRepoStacksStackIdRouteImport
-      parentRoute: typeof AppRepositoriesOwnerRepoRoute
-    }
-    '/_app/repositories/$owner/$repo/pulls/new': {
-      id: '/_app/repositories/$owner/$repo/pulls/new'
-      path: '/pulls/new'
-      fullPath: '/repositories/$owner/$repo/pulls/new'
-      preLoaderRoute: typeof AppRepositoriesOwnerRepoPullsNewRouteImport
-      parentRoute: typeof AppRepositoriesOwnerRepoRoute
-    }
-    '/_app/repositories/$owner/$repo/pulls/$number': {
-      id: '/_app/repositories/$owner/$repo/pulls/$number'
-      path: '/pulls/$number'
-      fullPath: '/repositories/$owner/$repo/pulls/$number'
-      preLoaderRoute: typeof AppRepositoriesOwnerRepoPullsNumberRouteImport
-      parentRoute: typeof AppRepositoriesOwnerRepoRoute
-    }
-    '/_app/repositories/$owner/$repo/commit/$oid': {
-      id: '/_app/repositories/$owner/$repo/commit/$oid'
-      path: '/commit/$oid'
-      fullPath: '/repositories/$owner/$repo/commit/$oid'
-      preLoaderRoute: typeof AppRepositoriesOwnerRepoCommitOidRouteImport
-      parentRoute: typeof AppRepositoriesOwnerRepoRoute
-    }
   }
 }
 
-interface AppRepositoriesOwnerRepoRouteChildren {
-  AppRepositoriesOwnerRepoBranchesRoute: typeof AppRepositoriesOwnerRepoBranchesRoute
-  AppRepositoriesOwnerRepoCommitsRoute: typeof AppRepositoriesOwnerRepoCommitsRoute
-  AppRepositoriesOwnerRepoMergeQueueRoute: typeof AppRepositoriesOwnerRepoMergeQueueRoute
-  AppRepositoriesOwnerRepoSettingsRoute: typeof AppRepositoriesOwnerRepoSettingsRoute
-  AppRepositoriesOwnerRepoCommitOidRoute: typeof AppRepositoriesOwnerRepoCommitOidRoute
-  AppRepositoriesOwnerRepoPullsNumberRoute: typeof AppRepositoriesOwnerRepoPullsNumberRoute
-  AppRepositoriesOwnerRepoPullsNewRoute: typeof AppRepositoriesOwnerRepoPullsNewRoute
-  AppRepositoriesOwnerRepoStacksStackIdRoute: typeof AppRepositoriesOwnerRepoStacksStackIdRoute
-  AppRepositoriesOwnerRepoPullsIndexRoute: typeof AppRepositoriesOwnerRepoPullsIndexRoute
-  AppRepositoriesOwnerRepoStacksIndexRoute: typeof AppRepositoriesOwnerRepoStacksIndexRoute
+interface AppAtChar123workspaceSlugChar125RepoSlugRouteChildren {
+  AppAtChar123workspaceSlugChar125RepoSlugBranchesRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugBranchesRoute
+  AppAtChar123workspaceSlugChar125RepoSlugCommitsRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugCommitsRoute
+  AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute
+  AppAtChar123workspaceSlugChar125RepoSlugIndexRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugIndexRoute
+  AppAtChar123workspaceSlugChar125RepoSlugCommitOidRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugCommitOidRoute
+  AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRoute
+  AppAtChar123workspaceSlugChar125RepoSlugPullsNewRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugPullsNewRoute
+  AppAtChar123workspaceSlugChar125RepoSlugStacksStackIdRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugStacksStackIdRoute
+  AppAtChar123workspaceSlugChar125RepoSlugChar126SettingsRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugChar126SettingsRoute
+  AppAtChar123workspaceSlugChar125RepoSlugPullsIndexRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugPullsIndexRoute
+  AppAtChar123workspaceSlugChar125RepoSlugStacksIndexRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugStacksIndexRoute
 }
 
-const AppRepositoriesOwnerRepoRouteChildren: AppRepositoriesOwnerRepoRouteChildren =
+const AppAtChar123workspaceSlugChar125RepoSlugRouteChildren: AppAtChar123workspaceSlugChar125RepoSlugRouteChildren =
   {
-    AppRepositoriesOwnerRepoBranchesRoute:
-      AppRepositoriesOwnerRepoBranchesRoute,
-    AppRepositoriesOwnerRepoCommitsRoute: AppRepositoriesOwnerRepoCommitsRoute,
-    AppRepositoriesOwnerRepoMergeQueueRoute:
-      AppRepositoriesOwnerRepoMergeQueueRoute,
-    AppRepositoriesOwnerRepoSettingsRoute:
-      AppRepositoriesOwnerRepoSettingsRoute,
-    AppRepositoriesOwnerRepoCommitOidRoute:
-      AppRepositoriesOwnerRepoCommitOidRoute,
-    AppRepositoriesOwnerRepoPullsNumberRoute:
-      AppRepositoriesOwnerRepoPullsNumberRoute,
-    AppRepositoriesOwnerRepoPullsNewRoute:
-      AppRepositoriesOwnerRepoPullsNewRoute,
-    AppRepositoriesOwnerRepoStacksStackIdRoute:
-      AppRepositoriesOwnerRepoStacksStackIdRoute,
-    AppRepositoriesOwnerRepoPullsIndexRoute:
-      AppRepositoriesOwnerRepoPullsIndexRoute,
-    AppRepositoriesOwnerRepoStacksIndexRoute:
-      AppRepositoriesOwnerRepoStacksIndexRoute,
+    AppAtChar123workspaceSlugChar125RepoSlugBranchesRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugBranchesRoute,
+    AppAtChar123workspaceSlugChar125RepoSlugCommitsRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugCommitsRoute,
+    AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugMergeQueueRoute,
+    AppAtChar123workspaceSlugChar125RepoSlugIndexRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugIndexRoute,
+    AppAtChar123workspaceSlugChar125RepoSlugCommitOidRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugCommitOidRoute,
+    AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugPullsNumberRoute,
+    AppAtChar123workspaceSlugChar125RepoSlugPullsNewRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugPullsNewRoute,
+    AppAtChar123workspaceSlugChar125RepoSlugStacksStackIdRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugStacksStackIdRoute,
+    AppAtChar123workspaceSlugChar125RepoSlugChar126SettingsRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugChar126SettingsRoute,
+    AppAtChar123workspaceSlugChar125RepoSlugPullsIndexRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugPullsIndexRoute,
+    AppAtChar123workspaceSlugChar125RepoSlugStacksIndexRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugStacksIndexRoute,
   }
 
-const AppRepositoriesOwnerRepoRouteWithChildren =
-  AppRepositoriesOwnerRepoRoute._addFileChildren(
-    AppRepositoriesOwnerRepoRouteChildren,
+const AppAtChar123workspaceSlugChar125RepoSlugRouteWithChildren =
+  AppAtChar123workspaceSlugChar125RepoSlugRoute._addFileChildren(
+    AppAtChar123workspaceSlugChar125RepoSlugRouteChildren,
+  )
+
+interface AppAtChar123workspaceSlugChar125RouteChildren {
+  AppAtChar123workspaceSlugChar125RepoSlugRoute: typeof AppAtChar123workspaceSlugChar125RepoSlugRouteWithChildren
+  AppAtChar123workspaceSlugChar125IndexRoute: typeof AppAtChar123workspaceSlugChar125IndexRoute
+}
+
+const AppAtChar123workspaceSlugChar125RouteChildren: AppAtChar123workspaceSlugChar125RouteChildren =
+  {
+    AppAtChar123workspaceSlugChar125RepoSlugRoute:
+      AppAtChar123workspaceSlugChar125RepoSlugRouteWithChildren,
+    AppAtChar123workspaceSlugChar125IndexRoute:
+      AppAtChar123workspaceSlugChar125IndexRoute,
+  }
+
+const AppAtChar123workspaceSlugChar125RouteWithChildren =
+  AppAtChar123workspaceSlugChar125Route._addFileChildren(
+    AppAtChar123workspaceSlugChar125RouteChildren,
   )
 
 interface AppRouteChildren {
+  AppAtChar123workspaceSlugChar125Route: typeof AppAtChar123workspaceSlugChar125RouteWithChildren
   AppGraphRoute: typeof AppGraphRoute
   AppSettingsAgentsRoute: typeof AppSettingsAgentsRoute
   AppSettingsTokensRoute: typeof AppSettingsTokensRoute
@@ -632,11 +691,11 @@ interface AppRouteChildren {
   AppRepositoriesIndexRoute: typeof AppRepositoriesIndexRoute
   AppWorkspacesIndexRoute: typeof AppWorkspacesIndexRoute
   AppProjectsOwnerSlugRoute: typeof AppProjectsOwnerSlugRoute
-  AppRepositoriesOwnerRepoRoute: typeof AppRepositoriesOwnerRepoRouteWithChildren
-  AppWorkspacesWorkspaceSlugIndexRoute: typeof AppWorkspacesWorkspaceSlugIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAtChar123workspaceSlugChar125Route:
+    AppAtChar123workspaceSlugChar125RouteWithChildren,
   AppGraphRoute: AppGraphRoute,
   AppSettingsAgentsRoute: AppSettingsAgentsRoute,
   AppSettingsTokensRoute: AppSettingsTokensRoute,
@@ -644,8 +703,6 @@ const AppRouteChildren: AppRouteChildren = {
   AppRepositoriesIndexRoute: AppRepositoriesIndexRoute,
   AppWorkspacesIndexRoute: AppWorkspacesIndexRoute,
   AppProjectsOwnerSlugRoute: AppProjectsOwnerSlugRoute,
-  AppRepositoriesOwnerRepoRoute: AppRepositoriesOwnerRepoRouteWithChildren,
-  AppWorkspacesWorkspaceSlugIndexRoute: AppWorkspacesWorkspaceSlugIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

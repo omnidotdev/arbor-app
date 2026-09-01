@@ -91,8 +91,8 @@ export function FileBrowser({
               className="flex items-center gap-3 px-4 py-2.5 transition-colors hover:bg-muted/50"
             >
               <Link
-                to="/repositories/$owner/$repo"
-                params={{ owner, repo }}
+                to="/@{$workspaceSlug}/$repoSlug"
+                params={{ workspaceSlug: owner, repoSlug: repo }}
                 search={{ ref: branch, path: fullPath }}
                 className="flex min-w-0 flex-1 items-center gap-3"
               >
@@ -105,8 +105,12 @@ export function FileBrowser({
                 {lastCommit ? (
                   <>
                     <Link
-                      to="/repositories/$owner/$repo/commit/$oid"
-                      params={{ owner, repo, oid: lastCommit.commitOid }}
+                      to="/@{$workspaceSlug}/$repoSlug/commit/$oid"
+                      params={{
+                        workspaceSlug: owner,
+                        repoSlug: repo,
+                        oid: lastCommit.commitOid,
+                      }}
                       className="min-w-0 truncate text-muted-foreground text-xs hover:text-primary-600 hover:underline dark:hover:text-primary-400"
                       title={lastCommit.messageHeadline}
                     >

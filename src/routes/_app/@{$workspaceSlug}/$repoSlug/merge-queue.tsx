@@ -12,7 +12,7 @@ import {
 import mergeQueueEntriesOptions from "@/lib/options/mergeQueueEntries.options";
 
 export const Route = createFileRoute(
-  "/_app/repositories/$owner/$repo/merge-queue",
+  "/_app/@{$workspaceSlug}/$repoSlug/merge-queue",
 )({
   component: MergeQueuePage,
 });
@@ -43,7 +43,7 @@ function stateStyle(state: string): string {
 }
 
 function MergeQueuePage() {
-  const { owner, repo } = Route.useParams();
+  const { workspaceSlug: owner, repoSlug: repo } = Route.useParams();
 
   const entriesQuery = useQuery(
     mergeQueueEntriesOptions({ ownerSlug: owner, repoSlug: repo }),
@@ -64,8 +64,8 @@ function MergeQueuePage() {
           </Link>
           <span className="mx-2 text-muted-foreground">/</span>
           <Link
-            to="/repositories/$owner/$repo"
-            params={{ owner, repo }}
+            to="/@{$workspaceSlug}/$repoSlug"
+            params={{ workspaceSlug: owner, repoSlug: repo }}
             className="hover:underline"
           >
             {repo}
@@ -76,16 +76,16 @@ function MergeQueuePage() {
       {/* Navigation tabs */}
       <div className="mb-6 flex gap-6 overflow-x-auto border-b [&>*]:shrink-0">
         <Link
-          to="/repositories/$owner/$repo"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitBranch className="h-4 w-4" />
           Code
         </Link>
         <Link
-          to="/repositories/$owner/$repo/commits"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/commits"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           search={{ ref: "master" }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
@@ -93,32 +93,32 @@ function MergeQueuePage() {
           Commits
         </Link>
         <Link
-          to="/repositories/$owner/$repo/branches"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/branches"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitFork className="h-4 w-4" />
           Branches
         </Link>
         <Link
-          to="/repositories/$owner/$repo/pulls"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/pulls"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitPullRequest className="h-4 w-4" />
           Pull Requests
         </Link>
         <Link
-          to="/repositories/$owner/$repo/stacks"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/stacks"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <Layers className="h-4 w-4" />
           Stacks
         </Link>
         <Link
-          to="/repositories/$owner/$repo/merge-queue"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/merge-queue"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-primary border-b-2 px-1 pb-3 font-medium text-sm"
         >
           <ListChecks className="h-4 w-4" />
@@ -168,18 +168,22 @@ function MergeQueuePage() {
                 <div className="flex flex-wrap items-center gap-2">
                   {entry.stack ? (
                     <Link
-                      to="/repositories/$owner/$repo/stacks/$stackId"
-                      params={{ owner, repo, stackId: entry.stack.rowId }}
+                      to="/@{$workspaceSlug}/$repoSlug/stacks/$stackId"
+                      params={{
+                        workspaceSlug: owner,
+                        repoSlug: repo,
+                        stackId: entry.stack.rowId,
+                      }}
                       className="break-words font-medium text-primary-600 hover:underline dark:text-primary-400"
                     >
                       {entry.stack.title}
                     </Link>
                   ) : entry.pullRequest ? (
                     <Link
-                      to="/repositories/$owner/$repo/pulls/$number"
+                      to="/@{$workspaceSlug}/$repoSlug/pulls/$number"
                       params={{
-                        owner,
-                        repo,
+                        workspaceSlug: owner,
+                        repoSlug: repo,
                         number: String(entry.pullRequest.number),
                       }}
                       className="break-words font-medium text-primary-600 hover:underline dark:text-primary-400"

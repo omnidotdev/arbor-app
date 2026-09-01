@@ -13,7 +13,7 @@ import commitDetailOptions from "@/lib/options/commitDetail.options";
 import getRelativeTime from "@/lib/util/getRelativeTime";
 
 export const Route = createFileRoute(
-  "/_app/repositories/$owner/$repo/commit/$oid",
+  "/_app/@{$workspaceSlug}/$repoSlug/commit/$oid",
 )({
   component: CommitDetailPage,
 });
@@ -22,7 +22,7 @@ export const Route = createFileRoute(
 const anchorIdFor = (path: string) => `file-diff:${path}`;
 
 function CommitDetailPage() {
-  const { owner, repo, oid } = Route.useParams();
+  const { workspaceSlug: owner, repoSlug: repo, oid } = Route.useParams();
 
   const [mode, setMode] = useDiffViewMode();
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
@@ -60,8 +60,8 @@ function CommitDetailPage() {
           </Link>
           <span className="mx-2 text-muted-foreground">/</span>
           <Link
-            to="/repositories/$owner/$repo"
-            params={{ owner, repo }}
+            to="/@{$workspaceSlug}/$repoSlug"
+            params={{ workspaceSlug: owner, repoSlug: repo }}
             className="hover:underline"
           >
             {repo}
@@ -72,16 +72,16 @@ function CommitDetailPage() {
       {/* Navigation tabs */}
       <div className="mb-6 flex gap-6 overflow-x-auto border-b [&>*]:shrink-0">
         <Link
-          to="/repositories/$owner/$repo"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitBranch className="h-4 w-4" />
           Code
         </Link>
         <Link
-          to="/repositories/$owner/$repo/commits"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/commits"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           search={{ ref: undefined }}
           className="flex items-center gap-2 border-primary border-b-2 px-1 pb-3 font-medium text-sm"
         >
@@ -89,16 +89,16 @@ function CommitDetailPage() {
           Commits
         </Link>
         <Link
-          to="/repositories/$owner/$repo/branches"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/branches"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitFork className="h-4 w-4" />
           Branches
         </Link>
         <Link
-          to="/repositories/$owner/$repo/pulls"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/pulls"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitPullRequest className="h-4 w-4" />
@@ -118,8 +118,8 @@ function CommitDetailPage() {
             This commit does not exist or you do not have access to it.
           </p>
           <Link
-            to="/repositories/$owner/$repo/commits"
-            params={{ owner, repo }}
+            to="/@{$workspaceSlug}/$repoSlug/commits"
+            params={{ workspaceSlug: owner, repoSlug: repo }}
             search={{ ref: undefined }}
             className="mt-4 inline-block text-primary-600 text-sm hover:underline dark:text-primary-400"
           >
@@ -162,8 +162,12 @@ function CommitDetailPage() {
                 <span className="flex items-center gap-1.5">
                   parent
                   <Link
-                    to="/repositories/$owner/$repo/commit/$oid"
-                    params={{ owner, repo, oid: parentOid }}
+                    to="/@{$workspaceSlug}/$repoSlug/commit/$oid"
+                    params={{
+                      workspaceSlug: owner,
+                      repoSlug: repo,
+                      oid: parentOid,
+                    }}
                     className="rounded bg-muted px-2 py-0.5 font-mono text-primary-600 text-xs hover:underline dark:text-primary-400"
                   >
                     {parentOid.slice(0, 7)}

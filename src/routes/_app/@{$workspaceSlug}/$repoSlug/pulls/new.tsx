@@ -15,7 +15,7 @@ import pullRequestsOptions from "@/lib/options/pullRequests.options";
 import repositoryWithBranchesOptions from "@/lib/options/repositoryWithBranches.options";
 
 export const Route = createFileRoute(
-  "/_app/repositories/$owner/$repo/pulls/new",
+  "/_app/@{$workspaceSlug}/$repoSlug/pulls/new",
 )({
   component: NewPullRequestPage,
 });
@@ -27,7 +27,7 @@ interface Branch {
 }
 
 function NewPullRequestPage() {
-  const { owner, repo } = Route.useParams();
+  const { workspaceSlug: owner, repoSlug: repo } = Route.useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -83,13 +83,17 @@ function NewPullRequestPage() {
       });
       if (payload.number != null) {
         navigate({
-          to: "/repositories/$owner/$repo/pulls/$number",
-          params: { owner, repo, number: String(payload.number) },
+          to: "/@{$workspaceSlug}/$repoSlug/pulls/$number",
+          params: {
+            workspaceSlug: owner,
+            repoSlug: repo,
+            number: String(payload.number),
+          },
         });
       } else {
         navigate({
-          to: "/repositories/$owner/$repo/pulls",
-          params: { owner, repo },
+          to: "/@{$workspaceSlug}/$repoSlug/pulls",
+          params: { workspaceSlug: owner, repoSlug: repo },
         });
       }
     },
@@ -118,8 +122,8 @@ function NewPullRequestPage() {
           </Link>
           <span className="mx-2 text-muted-foreground">/</span>
           <Link
-            to="/repositories/$owner/$repo"
-            params={{ owner, repo }}
+            to="/@{$workspaceSlug}/$repoSlug"
+            params={{ workspaceSlug: owner, repoSlug: repo }}
             className="hover:underline"
           >
             {repo}
@@ -130,16 +134,16 @@ function NewPullRequestPage() {
       {/* Navigation tabs */}
       <div className="mb-6 flex gap-6 overflow-x-auto border-b [&>*]:shrink-0">
         <Link
-          to="/repositories/$owner/$repo"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitBranch className="h-4 w-4" />
           Code
         </Link>
         <Link
-          to="/repositories/$owner/$repo/commits"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/commits"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           search={{ ref: defaultBranch }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
@@ -147,32 +151,32 @@ function NewPullRequestPage() {
           Commits
         </Link>
         <Link
-          to="/repositories/$owner/$repo/branches"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/branches"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitFork className="h-4 w-4" />
           Branches
         </Link>
         <Link
-          to="/repositories/$owner/$repo/pulls"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/pulls"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-primary border-b-2 px-1 pb-3 font-medium text-sm"
         >
           <GitPullRequest className="h-4 w-4" />
           Pull Requests
         </Link>
         <Link
-          to="/repositories/$owner/$repo/stacks"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/stacks"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <Layers className="h-4 w-4" />
           Stacks
         </Link>
         <Link
-          to="/repositories/$owner/$repo/merge-queue"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/merge-queue"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <ListChecks className="h-4 w-4" />
@@ -203,8 +207,8 @@ function NewPullRequestPage() {
             Create another branch to compare changes and open a pull request.
           </p>
           <Link
-            to="/repositories/$owner/$repo/branches"
-            params={{ owner, repo }}
+            to="/@{$workspaceSlug}/$repoSlug/branches"
+            params={{ workspaceSlug: owner, repoSlug: repo }}
             className="mt-4 inline-block text-primary-600 text-sm hover:underline dark:text-primary-400"
           >
             Manage branches

@@ -64,8 +64,8 @@ export function RepositoryBlastRadiusPanel({
             >
               {entry.slug ? (
                 <Link
-                  to="/repositories/$owner/$repo"
-                  params={{ owner: entryOwner, repo: entry.slug }}
+                  to="/@{$workspaceSlug}/$repoSlug"
+                  params={{ workspaceSlug: entryOwner, repoSlug: entry.slug }}
                   className="break-all text-primary-600 hover:underline dark:text-primary-400"
                 >
                   {entryOwner}/{entry.name}

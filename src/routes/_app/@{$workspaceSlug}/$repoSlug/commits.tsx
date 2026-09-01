@@ -11,12 +11,12 @@ const searchSchema = z.object({
   ref: z.string().optional(),
 });
 
-export const Route = createFileRoute("/_app/repositories/$owner/$repo/commits")(
-  {
-    validateSearch: searchSchema,
-    component: CommitsPage,
-  },
-);
+export const Route = createFileRoute(
+  "/_app/@{$workspaceSlug}/$repoSlug/commits",
+)({
+  validateSearch: searchSchema,
+  component: CommitsPage,
+});
 
 interface Branch {
   name: string;
@@ -82,7 +82,7 @@ async function fetchCommits(
 }
 
 function CommitsPage() {
-  const { owner, repo } = Route.useParams();
+  const { workspaceSlug: owner, repoSlug: repo } = Route.useParams();
   const { ref } = Route.useSearch();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
@@ -108,8 +108,8 @@ function CommitsPage() {
   const handleBranchChange = (branch: string) => {
     setPage(1);
     navigate({
-      to: "/repositories/$owner/$repo/commits",
-      params: { owner, repo },
+      to: "/@{$workspaceSlug}/$repoSlug/commits",
+      params: { workspaceSlug: owner, repoSlug: repo },
       search: { ref: branch },
     });
   };
@@ -135,8 +135,8 @@ function CommitsPage() {
           </Link>
           <span className="mx-2 text-muted-foreground">/</span>
           <Link
-            to="/repositories/$owner/$repo"
-            params={{ owner, repo }}
+            to="/@{$workspaceSlug}/$repoSlug"
+            params={{ workspaceSlug: owner, repoSlug: repo }}
             className="hover:underline"
           >
             {repo}
@@ -147,16 +147,16 @@ function CommitsPage() {
       {/* Navigation tabs */}
       <div className="mb-6 flex gap-6 overflow-x-auto border-b [&>*]:shrink-0">
         <Link
-          to="/repositories/$owner/$repo"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitBranch className="h-4 w-4" />
           Code
         </Link>
         <Link
-          to="/repositories/$owner/$repo/commits"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/commits"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           search={{ ref: currentBranch }}
           className="flex items-center gap-2 border-primary border-b-2 px-1 pb-3 font-medium text-sm"
         >
@@ -164,16 +164,16 @@ function CommitsPage() {
           Commits
         </Link>
         <Link
-          to="/repositories/$owner/$repo/branches"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/branches"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitFork className="h-4 w-4" />
           Branches
         </Link>
         <Link
-          to="/repositories/$owner/$repo/pulls"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/pulls"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitPullRequest className="h-4 w-4" />

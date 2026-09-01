@@ -22,8 +22,8 @@ export function BreadcrumbNav({
   return (
     <nav className="flex flex-wrap items-center gap-1 text-sm">
       <Link
-        to="/repositories/$owner/$repo"
-        params={{ owner, repo }}
+        to="/@{$workspaceSlug}/$repoSlug"
+        params={{ workspaceSlug: owner, repoSlug: repo }}
         search={{ ref: branch }}
         className="flex items-center gap-1 text-primary-600 hover:underline dark:text-primary-400"
       >
@@ -42,8 +42,8 @@ export function BreadcrumbNav({
               <span className="font-medium">{part}</span>
             ) : (
               <Link
-                to="/repositories/$owner/$repo"
-                params={{ owner, repo }}
+                to="/@{$workspaceSlug}/$repoSlug"
+                params={{ workspaceSlug: owner, repoSlug: repo }}
                 search={{ ref: branch, path: partPath }}
                 className="text-primary-600 hover:underline dark:text-primary-400"
               >

@@ -42,8 +42,8 @@ export function LatestCommitBar({
       </span>
 
       <Link
-        to="/repositories/$owner/$repo/commit/$oid"
-        params={{ owner, repo, oid }}
+        to="/@{$workspaceSlug}/$repoSlug/commit/$oid"
+        params={{ workspaceSlug: owner, repoSlug: repo, oid }}
         className="min-w-0 flex-1 truncate text-foreground hover:text-primary-600 hover:underline dark:hover:text-primary-400"
         title={messageHeadline}
       >
@@ -52,8 +52,8 @@ export function LatestCommitBar({
 
       <div className="flex shrink-0 items-center gap-2 text-muted-foreground">
         <Link
-          to="/repositories/$owner/$repo/commit/$oid"
-          params={{ owner, repo, oid }}
+          to="/@{$workspaceSlug}/$repoSlug/commit/$oid"
+          params={{ workspaceSlug: owner, repoSlug: repo, oid }}
           className="rounded bg-muted px-2 py-0.5 font-mono text-primary-600 text-xs hover:underline dark:text-primary-400"
         >
           {shortSha}

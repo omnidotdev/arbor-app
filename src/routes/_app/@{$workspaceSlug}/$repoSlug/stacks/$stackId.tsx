@@ -24,7 +24,7 @@ import stackOptions from "@/lib/options/stack.options";
 import type { StackQuery } from "@/generated/graphql";
 
 export const Route = createFileRoute(
-  "/_app/repositories/$owner/$repo/stacks/$stackId",
+  "/_app/@{$workspaceSlug}/$repoSlug/stacks/$stackId",
 )({
   component: StackDetailPage,
 });
@@ -96,7 +96,7 @@ function evaluateMergeability(checks: readonly CheckNode[]): {
 }
 
 function StackDetailPage() {
-  const { owner, repo, stackId } = Route.useParams();
+  const { workspaceSlug: owner, repoSlug: repo, stackId } = Route.useParams();
 
   const stackQuery = useQuery(stackOptions({ rowId: stackId }));
   const stack = stackQuery.data?.stack;
@@ -152,8 +152,8 @@ function StackDetailPage() {
           </Link>
           <span className="mx-2 text-muted-foreground">/</span>
           <Link
-            to="/repositories/$owner/$repo"
-            params={{ owner, repo }}
+            to="/@{$workspaceSlug}/$repoSlug"
+            params={{ workspaceSlug: owner, repoSlug: repo }}
             className="hover:underline"
           >
             {repo}
@@ -164,16 +164,16 @@ function StackDetailPage() {
       {/* Navigation tabs */}
       <div className="mb-6 flex gap-6 overflow-x-auto border-b [&>*]:shrink-0">
         <Link
-          to="/repositories/$owner/$repo"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitBranch className="h-4 w-4" />
           Code
         </Link>
         <Link
-          to="/repositories/$owner/$repo/commits"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/commits"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           search={{ ref: stack?.baseBranch ?? "master" }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
@@ -181,32 +181,32 @@ function StackDetailPage() {
           Commits
         </Link>
         <Link
-          to="/repositories/$owner/$repo/branches"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/branches"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitFork className="h-4 w-4" />
           Branches
         </Link>
         <Link
-          to="/repositories/$owner/$repo/pulls"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/pulls"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <GitPullRequest className="h-4 w-4" />
           Pull Requests
         </Link>
         <Link
-          to="/repositories/$owner/$repo/stacks"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/stacks"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-primary border-b-2 px-1 pb-3 font-medium text-sm"
         >
           <Layers className="h-4 w-4" />
           Stacks
         </Link>
         <Link
-          to="/repositories/$owner/$repo/merge-queue"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/merge-queue"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="flex items-center gap-2 border-transparent border-b-2 px-1 pb-3 text-muted-foreground text-sm hover:text-foreground"
         >
           <ListChecks className="h-4 w-4" />
@@ -216,8 +216,8 @@ function StackDetailPage() {
 
       <div className="mb-4">
         <Link
-          to="/repositories/$owner/$repo/stacks"
-          params={{ owner, repo }}
+          to="/@{$workspaceSlug}/$repoSlug/stacks"
+          params={{ workspaceSlug: owner, repoSlug: repo }}
           className="text-muted-foreground text-sm hover:underline"
         >
           &larr; Back to stacks
@@ -327,10 +327,10 @@ function StackDetailPage() {
                           )}
                           {change.pullRequest && (
                             <Link
-                              to="/repositories/$owner/$repo/pulls/$number"
+                              to="/@{$workspaceSlug}/$repoSlug/pulls/$number"
                               params={{
-                                owner,
-                                repo,
+                                workspaceSlug: owner,
+                                repoSlug: repo,
                                 number: String(change.pullRequest.number),
                               }}
                               className="text-primary-600 text-xs hover:underline dark:text-primary-400"

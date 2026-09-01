@@ -111,7 +111,7 @@ function WorkspacesPage() {
             return (
               <Link
                 key={workspace.id}
-                to="/workspaces/$workspaceSlug"
+                to="/@{$workspaceSlug}"
                 params={{ workspaceSlug: slug }}
                 className="group flex h-full flex-col rounded-lg border border-glow-hover bg-card p-4 transition"
               >
