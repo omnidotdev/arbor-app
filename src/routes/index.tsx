@@ -259,9 +259,9 @@ function Home() {
                     Apply for beta access
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" onClick={handleSignIn}>
+                <Button size="lg" variant="ghost" onClick={handleSignIn}>
                   <GitBranch className="mr-2 h-4 w-4" />
-                  Sign in
+                  Already invited? Sign in
                 </Button>
                 <Button size="lg" variant="outline" asChild>
                   <Link to="/pricing">View Pricing</Link>
@@ -372,9 +372,9 @@ function Home() {
                     Apply for beta access
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" onClick={handleSignIn}>
+                <Button size="lg" variant="ghost" onClick={handleSignIn}>
                   <GitBranch className="mr-2 h-4 w-4" />
-                  Sign in
+                  Already invited? Sign in
                 </Button>
               </>
             )}
