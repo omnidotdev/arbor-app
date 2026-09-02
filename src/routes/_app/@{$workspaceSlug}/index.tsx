@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { AUTH_BASE_URL, CONSOLE_URL } from "@/lib/config/env.config";
+import { ACCOUNT_URL, CONSOLE_URL } from "@/lib/config/env.config";
 import { getOrganizationBySlug } from "@/server/functions/organizations";
 
 export const Route = createFileRoute("/_app/@{$workspaceSlug}/")({
@@ -123,10 +123,10 @@ function WorkspaceDetailPage() {
           <p className="mt-2 text-muted-foreground text-sm">
             Membership and roles are managed in your Omni organization settings
           </p>
-          {AUTH_BASE_URL && workspaceSlug && (
+          {ACCOUNT_URL && workspaceSlug && (
             <Button className="mt-auto" variant="outline" size="sm" asChild>
               <ManageTeamLink
-                identityBaseUrl={AUTH_BASE_URL}
+                accountBaseUrl={ACCOUNT_URL}
                 orgSlug={workspaceSlug}
               >
                 Manage members
@@ -144,10 +144,10 @@ function WorkspaceDetailPage() {
             Organization settings live in Omni; billing lives in your account
           </p>
           <div className="mt-auto flex flex-col gap-2">
-            {AUTH_BASE_URL && workspaceSlug && (
+            {ACCOUNT_URL && workspaceSlug && (
               <Button variant="outline" size="sm" asChild>
                 <ManageTeamLink
-                  identityBaseUrl={AUTH_BASE_URL}
+                  accountBaseUrl={ACCOUNT_URL}
                   orgSlug={workspaceSlug}
                 >
                   Workspace settings
