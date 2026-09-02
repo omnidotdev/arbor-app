@@ -1,4 +1,7 @@
-import { useOrganization } from "@omnidotdev/providers/react";
+import {
+  gatekeeperDashboardUrl,
+  useOrganization,
+} from "@omnidotdev/providers/react";
 import {
   MenuContent,
   MenuItem,
@@ -41,7 +44,9 @@ const WorkspaceSwitcher = () => {
 
   // Org/workspace lifecycle (create, join, list membership) lives on the
   // Gatekeeper identity dashboard, not the account console
-  const orgDashboardUrl = AUTH_BASE_URL ? `${AUTH_BASE_URL}/dashboard` : "";
+  const orgDashboardUrl = AUTH_BASE_URL
+    ? gatekeeperDashboardUrl(AUTH_BASE_URL)
+    : "";
 
   // No workspaces: deep-link out to Gatekeeper to create/join one
   if (!organizations.length) {

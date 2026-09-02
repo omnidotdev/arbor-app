@@ -1,4 +1,7 @@
-import { useOrganization } from "@omnidotdev/providers/react";
+import {
+  gatekeeperDashboardUrl,
+  useOrganization,
+} from "@omnidotdev/providers/react";
 import {
   AvatarFallback,
   AvatarImage,
@@ -32,7 +35,7 @@ function WorkspacesPage() {
 
   const workspaces = orgContext?.organizations ?? [];
   // Workspace membership lifecycle lives on the Gatekeeper identity dashboard
-  const manageUrl = AUTH_BASE_URL ? `${AUTH_BASE_URL}/dashboard` : "";
+  const manageUrl = AUTH_BASE_URL ? gatekeeperDashboardUrl(AUTH_BASE_URL) : "";
 
   const filtered = workspaces.filter((workspace) => {
     if (!searchQuery) return true;

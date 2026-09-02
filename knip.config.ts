@@ -26,10 +26,6 @@ const knipConfig: KnipConfig = {
     "src/lib/config/env.config.ts",
     // WIP: Pull request components not yet integrated
     "src/components/pullRequest/**",
-    "src/lib/options/**",
-    // WIP: Invite infrastructure (ready for members page)
-    "src/lib/hooks/useOrganizationMembers.ts",
-    "src/lib/validation/invitation.ts",
   ],
   ignoreDependencies: [
     // used by React Email preview server
