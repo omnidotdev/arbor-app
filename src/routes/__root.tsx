@@ -74,11 +74,12 @@ async function refreshAccessToken(): Promise<string | undefined> {
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   session: ExtendedSession | null;
+  authDegraded: boolean;
   isMaintenanceMode: boolean;
   canAccessArbor: boolean;
 }>()({
   beforeLoad: async () => {
-    const { session } = await fetchSession();
+    const { session, authDegraded } = await fetchSession();
     const typedSession = session as ExtendedSession | null;
     const { isMaintenanceMode } = await fetchMaintenanceMode({
       data: {
@@ -93,7 +94,12 @@ export const Route = createRootRouteWithContext<{
       },
     });
 
-    return { session: typedSession, isMaintenanceMode, canAccessArbor };
+    return {
+      session: typedSession,
+      authDegraded,
+      isMaintenanceMode,
+      canAccessArbor,
+    };
   },
   loader: () => getTheme(),
   head: () => ({

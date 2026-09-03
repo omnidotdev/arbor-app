@@ -8,14 +8,16 @@ import {
   AvatarRoot,
 } from "@omnidotdev/thornberry/avatar";
 import { Badge } from "@omnidotdev/thornberry/badge";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute, useRouteContext } from "@tanstack/react-router";
 import { Building2, Search, Users } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import CreateWorkspaceButton from "@/components/workspaces/CreateWorkspaceButton";
+import signIn from "@/lib/auth/signIn";
 import { AUTH_BASE_URL } from "@/lib/config/env.config";
+import { signOutLocal } from "@/server/functions/auth";
 
 export const Route = createFileRoute("/_app/workspaces/")({
   component: WorkspacesPage,
@@ -32,6 +34,13 @@ const humanizeLabel = (value: string): string =>
 function WorkspacesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const orgContext = useOrganization();
+  // A degraded session (refresh-token grant failed) is authenticated but has no
+  // access token, so organizations came back empty. Without a signal it renders
+  // identically to a genuinely workspace-less user; distinguish it so the user
+  // gets a re-login prompt instead of a dead-end empty state.
+  const { authDegraded } = useRouteContext({ strict: false }) as {
+    authDegraded?: boolean;
+  };
 
   const workspaces = orgContext?.organizations ?? [];
   // Workspace membership lifecycle lives on the Gatekeeper identity dashboard
@@ -78,7 +87,35 @@ function WorkspacesPage() {
         </div>
       </div>
 
-      {filtered.length === 0 ? (
+      {workspaces.length === 0 && authDegraded ? (
+        <div className="rounded-lg border bg-card p-8 text-center">
+          <Users className="mx-auto h-12 w-12 text-muted-foreground" />
+          <h3 className="mt-4 font-semibold text-lg">Your session expired</h3>
+          <p className="mt-2 text-muted-foreground text-sm">
+            We could not refresh your session, so your workspaces could not be
+            loaded. Sign in again to restore access.
+          </p>
+          <div className="mt-4 flex items-center justify-center">
+            <Button
+              onClick={async () => {
+                // The better-auth session is still valid (only the OAuth
+                // refresh token is dead), so signing in with an active session
+                // just bounces back to the callback without re-authorizing.
+                // Clear the local session (and auth cache) first so the OAuth
+                // redirect actually fires and mints a fresh token family.
+                try {
+                  await signOutLocal();
+                } catch {
+                  // Proceed with re-auth even if local sign-out fails.
+                }
+                await signIn({ redirectUrl: "/workspaces" });
+              }}
+            >
+              Sign in again
+            </Button>
+          </div>
+        </div>
+      ) : filtered.length === 0 ? (
         <div className="rounded-lg border bg-card p-8 text-center">
           <Building2 className="mx-auto h-12 w-12 text-muted-foreground" />
           <h3 className="mt-4 font-semibold text-lg">

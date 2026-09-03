@@ -70,6 +70,7 @@ export function getRouter() {
     context: {
       queryClient,
       session: null,
+      authDegraded: false,
       isMaintenanceMode: false,
       // placeholder; the real value is resolved server-side in __root beforeLoad
       canAccessArbor: false,

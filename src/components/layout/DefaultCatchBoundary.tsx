@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import signIn from "@/lib/auth/signIn";
 import { isBetaAccessError, redirectToApply } from "@/lib/beta/betaAccessError";
 import { isSessionAuthError } from "@/lib/util/graphqlError";
+import { signOutLocal } from "@/server/functions/auth";
 
 import type { ErrorComponentProps } from "@tanstack/react-router";
 
@@ -33,12 +34,21 @@ const DefaultCatchBoundary = ({ error }: ErrorComponentProps) => {
   // An expired session reads as an authorization error; offer re-auth back to
   // the current location instead of a dead-end generic error
   if (isSessionAuthError(error)) {
-    const handleSignIn = () => {
+    const handleSignIn = async () => {
       const redirectUrl =
         typeof window !== "undefined"
           ? window.location.pathname + window.location.search
           : "/";
-      signIn({ redirectUrl });
+      // The better-auth session is still valid (only the OAuth refresh token is
+      // dead), so signing in with an active session just bounces back to the
+      // callback without re-authorizing. Clear the local session first so the
+      // OAuth redirect actually fires and mints a fresh token family.
+      try {
+        await signOutLocal();
+      } catch {
+        // Proceed with re-auth even if local sign-out fails.
+      }
+      await signIn({ redirectUrl });
     };
 
     return (
