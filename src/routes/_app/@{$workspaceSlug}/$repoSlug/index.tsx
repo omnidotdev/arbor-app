@@ -289,9 +289,15 @@ function RepositoryDetailPage() {
     }
   };
 
-  // Only show empty state if branches loaded and are empty, and we're not viewing a file
+  // Only show empty state once the repo AND its branches have actually resolved.
+  // gitOwner comes from the repository query, and the branch query is gated on it;
+  // a gated (disabled) query reports isLoading:false, so without the gitOwner guard
+  // the page briefly renders "empty" before the owner resolves and the fetch runs.
   const isEmptyRepo =
-    !branchesQuery.isLoading && branches.length === 0 && !viewingFile;
+    !!gitOwner &&
+    !branchesQuery.isLoading &&
+    branches.length === 0 &&
+    !viewingFile;
 
   return (
     <div className="container mx-auto max-w-6xl px-4 py-6 sm:px-6">
@@ -378,8 +384,10 @@ function RepositoryDetailPage() {
         </Link>
       </div>
 
-      {branchesQuery.isLoading && !viewingFile ? (
-        /* Loading state - but not if we're already viewing a file */
+      {(repositoryQuery.isLoading || branchesQuery.isLoading) &&
+      !viewingFile ? (
+        /* Loading while the repo (and thus gitOwner) or its branches resolve;
+           not shown when already viewing a file */
         <div className="flex items-center justify-center py-12">
           <div className="text-muted-foreground">Loading repository...</div>
         </div>
