@@ -28,6 +28,7 @@ import {
   LogOut,
   Network,
 } from "lucide-react";
+import { useEffect } from "react";
 
 import { ModeToggle } from "@/components/layout/ModeToggle";
 import WorkspaceSwitcher from "@/components/layout/WorkspaceSwitcher";
@@ -63,6 +64,15 @@ const AppSidebar = ({ user, ...rest }: Props) => {
   // On mobile the sheet trigger sits at the top right, so open the sidebar from
   // the right to match; keep it on the left on desktop
   const { isMobile, setOpenMobile } = useSidebar();
+
+  // Close the mobile sidebar on any route change, however it was triggered (a
+  // nav link, the workspace switcher, a breadcrumb, or a programmatic navigate),
+  // not only the links that call closeOnMobileNav below. `pathname` is the
+  // trigger, deliberately not read in the body.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: pathname is a route-change trigger, not a value the effect reads
+  useEffect(() => {
+    if (isMobile) setOpenMobile(false);
+  }, [pathname, isMobile, setOpenMobile]);
 
   const closeOnMobileNav = () => {
     if (isMobile) setOpenMobile(false);
