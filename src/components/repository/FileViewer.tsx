@@ -220,8 +220,9 @@ export function FileViewer({
         </div>
       </div>
 
-      {/* Content */}
-      <div className="relative max-h-[600px] overflow-auto">
+      {/* Content: scroll long lines horizontally, but let height flow with the
+          page (no inner max-height) so there is no nested vertical scrollbar */}
+      <div className="relative overflow-x-auto">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
