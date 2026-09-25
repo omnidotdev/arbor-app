@@ -4,6 +4,7 @@ query RepositoryBySlug($ownerSlug: String!, $repoSlug: String!) {
       slug: { equalTo: $repoSlug }
       or: [
         { owner: { username: { equalTo: $ownerSlug } } }
+        { organization: { slug: { equalTo: $ownerSlug } } }
         { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
       ]
     }
@@ -23,6 +24,7 @@ query RepositoryBySlug($ownerSlug: String!, $repoSlug: String!) {
       organization {
         rowId
         idpOrganizationId
+        slug
       }
       repositoryCollaborators {
         nodes {

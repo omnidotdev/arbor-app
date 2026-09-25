@@ -16,6 +16,7 @@ query Stack($rowId: UUID!) {
       }
       organization {
         idpOrganizationId
+        slug
       }
     }
     author {

@@ -74,8 +74,8 @@ function RepositoriesPage() {
   const organizations =
     orgsData?.organizations?.nodes?.map((org) => ({
       rowId: org.rowId,
-      name: org.idpOrganizationId,
-      slug: org.idpOrganizationId,
+      name: org.slug ?? org.idpOrganizationId,
+      slug: org.slug ?? org.idpOrganizationId,
     })) ?? [];
 
   const createMutation = useMutation({
@@ -172,7 +172,10 @@ function RepositoriesPage() {
     // Filter by owner if specified in URL
     if (ownerFilter) {
       const repoOwner =
-        repo.organization?.idpOrganizationId ?? repo.owner?.username ?? "";
+        repo.organization?.slug ??
+        repo.organization?.idpOrganizationId ??
+        repo.owner?.username ??
+        "";
       if (repoOwner.toLowerCase() !== ownerFilter.toLowerCase()) {
         return false;
       }
@@ -285,6 +288,7 @@ function RepositoriesPage() {
                         to="/@{$workspaceSlug}/$repoSlug"
                         params={{
                           workspaceSlug:
+                            repo.organization?.slug ??
                             repo.organization?.idpOrganizationId ??
                             repo.owner?.username ??
                             "",
@@ -292,7 +296,8 @@ function RepositoriesPage() {
                         }}
                         className="break-all font-semibold text-xl hover:underline"
                       >
-                        {repo.organization?.idpOrganizationId ??
+                        {repo.organization?.slug ??
+                          repo.organization?.idpOrganizationId ??
                           repo.owner?.username}
                         /{repo.name}
                       </Link>
@@ -323,6 +328,7 @@ function RepositoriesPage() {
                         rowId: repo.rowId,
                         name: repo.name,
                         owner:
+                          repo.organization?.slug ??
                           repo.organization?.idpOrganizationId ??
                           repo.owner?.username ??
                           "",

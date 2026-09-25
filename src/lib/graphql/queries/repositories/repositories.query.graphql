@@ -26,6 +26,7 @@ query Repositories($userId: UUID!, $limit: Int) {
       organization {
         rowId
         idpOrganizationId
+        slug
         avatarUrl
       }
     }

@@ -16,6 +16,7 @@ mutation UpdateRepository($input: UpdateRepositoryInput!) {
       organization {
         rowId
         idpOrganizationId
+        slug
       }
     }
   }

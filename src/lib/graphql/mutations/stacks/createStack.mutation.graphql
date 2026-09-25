@@ -15,6 +15,7 @@ mutation CreateStack($input: CreateStackInput!) {
         }
         organization {
           idpOrganizationId
+          slug
         }
       }
     }

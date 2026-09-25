@@ -10,7 +10,7 @@ export interface SelectableRepository {
   slug: string;
   visibility: string;
   owner?: { username: string } | null;
-  organization?: { idpOrganizationId: string } | null;
+  organization?: { idpOrganizationId: string; slug?: string | null } | null;
 }
 
 interface AddRepositoryToProjectDialogProps {
@@ -24,7 +24,10 @@ interface AddRepositoryToProjectDialogProps {
 }
 
 const repoOwnerSlug = (repo: SelectableRepository) =>
-  repo.organization?.idpOrganizationId ?? repo.owner?.username ?? "";
+  repo.organization?.slug ??
+  repo.organization?.idpOrganizationId ??
+  repo.owner?.username ??
+  "";
 
 /**
  * Dialog for attaching one of the caller's repositories to a project. Only

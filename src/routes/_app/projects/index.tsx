@@ -45,8 +45,8 @@ function ProjectsPage() {
   const organizations =
     orgsData?.organizations?.nodes?.map((org) => ({
       rowId: org.rowId,
-      name: org.idpOrganizationId,
-      slug: org.idpOrganizationId,
+      name: org.slug ?? org.idpOrganizationId,
+      slug: org.slug ?? org.idpOrganizationId,
     })) ?? [];
 
   const createMutation = useMutation({
@@ -85,6 +85,7 @@ function ProjectsPage() {
       const project = result.createProject?.project;
       if (project?.slug) {
         const owner =
+          project.organization?.slug ??
           project.organization?.idpOrganizationId ??
           project.owner?.username ??
           "";
@@ -158,6 +159,7 @@ function ProjectsPage() {
         ) : (
           filteredProjects.map((project) => {
             const owner =
+              project.organization?.slug ??
               project.organization?.idpOrganizationId ??
               project.owner?.username ??
               "";
