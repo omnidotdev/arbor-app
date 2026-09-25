@@ -111,7 +111,9 @@ function WorkspaceDetailPage() {
             Browse repositories in this workspace
           </p>
           <Button className="mt-auto" variant="outline" size="sm" asChild>
-            <Link to="/repositories">View repositories</Link>
+            <Link to="/repositories" search={{ owner: workspaceSlug }}>
+              View repositories
+            </Link>
           </Button>
         </div>
 

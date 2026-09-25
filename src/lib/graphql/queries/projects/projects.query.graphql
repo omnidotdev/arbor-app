@@ -24,6 +24,7 @@ query Projects($userId: UUID!, $organizationId: UUID, $limit: Int) {
       organization {
         rowId
         idpOrganizationId
+        slug
         avatarUrl
       }
       projectRepositories {

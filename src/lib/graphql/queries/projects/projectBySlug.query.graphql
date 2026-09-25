@@ -24,6 +24,7 @@ query ProjectBySlug($ownerSlug: String!, $slug: String!) {
       organization {
         rowId
         idpOrganizationId
+        slug
         avatarUrl
       }
       projectRepositories {
@@ -40,6 +41,7 @@ query ProjectBySlug($ownerSlug: String!, $slug: String!) {
             }
             organization {
               idpOrganizationId
+              slug
             }
             memberships: projectRepositories {
               totalCount
@@ -58,6 +60,7 @@ query ProjectBySlug($ownerSlug: String!, $slug: String!) {
                   }
                   organization {
                     idpOrganizationId
+                    slug
                   }
                 }
                 relationshipType {
@@ -81,6 +84,7 @@ query ProjectBySlug($ownerSlug: String!, $slug: String!) {
                   }
                   organization {
                     idpOrganizationId
+                    slug
                   }
                 }
                 relationshipType {

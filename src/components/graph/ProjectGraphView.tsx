@@ -39,6 +39,7 @@ export interface ProjectGraphRepository {
   } | null;
   organization?: {
     idpOrganizationId: string;
+    slug?: string | null;
   } | null;
   outgoingRelationships: RelationshipEdge[];
 }
@@ -107,7 +108,10 @@ export function ProjectGraphView({ repositories }: ProjectGraphViewProps) {
 
     const graphNodes: Node[] = repositories.map((repo, index) => {
       const ownerName =
-        repo.organization?.idpOrganizationId ?? repo.owner?.username ?? "";
+        repo.organization?.slug ??
+        repo.organization?.idpOrganizationId ??
+        repo.owner?.username ??
+        "";
       const label = ownerName ? `${ownerName}/${repo.name}` : repo.name;
 
       return {

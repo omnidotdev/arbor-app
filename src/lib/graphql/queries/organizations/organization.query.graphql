@@ -2,6 +2,7 @@ query Organization($rowId: UUID!) {
   organization(rowId: $rowId) {
     rowId
     idpOrganizationId
+    slug
     description
     avatarUrl
     createdAt

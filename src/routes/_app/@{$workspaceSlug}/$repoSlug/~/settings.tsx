@@ -120,6 +120,7 @@ function RepositorySettingsPage() {
       const updated = payload?.repository;
       if (updated) {
         const nextOwner =
+          updated.organization?.slug ??
           updated.organization?.idpOrganizationId ??
           updated.owner?.username ??
           owner;

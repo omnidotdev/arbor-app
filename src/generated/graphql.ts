@@ -15202,7 +15202,7 @@ export type CreateOrganizationMutationVariables = Exact<{
 }>;
 
 
-export type CreateOrganizationMutation = { createOrganization: { organization: { rowId: string, idpOrganizationId: string, description: string | null, avatarUrl: string | null, createdAt: Date } | null } | null };
+export type CreateOrganizationMutation = { createOrganization: { organization: { rowId: string, idpOrganizationId: string, slug: string | null, description: string | null, avatarUrl: string | null, createdAt: Date } | null } | null };
 
 export type CreatePersonalAccessTokenMutationVariables = Exact<{
   name: string;
@@ -15304,21 +15304,21 @@ export type RenameRepositoryMutationVariables = Exact<{
 }>;
 
 
-export type RenameRepositoryMutation = { renameRepository: { error: string | null, repository: { rowId: string, name: string, slug: string, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null } | null } | null };
+export type RenameRepositoryMutation = { renameRepository: { error: string | null, repository: { rowId: string, name: string, slug: string, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string, slug: string | null } | null } | null } | null };
 
 export type UpdateRepositoryMutationVariables = Exact<{
   input: UpdateRepositoryInput;
 }>;
 
 
-export type UpdateRepositoryMutation = { updateRepository: { repository: { rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null } | null } | null };
+export type UpdateRepositoryMutation = { updateRepository: { repository: { rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string, slug: string | null } | null } | null } | null };
 
 export type CreateStackMutationVariables = Exact<{
   input: CreateStackInput;
 }>;
 
 
-export type CreateStackMutation = { createStack: { stack: { id: string, rowId: string, title: string, description: string | null, baseBranch: string, status: string, createdAt: Date, repository: { slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null } | null } | null };
+export type CreateStackMutation = { createStack: { stack: { id: string, rowId: string, title: string, description: string | null, baseBranch: string, status: string, createdAt: Date, repository: { slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string, slug: string | null } | null } | null } | null } | null };
 
 export type MergeChangeMutationVariables = Exact<{
   changeId: string;
@@ -15363,21 +15363,21 @@ export type RepositoryGraphQueryVariables = Exact<{
 }>;
 
 
-export type RepositoryGraphQuery = { polyrepoGraphAccess: boolean, repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null, outgoingRelationships: { nodes: Array<{ rowId: string, confidence: number, versionConstraint: string | null, targetRepository: { rowId: string, name: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null, relationshipType: { rowId: string, name: string, isDirected: boolean } | null }> } }> } | null, repositoryRelationshipTypes: { nodes: Array<{ rowId: string, name: string, description: string | null, isDirected: boolean }> } | null };
+export type RepositoryGraphQuery = { polyrepoGraphAccess: boolean, repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string, slug: string | null } | null, outgoingRelationships: { nodes: Array<{ rowId: string, confidence: number, versionConstraint: string | null, targetRepository: { rowId: string, name: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string, slug: string | null } | null } | null, relationshipType: { rowId: string, name: string, isDirected: boolean } | null }> } }> } | null, repositoryRelationshipTypes: { nodes: Array<{ rowId: string, name: string, description: string | null, isDirected: boolean }> } | null };
 
 export type OrganizationQueryVariables = Exact<{
   rowId: string;
 }>;
 
 
-export type OrganizationQuery = { organization: { rowId: string, idpOrganizationId: string, description: string | null, avatarUrl: string | null, createdAt: Date, updatedAt: Date, repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, updatedAt: Date }> } } | null };
+export type OrganizationQuery = { organization: { rowId: string, idpOrganizationId: string, slug: string | null, description: string | null, avatarUrl: string | null, createdAt: Date, updatedAt: Date, repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, updatedAt: Date }> } } | null };
 
 export type OrganizationsQueryVariables = Exact<{
   limit?: number | null | undefined;
 }>;
 
 
-export type OrganizationsQuery = { organizations: { totalCount: number, nodes: Array<{ rowId: string, idpOrganizationId: string, description: string | null, avatarUrl: string | null, createdAt: Date, updatedAt: Date, repositories: { totalCount: number } }> } | null };
+export type OrganizationsQuery = { organizations: { totalCount: number, nodes: Array<{ rowId: string, idpOrganizationId: string, slug: string | null, description: string | null, avatarUrl: string | null, createdAt: Date, updatedAt: Date, repositories: { totalCount: number } }> } | null };
 
 export type PersonalAccessTokensQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -15389,7 +15389,7 @@ export type CreateProjectMutationVariables = Exact<{
 }>;
 
 
-export type CreateProjectMutation = { createProject: { project: { rowId: string, name: string, slug: string, visibility: Visibility, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null } | null };
+export type CreateProjectMutation = { createProject: { project: { rowId: string, name: string, slug: string, visibility: Visibility, owner: { username: string } | null, organization: { idpOrganizationId: string, slug: string | null } | null } | null } | null };
 
 export type ProjectBySlugQueryVariables = Exact<{
   ownerSlug: string;
@@ -15397,7 +15397,7 @@ export type ProjectBySlugQueryVariables = Exact<{
 }>;
 
 
-export type ProjectBySlugQuery = { projects: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, createdAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null, projectRepositories: { totalCount: number, nodes: Array<{ rowId: string, repository: { rowId: string, name: string, slug: string, visibility: Visibility, owner: { username: string } | null, organization: { idpOrganizationId: string } | null, memberships: { totalCount: number }, outgoingRelationships: { nodes: Array<{ rowId: string, confidence: number, versionConstraint: string | null, targetRepository: { rowId: string, name: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null, relationshipType: { rowId: string, name: string, isDirected: boolean } | null }> }, incomingRelationships: { nodes: Array<{ rowId: string, confidence: number, versionConstraint: string | null, sourceRepository: { rowId: string, name: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null, relationshipType: { rowId: string, name: string, isDirected: boolean } | null }> } } | null }> } }> } | null };
+export type ProjectBySlugQuery = { projects: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, createdAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, slug: string | null, avatarUrl: string | null } | null, projectRepositories: { totalCount: number, nodes: Array<{ rowId: string, repository: { rowId: string, name: string, slug: string, visibility: Visibility, owner: { username: string } | null, organization: { idpOrganizationId: string, slug: string | null } | null, memberships: { totalCount: number }, outgoingRelationships: { nodes: Array<{ rowId: string, confidence: number, versionConstraint: string | null, targetRepository: { rowId: string, name: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string, slug: string | null } | null } | null, relationshipType: { rowId: string, name: string, isDirected: boolean } | null }> }, incomingRelationships: { nodes: Array<{ rowId: string, confidence: number, versionConstraint: string | null, sourceRepository: { rowId: string, name: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string, slug: string | null } | null } | null, relationshipType: { rowId: string, name: string, isDirected: boolean } | null }> } } | null }> } }> } | null };
 
 export type ProjectVersionDriftQueryVariables = Exact<{
   projectId: string;
@@ -15413,7 +15413,7 @@ export type ProjectsQueryVariables = Exact<{
 }>;
 
 
-export type ProjectsQuery = { projects: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, createdAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null, projectRepositories: { totalCount: number } }> } | null };
+export type ProjectsQuery = { projects: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, createdAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, slug: string | null, avatarUrl: string | null } | null, projectRepositories: { totalCount: number } }> } | null };
 
 export type PullRequestConversationQueryVariables = Exact<{
   pullRequestId: string;
@@ -15474,7 +15474,7 @@ export type RepositoriesQueryVariables = Exact<{
 }>;
 
 
-export type RepositoriesQuery = { repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null }> } | null };
+export type RepositoriesQuery = { repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, slug: string | null, avatarUrl: string | null } | null }> } | null };
 
 export type RepositoryBlastRadiusQueryVariables = Exact<{
   repositoryId: string;
@@ -15489,7 +15489,7 @@ export type RepositoryBySlugQueryVariables = Exact<{
 }>;
 
 
-export type RepositoryBySlugQuery = { repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string } | null, repositoryCollaborators: { nodes: Array<{ userId: string, permission: Permission }> } }> } | null };
+export type RepositoryBySlugQuery = { repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, owner: { rowId: string, username: string } | null, organization: { rowId: string, idpOrganizationId: string, slug: string | null } | null, repositoryCollaborators: { nodes: Array<{ userId: string, permission: Permission }> } }> } | null };
 
 export type RepositoryWithBranchesQueryVariables = Exact<{
   ownerSlug: string;
@@ -15497,7 +15497,7 @@ export type RepositoryWithBranchesQueryVariables = Exact<{
 }>;
 
 
-export type RepositoryWithBranchesQuery = { repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, avatarUrl: string | null } | null, refs: { totalCount: number, nodes: Array<{ id: string, name: string, prefix: string, target:
+export type RepositoryWithBranchesQuery = { repositories: { nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, createdAt: Date, updatedAt: Date, owner: { rowId: string, username: string, avatarUrl: string | null } | null, organization: { rowId: string, idpOrganizationId: string, slug: string | null, avatarUrl: string | null } | null, refs: { totalCount: number, nodes: Array<{ id: string, name: string, prefix: string, target:
             | { oid: string }
             | Record<PropertyKey, never>
            | null }> }, defaultBranchRef: { id: string, name: string, prefix: string, target:
@@ -15518,7 +15518,7 @@ export type StackQueryVariables = Exact<{
 }>;
 
 
-export type StackQuery = { stack: { id: string, rowId: string, title: string, description: string | null, baseBranch: string, status: string, createdAt: Date, updatedAt: Date, repository: { rowId: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string } | null } | null, author: { rowId: string, username: string } | null, authoredByAgent: { rowId: string, name: string } | null, changes: { nodes: Array<{ id: string, rowId: string, title: string, description: string | null, position: number, status: string, commitSha: string | null, parentChangeId: string | null, pullRequest: { rowId: string, number: number } | null, verificationChecks: { nodes: Array<{ id: string, rowId: string, name: string, category: string, status: string, required: boolean, summary: string | null, detailsUrl: string | null }> } }> } } | null };
+export type StackQuery = { stack: { id: string, rowId: string, title: string, description: string | null, baseBranch: string, status: string, createdAt: Date, updatedAt: Date, repository: { rowId: string, slug: string, owner: { username: string } | null, organization: { idpOrganizationId: string, slug: string | null } | null } | null, author: { rowId: string, username: string } | null, authoredByAgent: { rowId: string, name: string } | null, changes: { nodes: Array<{ id: string, rowId: string, title: string, description: string | null, position: number, status: string, commitSha: string | null, parentChangeId: string | null, pullRequest: { rowId: string, number: number } | null, verificationChecks: { nodes: Array<{ id: string, rowId: string, name: string, category: string, status: string, required: boolean, summary: string | null, detailsUrl: string | null }> } }> } } | null };
 
 export type StacksQueryVariables = Exact<{
   ownerSlug: string;
@@ -15628,6 +15628,7 @@ export const CreateOrganizationDocument = new TypedDocumentString(`
     organization {
       rowId
       idpOrganizationId
+      slug
       description
       avatarUrl
       createdAt
@@ -16074,6 +16075,7 @@ export const RenameRepositoryDocument = new TypedDocumentString(`
       organization {
         rowId
         idpOrganizationId
+        slug
       }
     }
     error
@@ -16118,6 +16120,7 @@ export const UpdateRepositoryDocument = new TypedDocumentString(`
       organization {
         rowId
         idpOrganizationId
+        slug
       }
     }
   }
@@ -16160,6 +16163,7 @@ export const CreateStackDocument = new TypedDocumentString(`
         }
         organization {
           idpOrganizationId
+          slug
         }
       }
     }
@@ -16504,6 +16508,7 @@ export const RepositoryGraphDocument = new TypedDocumentString(`
       organization {
         rowId
         idpOrganizationId
+        slug
       }
       outgoingRelationships: repositoryRelationshipsBySourceRepositoryId {
         nodes {
@@ -16519,6 +16524,7 @@ export const RepositoryGraphDocument = new TypedDocumentString(`
             }
             organization {
               idpOrganizationId
+              slug
             }
           }
           relationshipType {
@@ -16627,6 +16633,7 @@ export const OrganizationDocument = new TypedDocumentString(`
   organization(rowId: $rowId) {
     rowId
     idpOrganizationId
+    slug
     description
     avatarUrl
     createdAt
@@ -16733,6 +16740,7 @@ export const OrganizationsDocument = new TypedDocumentString(`
     nodes {
       rowId
       idpOrganizationId
+      slug
       description
       avatarUrl
       createdAt
@@ -16951,6 +16959,7 @@ export const CreateProjectDocument = new TypedDocumentString(`
       }
       organization {
         idpOrganizationId
+        slug
       }
     }
   }
@@ -16996,6 +17005,7 @@ export const ProjectBySlugDocument = new TypedDocumentString(`
       organization {
         rowId
         idpOrganizationId
+        slug
         avatarUrl
       }
       projectRepositories {
@@ -17012,6 +17022,7 @@ export const ProjectBySlugDocument = new TypedDocumentString(`
             }
             organization {
               idpOrganizationId
+              slug
             }
             memberships: projectRepositories {
               totalCount
@@ -17030,6 +17041,7 @@ export const ProjectBySlugDocument = new TypedDocumentString(`
                   }
                   organization {
                     idpOrganizationId
+                    slug
                   }
                 }
                 relationshipType {
@@ -17053,6 +17065,7 @@ export const ProjectBySlugDocument = new TypedDocumentString(`
                   }
                   organization {
                     idpOrganizationId
+                    slug
                   }
                 }
                 relationshipType {
@@ -17269,6 +17282,7 @@ export const ProjectsDocument = new TypedDocumentString(`
       organization {
         rowId
         idpOrganizationId
+        slug
         avatarUrl
       }
       projectRepositories {
@@ -18083,6 +18097,7 @@ export const RepositoriesDocument = new TypedDocumentString(`
       organization {
         rowId
         idpOrganizationId
+        slug
         avatarUrl
       }
     }
@@ -18269,7 +18284,7 @@ useRepositoryBlastRadiusQuery.fetcher = (variables: RepositoryBlastRadiusQueryVa
 export const RepositoryBySlugDocument = new TypedDocumentString(`
     query RepositoryBySlug($ownerSlug: String!, $repoSlug: String!) {
   repositories(
-    filter: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
+    filter: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
     first: 1
   ) {
     nodes {
@@ -18286,6 +18301,7 @@ export const RepositoryBySlugDocument = new TypedDocumentString(`
       organization {
         rowId
         idpOrganizationId
+        slug
       }
       repositoryCollaborators {
         nodes {
@@ -18402,6 +18418,7 @@ export const RepositoryWithBranchesDocument = new TypedDocumentString(`
       organization {
         rowId
         idpOrganizationId
+        slug
         avatarUrl
       }
       refs(refPrefix: "refs/heads/") {
@@ -18652,6 +18669,7 @@ export const StackDocument = new TypedDocumentString(`
       }
       organization {
         idpOrganizationId
+        slug
       }
     }
     author {

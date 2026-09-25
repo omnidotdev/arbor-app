@@ -3,6 +3,7 @@ mutation CreateOrganization($input: CreateOrganizationInput!) {
     organization {
       rowId
       idpOrganizationId
+      slug
       description
       avatarUrl
       createdAt

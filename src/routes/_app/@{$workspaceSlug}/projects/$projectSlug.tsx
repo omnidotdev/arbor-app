@@ -50,9 +50,14 @@ export const Route = createFileRoute(
 /** Resolve the owner slug (org id or username) for a related repository */
 function repoOwnerSlug(repo: {
   owner?: { username: string } | null;
-  organization?: { idpOrganizationId: string } | null;
+  organization?: { idpOrganizationId: string; slug?: string | null } | null;
 }) {
-  return repo.organization?.idpOrganizationId ?? repo.owner?.username ?? "";
+  return (
+    repo.organization?.slug ??
+    repo.organization?.idpOrganizationId ??
+    repo.owner?.username ??
+    ""
+  );
 }
 
 function ProjectDetailPage() {

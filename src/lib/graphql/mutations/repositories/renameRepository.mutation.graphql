@@ -11,6 +11,7 @@ mutation RenameRepository($input: RenameRepositoryInput!) {
       organization {
         rowId
         idpOrganizationId
+        slug
       }
     }
     error

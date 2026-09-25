@@ -3,6 +3,7 @@ query Organizations($limit: Int) {
     nodes {
       rowId
       idpOrganizationId
+      slug
       description
       avatarUrl
       createdAt

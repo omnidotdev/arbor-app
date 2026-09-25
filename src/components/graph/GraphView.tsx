@@ -24,6 +24,7 @@ interface Repository {
   organization?: {
     rowId: string;
     idpOrganizationId: string;
+    slug?: string | null;
   } | null;
   outgoingRelationships?: {
     nodes: Array<{
@@ -35,7 +36,10 @@ interface Repository {
         name: string;
         slug: string;
         owner?: { username: string } | null;
-        organization?: { idpOrganizationId: string } | null;
+        organization?: {
+          idpOrganizationId: string;
+          slug?: string | null;
+        } | null;
       } | null;
       relationshipType?: {
         rowId: string;
@@ -111,7 +115,10 @@ export function GraphView({
     // Create nodes for each repository
     const graphNodes: Node[] = repositories.map((repo, index) => {
       const ownerName =
-        repo.organization?.idpOrganizationId ?? repo.owner?.username ?? "";
+        repo.organization?.slug ??
+        repo.organization?.idpOrganizationId ??
+        repo.owner?.username ??
+        "";
       const label = ownerName ? `${ownerName}/${repo.name}` : repo.name;
 
       return {

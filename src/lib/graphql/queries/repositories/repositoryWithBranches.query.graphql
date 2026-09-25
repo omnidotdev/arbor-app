@@ -23,6 +23,7 @@ query RepositoryWithBranches($ownerSlug: String!, $repoSlug: String!) {
       organization {
         rowId
         idpOrganizationId
+        slug
         avatarUrl
       }
       refs(refPrefix: "refs/heads/") {
