@@ -599,3 +599,18 @@
     animation: arbor-fade-up 0.7s both;
   }
 }
+
+/*
+ * Prevent a mobile layout flash on first paint. thornberry's useIsMobile starts
+ * false during SSR and the pre-hydration client paint, so the DESKTOP sidebar
+ * (and its layout gap) render briefly on mobile before hydration swaps to the
+ * mobile sheet, reflowing the whole page. Hiding the desktop sidebar below the
+ * mobile breakpoint (matching useIsMobile's 768px) makes first paint match the
+ * hydrated mobile layout, so nothing shifts. The mobile sheet carries
+ * data-mobile="true" and is unaffected.
+ */
+@media (max-width: 767px) {
+  [data-slot="sidebar"]:not([data-mobile="true"]) {
+    display: none;
+  }
+}

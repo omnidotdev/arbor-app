@@ -26,6 +26,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   useDeleteRepositoryMutation,
+  useObserverQuery,
   useOrganizationsQuery,
   useRepositoriesQuery,
 } from "@/generated/graphql";
@@ -41,7 +42,6 @@ export const Route = createFileRoute("/_app/repositories/")({
 });
 
 function RepositoriesPage() {
-  const { session } = Route.useRouteContext();
   const { owner: ownerFilter } = Route.useSearch();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -55,15 +55,19 @@ function RepositoriesPage() {
     owner: string;
   } | null>(null);
 
+  // Identity comes from the server-authoritative observer query (resolved from
+  // the access token), not the client session cache: a cache miss made rowId
+  // null, and a null owner filter silently widened "Your Repositories" to every
+  // public repo across arbor.
+  const { data: observerData } = useSuspenseQuery({
+    queryKey: useObserverQuery.getKey(),
+    queryFn: useObserverQuery.fetcher(),
+  });
+  const userId = observerData?.observer?.rowId ?? "";
+
   const { data } = useSuspenseQuery({
-    queryKey: useRepositoriesQuery.getKey({
-      userId: session!.user.rowId!,
-      limit: 100,
-    }),
-    queryFn: useRepositoriesQuery.fetcher({
-      userId: session!.user.rowId!,
-      limit: 100,
-    }),
+    queryKey: useRepositoriesQuery.getKey({ userId, limit: 100 }),
+    queryFn: useRepositoriesQuery.fetcher({ userId, limit: 100 }),
   });
 
   const { data: orgsData } = useSuspenseQuery({
@@ -132,7 +136,7 @@ function RepositoriesPage() {
     onSuccess: (result) => {
       queryClient.invalidateQueries({
         queryKey: useRepositoriesQuery.getKey({
-          userId: session!.user.rowId!,
+          userId: userId,
           limit: 100,
         }),
       });
@@ -158,7 +162,7 @@ function RepositoriesPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: useRepositoriesQuery.getKey({
-          userId: session!.user.rowId!,
+          userId: userId,
           limit: 100,
         }),
       });
