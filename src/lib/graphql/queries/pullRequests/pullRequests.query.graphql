@@ -5,8 +5,8 @@ query PullRequests($ownerSlug: String!, $repoSlug: String!) {
         slug: { equalTo: $repoSlug }
         or: [
           { owner: { username: { equalTo: $ownerSlug } } }
-          { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
-        ]
+          { organization: { slug: { equalTo: $ownerSlug } } }
+          { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }        ]
       }
     }
     orderBy: [CREATED_AT_DESC]

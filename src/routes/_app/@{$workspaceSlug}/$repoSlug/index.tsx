@@ -165,6 +165,13 @@ function RepositoryDetailPage() {
   const repository = repositoryQuery.data?.repositories?.nodes?.[0];
   const { canManage } = getRepositoryAccess(repository, session?.user?.rowId);
 
+  // Git storage is addressed by the owning USER's username, even for an org
+  // repository (resolveRepositorySummary joins repository.ownerId to
+  // user.username), so the workspace slug in the URL (@org) does not resolve on
+  // the git side. Use the resolved owner's username for every /git call and the
+  // clone URL; the git queries wait until it is known.
+  const gitOwner = repository?.owner?.username;
+
   // Default branch HEAD commit for the latest-commit bar above the file browser
   const repositoryWithBranchesQuery = useQuery(
     repositoryWithBranchesOptions({ ownerSlug: owner, repoSlug: repo }),
@@ -179,8 +186,9 @@ function RepositoryDetailPage() {
 
   // Fetch branches
   const branchesQuery = useQuery({
-    queryKey: ["branches", owner, repo],
-    queryFn: () => fetchBranches(owner, repo),
+    queryKey: ["branches", gitOwner, repo],
+    queryFn: () => fetchBranches(gitOwner!, repo),
+    enabled: !!gitOwner,
   });
 
   const branches = branchesQuery.data ?? [];
@@ -190,16 +198,16 @@ function RepositoryDetailPage() {
 
   // Fetch tree at current path
   const treeQuery = useQuery({
-    queryKey: ["tree", owner, repo, currentBranch, path],
-    queryFn: () => fetchTree(owner, repo, currentBranch, path),
-    enabled: branches.length > 0 || !branchesQuery.isLoading,
+    queryKey: ["tree", gitOwner, repo, currentBranch, path],
+    queryFn: () => fetchTree(gitOwner!, repo, currentBranch, path),
+    enabled: !!gitOwner && (branches.length > 0 || !branchesQuery.isLoading),
   });
 
   // Last commit per tree entry, for the GitHub-style file browser column
   const treeCommitsQuery = useQuery({
-    queryKey: ["tree-commits", owner, repo, currentBranch, path],
-    queryFn: () => fetchTreeCommits(owner, repo, currentBranch, path),
-    enabled: branches.length > 0 || !branchesQuery.isLoading,
+    queryKey: ["tree-commits", gitOwner, repo, currentBranch, path],
+    queryFn: () => fetchTreeCommits(gitOwner!, repo, currentBranch, path),
+    enabled: !!gitOwner && (branches.length > 0 || !branchesQuery.isLoading),
   });
 
   // Index the last-commit info by entry basename for O(1) lookup in the browser
@@ -216,9 +224,9 @@ function RepositoryDetailPage() {
   // For file viewing, we fetch the blob whenever a path is specified
   // This runs in parallel with tree fetch - if path is a file, tree will be empty but blob will succeed
   const blobQuery = useQuery({
-    queryKey: ["blob", owner, repo, currentBranch, path],
-    queryFn: () => fetchBlob(owner, repo, currentBranch, path!),
-    enabled: !!path,
+    queryKey: ["blob", gitOwner, repo, currentBranch, path],
+    queryFn: () => fetchBlob(gitOwner!, repo, currentBranch, path!),
+    enabled: !!path && !!gitOwner,
   });
 
   // Determine if we're viewing a file or directory
@@ -237,9 +245,9 @@ function RepositoryDetailPage() {
     : null;
 
   const readmeQuery = useQuery({
-    queryKey: ["readme", owner, repo, currentBranch, readmeEntry?.path],
-    queryFn: () => fetchBlob(owner, repo, currentBranch, readmeEntry!.path),
-    enabled: !!readmeEntry,
+    queryKey: ["readme", gitOwner, repo, currentBranch, readmeEntry?.path],
+    queryFn: () => fetchBlob(gitOwner!, repo, currentBranch, readmeEntry!.path),
+    enabled: !!readmeEntry && !!gitOwner,
   });
 
   const handleBranchChange = (branch: string) => {
@@ -250,7 +258,7 @@ function RepositoryDetailPage() {
     });
   };
 
-  const cloneUrl = `${GIT_BASE_URL}/${owner}/${repo}.git`;
+  const cloneUrl = `${GIT_BASE_URL}/${gitOwner ?? owner}/${repo}.git`;
 
   const copyCloneUrl = async () => {
     try {

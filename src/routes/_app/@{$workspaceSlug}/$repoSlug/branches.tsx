@@ -15,6 +15,7 @@ import { BranchList, CreateBranchDialog } from "@/components/repository";
 import { Button } from "@/components/ui/button";
 import { API_BASE_URL } from "@/lib/config/env.config";
 import { graphqlFetch } from "@/lib/graphql/graphqlFetch";
+import { useGitOwner } from "@/lib/hooks/useGitOwner";
 
 export const Route = createFileRoute(
   "/_app/@{$workspaceSlug}/$repoSlug/branches",
@@ -195,10 +196,14 @@ function BranchesPage() {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [deletingBranch, setDeletingBranch] = useState<string | undefined>();
 
+  // Git storage is keyed by the owning user's username, not the @workspace slug
+  const gitOwner = useGitOwner(owner, repo);
+
   // Fetch branches (use different key from main repo page to avoid cache conflict)
   const branchesQuery = useQuery({
-    queryKey: ["branches-with-repo-id", owner, repo],
-    queryFn: () => fetchBranches(owner, repo),
+    queryKey: ["branches-with-repo-id", gitOwner, repo],
+    queryFn: () => fetchBranches(gitOwner!, repo),
+    enabled: !!gitOwner,
   });
 
   const { branches = [], repositoryId } = branchesQuery.data ?? {};
@@ -222,9 +227,9 @@ function BranchesPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["branches-with-repo-id", owner, repo],
+        queryKey: ["branches-with-repo-id", gitOwner, repo],
       });
-      queryClient.invalidateQueries({ queryKey: ["branches", owner, repo] });
+      queryClient.invalidateQueries({ queryKey: ["branches", gitOwner, repo] });
       setShowCreateDialog(false);
     },
   });
@@ -240,9 +245,9 @@ function BranchesPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["branches-with-repo-id", owner, repo],
+        queryKey: ["branches-with-repo-id", gitOwner, repo],
       });
-      queryClient.invalidateQueries({ queryKey: ["branches", owner, repo] });
+      queryClient.invalidateQueries({ queryKey: ["branches", gitOwner, repo] });
     },
     onSettled: () => {
       setDeletingBranch(undefined);

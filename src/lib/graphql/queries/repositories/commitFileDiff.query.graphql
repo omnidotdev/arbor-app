@@ -7,8 +7,11 @@ query CommitFileDiff(
   repositories(
     filter: {
       slug: { equalTo: $repoSlug }
-      owner: { username: { equalTo: $ownerSlug } }
-    }
+      or: [
+        { owner: { username: { equalTo: $ownerSlug } } }
+        { organization: { slug: { equalTo: $ownerSlug } } }
+        { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
+      ]    }
     first: 1
   ) {
     nodes {

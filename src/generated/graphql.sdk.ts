@@ -16046,7 +16046,7 @@ export const CreateProjectDocument = gql`
 export const ProjectBySlugDocument = gql`
     query ProjectBySlug($ownerSlug: String!, $slug: String!) {
   projects(
-    filter: {slug: {equalTo: $slug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
+    filter: {slug: {equalTo: $slug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
     first: 1
   ) {
     nodes {
@@ -16242,7 +16242,7 @@ export const PullRequestConversationDocument = gql`
 export const PullRequestFileDiffDocument = gql`
     query PullRequestFileDiff($ownerSlug: String!, $repoSlug: String!, $number: Int!, $path: String!) {
   pullRequests(
-    filter: {number: {equalTo: $number}, repository: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}}
+    filter: {number: {equalTo: $number}, repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
     first: 1
   ) {
     nodes {
@@ -16262,7 +16262,7 @@ export const PullRequestFileDiffDocument = gql`
 export const PullRequestFilesDocument = gql`
     query PullRequestFiles($ownerSlug: String!, $repoSlug: String!, $number: Int!) {
   pullRequests(
-    filter: {number: {equalTo: $number}, repository: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}}
+    filter: {number: {equalTo: $number}, repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
     first: 1
   ) {
     nodes {
@@ -16307,7 +16307,7 @@ export const PullRequestFilesDocument = gql`
 export const PullRequestsDocument = gql`
     query PullRequests($ownerSlug: String!, $repoSlug: String!) {
   pullRequests(
-    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
+    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
     orderBy: [CREATED_AT_DESC]
     first: 100
   ) {
@@ -16338,7 +16338,7 @@ export const PullRequestsDocument = gql`
 export const CommitDetailDocument = gql`
     query CommitDetail($ownerSlug: String!, $repoSlug: String!, $oid: String!) {
   repositories(
-    filter: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}
+    filter: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
     first: 1
   ) {
     nodes {
@@ -16375,7 +16375,7 @@ export const CommitDetailDocument = gql`
 export const CommitFileDiffDocument = gql`
     query CommitFileDiff($ownerSlug: String!, $repoSlug: String!, $oid: String!, $path: String!) {
   repositories(
-    filter: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}
+    filter: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
     first: 1
   ) {
     nodes {
@@ -16473,7 +16473,7 @@ export const RepositoryBySlugDocument = gql`
 export const RepositoryWithBranchesDocument = gql`
     query RepositoryWithBranches($ownerSlug: String!, $repoSlug: String!) {
   repositories(
-    filter: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}
+    filter: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
     first: 1
   ) {
     nodes {
@@ -16551,7 +16551,7 @@ export const WorkspaceRepositoriesDocument = gql`
 export const MergeQueueEntriesDocument = gql`
     query MergeQueueEntries($ownerSlug: String!, $repoSlug: String!) {
   mergeQueueEntries(
-    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
+    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
     orderBy: [POSITION_ASC]
     first: 100
   ) {
@@ -16645,7 +16645,7 @@ export const StackDocument = gql`
 export const StacksDocument = gql`
     query Stacks($ownerSlug: String!, $repoSlug: String!) {
   stacks(
-    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
+    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
     orderBy: [CREATED_AT_DESC]
     first: 100
   ) {
