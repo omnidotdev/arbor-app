@@ -1,0 +1,18 @@
+query WorkspaceRepositories($workspaceSlug: String!) {
+  repositories(
+    filter: { organization: { slug: { equalTo: $workspaceSlug } } }
+    orderBy: UPDATED_AT_DESC
+    first: 100
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      defaultBranch
+      updatedAt
+    }
+    totalCount
+  }
+}

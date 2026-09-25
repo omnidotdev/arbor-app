@@ -15505,6 +15505,13 @@ export type RepositoryWithBranchesQuery = { repositories: { nodes: Array<{ rowId
           | Record<PropertyKey, never>
          | null } | null }> } | null };
 
+export type WorkspaceRepositoriesQueryVariables = Exact<{
+  workspaceSlug: string;
+}>;
+
+
+export type WorkspaceRepositoriesQuery = { repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, updatedAt: Date }> } | null };
+
 export type MergeQueueEntriesQueryVariables = Exact<{
   ownerSlug: string;
   repoSlug: string;
@@ -16521,6 +16528,26 @@ export const RepositoryWithBranchesDocument = gql`
   }
 }
     `;
+export const WorkspaceRepositoriesDocument = gql`
+    query WorkspaceRepositories($workspaceSlug: String!) {
+  repositories(
+    filter: {organization: {slug: {equalTo: $workspaceSlug}}}
+    orderBy: UPDATED_AT_DESC
+    first: 100
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      defaultBranch
+      updatedAt
+    }
+    totalCount
+  }
+}
+    `;
 export const MergeQueueEntriesDocument = gql`
     query MergeQueueEntries($ownerSlug: String!, $repoSlug: String!) {
   mergeQueueEntries(
@@ -16810,6 +16837,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     RepositoryWithBranches(variables: RepositoryWithBranchesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<RepositoryWithBranchesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<RepositoryWithBranchesQuery>({ document: RepositoryWithBranchesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'RepositoryWithBranches', 'query', variables);
+    },
+    WorkspaceRepositories(variables: WorkspaceRepositoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<WorkspaceRepositoriesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<WorkspaceRepositoriesQuery>({ document: WorkspaceRepositoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'WorkspaceRepositories', 'query', variables);
     },
     MergeQueueEntries(variables: MergeQueueEntriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<MergeQueueEntriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<MergeQueueEntriesQuery>({ document: MergeQueueEntriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'MergeQueueEntries', 'query', variables);

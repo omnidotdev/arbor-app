@@ -15505,6 +15505,13 @@ export type RepositoryWithBranchesQuery = { repositories: { nodes: Array<{ rowId
           | Record<PropertyKey, never>
          | null } | null }> } | null };
 
+export type WorkspaceRepositoriesQueryVariables = Exact<{
+  workspaceSlug: string;
+}>;
+
+
+export type WorkspaceRepositoriesQuery = { repositories: { totalCount: number, nodes: Array<{ rowId: string, name: string, slug: string, description: string | null, visibility: Visibility, defaultBranch: string, updatedAt: Date }> } | null };
+
 export type MergeQueueEntriesQueryVariables = Exact<{
   ownerSlug: string;
   repoSlug: string;
@@ -18534,6 +18541,108 @@ useSuspenseInfiniteRepositoryWithBranchesQuery.getKey = (variables: RepositoryWi
 
 
 useRepositoryWithBranchesQuery.fetcher = (variables: RepositoryWithBranchesQueryVariables, options?: RequestInit['headers']) => graphqlFetch<RepositoryWithBranchesQuery, RepositoryWithBranchesQueryVariables>(RepositoryWithBranchesDocument, variables, options);
+
+export const WorkspaceRepositoriesDocument = new TypedDocumentString(`
+    query WorkspaceRepositories($workspaceSlug: String!) {
+  repositories(
+    filter: {organization: {slug: {equalTo: $workspaceSlug}}}
+    orderBy: UPDATED_AT_DESC
+    first: 100
+  ) {
+    nodes {
+      rowId
+      name
+      slug
+      description
+      visibility
+      defaultBranch
+      updatedAt
+    }
+    totalCount
+  }
+}
+    `);
+
+export const useWorkspaceRepositoriesQuery = <
+      TData = WorkspaceRepositoriesQuery,
+      TError = unknown
+    >(
+      variables: WorkspaceRepositoriesQueryVariables,
+      options?: Omit<UseQueryOptions<WorkspaceRepositoriesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<WorkspaceRepositoriesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<WorkspaceRepositoriesQuery, TError, TData>(
+      {
+    queryKey: ['WorkspaceRepositories', variables],
+    queryFn: graphqlFetch<WorkspaceRepositoriesQuery, WorkspaceRepositoriesQueryVariables>(WorkspaceRepositoriesDocument, variables),
+    ...options
+  }
+    )};
+
+useWorkspaceRepositoriesQuery.getKey = (variables: WorkspaceRepositoriesQueryVariables) => ['WorkspaceRepositories', variables];
+
+export const useSuspenseWorkspaceRepositoriesQuery = <
+      TData = WorkspaceRepositoriesQuery,
+      TError = unknown
+    >(
+      variables: WorkspaceRepositoriesQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<WorkspaceRepositoriesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<WorkspaceRepositoriesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<WorkspaceRepositoriesQuery, TError, TData>(
+      {
+    queryKey: ['WorkspaceRepositories', variables],
+    queryFn: graphqlFetch<WorkspaceRepositoriesQuery, WorkspaceRepositoriesQueryVariables>(WorkspaceRepositoriesDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseWorkspaceRepositoriesQuery.getKey = (variables: WorkspaceRepositoriesQueryVariables) => ['WorkspaceRepositories', variables];
+
+export const useInfiniteWorkspaceRepositoriesQuery = <
+      TData = InfiniteData<WorkspaceRepositoriesQuery>,
+      TError = unknown
+    >(
+      variables: WorkspaceRepositoriesQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<WorkspaceRepositoriesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<WorkspaceRepositoriesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<WorkspaceRepositoriesQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['WorkspaceRepositories.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<WorkspaceRepositoriesQuery, WorkspaceRepositoriesQueryVariables>(WorkspaceRepositoriesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteWorkspaceRepositoriesQuery.getKey = (variables: WorkspaceRepositoriesQueryVariables) => ['WorkspaceRepositories.infinite', variables];
+
+export const useSuspenseInfiniteWorkspaceRepositoriesQuery = <
+      TData = InfiniteData<WorkspaceRepositoriesQuery>,
+      TError = unknown
+    >(
+      variables: WorkspaceRepositoriesQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<WorkspaceRepositoriesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<WorkspaceRepositoriesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<WorkspaceRepositoriesQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['WorkspaceRepositories.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<WorkspaceRepositoriesQuery, WorkspaceRepositoriesQueryVariables>(WorkspaceRepositoriesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteWorkspaceRepositoriesQuery.getKey = (variables: WorkspaceRepositoriesQueryVariables) => ['WorkspaceRepositories.infinite', variables];
+
+
+useWorkspaceRepositoriesQuery.fetcher = (variables: WorkspaceRepositoriesQueryVariables, options?: RequestInit['headers']) => graphqlFetch<WorkspaceRepositoriesQuery, WorkspaceRepositoriesQueryVariables>(WorkspaceRepositoriesDocument, variables, options);
 
 export const MergeQueueEntriesDocument = new TypedDocumentString(`
     query MergeQueueEntries($ownerSlug: String!, $repoSlug: String!) {
