@@ -8,6 +8,7 @@ import {
   GitPullRequest,
   Layers,
   ListChecks,
+  Scale,
   Settings,
 } from "lucide-react";
 import { useState } from "react";
@@ -143,6 +144,32 @@ async function fetchBlob(
 /** Whether a path is a Markdown file (rendered human-readable, like GitHub). */
 const isMarkdownFile = (p: string): boolean => /\.(md|markdown|mdx)$/i.test(p);
 
+/**
+ * Best-effort SPDX-ish license name from a LICENSE file's text, for the header
+ * badge. Matches the common families; falls back to a generic "License" label.
+ */
+const detectLicenseName = (content: string): string => {
+  const head = content.slice(0, 2000);
+  const patterns: [RegExp, string][] = [
+    [/Apache License,?\s+Version 2\.0/i, "Apache 2.0"],
+    [/MIT License|Permission is hereby granted, free of charge/i, "MIT"],
+    [/GNU AFFERO GENERAL PUBLIC LICENSE/i, "AGPL 3.0"],
+    [/GNU GENERAL PUBLIC LICENSE[\s\S]*Version 3/i, "GPL 3.0"],
+    [/GNU GENERAL PUBLIC LICENSE[\s\S]*Version 2/i, "GPL 2.0"],
+    [/GNU LESSER GENERAL PUBLIC LICENSE/i, "LGPL"],
+    [/Mozilla Public License Version 2\.0/i, "MPL 2.0"],
+    [
+      /Redistribution and use in source and binary forms[\s\S]*3\./i,
+      "BSD 3-Clause",
+    ],
+    [/Redistribution and use in source and binary forms/i, "BSD 2-Clause"],
+    [/ISC License|Permission to use, copy, modify/i, "ISC"],
+    [/The Unlicense|This is free and unencumbered software/i, "Unlicense"],
+  ];
+  for (const [re, name] of patterns) if (re.test(head)) return name;
+  return "License";
+};
+
 function RepositoryDetailPage() {
   const { workspaceSlug: owner, repoSlug: repo } = Route.useParams();
   const { ref, path } = Route.useSearch();
@@ -270,6 +297,23 @@ function RepositoryDetailPage() {
     enabled: !!readmeFullPath && !!gitOwner,
   });
 
+  // License indicator (root only), like GitHub: detect a LICENSE/COPYING file and
+  // best-effort its SPDX name from the contents
+  const licenseEntry = !path
+    ? treeQuery.data?.find(
+        (e) => e.type === "blob" && /^(licen[sc]e|copying)\b/i.test(e.path),
+      )
+    : undefined;
+  const licenseQuery = useQuery({
+    queryKey: ["license", gitOwner, repo, currentBranch, licenseEntry?.path],
+    queryFn: () =>
+      fetchBlob(gitOwner!, repo, currentBranch, licenseEntry!.path),
+    enabled: !!licenseEntry && !!gitOwner,
+  });
+  const licenseName = licenseQuery.data
+    ? detectLicenseName(licenseQuery.data.content)
+    : undefined;
+
   const handleBranchChange = (branch: string) => {
     navigate({
       to: "/@{$workspaceSlug}/$repoSlug",
@@ -332,6 +376,19 @@ function RepositoryDetailPage() {
           <p className="mt-2 max-w-3xl break-words text-muted-foreground text-sm">
             {repository.description}
           </p>
+        )}
+        {licenseEntry && (
+          <div className="mt-2 flex flex-wrap items-center gap-4 text-muted-foreground text-sm">
+            <Link
+              to="/@{$workspaceSlug}/$repoSlug"
+              params={{ workspaceSlug: owner, repoSlug: repo }}
+              search={{ ref: currentBranch, path: licenseEntry.path }}
+              className="inline-flex items-center gap-1.5 hover:text-foreground hover:underline"
+            >
+              <Scale className="h-4 w-4 shrink-0" />
+              {licenseName ?? "License"}
+            </Link>
+          </div>
         )}
       </div>
 
