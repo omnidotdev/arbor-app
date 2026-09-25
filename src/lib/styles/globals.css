@@ -614,3 +614,16 @@
     display: none;
   }
 }
+
+/*
+ * Theme-aware native UI (scrollbars, form controls, etc.). Dark mode is toggled
+ * via the .dark class on <html>, but without color-scheme the browser keeps
+ * rendering light scrollbars over the dark app. Setting color-scheme makes the
+ * scrollbar (and other native controls) match the active theme everywhere.
+ */
+:root {
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
+}
