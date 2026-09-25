@@ -6,6 +6,14 @@ import {
 } from "@omnidotdev/thornberry/avatar";
 import { LogoLockup } from "@omnidotdev/thornberry/logo-lockup";
 import {
+  MenuContent,
+  MenuItem,
+  MenuPositioner,
+  MenuRoot,
+  MenuSeparator,
+  MenuTrigger,
+} from "@omnidotdev/thornberry/menu";
+import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -22,20 +30,22 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import {
   Bot,
   Boxes,
+  ChevronsUpDown,
   ExternalLink,
   GitBranch,
   KeyRound,
   LogOut,
+  Moon,
   Network,
+  Sun,
 } from "lucide-react";
 import { useEffect } from "react";
 
-import { ModeToggle } from "@/components/layout/ModeToggle";
 import WorkspaceSwitcher from "@/components/layout/WorkspaceSwitcher";
 import signOut from "@/lib/auth/signOut";
 import app from "@/lib/config/app.config";
 import { ACCOUNT_URL } from "@/lib/config/env.config";
-import { cn } from "@/lib/utils";
+import { useTheme } from "@/providers/ThemeProvider";
 
 import type { ComponentProps } from "react";
 
@@ -64,6 +74,7 @@ const AppSidebar = ({ user, ...rest }: Props) => {
   // On mobile the sheet trigger sits at the top right, so open the sidebar from
   // the right to match; keep it on the left on desktop
   const { isMobile, setOpenMobile } = useSidebar();
+  const { theme, setTheme } = useTheme();
 
   // Close the mobile sidebar on any route change, however it was triggered (a
   // nav link, the workspace switcher, a breadcrumb, or a programmatic navigate),
@@ -128,66 +139,86 @@ const AppSidebar = ({ user, ...rest }: Props) => {
       <SidebarFooter className="gap-2">
         <SidebarSeparator className="group-data-[collapsible=icon]:hidden" />
 
-        <div className="flex items-center gap-2 px-1">
-          <AvatarRoot size="sm" className="shrink-0 rounded-lg">
-            {user?.image ? <AvatarImage src={user.image} alt="" /> : null}
-            <AvatarFallback className="rounded-lg bg-sidebar-accent font-semibold text-sidebar-accent-foreground text-xs">
-              {initial}
-            </AvatarFallback>
-          </AvatarRoot>
-
-          <span className="min-w-0 flex-1 truncate text-sm group-data-[collapsible=icon]:hidden">
-            {displayName}
-          </span>
-
-          <div className="flex items-center group-data-[collapsible=icon]:hidden">
-            <ModeToggle />
-          </div>
-        </div>
-
-        <SidebarMenu className="group-data-[collapsible=icon]:hidden">
+        {/* Account menu: the user row opens a dropdown that nests settings,
+            manage-account, theme, and sign out, matching the other Omni apps */}
+        <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild tooltip="Agents">
-              <Link to="/settings/agents" onClick={closeOnMobileNav}>
-                <Bot className="size-4" />
-                <span>Agents</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild tooltip="Personal access tokens">
-              <Link to="/settings/tokens" onClick={closeOnMobileNav}>
-                <KeyRound className="size-4" />
-                <span>Personal access tokens</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-
-          {ACCOUNT_URL && (
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Manage account">
-                <a
-                  href={accountUrl(ACCOUNT_URL)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+            <MenuRoot positioning={{ placement: "top-start" }}>
+              <MenuTrigger asChild>
+                <SidebarMenuButton
+                  tooltip={displayName}
+                  className="data-[state=open]:bg-sidebar-accent"
                 >
-                  <ExternalLink className="size-4" />
-                  <span>Manage account</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          )}
+                  <AvatarRoot size="sm" className="shrink-0 rounded-lg">
+                    {user?.image ? (
+                      <AvatarImage src={user.image} alt="" />
+                    ) : null}
+                    <AvatarFallback className="rounded-lg bg-sidebar-accent font-semibold text-sidebar-accent-foreground text-xs">
+                      {initial}
+                    </AvatarFallback>
+                  </AvatarRoot>
+                  <span className="min-w-0 flex-1 truncate text-left text-sm">
+                    {displayName}
+                  </span>
+                  <ChevronsUpDown className="ml-auto size-4 shrink-0 text-muted-foreground" />
+                </SidebarMenuButton>
+              </MenuTrigger>
 
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              tooltip="Sign out"
-              onClick={() => signOut()}
-              className={cn("text-muted-foreground hover:text-foreground")}
-            >
-              <LogOut className="size-4" />
-              <span>Sign out</span>
-            </SidebarMenuButton>
+              <MenuPositioner>
+                <MenuContent className="w-56 rounded-lg">
+                  <MenuItem asChild value="agents" onClick={closeOnMobileNav}>
+                    <Link to="/settings/agents">
+                      <Bot className="size-4" />
+                      <span>Agents</span>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem asChild value="tokens" onClick={closeOnMobileNav}>
+                    <Link to="/settings/tokens">
+                      <KeyRound className="size-4" />
+                      <span>Personal access tokens</span>
+                    </Link>
+                  </MenuItem>
+
+                  {ACCOUNT_URL && (
+                    <MenuItem asChild value="manage-account">
+                      <a
+                        href={accountUrl(ACCOUNT_URL)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <ExternalLink className="size-4" />
+                        <span>Manage account</span>
+                      </a>
+                    </MenuItem>
+                  )}
+
+                  <MenuSeparator />
+
+                  <MenuItem
+                    value="theme"
+                    onClick={() =>
+                      setTheme(theme === "dark" ? "light" : "dark")
+                    }
+                  >
+                    {theme === "dark" ? (
+                      <Sun className="size-4" />
+                    ) : (
+                      <Moon className="size-4" />
+                    )}
+                    <span>Toggle theme</span>
+                  </MenuItem>
+
+                  <MenuItem
+                    value="signout"
+                    variant="destructive"
+                    onClick={() => signOut()}
+                  >
+                    <LogOut className="size-4" />
+                    <span>Sign out</span>
+                  </MenuItem>
+                </MenuContent>
+              </MenuPositioner>
+            </MenuRoot>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
