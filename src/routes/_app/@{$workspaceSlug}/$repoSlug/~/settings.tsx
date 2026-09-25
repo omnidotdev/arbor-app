@@ -77,9 +77,12 @@ function RepositorySettingsPage() {
     session?.user?.rowId,
   );
 
+  // Git storage is keyed by the owning user's username, not the @workspace slug
+  const gitOwner = repository?.owner?.username;
   const branchesQuery = useQuery({
-    queryKey: ["branches", owner, repo],
-    queryFn: () => fetchBranches(owner, repo),
+    queryKey: ["branches", gitOwner, repo],
+    queryFn: () => fetchBranches(gitOwner!, repo),
+    enabled: !!gitOwner,
   });
   const branches = branchesQuery.data ?? [];
 

@@ -579,7 +579,7 @@ git push -u origin master`}
                 <FileViewer
                   content={blobQuery.data!.content}
                   filename={path.split("/").pop() ?? ""}
-                  owner={owner}
+                  owner={gitOwner ?? owner}
                   repo={repo}
                   branch={currentBranch}
                   path={path}
