@@ -10,6 +10,8 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   ExternalLink,
   GitBranch,
+  Globe,
+  Lock,
   MessageSquare,
   Moon,
   Network,
@@ -19,6 +21,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useWorkspaceRepositoriesQuery } from "@/generated/graphql";
 import { ACCOUNT_URL, CONSOLE_URL } from "@/lib/config/env.config";
 import { getOrganizationBySlug } from "@/server/functions/organizations";
 
@@ -73,6 +76,15 @@ function WorkspaceDetailPage() {
 
   const workspace = claimWorkspace ?? fallbackWorkspace ?? undefined;
 
+  // The workspace's repositories, resolved by org slug and server-scoped to what
+  // the caller may see (the repositories connection is read-authorized). Listed
+  // in the path-based workspace URL itself rather than a filtered global page.
+  const { data: reposData } = useQuery({
+    queryKey: useWorkspaceRepositoriesQuery.getKey({ workspaceSlug }),
+    queryFn: useWorkspaceRepositoriesQuery.fetcher({ workspaceSlug }),
+  });
+  const repositories = reposData?.repositories?.nodes ?? [];
+
   const displayName = workspace?.name ?? workspaceSlug;
   const initial = displayName.trim().charAt(0).toUpperCase() || "?";
   // Billing is per-workspace and lives on the account console
@@ -101,22 +113,62 @@ function WorkspaceDetailPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <div className="flex h-full flex-col rounded-lg border bg-card p-4">
-          <div className="flex items-center gap-2">
-            <GitBranch className="h-5 w-5 text-muted-foreground" />
-            <h3 className="font-semibold">Repositories</h3>
-          </div>
-          <p className="mt-2 text-muted-foreground text-sm">
-            Browse repositories in this workspace
-          </p>
-          <Button className="mt-auto" variant="outline" size="sm" asChild>
-            <Link to="/repositories" search={{ owner: workspaceSlug }}>
-              View repositories
-            </Link>
-          </Button>
+      <section className="mb-8">
+        <div className="mb-3 flex items-center gap-2">
+          <GitBranch className="h-5 w-5 text-muted-foreground" />
+          <h2 className="font-semibold text-xl">Repositories</h2>
+          {repositories.length > 0 && (
+            <span className="text-muted-foreground text-sm">
+              {repositories.length}{" "}
+              {repositories.length === 1 ? "repository" : "repositories"}
+            </span>
+          )}
         </div>
 
+        {repositories.length === 0 ? (
+          <div className="rounded-lg border bg-card p-6 text-center text-muted-foreground text-sm">
+            No repositories in this workspace yet.
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {repositories.map((repo) => (
+              <div key={repo.rowId} className="rounded-lg border bg-card p-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <Link
+                    to="/@{$workspaceSlug}/$repoSlug"
+                    params={{ workspaceSlug, repoSlug: repo.slug }}
+                    className="break-all font-semibold hover:underline"
+                  >
+                    {workspaceSlug}/{repo.name}
+                  </Link>
+                  {repo.visibility === "private" ? (
+                    <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-muted-foreground text-xs">
+                      <Lock className="mr-1 h-3 w-3" />
+                      Private
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-muted-foreground text-xs">
+                      <Globe className="mr-1 h-3 w-3" />
+                      Public
+                    </span>
+                  )}
+                </div>
+                {repo.description && (
+                  <p className="mt-1 text-muted-foreground text-sm">
+                    {repo.description}
+                  </p>
+                )}
+                <div className="mt-2 flex items-center gap-1 text-muted-foreground text-xs">
+                  <GitBranch className="h-3 w-3" />
+                  {repo.defaultBranch}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="flex h-full flex-col rounded-lg border bg-card p-4">
           <div className="flex items-center gap-2">
             <Users className="h-5 w-5 text-muted-foreground" />
