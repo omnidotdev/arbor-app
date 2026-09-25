@@ -29,6 +29,7 @@ import {
   useUpdateRepositoryMutation,
 } from "@/generated/graphql";
 import { API_BASE_URL } from "@/lib/config/env.config";
+import { getCurrentAuthHeaders } from "@/lib/graphql/graphqlClientFactory";
 import repositoryBySlugOptions from "@/lib/options/repositoryBySlug.options";
 import generateSlug from "@/lib/util/generateSlug";
 import { getRepositoryAccess } from "@/lib/util/repositoryAccess";
@@ -50,6 +51,7 @@ interface Branch {
 async function fetchBranches(owner: string, repo: string): Promise<Branch[]> {
   const res = await fetch(`${API_BASE_URL}/git/${owner}/${repo}/branches`, {
     credentials: "include",
+    headers: getCurrentAuthHeaders(),
   });
 
   if (!res.ok) {

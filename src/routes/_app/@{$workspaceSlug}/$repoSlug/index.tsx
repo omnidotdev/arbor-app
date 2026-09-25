@@ -29,6 +29,7 @@ import {
   useRepositoriesQuery,
 } from "@/generated/graphql";
 import { API_BASE_URL, GIT_BASE_URL } from "@/lib/config/env.config";
+import { getCurrentAuthHeaders } from "@/lib/graphql/graphqlClientFactory";
 import repositoryBySlugOptions from "@/lib/options/repositoryBySlug.options";
 import repositoryWithBranchesOptions from "@/lib/options/repositoryWithBranches.options";
 import { getRepositoryAccess } from "@/lib/util/repositoryAccess";
@@ -74,6 +75,7 @@ async function fetchBranches(owner: string, repo: string): Promise<Branch[]> {
   // Use REST API for fetching branches (works without GraphQL auth)
   const res = await fetch(`${API_BASE_URL}/git/${owner}/${repo}/branches`, {
     credentials: "include",
+    headers: getCurrentAuthHeaders(),
   });
 
   if (!res.ok) {
@@ -93,7 +95,10 @@ async function fetchTree(
   const url = path
     ? `${API_BASE_URL}/git/${owner}/${repo}/tree/${ref}/${path}`
     : `${API_BASE_URL}/git/${owner}/${repo}/tree/${ref}`;
-  const res = await fetch(url, { credentials: "include" });
+  const res = await fetch(url, {
+    credentials: "include",
+    headers: getCurrentAuthHeaders(),
+  });
   if (!res.ok) {
     if (res.status === 404) return [];
     throw new Error("Failed to fetch tree");
@@ -110,7 +115,10 @@ async function fetchTreeCommits(
   const url = path
     ? `${API_BASE_URL}/git/${owner}/${repo}/tree-commits/${ref}/${path}`
     : `${API_BASE_URL}/git/${owner}/${repo}/tree-commits/${ref}`;
-  const res = await fetch(url, { credentials: "include" });
+  const res = await fetch(url, {
+    credentials: "include",
+    headers: getCurrentAuthHeaders(),
+  });
   if (!res.ok) {
     if (res.status === 404) return [];
     throw new Error("Failed to fetch tree commits");
@@ -126,7 +134,7 @@ async function fetchBlob(
 ): Promise<BlobResponse> {
   const res = await fetch(
     `${API_BASE_URL}/git/${owner}/${repo}/blob/${ref}/${path}`,
-    { credentials: "include" },
+    { credentials: "include", headers: getCurrentAuthHeaders() },
   );
   if (!res.ok) throw new Error("Failed to fetch file");
   return res.json();
