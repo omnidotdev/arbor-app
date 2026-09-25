@@ -16994,7 +16994,7 @@ useCreateProjectMutation.fetcher = (variables: CreateProjectMutationVariables, o
 export const ProjectBySlugDocument = new TypedDocumentString(`
     query ProjectBySlug($ownerSlug: String!, $slug: String!) {
   projects(
-    filter: {slug: {equalTo: $slug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
+    filter: {slug: {equalTo: $slug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
     first: 1
   ) {
     nodes {
@@ -17518,7 +17518,7 @@ usePullRequestConversationQuery.fetcher = (variables: PullRequestConversationQue
 export const PullRequestFileDiffDocument = new TypedDocumentString(`
     query PullRequestFileDiff($ownerSlug: String!, $repoSlug: String!, $number: Int!, $path: String!) {
   pullRequests(
-    filter: {number: {equalTo: $number}, repository: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}}
+    filter: {number: {equalTo: $number}, repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
     first: 1
   ) {
     nodes {
@@ -17620,7 +17620,7 @@ usePullRequestFileDiffQuery.fetcher = (variables: PullRequestFileDiffQueryVariab
 export const PullRequestFilesDocument = new TypedDocumentString(`
     query PullRequestFiles($ownerSlug: String!, $repoSlug: String!, $number: Int!) {
   pullRequests(
-    filter: {number: {equalTo: $number}, repository: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}}
+    filter: {number: {equalTo: $number}, repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
     first: 1
   ) {
     nodes {
@@ -17747,7 +17747,7 @@ usePullRequestFilesQuery.fetcher = (variables: PullRequestFilesQueryVariables, o
 export const PullRequestsDocument = new TypedDocumentString(`
     query PullRequests($ownerSlug: String!, $repoSlug: String!) {
   pullRequests(
-    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
+    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
     orderBy: [CREATED_AT_DESC]
     first: 100
   ) {
@@ -17860,7 +17860,7 @@ usePullRequestsQuery.fetcher = (variables: PullRequestsQueryVariables, options?:
 export const CommitDetailDocument = new TypedDocumentString(`
     query CommitDetail($ownerSlug: String!, $repoSlug: String!, $oid: String!) {
   repositories(
-    filter: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}
+    filter: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
     first: 1
   ) {
     nodes {
@@ -17979,7 +17979,7 @@ useCommitDetailQuery.fetcher = (variables: CommitDetailQueryVariables, options?:
 export const CommitFileDiffDocument = new TypedDocumentString(`
     query CommitFileDiff($ownerSlug: String!, $repoSlug: String!, $oid: String!, $path: String!) {
   repositories(
-    filter: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}
+    filter: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
     first: 1
   ) {
     nodes {
@@ -18405,7 +18405,7 @@ useRepositoryBySlugQuery.fetcher = (variables: RepositoryBySlugQueryVariables, o
 export const RepositoryWithBranchesDocument = new TypedDocumentString(`
     query RepositoryWithBranches($ownerSlug: String!, $repoSlug: String!) {
   repositories(
-    filter: {slug: {equalTo: $repoSlug}, owner: {username: {equalTo: $ownerSlug}}}
+    filter: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}
     first: 1
   ) {
     nodes {
@@ -18647,7 +18647,7 @@ useWorkspaceRepositoriesQuery.fetcher = (variables: WorkspaceRepositoriesQueryVa
 export const MergeQueueEntriesDocument = new TypedDocumentString(`
     query MergeQueueEntries($ownerSlug: String!, $repoSlug: String!) {
   mergeQueueEntries(
-    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
+    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
     orderBy: [POSITION_ASC]
     first: 100
   ) {
@@ -18905,7 +18905,7 @@ useStackQuery.fetcher = (variables: StackQueryVariables, options?: RequestInit['
 export const StacksDocument = new TypedDocumentString(`
     query Stacks($ownerSlug: String!, $repoSlug: String!) {
   stacks(
-    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
+    filter: {repository: {slug: {equalTo: $repoSlug}, or: [{owner: {username: {equalTo: $ownerSlug}}}, {organization: {slug: {equalTo: $ownerSlug}}}, {organization: {idpOrganizationId: {equalTo: $ownerSlug}}}]}}
     orderBy: [CREATED_AT_DESC]
     first: 100
   ) {

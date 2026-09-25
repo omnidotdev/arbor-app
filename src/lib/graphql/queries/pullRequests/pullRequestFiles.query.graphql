@@ -4,8 +4,11 @@ query PullRequestFiles($ownerSlug: String!, $repoSlug: String!, $number: Int!) {
       number: { equalTo: $number }
       repository: {
         slug: { equalTo: $repoSlug }
-        owner: { username: { equalTo: $ownerSlug } }
-      }
+        or: [
+          { owner: { username: { equalTo: $ownerSlug } } }
+          { organization: { slug: { equalTo: $ownerSlug } } }
+          { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
+        ]      }
     }
     first: 1
   ) {

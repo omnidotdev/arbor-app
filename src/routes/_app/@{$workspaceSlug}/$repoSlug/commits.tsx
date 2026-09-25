@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { BranchSelector, CommitList } from "@/components/repository";
 import { API_BASE_URL } from "@/lib/config/env.config";
+import { useGitOwner } from "@/lib/hooks/useGitOwner";
 
 const searchSchema = z.object({
   ref: z.string().optional(),
@@ -87,10 +88,14 @@ function CommitsPage() {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
 
+  // Git storage is keyed by the owning user's username, not the @workspace slug
+  const gitOwner = useGitOwner(owner, repo);
+
   // Fetch branches
   const branchesQuery = useQuery({
-    queryKey: ["branches", owner, repo],
-    queryFn: () => fetchBranches(owner, repo),
+    queryKey: ["branches", gitOwner, repo],
+    queryFn: () => fetchBranches(gitOwner!, repo),
+    enabled: !!gitOwner,
   });
 
   const branches = branchesQuery.data ?? [];
@@ -100,9 +105,9 @@ function CommitsPage() {
 
   // Fetch commits
   const commitsQuery = useQuery({
-    queryKey: ["commits", owner, repo, currentBranch, page],
-    queryFn: () => fetchCommits(owner, repo, currentBranch, page),
-    enabled: branches.length > 0 || !branchesQuery.isLoading,
+    queryKey: ["commits", gitOwner, repo, currentBranch, page],
+    queryFn: () => fetchCommits(gitOwner!, repo, currentBranch, page),
+    enabled: !!gitOwner && (branches.length > 0 || !branchesQuery.isLoading),
   });
 
   const handleBranchChange = (branch: string) => {

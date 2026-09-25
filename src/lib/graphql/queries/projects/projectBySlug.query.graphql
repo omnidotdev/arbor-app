@@ -4,8 +4,8 @@ query ProjectBySlug($ownerSlug: String!, $slug: String!) {
       slug: { equalTo: $slug }
       or: [
         { owner: { username: { equalTo: $ownerSlug } } }
-        { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
-      ]
+        { organization: { slug: { equalTo: $ownerSlug } } }
+        { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }      ]
     }
     first: 1
   ) {
