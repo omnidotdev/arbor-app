@@ -7,17 +7,14 @@ import {
 import {
   ArrowRight,
   Bot,
+  FileText,
   GitBranch,
-  GitMerge,
   GitPullRequest,
-  Leaf,
   Lock,
   Network,
+  Scale,
   Search,
-  Share2,
-  Sprout,
-  TreePine,
-  Waypoints,
+  Star,
 } from "lucide-react";
 
 import { ApplicantCount } from "@/components/beta/ApplicantCount";
@@ -34,202 +31,318 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-/** A single repository node in the hero constellation */
-interface GraphNode {
-  cx: number;
-  cy: number;
-  r: number;
-  /** palette accent: emerald primary or amethyst secondary */
-  accent: "emerald" | "amethyst";
-  /** seconds of animation delay so the field breathes asynchronously */
-  delay: number;
-}
+// ---------------------------------------------------------------------------
+// Product mockups: a faithful, static render of the Arbor UI shown inside a
+// browser frame. These sell the product by showing the real surfaces (the
+// dependency graph, the repository browser) rather than abstract art.
+// ---------------------------------------------------------------------------
 
-const NODES: GraphNode[] = [
-  { cx: 200, cy: 150, r: 14, accent: "emerald", delay: 0 },
-  { cx: 90, cy: 70, r: 8, accent: "amethyst", delay: 0.6 },
-  { cx: 320, cy: 80, r: 9, accent: "emerald", delay: 1.2 },
-  { cx: 70, cy: 240, r: 7, accent: "emerald", delay: 1.8 },
-  { cx: 330, cy: 230, r: 10, accent: "amethyst", delay: 0.9 },
-  { cx: 200, cy: 280, r: 8, accent: "emerald", delay: 1.5 },
-  { cx: 150, cy: 50, r: 6, accent: "amethyst", delay: 2.1 },
-];
-
-/** Edges connect to the central node (index 0) to read as a dependency graph */
-const EDGES: Array<[number, number]> = [
-  [0, 1],
-  [0, 2],
-  [0, 3],
-  [0, 4],
-  [0, 5],
-  [1, 6],
-  [2, 6],
-];
-
-const ACCENT = {
-  emerald: "var(--emerald-500)",
-  amethyst: "var(--amethyst-500)",
-} as const;
-
-/** Animated repository constellation that powers the hero */
-function Constellation() {
+/** A macOS-style browser window that frames a product screenshot. */
+function BrowserFrame({
+  url,
+  children,
+  className,
+}: {
+  url: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <svg
-      viewBox="0 0 400 320"
-      className="h-full w-full"
-      role="img"
-      aria-label="A living dependency graph of connected repositories"
+    <div
+      className={`overflow-hidden rounded-2xl border border-border/70 bg-card shadow-[0_40px_80px_-40px_rgba(16,40,28,0.45)] ${className ?? ""}`}
     >
-      <title>Connected repositories</title>
-      {EDGES.map(([from, to]) => {
-        const a = NODES[from];
-        const b = NODES[to];
-        return (
-          <line
-            key={`${from}-${to}`}
-            x1={a.cx}
-            y1={a.cy}
-            x2={b.cx}
-            y2={b.cy}
-            stroke="var(--emerald-400)"
-            strokeWidth={1.5}
-            strokeOpacity={0.5}
-            className="arbor-edge"
-            style={{ animationDelay: `${from * 0.4}s` }}
-          />
-        );
-      })}
-      {NODES.map((node) => (
-        <g key={`${node.cx}-${node.cy}`}>
-          <circle
-            cx={node.cx}
-            cy={node.cy}
-            r={node.r + 8}
-            fill={ACCENT[node.accent]}
-            opacity={0.12}
-            className="arbor-node"
-            style={{ animationDelay: `${node.delay}s` }}
-          />
-          <circle
-            cx={node.cx}
-            cy={node.cy}
-            r={node.r}
-            fill={ACCENT[node.accent]}
-            className="arbor-node"
-            style={{ animationDelay: `${node.delay}s` }}
-          />
-          <circle
-            cx={node.cx}
-            cy={node.cy}
-            r={node.r}
-            fill="none"
-            stroke="oklch(1 0 0 / 0.4)"
-            strokeWidth={1}
-          />
-        </g>
-      ))}
-    </svg>
+      <div className="flex items-center gap-2 border-border/70 border-b bg-muted/40 px-4 py-3">
+        <span className="h-3 w-3 rounded-full bg-red-400/80" />
+        <span className="h-3 w-3 rounded-full bg-amber-400/80" />
+        <span className="h-3 w-3 rounded-full bg-emerald-400/80" />
+        <div className="ml-3 max-w-[360px] flex-1 truncate rounded-md border border-border/70 bg-background px-3 py-1 font-mono text-[11px] text-muted-foreground">
+          {url}
+        </div>
+      </div>
+      {children}
+    </div>
   );
 }
 
-/**
- * The arboreal throughline: each capability mapped to how a forest actually
- * works, so the metaphor does real explanatory work rather than decoration.
- */
-const CANOPY = [
+interface GNode {
+  id: string;
+  cx: number;
+  cy: number;
+  r: number;
+  fill: string;
+  labelAbove?: boolean;
+  small?: boolean;
+}
+
+const G_EMERALD = "var(--color-emerald-500)";
+const G_VIOLET = "var(--color-amethyst-500)";
+const G_AMBER = "var(--color-amber-500)";
+
+const GRAPH_NODES: GNode[] = [
+  { id: "arbor-app", cx: 310, cy: 120, r: 14, fill: G_EMERALD },
+  { id: "arbor-api", cx: 170, cy: 70, r: 10, fill: G_VIOLET, labelAbove: true },
   {
-    icon: GitBranch,
-    accent: "text-emerald-500",
-    tint: "bg-emerald-500/10",
-    title: "Branches you can see",
-    description:
-      "Every branch, pull request, and merge across the whole org in one canopy. Stop tab-hopping between repos to find where work actually lives.",
+    id: "arbor-git",
+    cx: 450,
+    cy: 72,
+    r: 11,
+    fill: G_EMERALD,
+    labelAbove: true,
   },
-  {
-    icon: Waypoints,
-    accent: "text-amethyst-500",
-    tint: "bg-amethyst-500/10",
-    title: "Follow the roots",
-    description:
-      "Code has roots. Arbor maps the dependencies between repositories, so you can trace the blast radius of a change before you ship it, not after it breaks.",
-  },
-  {
-    icon: TreePine,
-    accent: "text-emerald-400",
-    tint: "bg-emerald-400/10",
-    title: "Group into groves",
-    description:
-      "Workspaces mirror how your teams really grow: one @handle per org, repositories beneath it, permissions that follow the shape of your company.",
-  },
-  {
-    icon: Leaf,
-    accent: "text-amethyst-400",
-    tint: "bg-amethyst-400/10",
-    title: "Read the rings",
-    description:
-      "Full history, rich diffs, and threaded review. The grain of every change is preserved, so how the code grew is never a mystery.",
-  },
+  { id: "providers", cx: 310, cy: 210, r: 12, fill: G_AMBER },
+  { id: "gateway", cx: 200, cy: 250, r: 8, fill: G_VIOLET, small: true },
+  { id: "infra", cx: 430, cy: 250, r: 8, fill: G_EMERALD, small: true },
+  { id: "docs", cx: 540, cy: 150, r: 8, fill: G_VIOLET, small: true },
 ];
 
-/** Secondary capability grid, kept crisp and technical under the metaphor */
+const GRAPH_HOT: Array<[number, number]> = [
+  [0, 1],
+  [0, 2],
+  [0, 3],
+];
+const GRAPH_COLD: Array<[number, number]> = [
+  [3, 1],
+  [3, 2],
+  [3, 4],
+  [3, 5],
+  [2, 6],
+];
+
+/** The Arbor dependency-graph view. */
+function GraphMock() {
+  const nodeById = (i: number) => GRAPH_NODES[i];
+  return (
+    <div className="grid grid-cols-[170px_1fr] max-[520px]:grid-cols-1">
+      {/* workspace sidebar */}
+      <div className="border-border/70 border-r bg-muted/30 p-3 text-[13px] max-[520px]:hidden">
+        <div className="flex items-center gap-2 rounded-lg bg-emerald-500/10 px-2 py-1.5 font-semibold text-emerald-600 dark:text-emerald-400">
+          <span className="grid h-4 w-4 place-items-center rounded bg-emerald-500 text-[10px] text-white">
+            O
+          </span>
+          @omni
+        </div>
+        {["arbor-api", "arbor-app", "arbor-git", "providers"].map((r) => (
+          <div
+            key={r}
+            className={
+              r === "arbor-app"
+                ? "mt-0.5 rounded-lg border border-border/70 bg-background px-2 py-1.5 pl-7 font-semibold"
+                : "rounded-lg px-2 py-1.5 pl-7 text-muted-foreground"
+            }
+          >
+            {r}
+          </div>
+        ))}
+      </div>
+      {/* graph canvas */}
+      <div>
+        <div className="flex items-center justify-between border-border/70 border-b px-4 py-3">
+          <div className="font-mono text-[13px]">
+            <span className="font-semibold">@omni</span>
+            <span className="text-muted-foreground"> / dependency graph</span>
+          </div>
+          <div className="font-mono text-[12px] text-muted-foreground">
+            ◷ live
+          </div>
+        </div>
+        <div className="relative h-[320px] bg-[radial-gradient(120%_120%_at_30%_10%,rgba(16,157,81,0.06),transparent_60%)]">
+          <svg
+            viewBox="0 0 620 300"
+            className="h-full w-full"
+            preserveAspectRatio="xMidYMid meet"
+            role="img"
+            aria-label="Dependency graph of the arbor repositories"
+          >
+            <title>Arbor dependency graph</title>
+            {GRAPH_COLD.map(([a, b]) => (
+              <line
+                key={`c-${a}-${b}`}
+                x1={nodeById(a).cx}
+                y1={nodeById(a).cy}
+                x2={nodeById(b).cx}
+                y2={nodeById(b).cy}
+                stroke="var(--color-emerald-500)"
+                strokeOpacity={0.25}
+                strokeWidth={2}
+              />
+            ))}
+            {GRAPH_HOT.map(([a, b]) => (
+              <line
+                key={`h-${a}-${b}`}
+                x1={nodeById(a).cx}
+                y1={nodeById(a).cy}
+                x2={nodeById(b).cx}
+                y2={nodeById(b).cy}
+                stroke="var(--color-emerald-500)"
+                strokeWidth={2.5}
+              />
+            ))}
+            {GRAPH_NODES.map((n) => (
+              <g key={n.id}>
+                <circle cx={n.cx} cy={n.cy} r={n.r} fill={n.fill} />
+                <text
+                  x={n.cx}
+                  y={n.labelAbove ? n.cy - n.r - 8 : n.cy + n.r + 16}
+                  textAnchor="middle"
+                  fontSize={n.small ? 10 : 12}
+                  fontWeight={n.small ? 400 : 600}
+                  fontFamily={
+                    n.small ? "var(--font-mono, monospace)" : "inherit"
+                  }
+                  fill={
+                    n.small ? "var(--color-muted-foreground)" : "currentColor"
+                  }
+                  className="fill-foreground"
+                >
+                  {n.id}
+                </text>
+              </g>
+            ))}
+          </svg>
+          <div className="absolute top-3.5 right-3.5 w-[150px] rounded-xl border border-border/70 bg-card p-3 text-[12px] shadow-lg">
+            <div className="mb-1.5 font-bold">arbor-app</div>
+            <div className="my-1 flex items-center gap-2 text-muted-foreground">
+              <span className="h-2 w-2 rounded-full bg-emerald-500" /> 3
+              dependencies
+            </div>
+            <div className="my-1 flex items-center gap-2 text-muted-foreground">
+              <span className="h-2 w-2 rounded-full bg-amber-500" /> 5
+              dependents
+            </div>
+            <div className="my-1 flex items-center gap-2 text-muted-foreground">
+              <span className="h-2 w-2 rounded-full bg-amethyst-500" /> 0 cycles
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** The Arbor repository browser (code view). */
+function RepoMock() {
+  const tree = [
+    { name: "src", dir: true },
+    { name: "src-tauri", dir: true },
+    { name: "public", dir: true },
+    { name: "package.json", dir: false },
+    { name: "README.md", dir: false, active: true },
+    { name: "tsconfig.json", dir: false },
+  ];
+  return (
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-3 border-border/70 border-b px-4 py-3">
+        <div className="font-mono text-[13px]">
+          <span className="font-semibold">@omni</span>
+          <span className="text-muted-foreground"> / arbor-app</span>
+        </div>
+        <div className="flex items-center gap-3 text-muted-foreground text-xs">
+          <span className="inline-flex items-center gap-1">
+            <Star className="h-3.5 w-3.5" /> 214
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <Scale className="h-3.5 w-3.5" /> MIT
+          </span>
+        </div>
+      </div>
+      <div className="flex gap-1 border-border/70 border-b px-3 pt-2">
+        {["Code", "Pull requests", "Graph", "Settings"].map((t) => (
+          <span
+            key={t}
+            className={
+              t === "Code"
+                ? "border-emerald-500 border-b-2 px-3 py-2 font-semibold text-[13px]"
+                : "px-3 py-2 text-[13px] text-muted-foreground"
+            }
+          >
+            {t}
+          </span>
+        ))}
+      </div>
+      <div className="grid grid-cols-[190px_1fr] max-[520px]:grid-cols-1">
+        <div className="border-border/70 border-r p-2 text-[13px] max-[520px]:hidden">
+          {tree.map((f) => (
+            <div
+              key={f.name}
+              className={`flex items-center gap-2 rounded-md px-2 py-1.5 ${
+                f.active ? "bg-muted/60 font-medium" : "text-muted-foreground"
+              }`}
+            >
+              {f.dir ? (
+                <span className="text-amber-500">▸</span>
+              ) : (
+                <FileText className="h-3.5 w-3.5 opacity-60" />
+              )}
+              {f.name}
+            </div>
+          ))}
+        </div>
+        <div className="p-5">
+          <div className="mb-3 flex items-center gap-2 border-border/60 border-b pb-3 text-muted-foreground text-xs">
+            <FileText className="h-4 w-4" />
+            README.md
+            <span className="ml-auto rounded bg-muted px-2 py-0.5 font-mono text-[10px]">
+              rendered
+            </span>
+          </div>
+          <div className="prose-sm">
+            <h3 className="font-bold text-xl">🌲 arbor-app</h3>
+            <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
+              The web client for Arbor, a code forge that maps the living graph
+              between your repositories. Built with TanStack Start and the Omni
+              design system.
+            </p>
+            <div className="mt-3 rounded-lg border border-border/60 bg-muted/40 p-3 font-mono text-[12px] text-muted-foreground">
+              <span className="text-emerald-600 dark:text-emerald-400">$</span>{" "}
+              git clone https://arbor.omni.dev/@omni/arbor-app
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Content
+// ---------------------------------------------------------------------------
+
 const FEATURES = [
   {
     icon: Network,
     title: "Polyrepo graph",
     description:
-      "A live, navigable graph of every repo and the dependencies between them. Architecture stops being tribal knowledge.",
+      "Every repository a node, every dependency an edge, redrawn on each push. Trace a change's blast radius before you ship it.",
   },
   {
     icon: GitBranch,
     title: "Full git hosting",
     description:
-      "Clone, push, branches, tags, protected refs. Bring your whole workflow under one canopy, on standard git.",
+      "Clone, push, and browse over fast smart-http, with @handle workspaces that mirror your organization.",
   },
   {
     icon: GitPullRequest,
-    title: "Pull requests",
+    title: "Pull requests & review",
     description:
-      "Open, review, and merge with rich diffs, rendered markdown, and threaded discussion baked in.",
-  },
-  {
-    icon: Bot,
-    title: "Agent-native",
-    description:
-      "Agents that see the whole grove, not just one file. They answer questions, open PRs, and reason across repos.",
+      "Open, review, and merge. The whole review loop, with the graph showing what each change touches.",
   },
   {
     icon: Search,
-    title: "Browse & search",
+    title: "Browse & code search",
     description:
-      "Read any repo like a book: nested READMEs, rendered markdown, license at a glance, code search across the forest.",
+      "Jump across repositories and find any symbol or file, without cloning a thing.",
   },
   {
-    icon: Share2,
-    title: "Dependency insight",
+    icon: FileText,
+    title: "Rendered markdown",
     description:
-      "See how one change ripples through everything downstream, and which teams to loop in, before it lands.",
-  },
-];
-
-/** Onboarding, told as growth: plant, connect, navigate */
-const STEPS = [
-  {
-    icon: Sprout,
-    title: "Plant your repos",
-    description:
-      "Create a repo or bring existing ones under Arbor, individually or a whole org at once.",
+      "Nested READMEs, licenses, and docs rendered human-readable, exactly where you expect them.",
   },
   {
-    icon: GitMerge,
-    title: "Watch the graph grow",
+    icon: Bot,
+    title: "Agents that see the forest",
     description:
-      "Arbor draws the dependency graph automatically, so the structure of your codebase becomes visible.",
-  },
-  {
-    icon: Network,
-    title: "Navigate the canopy",
-    description:
-      "Move between repos, branches, teams, and agents from one connected view of the whole forest.",
+      "Agents reason across the whole grove, not one file, answering questions and opening PRs with cross-repo context.",
   },
 ];
 
@@ -237,271 +350,183 @@ function Home() {
   const { session } = useRouteContext({ from: "__root__" });
   const isAuthenticated = !!session?.user?.rowId;
 
-  const handleSignIn = () => {
-    signIn({ redirectUrl: BASE_URL });
-  };
+  const handleSignIn = () => signIn({ redirectUrl: BASE_URL });
+
+  const primaryCta = isAuthenticated ? (
+    <Button size="lg" asChild>
+      <Link to="/repositories">
+        <GitBranch className="mr-2 h-4 w-4" />
+        Enter the forest
+      </Link>
+    </Button>
+  ) : (
+    <Button size="lg" asChild>
+      <Link to="/apply">Request early access</Link>
+    </Button>
+  );
 
   return (
-    <div className="relative overflow-hidden">
-      {/* Ambient background: aurora blobs + blueprint grid */}
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="arbor-grid absolute inset-0 opacity-40" />
-        <div className="arbor-aurora absolute -top-32 -left-24 h-[28rem] w-[28rem] rounded-full bg-emerald-500/20 blur-3xl" />
-        <div
-          className="arbor-aurora absolute -top-16 right-0 h-[26rem] w-[26rem] rounded-full bg-amethyst-500/20 blur-3xl"
-          style={{ animationDelay: "6s" }}
-        />
-      </div>
-
-      {/* Hero */}
-      <section className="container mx-auto max-w-7xl px-6 pt-16 pb-20 md:grid md:grid-cols-2 md:items-center md:gap-10 md:pt-24 md:pb-28">
-        <div className="arbor-fade-up flex flex-col justify-center space-y-6">
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 font-medium text-emerald-600 text-sm dark:text-emerald-300">
-            <Sprout className="h-3.5 w-3.5" />
-            Open source · agent-native · in closed beta
-          </span>
-          <h1 className="font-bold text-4xl tracking-tighter sm:text-5xl xl:text-6xl/[1.05]">
-            Where code{" "}
-            <span className="arbor-gradient-text">grows together</span>
-          </h1>
-          <p className="max-w-150 text-lg text-muted-foreground md:text-xl">
-            Most forges show you one tree at a time. Arbor hosts every
-            repository and maps the living graph between them, so your whole
-            organization reads like one connected forest instead of a thousand
-            scattered trees. Agent-native, from the roots up.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            {isAuthenticated ? (
-              <>
-                <Button size="lg" asChild>
-                  <Link to="/repositories">
-                    <GitBranch className="mr-2 h-4 w-4" />
-                    View repositories
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" asChild>
+    <div className="bg-background text-foreground">
+      {/* ===================== HERO ===================== */}
+      <section className="relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[420px] bg-[radial-gradient(60%_100%_at_30%_0,rgba(16,157,81,0.10),transparent_70%)]" />
+        <div className="container mx-auto grid max-w-7xl items-center gap-12 px-6 py-16 md:grid-cols-[1.02fr_1.1fr] md:gap-10 md:py-24">
+          <div>
+            <h1 className="font-bold text-4xl tracking-tighter sm:text-5xl xl:text-6xl/[1.03]">
+              A code forge that grows like a{" "}
+              <span className="text-emerald-600 dark:text-emerald-400">
+                forest
+              </span>
+              .
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-muted-foreground leading-relaxed md:text-xl">
+              Host every repository, then watch Arbor draw the living graph
+              between them.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-5">
+              {primaryCta}
+              {isAuthenticated ? (
+                <Button size="lg" variant="ghost" asChild>
                   <Link to="/graph">
-                    <Network className="mr-2 h-4 w-4" />
-                    Open the graph
+                    Explore the graph
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-              </>
-            ) : (
-              <>
-                <Button size="lg" asChild>
-                  <Link to="/apply">
-                    <Sprout className="mr-2 h-4 w-4" />
-                    Request early access
-                  </Link>
-                </Button>
-                <Button size="lg" variant="ghost" onClick={handleSignIn}>
-                  <Lock className="mr-2 h-4 w-4" />
-                  Already invited? Sign in
-                </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <Link to="/pricing">Pricing</Link>
-                </Button>
-              </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleSignIn}
+                  className="font-semibold text-emerald-600 text-sm hover:underline dark:text-emerald-400"
+                >
+                  Already invited? Sign in →
+                </button>
+              )}
+            </div>
+            {!isAuthenticated && (
+              <div className="mt-6">
+                <ApplicantCount />
+              </div>
             )}
           </div>
-          {!isAuthenticated && <ApplicantCount />}
-        </div>
 
-        <div className="mt-12 md:mt-0">
-          <div className="arbor-float relative mx-auto max-w-md">
-            <div className="absolute -inset-6 rounded-full bg-primary/10 blur-3xl" />
-            <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/60 p-4 shadow-2xl backdrop-blur-md">
-              <div className="mb-3 flex items-center gap-2 px-1">
-                <span className="h-2.5 w-2.5 rounded-full bg-destructive/70" />
-                <span className="h-2.5 w-2.5 rounded-full bg-amethyst-400/70" />
-                <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
-                <span className="ml-2 font-mono text-muted-foreground text-xs">
-                  arbor / the forest
-                </span>
-              </div>
-              <div className="aspect-[4/3] w-full">
-                <Constellation />
-              </div>
-            </div>
+          <BrowserFrame url="arbor.omni.dev/@omni/graph">
+            <GraphMock />
+          </BrowserFrame>
+        </div>
+      </section>
+
+      {/* ===================== Trust strip ===================== */}
+      <div className="border-border/60 border-y bg-muted/30">
+        <div className="container mx-auto flex max-w-7xl flex-wrap items-center gap-x-7 gap-y-2 px-6 py-4 font-mono text-muted-foreground text-xs">
+          <span className="text-foreground">$ git remote add arbor …</span>
+          <span>·</span>
+          <span>7 repositories mapped</span>
+          <span>·</span>
+          <span>9 dependencies</span>
+          <span>·</span>
+          <span>0 cycles</span>
+          <span>·</span>
+          <span>redrawn on every push</span>
+        </div>
+      </div>
+
+      {/* ===================== Product: the repo browser ===================== */}
+      <section className="container mx-auto max-w-7xl px-6 py-20 md:py-28">
+        <div className="grid items-center gap-12 md:grid-cols-2 md:gap-16">
+          <div className="order-2 md:order-1">
+            <BrowserFrame url="arbor.omni.dev/@omni/arbor-app">
+              <RepoMock />
+            </BrowserFrame>
+          </div>
+          <div className="order-1 md:order-2">
+            <h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
+              Everything you host on a forge, plus the map between the trees.
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground leading-relaxed">
+              Hosting, pull requests, review, code search, and rendered docs are
+              all here. What no one else gives you is the view of how it all
+              connects.
+            </p>
+            <ul className="mt-6 space-y-3 text-[15px]">
+              {[
+                "Clone & push over fast smart-http",
+                "Nested READMEs & markdown, rendered",
+                "@handle workspaces that mirror your org",
+                "Role-aware access, public or private",
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3">
+                  <span className="grid h-5 w-5 place-items-center rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+                    <svg
+                      viewBox="0 0 12 12"
+                      className="h-3 w-3"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M2.5 6.2 5 8.5 9.5 3.5"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* The arboreal throughline */}
-      <section className="container mx-auto max-w-7xl px-6 py-16">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
-            An arbor by nature. A forge by design.
-          </h2>
-          <p className="mt-3 text-muted-foreground md:text-lg">
-            The tree is not a mascot. It is the model: every idea in Arbor maps
-            to how a forest actually works.
-          </p>
-        </div>
-        <div className="grid gap-5 sm:grid-cols-2">
-          {CANOPY.map((item) => (
-            <div key={item.title} className="arbor-card rounded-2xl p-6">
+      {/* ===================== Feature grid ===================== */}
+      <section className="border-border/60 border-t bg-muted/20">
+        <div className="container mx-auto max-w-7xl px-6 py-20 md:py-24">
+          <div className="mb-12 max-w-2xl">
+            <h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
+              One place for all your repositories
+            </h2>
+            <p className="mt-3 text-lg text-muted-foreground">
+              A real forge, with the one feature that changes how you see your
+              architecture.
+            </p>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {FEATURES.map((feature) => (
               <div
-                className={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl ${item.tint}`}
+                key={feature.title}
+                className="rounded-2xl border border-border/70 bg-card p-6 transition-colors hover:border-emerald-500/40"
               >
-                <item.icon className={`h-5 w-5 ${item.accent}`} />
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                  <feature.icon className="h-5 w-5" />
+                </div>
+                <h3 className="mt-4 font-semibold text-lg">{feature.title}</h3>
+                <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
+                  {feature.description}
+                </p>
               </div>
-              <h3 className="mb-2 font-semibold text-lg">{item.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                {item.description}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* The differentiator: the polyrepo graph */}
-      <section className="container mx-auto max-w-7xl px-6 py-16">
-        <div className="grid items-center gap-10 md:grid-cols-2">
-          <div className="arbor-fade-up space-y-5">
-            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-amethyst-500/30 bg-amethyst-500/10 px-3 py-1 font-medium text-amethyst-600 text-sm dark:text-amethyst-300">
-              <Network className="h-3.5 w-3.5" />
-              The polyrepo graph
-            </span>
-            <h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
-              See the forest <span className="text-muted-foreground">and</span>{" "}
-              the trees
-            </h2>
-            <p className="text-muted-foreground md:text-lg">
-              Your architecture already exists as a graph. It just lives in
-              people's heads. Arbor draws it: every repository a node, every
-              dependency an edge, updated as your code changes. Trace a breaking
-              change to everything downstream. Onboard someone by handing them a
-              map instead of a maze.
-            </p>
-            <div className="flex flex-wrap gap-4 pt-1">
-              <Button size="lg" variant="outline" asChild>
-                <Link to={isAuthenticated ? "/graph" : "/apply"}>
-                  {isAuthenticated ? "Open the graph" : "Get early access"}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
+      {/* ===================== Closing ===================== */}
+      <section className="relative overflow-hidden border-border/60 border-t">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-72 bg-[radial-gradient(50%_100%_at_50%_100%,rgba(16,157,81,0.12),transparent_70%)]" />
+        <div className="container mx-auto max-w-3xl px-6 py-24 text-center">
+          <h2 className="font-bold text-4xl tracking-tight sm:text-5xl">
+            See how your repositories connect.
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground md:text-xl">
+            Bring them together and watch the graph grow.
+          </p>
+          <div className="mt-9 flex flex-wrap justify-center gap-4">
+            {primaryCta}
+            {!isAuthenticated && (
+              <Button size="lg" variant="outline" onClick={handleSignIn}>
+                <Lock className="mr-2 h-4 w-4" />
+                Sign in
               </Button>
-            </div>
-          </div>
-          <div className="arbor-float relative">
-            <div className="absolute -inset-8 rounded-full bg-amethyst-500/10 blur-3xl" />
-            <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card/60 p-5 shadow-2xl backdrop-blur-md">
-              <div className="aspect-[4/3] w-full">
-                <Constellation />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Agent-native band */}
-      <section className="container mx-auto max-w-7xl px-6 py-16">
-        <div className="arbor-card relative overflow-hidden rounded-3xl p-8 sm:p-12">
-          <div className="arbor-aurora pointer-events-none absolute -top-16 right-0 -z-10 h-64 w-64 rounded-full bg-emerald-500/15 blur-3xl" />
-          <div className="max-w-2xl">
-            <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/10">
-              <Bot className="h-5 w-5 text-emerald-500" />
-            </div>
-            <h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
-              Agents that know the whole grove
-            </h2>
-            <p className="mt-3 text-muted-foreground md:text-lg">
-              Code is moving faster than the forge was built to handle. Arbor is
-              agent-native by design: your agents see the cross-repo graph, not
-              just the file in front of them. They answer questions, open pull
-              requests, and reason about ripple effects across every tree in the
-              forest.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="container mx-auto max-w-7xl px-6 py-16">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
-            Everything a codebase needs, rooted in one place
-          </h2>
-          <p className="mt-3 text-muted-foreground md:text-lg">
-            Hosting, collaboration, and architecture insight that grow with your
-            organization.
-          </p>
-        </div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((feature) => (
-            <div key={feature.title} className="arbor-card rounded-2xl p-6">
-              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500/10">
-                <feature.icon className="h-5 w-5 text-emerald-500" />
-              </div>
-              <h3 className="mb-2 font-semibold text-lg">{feature.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                {feature.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section className="container mx-auto max-w-7xl px-6 py-16">
-        <div className="mx-auto mb-12 max-w-2xl text-center">
-          <h2 className="font-bold text-3xl tracking-tight sm:text-4xl">
-            From seed to canopy
-          </h2>
-          <p className="mt-3 text-muted-foreground md:text-lg">
-            Scattered repositories become one living, navigable forest.
-          </p>
-        </div>
-        <div className="grid gap-8 md:grid-cols-3">
-          {STEPS.map((step, index) => (
-            <div key={step.title} className="relative text-center">
-              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-500/30 bg-emerald-500/10">
-                <step.icon className="h-6 w-6 text-emerald-500" />
-              </div>
-              <div className="mb-2 font-mono text-emerald-600 text-sm dark:text-emerald-400">
-                {`0${index + 1}`}
-              </div>
-              <h3 className="mb-2 font-semibold text-lg">{step.title}</h3>
-              <p className="mx-auto max-w-xs text-muted-foreground text-sm leading-relaxed">
-                {step.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Closing CTA */}
-      <section className="container mx-auto max-w-7xl px-6 py-20">
-        <div className="relative overflow-hidden rounded-3xl border border-emerald-500/20 px-6 py-16 text-center sm:px-16">
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-emerald-500/15 via-transparent to-amethyst-500/15" />
-          <div className="arbor-aurora pointer-events-none absolute inset-x-0 -bottom-24 -z-10 mx-auto h-64 w-2/3 rounded-full bg-emerald-500/20 blur-3xl" />
-          <h2 className="mx-auto max-w-2xl font-bold text-3xl tracking-tight sm:text-4xl">
-            Ready to put down roots?
-          </h2>
-          <p className="mx-auto mt-3 max-w-xl text-muted-foreground md:text-lg">
-            Bring your repositories together and watch your codebase grow into
-            something you can finally see.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            {isAuthenticated ? (
-              <Button size="lg" asChild>
-                <Link to="/repositories">
-                  <GitBranch className="mr-2 h-4 w-4" />
-                  Plant your first repo
-                </Link>
-              </Button>
-            ) : (
-              <>
-                <Button size="lg" asChild>
-                  <Link to="/apply">
-                    <Sprout className="mr-2 h-4 w-4" />
-                    Request early access
-                  </Link>
-                </Button>
-                <Button size="lg" variant="ghost" onClick={handleSignIn}>
-                  Already invited? Sign in
-                </Button>
-              </>
             )}
           </div>
         </div>
