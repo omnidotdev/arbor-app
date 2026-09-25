@@ -21,5 +21,3 @@ export const useGitOwner = (
   const { data } = useQuery(repositoryBySlugOptions({ ownerSlug, repoSlug }));
   return data?.repositories?.nodes?.[0]?.owner?.username;
 };
-
-export default useGitOwner;
