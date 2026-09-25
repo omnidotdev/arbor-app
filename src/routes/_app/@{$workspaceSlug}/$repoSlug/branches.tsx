@@ -14,6 +14,7 @@ import { useState } from "react";
 import { BranchList, CreateBranchDialog } from "@/components/repository";
 import { Button } from "@/components/ui/button";
 import { API_BASE_URL } from "@/lib/config/env.config";
+import { getCurrentAuthHeaders } from "@/lib/graphql/graphqlClientFactory";
 import { graphqlFetch } from "@/lib/graphql/graphqlFetch";
 import { useGitOwner } from "@/lib/hooks/useGitOwner";
 
@@ -128,7 +129,7 @@ async function fetchBranches(
   // Fetch branches from REST API
   const branchesRes = await fetch(
     `${API_BASE_URL}/git/${owner}/${repo}/branches`,
-    { credentials: "include" },
+    { credentials: "include", headers: getCurrentAuthHeaders() },
   );
 
   if (!branchesRes.ok) {

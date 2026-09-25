@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { BranchSelector, CommitList } from "@/components/repository";
 import { API_BASE_URL } from "@/lib/config/env.config";
+import { getCurrentAuthHeaders } from "@/lib/graphql/graphqlClientFactory";
 import { useGitOwner } from "@/lib/hooks/useGitOwner";
 
 const searchSchema = z.object({
@@ -46,6 +47,7 @@ interface ApiCommit {
 async function fetchBranches(owner: string, repo: string): Promise<Branch[]> {
   const res = await fetch(`${API_BASE_URL}/git/${owner}/${repo}/branches`, {
     credentials: "include",
+    headers: getCurrentAuthHeaders(),
   });
   if (!res.ok) {
     if (res.status === 404) return [];
@@ -63,7 +65,7 @@ async function fetchCommits(
 ): Promise<Commit[]> {
   const res = await fetch(
     `${API_BASE_URL}/git/${owner}/${repo}/commits/${ref}?page=${page}&limit=${limit}`,
-    { credentials: "include" },
+    { credentials: "include", headers: getCurrentAuthHeaders() },
   );
   if (!res.ok) {
     if (res.status === 404) return [];
