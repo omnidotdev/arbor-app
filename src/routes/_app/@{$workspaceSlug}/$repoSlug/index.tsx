@@ -140,6 +140,9 @@ async function fetchBlob(
   return res.json();
 }
 
+/** Whether a path is a Markdown file (rendered human-readable, like GitHub). */
+const isMarkdownFile = (p: string): boolean => /\.(md|markdown|mdx)$/i.test(p);
+
 function RepositoryDetailPage() {
   const { workspaceSlug: owner, repoSlug: repo } = Route.useParams();
   const { ref, path } = Route.useSearch();
@@ -148,6 +151,9 @@ function RepositoryDetailPage() {
   const queryClient = useQueryClient();
 
   const [_showDeleteDialog, _setShowDeleteDialog] = useState(false);
+  // Markdown files render human-readable by default (like GitHub), with a toggle
+  // to the syntax-highlighted source
+  const [showRawFile, setShowRawFile] = useState(false);
 
   const _deleteMutation = useMutation({
     mutationKey: useDeleteRepositoryMutation.getKey(),
@@ -245,17 +251,23 @@ function RepositoryDetailPage() {
     treeQuery.data?.length === 0 &&
     blobQuery.data?.content !== undefined;
 
-  // Look for README in root
-  const readmeEntry = !path
-    ? treeQuery.data?.find(
-        (e) => e.type === "blob" && e.path.toLowerCase().startsWith("readme"),
-      )
-    : null;
+  // Render the README of whatever directory is being viewed (root OR a nested
+  // subdirectory), matching GitHub. treeQuery.data holds the current directory's
+  // entries; when a file blob is open it is empty, so no README renders there.
+  const readmeEntry = treeQuery.data?.find(
+    (e) => e.type === "blob" && e.path.toLowerCase().startsWith("readme"),
+  );
+  // The tree entry path is a basename, so join it onto the current directory
+  const readmeFullPath = readmeEntry
+    ? path
+      ? `${path}/${readmeEntry.path}`
+      : readmeEntry.path
+    : undefined;
 
   const readmeQuery = useQuery({
-    queryKey: ["readme", gitOwner, repo, currentBranch, readmeEntry?.path],
-    queryFn: () => fetchBlob(gitOwner!, repo, currentBranch, readmeEntry!.path),
-    enabled: !!readmeEntry && !!gitOwner,
+    queryKey: ["readme", gitOwner, repo, currentBranch, readmeFullPath],
+    queryFn: () => fetchBlob(gitOwner!, repo, currentBranch, readmeFullPath!),
+    enabled: !!readmeFullPath && !!gitOwner,
   });
 
   const handleBranchChange = (branch: string) => {
@@ -310,6 +322,11 @@ function RepositoryDetailPage() {
             </Button>
           )}
         </div>
+        {repository?.description && (
+          <p className="mt-2 max-w-3xl break-words text-muted-foreground text-sm">
+            {repository.description}
+          </p>
+        )}
       </div>
 
       {/* Navigation tabs: scroll the bar itself on small screens instead of the page */}
@@ -461,14 +478,49 @@ git push -u origin master`}
 
           {/* File browser or viewer */}
           {viewingFile ? (
-            <FileViewer
-              content={blobQuery.data!.content}
-              filename={path.split("/").pop() ?? ""}
-              owner={owner}
-              repo={repo}
-              branch={currentBranch}
-              path={path}
-            />
+            isMarkdownFile(path) && !showRawFile ? (
+              // Rendered Markdown by default for .md files, like GitHub
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="min-w-0 truncate font-mono text-muted-foreground text-sm">
+                    {path.split("/").pop()}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowRawFile(true)}
+                  >
+                    View source
+                  </Button>
+                </div>
+                <ReadmeDisplay
+                  content={blobQuery.data!.content}
+                  filename={path.split("/").pop() ?? ""}
+                />
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {isMarkdownFile(path) && (
+                  <div className="flex justify-end">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowRawFile(false)}
+                    >
+                      View rendered
+                    </Button>
+                  </div>
+                )}
+                <FileViewer
+                  content={blobQuery.data!.content}
+                  filename={path.split("/").pop() ?? ""}
+                  owner={owner}
+                  repo={repo}
+                  branch={currentBranch}
+                  path={path}
+                />
+              </div>
+            )
           ) : (
             <div className="space-y-3">
               {/* Latest commit on the default branch, root code view only */}
@@ -499,8 +551,8 @@ git push -u origin master`}
             </div>
           )}
 
-          {/* README at root */}
-          {!path && readmeQuery.data && readmeEntry && (
+          {/* README of the current directory (root or nested), GitHub-style */}
+          {readmeQuery.data && readmeEntry && (
             <div className="mt-6">
               <ReadmeDisplay
                 content={readmeQuery.data.content}
