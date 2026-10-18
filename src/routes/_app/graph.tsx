@@ -141,7 +141,7 @@ function GraphPage() {
           <GraphTierUpgradePrompt
             className="max-w-lg items-center border-0 bg-transparent text-center shadow-none"
             requirement={tierRequirement}
-            feature="The org-wide polyrepo graph maps every repository and the dependencies between them across your whole organization."
+            feature="The workspace-wide polyrepo graph maps every repository and the dependencies between them across your whole workspace."
           />
         </div>
       ) : isLoading ? (

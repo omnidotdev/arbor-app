@@ -61,12 +61,12 @@ const CreateWorkspaceModal = ({
     const trimmedName = name.trim();
 
     if (trimmedName.length < 2) {
-      setError("Organization name must be at least 2 characters");
+      setError("Workspace name must be at least 2 characters");
       return;
     }
 
     if (trimmedName.length > 50) {
-      setError("Organization name must be less than 50 characters");
+      setError("Workspace name must be less than 50 characters");
       return;
     }
 
@@ -103,10 +103,10 @@ const CreateWorkspaceModal = ({
         </button>
 
         <h2 className="font-semibold text-lg leading-none tracking-tight">
-          Create Organization
+          Create Workspace
         </h2>
         <p className="mt-2 text-muted-foreground text-sm">
-          Create a new organization with the{" "}
+          Create a new workspace with the{" "}
           <strong className="text-primary">{tierName}</strong> plan.
         </p>
 
@@ -121,7 +121,7 @@ const CreateWorkspaceModal = ({
                 setName(e.target.value);
                 setError("");
               }}
-              placeholder="Organization Name"
+              placeholder="Workspace Name"
               autoComplete="off"
             />
 

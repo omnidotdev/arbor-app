@@ -175,7 +175,7 @@ function WorkspaceDetailPage() {
             <h3 className="font-semibold">Members</h3>
           </div>
           <p className="mt-2 text-muted-foreground text-sm">
-            Membership and roles are managed in your Omni organization settings
+            Membership and roles are managed in your Omni workspace settings
           </p>
           {ACCOUNT_URL && workspaceSlug && (
             <Button className="mt-auto" variant="outline" size="sm" asChild>
@@ -195,7 +195,7 @@ function WorkspaceDetailPage() {
             <h3 className="font-semibold">Settings</h3>
           </div>
           <p className="mt-2 text-muted-foreground text-sm">
-            Organization settings live in Omni; billing lives in your account
+            Workspace settings live in Omni; billing lives in your account
           </p>
           <div className="mt-auto flex flex-col gap-2">
             {ACCOUNT_URL && workspaceSlug && (

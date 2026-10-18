@@ -318,7 +318,7 @@ const FEATURES = [
     icon: GitBranch,
     title: "Full git hosting",
     description:
-      "Clone, push, and browse over fast smart-http, with @handle workspaces that mirror your organization.",
+      "Clone, push, and browse over fast smart-http, with @handle workspaces that mirror your Omni account.",
   },
   {
     icon: GitPullRequest,

@@ -61,8 +61,8 @@ function WorkspacesPage() {
         <div>
           <h1 className="font-bold text-3xl tracking-tight">Workspaces</h1>
           <p className="mt-1 text-muted-foreground text-sm">
-            Workspaces are your Omni organizations. Membership is managed in
-            your Omni organization settings.
+            Workspaces are part of your Omni account. Membership is managed in
+            your Omni workspace settings.
           </p>
         </div>
 
@@ -125,7 +125,7 @@ function WorkspacesPage() {
           </h3>
           <p className="mt-2 text-muted-foreground text-sm">
             {workspaces.length === 0
-              ? "Create a workspace to get started, or join one from your Omni organization settings to collaborate with your team."
+              ? "Create a workspace to get started, or join one from your Omni workspace settings to collaborate with your team."
               : "Try a different search."}
           </p>
           {workspaces.length === 0 && (

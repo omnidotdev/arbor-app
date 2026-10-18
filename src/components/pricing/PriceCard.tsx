@@ -247,7 +247,7 @@ export const PriceCard = ({
             <div className="flex items-baseline justify-center font-bold text-4xl">
               {formatPrice(price.unit_amount ?? 0)}
               <span className="ml-1 font-medium text-lg text-muted-foreground">
-                {price.recurring && `/organization/${price.recurring.interval}`}
+                {price.recurring && `/workspace/${price.recurring.interval}`}
               </span>
             </div>
           </div>
@@ -289,7 +289,7 @@ export const PriceCard = ({
                   {allOrgs.length > 0 && (
                     <>
                       <div className="p-2 font-medium text-muted-foreground text-sm">
-                        Your organizations
+                        Your workspaces
                       </div>
                       {upgradeableOrgs.map((org) => (
                         <button
@@ -344,9 +344,7 @@ export const PriceCard = ({
                     className="flex w-full cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent focus:bg-accent focus:outline-none"
                   >
                     <PlusIcon size={16} className="text-muted-foreground" />
-                    <span className="font-medium text-sm">
-                      New organization
-                    </span>
+                    <span className="font-medium text-sm">New workspace</span>
                   </button>
                 </div>
               )}
