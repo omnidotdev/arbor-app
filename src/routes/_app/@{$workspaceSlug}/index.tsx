@@ -1,4 +1,7 @@
-import { ManageTeamLink, useOrganization } from "@omnidotdev/providers/react";
+import {
+  ManageTeamLink,
+  useOrganization as useWorkspace,
+} from "@omnidotdev/providers/react";
 import {
   AvatarFallback,
   AvatarImage,
@@ -59,7 +62,7 @@ const integrations = [
 
 function WorkspaceDetailPage() {
   const { workspaceSlug } = Route.useParams();
-  const orgContext = useOrganization();
+  const orgContext = useWorkspace();
 
   const claimWorkspace = orgContext?.organizations.find(
     (org) => org.slug === workspaceSlug || org.id === workspaceSlug,

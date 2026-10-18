@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import AppSidebar from "@/components/layout/AppSidebar";
 import app from "@/lib/config/app.config";
 import { EventsProvider } from "@/providers/EventsProvider";
-import { OrganizationProvider } from "@/providers/OrganizationProvider";
+import { WorkspaceProvider } from "@/providers/WorkspaceProvider";
 
 // Noop provider for client-side (main @omnidotdev/providers entry requires Node.js)
 const eventsProvider = {
@@ -45,7 +45,7 @@ function AuthenticatedLayout() {
 
   return (
     <EventsProvider provider={eventsProvider}>
-      <OrganizationProvider organizations={organizations}>
+      <WorkspaceProvider organizations={organizations}>
         <SidebarProvider>
           <div className="flex h-dvh w-full">
             <AppSidebar variant="inset" user={session?.user} />
@@ -62,7 +62,7 @@ function AuthenticatedLayout() {
             </SidebarInset>
           </div>
         </SidebarProvider>
-      </OrganizationProvider>
+      </WorkspaceProvider>
     </EventsProvider>
   );
 }

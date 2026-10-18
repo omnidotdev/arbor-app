@@ -1,6 +1,6 @@
 import {
   gatekeeperDashboardUrl,
-  useOrganization,
+  useOrganization as useWorkspace,
 } from "@omnidotdev/providers/react";
 import {
   AvatarFallback,
@@ -33,7 +33,7 @@ const humanizeLabel = (value: string): string =>
 
 function WorkspacesPage() {
   const [searchQuery, setSearchQuery] = useState("");
-  const orgContext = useOrganization();
+  const orgContext = useWorkspace();
   // A degraded session (refresh-token grant failed) is authenticated but has no
   // access token, so organizations came back empty. Without a signal it renders
   // identically to a genuinely workspace-less user; distinguish it so the user

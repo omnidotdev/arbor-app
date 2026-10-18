@@ -1,6 +1,6 @@
 import {
   gatekeeperDashboardUrl,
-  useOrganization,
+  useOrganization as useWorkspace,
 } from "@omnidotdev/providers/react";
 import {
   MenuContent,
@@ -32,7 +32,7 @@ import { cn } from "@/lib/utils";
 const WorkspaceSwitcher = () => {
   const navigate = useNavigate();
   const { workspaceSlug } = useParams({ strict: false });
-  const orgContext = useOrganization();
+  const orgContext = useWorkspace();
 
   const organizations = orgContext?.organizations ?? [];
 
