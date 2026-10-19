@@ -6,7 +6,8 @@ query Stacks($ownerSlug: String!, $repoSlug: String!) {
         or: [
           { owner: { username: { equalTo: $ownerSlug } } }
           { organization: { slug: { equalTo: $ownerSlug } } }
-          { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }        ]
+          { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
+        ]
       }
     }
     orderBy: [CREATED_AT_DESC]

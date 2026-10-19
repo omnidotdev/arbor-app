@@ -6,7 +6,8 @@ query MergeQueueEntries($ownerSlug: String!, $repoSlug: String!) {
         or: [
           { owner: { username: { equalTo: $ownerSlug } } }
           { organization: { slug: { equalTo: $ownerSlug } } }
-          { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }        ]
+          { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
+        ]
       }
     }
     orderBy: [POSITION_ASC]

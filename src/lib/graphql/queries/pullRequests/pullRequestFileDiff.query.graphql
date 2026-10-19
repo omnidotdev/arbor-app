@@ -13,7 +13,8 @@ query PullRequestFileDiff(
           { owner: { username: { equalTo: $ownerSlug } } }
           { organization: { slug: { equalTo: $ownerSlug } } }
           { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
-        ]      }
+        ]
+      }
     }
     first: 1
   ) {

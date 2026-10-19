@@ -11,7 +11,8 @@ query CommitFileDiff(
         { owner: { username: { equalTo: $ownerSlug } } }
         { organization: { slug: { equalTo: $ownerSlug } } }
         { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
-      ]    }
+      ]
+    }
     first: 1
   ) {
     nodes {

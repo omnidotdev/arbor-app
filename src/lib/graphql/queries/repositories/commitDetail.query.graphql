@@ -6,7 +6,8 @@ query CommitDetail($ownerSlug: String!, $repoSlug: String!, $oid: String!) {
         { owner: { username: { equalTo: $ownerSlug } } }
         { organization: { slug: { equalTo: $ownerSlug } } }
         { organization: { idpOrganizationId: { equalTo: $ownerSlug } } }
-      ]    }
+      ]
+    }
     first: 1
   ) {
     nodes {
