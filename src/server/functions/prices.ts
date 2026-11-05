@@ -29,6 +29,6 @@ export const resolvePrices = async (
  * Fetch all prices for this app.
  * Prices are filtered by app name metadata and sorted by unit amount (ascending).
  */
-export const getPrices = createServerFn().handler(
+export const getPrices = createServerFn({ method: "POST" }).handler(
   async (): Promise<Price[]> => resolvePrices(),
 );

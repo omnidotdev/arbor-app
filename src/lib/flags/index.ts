@@ -16,7 +16,7 @@ export const FLAGS = {
  * Fetch the value of the maintenance mode feature flag.
  * Accepts optional user context for admin bypass (@omni.dev users).
  */
-export const fetchMaintenanceMode = createServerFn({ method: "GET" })
+export const fetchMaintenanceMode = createServerFn({ method: "POST" })
   .validator((data: FlagContext | undefined) => data)
   .handler(async ({ data: context }) => {
     const isMaintenanceMode = await isEnabled(
@@ -36,7 +36,7 @@ export const fetchMaintenanceMode = createServerFn({ method: "GET" })
  * through SSR context. Checks both the Gatekeeper sub and the row id so it works
  * regardless of which the whitelist holds
  */
-export const fetchArborAccess = createServerFn({ method: "GET" })
+export const fetchArborAccess = createServerFn({ method: "POST" })
   .validator((data: { userId?: string; rowId?: string } | undefined) => data)
   .handler(({ data }) => {
     const isFounder =
