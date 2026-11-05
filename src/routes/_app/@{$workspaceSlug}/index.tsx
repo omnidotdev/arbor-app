@@ -64,7 +64,7 @@ function WorkspaceDetailPage() {
   const { workspaceSlug } = Route.useParams();
   const orgContext = useWorkspace();
 
-  const claimWorkspace = orgContext?.organizations.find(
+  const claimWorkspace = orgContext?.workspaces.find(
     (org) => org.slug === workspaceSlug || org.id === workspaceSlug,
   );
 

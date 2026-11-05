@@ -1,6 +1,6 @@
 import {
   gatekeeperDashboardUrl,
-  useOrganization as useWorkspace,
+  workspacesUrl,
 } from "@omnidotdev/providers/react";
 import {
   AvatarFallback,
@@ -8,18 +8,24 @@ import {
   AvatarRoot,
 } from "@omnidotdev/thornberry/avatar";
 import { Badge } from "@omnidotdev/thornberry/badge";
-import { Link, createFileRoute, useRouteContext } from "@tanstack/react-router";
-import { Building2, Search, Users } from "lucide-react";
+import { Link, createFileRoute, useRouter } from "@tanstack/react-router";
+import { Building2, Plus, RefreshCw, Search, Users } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import CreateWorkspaceButton from "@/components/workspaces/CreateWorkspaceButton";
 import signIn from "@/lib/auth/signIn";
-import { AUTH_BASE_URL } from "@/lib/config/env.config";
-import { signOutLocal } from "@/server/functions/auth";
+import { ACCOUNT_URL, AUTH_BASE_URL } from "@/lib/config/env.config";
+import { fetchFreshSession, signOutLocal } from "@/server/functions/auth";
 
 export const Route = createFileRoute("/_app/workspaces/")({
+  // Re-hydrate organizations live (bypassing the display cache) so a workspace
+  // just created in the account portal shows on arrival, rather than waiting
+  // out getAuth's org cache TTL. Invalidating the route re-runs this.
+  loader: async () => {
+    const { session, authDegraded } = await fetchFreshSession();
+    return { organizations: session?.organizations ?? [], authDegraded };
+  },
   component: WorkspacesPage,
 });
 
@@ -31,20 +37,37 @@ const humanizeLabel = (value: string): string =>
     .replace(/\s+/g, " ")
     .trim();
 
+/**
+ * Workspaces list page.
+ *
+ * Lists the workspaces the user belongs to. Workspace creation and management
+ * is funneled to the account hub (account.omni.dev/workspaces), the single
+ * ecosystem surface that owns it, so this page lists and links out rather than
+ * embedding its own creation flow.
+ */
 function WorkspacesPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const orgContext = useWorkspace();
-  // A degraded session (refresh-token grant failed) is authenticated but has no
-  // access token, so organizations came back empty. Without a signal it renders
-  // identically to a genuinely workspace-less user; distinguish it so the user
-  // gets a re-login prompt instead of a dead-end empty state.
-  const { authDegraded } = useRouteContext({ strict: false }) as {
-    authDegraded?: boolean;
-  };
+  const router = useRouter();
+  const { organizations: workspaces, authDegraded } = Route.useLoaderData();
 
-  const workspaces = orgContext?.organizations ?? [];
+  const [searchQuery, setSearchQuery] = useState("");
+
   // Workspace membership lifecycle lives on the Gatekeeper identity dashboard
   const manageUrl = AUTH_BASE_URL ? gatekeeperDashboardUrl(AUTH_BASE_URL) : "";
+
+  // The account hub owns workspace creation; link out to it. Rendered only when
+  // the hub URL is configured (optional env), so a missing config degrades to
+  // no button rather than a dead link.
+  const newWorkspaceHref = workspacesUrl(ACCOUNT_URL);
+  const NewWorkspaceLink = newWorkspaceHref
+    ? () => (
+        <Button asChild>
+          <a href={newWorkspaceHref}>
+            <Plus className="size-4" />
+            New workspace
+          </a>
+        </Button>
+      )
+    : () => null;
 
   const filtered = workspaces.filter((workspace) => {
     if (!searchQuery) return true;
@@ -76,6 +99,15 @@ function WorkspacesPage() {
               className="pl-9"
             />
           </div>
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="Refresh workspaces"
+            title="Refresh workspaces"
+            onClick={() => router.invalidate()}
+          >
+            <RefreshCw className="size-4" />
+          </Button>
           {manageUrl && (
             <Button asChild variant="outline">
               <a href={manageUrl} target="_blank" rel="noopener noreferrer">
@@ -83,7 +115,7 @@ function WorkspacesPage() {
               </a>
             </Button>
           )}
-          {workspaces.length >= 1 && <CreateWorkspaceButton />}
+          {workspaces.length >= 1 && <NewWorkspaceLink />}
         </div>
       </div>
 
@@ -130,7 +162,7 @@ function WorkspacesPage() {
           </p>
           {workspaces.length === 0 && (
             <div className="mt-4 flex items-center justify-center gap-2">
-              <CreateWorkspaceButton />
+              <NewWorkspaceLink />
               {manageUrl && (
                 <Button asChild variant="outline">
                   <a href={manageUrl} target="_blank" rel="noopener noreferrer">
