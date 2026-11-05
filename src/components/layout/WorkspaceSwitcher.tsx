@@ -22,7 +22,7 @@ const WorkspaceSwitcher = () => {
   const orgContext = useWorkspace();
 
   if (!orgContext) return null;
-  const { organizations: workspaces } = orgContext;
+  const { workspaces } = orgContext;
 
   // On a workspace page the slug wins; otherwise fall back to the context's
   // current selection, then the first workspace, so the trigger always
@@ -30,13 +30,13 @@ const WorkspaceSwitcher = () => {
   const current =
     (workspaceSlug
       ? workspaces.find((org) => org.slug === workspaceSlug)
-      : orgContext.currentOrganization) ?? workspaces[0];
+      : orgContext.currentWorkspace) ?? workspaces[0];
   if (!current) return null;
 
   const handleSelect = (id: string) => {
     const next = workspaces.find((org) => org.id === id);
     if (!next || next.id === current.id) return;
-    orgContext.setCurrentOrganization(next.id);
+    orgContext.setCurrentWorkspace(next.id);
     navigate({
       to: "/@{$workspaceSlug}",
       params: { workspaceSlug: next.slug ?? next.id },

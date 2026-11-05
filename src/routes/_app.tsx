@@ -45,7 +45,7 @@ function AuthenticatedLayout() {
 
   return (
     <EventsProvider provider={eventsProvider}>
-      <WorkspaceProvider organizations={organizations}>
+      <WorkspaceProvider workspaces={organizations}>
         <SidebarProvider>
           <div className="flex h-dvh w-full">
             <AppSidebar variant="inset" user={session?.user} />
