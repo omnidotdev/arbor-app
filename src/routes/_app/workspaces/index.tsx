@@ -1,7 +1,4 @@
-import {
-  gatekeeperDashboardUrl,
-  workspacesUrl,
-} from "@omnidotdev/providers/react";
+import { workspacesUrl } from "@omnidotdev/providers/react";
 import {
   AvatarFallback,
   AvatarImage,
@@ -15,7 +12,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import signIn from "@/lib/auth/signIn";
-import { ACCOUNT_URL, AUTH_BASE_URL } from "@/lib/config/env.config";
+import { ACCOUNT_URL } from "@/lib/config/env.config";
 import { fetchFreshSession, signOutLocal } from "@/server/functions/auth";
 
 export const Route = createFileRoute("/_app/workspaces/")({
@@ -51,8 +48,10 @@ function WorkspacesPage() {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Workspace membership lifecycle lives on the Gatekeeper identity dashboard
-  const manageUrl = AUTH_BASE_URL ? gatekeeperDashboardUrl(AUTH_BASE_URL) : "";
+  // Workspace membership lifecycle lives on the account hub workspaces console;
+  // returns "" when the hub URL is unconfigured, so the manageUrl guards below
+  // degrade to no link rather than a dead one
+  const manageUrl = workspacesUrl(ACCOUNT_URL);
 
   // The account hub owns workspace creation; link out to it. Rendered only when
   // the hub URL is configured (optional env), so a missing config degrades to

@@ -1,11 +1,11 @@
 import {
-  gatekeeperDashboardUrl,
   useOrganization as useWorkspace,
+  workspacesUrl,
 } from "@omnidotdev/providers/react";
 import { WorkspaceSwitcher as SharedWorkspaceSwitcher } from "@omnidotdev/thornberry/workspace-switcher";
 import { useNavigate, useParams } from "@tanstack/react-router";
 
-import { AUTH_BASE_URL } from "@/lib/config/env.config";
+import { ACCOUNT_URL } from "@/lib/config/env.config";
 
 /**
  * Workspace (organization) switcher for the sidebar header.
@@ -14,7 +14,8 @@ import { AUTH_BASE_URL } from "@/lib/config/env.config";
  * query). Selecting a workspace updates the in-memory selection and navigates
  * to that workspace's slug, which re-scopes the app. Presentation is the shared
  * thornberry switcher: a single-workspace user sees their name without a
- * dropdown, and managing workspaces is delegated to the identity dashboard.
+ * dropdown, and managing workspaces is delegated to the account hub workspaces
+ * console.
  */
 const WorkspaceSwitcher = () => {
   const navigate = useNavigate();
@@ -53,8 +54,8 @@ const WorkspaceSwitcher = () => {
       }))}
       currentWorkspaceId={current.id}
       onSelect={handleSelect}
-      {...(AUTH_BASE_URL && {
-        manageUrl: gatekeeperDashboardUrl(AUTH_BASE_URL),
+      {...(ACCOUNT_URL && {
+        manageUrl: workspacesUrl(ACCOUNT_URL),
       })}
     />
   );
