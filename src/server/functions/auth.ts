@@ -38,15 +38,21 @@ const loadSession = async (forceRefreshOrgs = false) => {
 /**
  * Fetch the current user session.
  * Returns session with user info if authenticated, null otherwise.
+ *
+ * POST (not the server-fn default GET) so the payload travels in the body, not
+ * the URL: a large many-workspace auth cookie otherwise overflows the request
+ * header limit and 431s before the handler runs.
  */
-export const fetchSession = createServerFn().handler(() => loadSession());
+export const fetchSession = createServerFn({ method: "POST" }).handler(() =>
+  loadSession(),
+);
 
 /**
  * Fetch the session with a live organization re-hydration (bypasses the org
  * display cache). Used by the workspaces list so a workspace just created in
  * the account portal appears without waiting out the cache TTL.
  */
-export const fetchFreshSession = createServerFn().handler(() =>
+export const fetchFreshSession = createServerFn({ method: "POST" }).handler(() =>
   loadSession(true),
 );
 

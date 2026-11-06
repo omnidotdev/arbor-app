@@ -51,7 +51,7 @@ const requireAccessToken = (accessToken: string | undefined): string => {
 /**
  * Get subscription details for an organization.
  */
-export const getSubscription = createServerFn()
+export const getSubscription = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .validator((data) => organizationSchema.parse(data))
   .handler(async ({ data, context }) => {
@@ -69,7 +69,7 @@ export const getSubscription = createServerFn()
  * tier even when there is no live Stripe subscription (comped or manually granted
  * plans), where the subscription lookup returns null.
  */
-export const getEntitlements = createServerFn()
+export const getEntitlements = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .validator((data) => organizationSchema.parse(data))
   .handler(async ({ data, context }) => {
