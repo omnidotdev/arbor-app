@@ -18,7 +18,7 @@ const app = {
     linkedin: "https://www.linkedin.com/company/omnidotdev",
   },
   links: {
-    docs: "https://docs.omni.dev/arbor",
+    docs: "https://docs.omni.dev/products/arbor",
     github: "https://github.com/omnidotdev/arbor",
     feedback: "https://backfeed.omni.dev/workspaces/omni/projects/arbor",
   },
