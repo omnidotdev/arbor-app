@@ -120,7 +120,7 @@ export const PriceCard = ({
   // Paid tier without workspaces: the hub explains a plan needs a workspace
   // and offers to create one
   const noWorkspacePlanUrl =
-    !!session && !isFreeTier && canBuyPlan && !session.organizations?.length
+    session && !isFreeTier && canBuyPlan && !session.organizations?.length
       ? planUrl()
       : "";
 
