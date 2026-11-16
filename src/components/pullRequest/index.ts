@@ -2,6 +2,7 @@ export { ChangedFileTree } from "./ChangedFileTree";
 export { CommentComposer } from "./CommentComposer";
 export { CommentThread } from "./CommentThread";
 export { CreatePullRequestForm } from "./CreatePullRequestForm";
+export { DiffViewModeToggle } from "./DiffViewModeToggle";
 export { FileCommentSection } from "./FileCommentSection";
 export { FileDiffCard } from "./FileDiffCard";
 export { ImageDiff } from "./ImageDiff";

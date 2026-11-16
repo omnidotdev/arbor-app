@@ -3,12 +3,11 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { GitBranch, GitCommit, GitFork, GitPullRequest } from "lucide-react";
 import { useState } from "react";
 
-import { useDiffViewMode } from "@/components/pullRequest";
+import { DiffViewModeToggle, useDiffViewMode } from "@/components/pullRequest";
 import {
   CommitAuthorAvatar,
   CommitFileDiffCard,
 } from "@/components/repository";
-import { Button } from "@/components/ui/button";
 import commitDetailOptions from "@/lib/options/commitDetail.options";
 import getRelativeTime from "@/lib/util/getRelativeTime";
 
@@ -186,24 +185,7 @@ function CommitDetailPage() {
                   {changedFiles.length}
                 </span>
               </h2>
-              <div className="flex items-center rounded-md border">
-                <Button
-                  variant={mode === "unified" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="rounded-r-none"
-                  onClick={() => setMode("unified")}
-                >
-                  Unified
-                </Button>
-                <Button
-                  variant={mode === "split" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="rounded-l-none border-l"
-                  onClick={() => setMode("split")}
-                >
-                  Split
-                </Button>
-              </div>
+              <DiffViewModeToggle mode={mode} onModeChange={setMode} />
             </div>
 
             {changedFiles.length === 0 ? (
