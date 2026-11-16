@@ -13,6 +13,7 @@ import { toast } from "sonner";
 
 import {
   ChangedFileTree,
+  DiffViewModeToggle,
   FileDiffCard,
   PullRequestConversation,
   PullRequestDetail,
@@ -20,7 +21,6 @@ import {
   useDiffViewMode,
   useViewedFiles,
 } from "@/components/pullRequest";
-import { Button } from "@/components/ui/button";
 import {
   useClosePullRequestMutation,
   useReopenPullRequestMutation,
@@ -333,24 +333,7 @@ function PullRequestDetailPage() {
                   {viewedCount} / {changedFiles.length} viewed
                 </span>
               </div>
-              <div className="flex items-center rounded-md border">
-                <Button
-                  variant={mode === "unified" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="rounded-r-none"
-                  onClick={() => setMode("unified")}
-                >
-                  Unified
-                </Button>
-                <Button
-                  variant={mode === "split" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="rounded-l-none border-l"
-                  onClick={() => setMode("split")}
-                >
-                  Split
-                </Button>
-              </div>
+              <DiffViewModeToggle mode={mode} onModeChange={setMode} />
             </div>
 
             {changedFiles.length === 0 ? (
