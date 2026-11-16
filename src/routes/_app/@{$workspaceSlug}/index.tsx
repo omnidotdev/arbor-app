@@ -25,7 +25,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { useWorkspaceRepositoriesQuery } from "@/generated/graphql";
-import { ACCOUNT_URL, CONSOLE_URL } from "@/lib/config/env.config";
+import { manageSubscriptionUrl } from "@/lib/billing/hubLinks";
+import { ACCOUNT_URL, BASE_URL } from "@/lib/config/env.config";
 import { getOrganizationBySlug } from "@/server/functions/organizations";
 
 export const Route = createFileRoute("/_app/@{$workspaceSlug}/")({
@@ -90,8 +91,11 @@ function WorkspaceDetailPage() {
 
   const displayName = workspace?.name ?? workspaceSlug;
   const initial = displayName.trim().charAt(0).toUpperCase() || "?";
-  // Billing is per-workspace and lives on the account console
-  const billingUrl = CONSOLE_URL ? `${CONSOLE_URL}/billing` : "";
+  // Billing is per-workspace: the workspace's Arbor plan is managed on the
+  // Omni account hub, which returns here
+  const billingUrl = workspaceSlug
+    ? manageSubscriptionUrl(ACCOUNT_URL, BASE_URL, workspaceSlug)
+    : "";
 
   return (
     <div className="container mx-auto max-w-5xl px-4 py-6 sm:px-6">
@@ -213,9 +217,7 @@ function WorkspaceDetailPage() {
             )}
             {billingUrl && (
               <Button variant="outline" size="sm" asChild>
-                <a href={billingUrl} target="_blank" rel="noopener noreferrer">
-                  Billing
-                </a>
+                <a href={billingUrl}>Manage billing</a>
               </Button>
             )}
           </div>
