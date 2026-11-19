@@ -26,10 +26,10 @@ export const Route = createFileRoute("/api/raw/$owner/$repo/$oid/$")({
           return new Response(null, { status: 503 });
         }
 
-        // Resolve the caller's access token from their session. Image requests
-        // do not carry an `Accept: text/html` header, so the SSR auth middleware
-        // does not populate the request-scoped token for them, and we resolve it
-        // here from the same cached auth flow the app uses everywhere else
+        // Resolve the caller's access token from their session. The SSR auth
+        // middleware binds a session for page requests only (not `/api/*`), so
+        // resolve it here from the same cached auth flow the app uses everywhere
+        // else
         let accessToken: string | undefined;
         try {
           const session = await getAuth(request);

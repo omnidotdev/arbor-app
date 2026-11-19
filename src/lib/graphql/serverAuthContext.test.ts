@@ -1,6 +1,26 @@
 import { describe, expect, it } from "bun:test";
 
-import { getServerAccessToken, runWithAccessToken } from "./serverAuthContext";
+import {
+  getRequestSession,
+  getServerAccessToken,
+  getServerSession,
+  runWithAccessToken,
+  runWithSession,
+} from "./serverAuthContext";
+
+import type { GetAuthSession } from "@omnidotdev/providers/auth";
+
+const makeSession = (accessToken?: string): GetAuthSession => ({
+  accessToken,
+  organizations: [],
+  user: {
+    id: "user-1",
+    name: "User",
+    email: "user@example.com",
+    emailVerified: true,
+  },
+  session: { token: "session-1", expiresAt: new Date(0) },
+});
 
 /**
  * Regression tests for the request-scoped SSR access token store.
@@ -74,5 +94,71 @@ describe("getCurrentAuthHeaders (server token path)", () => {
     const { getCurrentAuthHeaders } = await import("./graphqlClientFactory");
 
     expect(getCurrentAuthHeaders()).toEqual({});
+  });
+});
+
+describe("runWithSession", () => {
+  it("binds the session's access token for SSR GraphQL queries", async () => {
+    const { getCurrentAuthHeaders } = await import("./graphqlClientFactory");
+
+    const headers = runWithSession(makeSession("ssr.token"), () =>
+      getCurrentAuthHeaders(),
+    );
+    expect(headers).toEqual({ Authorization: "Bearer ssr.token" });
+  });
+
+  it("binds a signed-out request as null, not as unresolved", () => {
+    expect(runWithSession(null, () => getServerSession())).toBeNull();
+    expect(runWithSession(null, () => getServerAccessToken())).toBeNull();
+  });
+
+  it("leaves the session unresolved outside a page request", () => {
+    expect(getServerSession()).toBeUndefined();
+    expect(
+      runWithAccessToken("token", () => getServerSession()),
+    ).toBeUndefined();
+  });
+});
+
+describe("getRequestSession", () => {
+  /**
+   * Regression: a page render resolved the session twice (request middleware,
+   * then the root route's fetchSession), each refreshing the access token from
+   * the same pre-rotation cookie. The bound session must be reused instead
+   */
+  it("reuses the page request's session without resolving again", async () => {
+    const bound = makeSession("bound.token");
+    let resolves = 0;
+    const resolve = async () => {
+      resolves += 1;
+      return makeSession("second.token");
+    };
+
+    const session = await runWithSession(bound, () =>
+      getRequestSession(resolve),
+    );
+
+    expect(session).toBe(bound);
+    expect(resolves).toBe(0);
+  });
+
+  it("reuses a signed-out page request without resolving again", async () => {
+    let resolves = 0;
+
+    const session = await runWithSession(null, () =>
+      getRequestSession(async () => {
+        resolves += 1;
+        return makeSession("unexpected");
+      }),
+    );
+
+    expect(session).toBeNull();
+    expect(resolves).toBe(0);
+  });
+
+  it("resolves when no page session is bound (client server-fn call)", async () => {
+    const fresh = makeSession("fresh.token");
+
+    expect(await getRequestSession(async () => fresh)).toBe(fresh);
   });
 });
