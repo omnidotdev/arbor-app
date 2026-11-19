@@ -3,6 +3,7 @@ import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { useMemo } from "react";
 
 import AppSidebar from "@/components/layout/AppSidebar";
+import { ensureBetaAccess } from "@/lib/beta/betaAccess";
 import app from "@/lib/config/app.config";
 import { EventsProvider } from "@/providers/EventsProvider";
 import { WorkspaceProvider } from "@/providers/WorkspaceProvider";
@@ -18,7 +19,7 @@ const eventsProvider = {
 };
 
 export const Route = createFileRoute("/_app")({
-  beforeLoad: async ({ context: { session } }) => {
+  beforeLoad: async ({ context: { session, queryClient } }) => {
     // redirect unauthenticated users to the landing page
     if (!session?.user) throw redirect({ to: "/" });
 
@@ -27,6 +28,10 @@ export const Route = createFileRoute("/_app")({
       const { signOutAndRedirect } = await import("@/server/functions/auth");
       await signOutAndRedirect();
     }
+
+    // Without closed-beta access every gated query fails; redirect to /apply
+    // before rendering rather than show a page that cannot load
+    await ensureBetaAccess({ queryClient, userId: session.user.id });
 
     return { session };
   },
