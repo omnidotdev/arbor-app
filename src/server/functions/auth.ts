@@ -12,6 +12,7 @@ import {
   AUTH_CLIENT_ID,
   BASE_URL,
 } from "@/lib/config/env.config";
+import { getRequestSession } from "@/lib/graphql/serverAuthContext";
 
 /**
  * Resolve the current session and its organizations.
@@ -22,9 +23,15 @@ import {
  * TTL. The fresh result is written back, so subsequent normal reads benefit too.
  */
 const loadSession = async (forceRefreshOrgs = false) => {
-  const request = getRequest();
+  const resolve = () => getAuth(getRequest(), { forceRefreshOrgs });
 
-  const session = await getAuth(request, { forceRefreshOrgs });
+  // During a page render, reuse the session the request middleware already
+  // resolved (see `src/start.ts`): resolving it again would refresh the access
+  // token a second time from the same pre-rotation cookie. A forced org
+  // refresh needs a live resolve, so it bypasses the bound session
+  const session = forceRefreshOrgs
+    ? await resolve()
+    : await getRequestSession(resolve);
 
   // A degraded session is authenticated (getAuth returned it) but carries no
   // access token: the refresh-token grant failed, so getAuth served the session
