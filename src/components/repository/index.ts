@@ -12,3 +12,4 @@ export { FileViewer } from "./FileViewer";
 export { LatestCommitBar } from "./LatestCommitBar";
 export { ReadmeDisplay } from "./ReadmeDisplay";
 export { RepositoryBlastRadiusPanel } from "./RepositoryBlastRadiusPanel";
+export { TransferRepositoryDialog } from "./TransferRepositoryDialog";

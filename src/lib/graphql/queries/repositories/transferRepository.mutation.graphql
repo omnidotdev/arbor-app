@@ -1,0 +1,8 @@
+mutation TransferRepository($input: TransferRepositoryInput!) {
+  transferRepository(input: $input) {
+    slug
+    ownerUsername
+    organizationSlug
+    error
+  }
+}

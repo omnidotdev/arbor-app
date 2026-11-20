@@ -1,0 +1,6 @@
+query MovedRepository($ownerSlug: String!, $repoSlug: String!) {
+  movedRepository(ownerSlug: $ownerSlug, repoSlug: $repoSlug) {
+    ownerSlug
+    repoSlug
+  }
+}
