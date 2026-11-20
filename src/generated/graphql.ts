@@ -474,9 +474,6 @@ export type AgentPatch = {
   description?: InputMaybe<Scalars['String']['input']>;
   model?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  organizationId?: InputMaybe<Scalars['UUID']['input']>;
-  ownerId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
   vendor?: InputMaybe<Scalars['String']['input']>;
@@ -948,10 +945,8 @@ export enum BranchProtectionRuleOrderBy {
 export type BranchProtectionRulePatch = {
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   refPattern?: InputMaybe<Scalars['String']['input']>;
-  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
   requirePassingChecks?: InputMaybe<Scalars['Boolean']['input']>;
   requiredApprovals?: InputMaybe<Scalars['Int']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
@@ -1447,10 +1442,6 @@ export type ChangePatch = {
   headBranch?: InputMaybe<Scalars['String']['input']>;
   parentChangeId?: InputMaybe<Scalars['UUID']['input']>;
   position?: InputMaybe<Scalars['Int']['input']>;
-  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
-  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  stackId?: InputMaybe<Scalars['UUID']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
@@ -1716,72 +1707,6 @@ export type CreateExternalDependencyPayloadExternalDependencyEdgeArgs = {
   orderBy?: Array<ExternalDependencyOrderBy>;
 };
 
-/** All input for the create `MergeBatch` mutation. */
-export type CreateMergeBatchInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `MergeBatch` to be created by this mutation. */
-  mergeBatch: MergeBatchInput;
-};
-
-/** The output of our create `MergeBatch` mutation. */
-export type CreateMergeBatchPayload = {
-  __typename?: 'CreateMergeBatchPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `MergeBatch` that was created by this mutation. */
-  mergeBatch?: Maybe<MergeBatch>;
-  /** An edge for our `MergeBatch`. May be used by Relay 1. */
-  mergeBatchEdge?: Maybe<MergeBatchEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our create `MergeBatch` mutation. */
-export type CreateMergeBatchPayloadMergeBatchEdgeArgs = {
-  orderBy?: Array<MergeBatchOrderBy>;
-};
-
-/** All input for the create `MergeQueueEntry` mutation. */
-export type CreateMergeQueueEntryInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `MergeQueueEntry` to be created by this mutation. */
-  mergeQueueEntry: MergeQueueEntryInput;
-};
-
-/** The output of our create `MergeQueueEntry` mutation. */
-export type CreateMergeQueueEntryPayload = {
-  __typename?: 'CreateMergeQueueEntryPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `MergeQueueEntry` that was created by this mutation. */
-  mergeQueueEntry?: Maybe<MergeQueueEntry>;
-  /** An edge for our `MergeQueueEntry`. May be used by Relay 1. */
-  mergeQueueEntryEdge?: Maybe<MergeQueueEntryEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our create `MergeQueueEntry` mutation. */
-export type CreateMergeQueueEntryPayloadMergeQueueEntryEdgeArgs = {
-  orderBy?: Array<MergeQueueEntryOrderBy>;
-};
-
 /** All input for the create `Organization` mutation. */
 export type CreateOrganizationInput = {
   /**
@@ -1791,39 +1716,6 @@ export type CreateOrganizationInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   /** The `Organization` to be created by this mutation. */
   organization: OrganizationInput;
-};
-
-/** All input for the create `OrganizationMember` mutation. */
-export type CreateOrganizationMemberInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `OrganizationMember` to be created by this mutation. */
-  organizationMember: OrganizationMemberInput;
-};
-
-/** The output of our create `OrganizationMember` mutation. */
-export type CreateOrganizationMemberPayload = {
-  __typename?: 'CreateOrganizationMemberPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `OrganizationMember` that was created by this mutation. */
-  organizationMember?: Maybe<OrganizationMember>;
-  /** An edge for our `OrganizationMember`. May be used by Relay 1. */
-  organizationMemberEdge?: Maybe<OrganizationMemberEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our create `OrganizationMember` mutation. */
-export type CreateOrganizationMemberPayloadOrganizationMemberEdgeArgs = {
-  orderBy?: Array<OrganizationMemberOrderBy>;
 };
 
 /** The output of our create `Organization` mutation. */
@@ -1967,39 +1859,6 @@ export type CreatePullRequestCommentPayload = {
 /** The output of our create `PullRequestComment` mutation. */
 export type CreatePullRequestCommentPayloadPullRequestCommentEdgeArgs = {
   orderBy?: Array<PullRequestCommentOrderBy>;
-};
-
-/** All input for the create `PullRequest` mutation. */
-export type CreatePullRequestInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** The `PullRequest` to be created by this mutation. */
-  pullRequest: PullRequestInput;
-};
-
-/** The output of our create `PullRequest` mutation. */
-export type CreatePullRequestPayload = {
-  __typename?: 'CreatePullRequestPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `PullRequest` that was created by this mutation. */
-  pullRequest?: Maybe<PullRequest>;
-  /** An edge for our `PullRequest`. May be used by Relay 1. */
-  pullRequestEdge?: Maybe<PullRequestEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our create `PullRequest` mutation. */
-export type CreatePullRequestPayloadPullRequestEdgeArgs = {
-  orderBy?: Array<PullRequestOrderBy>;
 };
 
 /** All input for the create `PullRequestReview` mutation. */
@@ -2349,6 +2208,20 @@ export type CreateVerificationCheckPayloadVerificationCheckEdgeArgs = {
   orderBy?: Array<VerificationCheckOrderBy>;
 };
 
+/** Input for creating a workspace repository on a member's behalf. */
+export type CreateWorkspaceRepositoryInput = {
+  /** Optional description. */
+  description?: InputMaybe<Scalars['String']['input']>;
+  /** The workspace, as its identity-provider organization id. */
+  idpOrganizationId: Scalars['String']['input'];
+  /** The repository name. */
+  name: Scalars['String']['input'];
+  /** The repository slug (URL-friendly name). */
+  slug: Scalars['String']['input'];
+  /** Visibility (public or private). Defaults to public. */
+  visibility?: InputMaybe<Visibility>;
+};
+
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
 export type DatetimeFilter = {
   /** Not equal to the specified value, treating null like an ordinary value. */
@@ -2507,72 +2380,6 @@ export type DeleteExternalDependencyPayloadExternalDependencyEdgeArgs = {
   orderBy?: Array<ExternalDependencyOrderBy>;
 };
 
-/** All input for the `deleteMergeBatch` mutation. */
-export type DeleteMergeBatchInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  rowId: Scalars['UUID']['input'];
-};
-
-/** The output of our delete `MergeBatch` mutation. */
-export type DeleteMergeBatchPayload = {
-  __typename?: 'DeleteMergeBatchPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  deletedMergeBatchId?: Maybe<Scalars['ID']['output']>;
-  /** The `MergeBatch` that was deleted by this mutation. */
-  mergeBatch?: Maybe<MergeBatch>;
-  /** An edge for our `MergeBatch`. May be used by Relay 1. */
-  mergeBatchEdge?: Maybe<MergeBatchEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our delete `MergeBatch` mutation. */
-export type DeleteMergeBatchPayloadMergeBatchEdgeArgs = {
-  orderBy?: Array<MergeBatchOrderBy>;
-};
-
-/** All input for the `deleteMergeQueueEntry` mutation. */
-export type DeleteMergeQueueEntryInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  rowId: Scalars['UUID']['input'];
-};
-
-/** The output of our delete `MergeQueueEntry` mutation. */
-export type DeleteMergeQueueEntryPayload = {
-  __typename?: 'DeleteMergeQueueEntryPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  deletedMergeQueueEntryId?: Maybe<Scalars['ID']['output']>;
-  /** The `MergeQueueEntry` that was deleted by this mutation. */
-  mergeQueueEntry?: Maybe<MergeQueueEntry>;
-  /** An edge for our `MergeQueueEntry`. May be used by Relay 1. */
-  mergeQueueEntryEdge?: Maybe<MergeQueueEntryEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our delete `MergeQueueEntry` mutation. */
-export type DeleteMergeQueueEntryPayloadMergeQueueEntryEdgeArgs = {
-  orderBy?: Array<MergeQueueEntryOrderBy>;
-};
-
 /** All input for the `deleteOrganization` mutation. */
 export type DeleteOrganizationInput = {
   /**
@@ -2581,39 +2388,6 @@ export type DeleteOrganizationInput = {
    */
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   rowId: Scalars['UUID']['input'];
-};
-
-/** All input for the `deleteOrganizationMember` mutation. */
-export type DeleteOrganizationMemberInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  rowId: Scalars['UUID']['input'];
-};
-
-/** The output of our delete `OrganizationMember` mutation. */
-export type DeleteOrganizationMemberPayload = {
-  __typename?: 'DeleteOrganizationMemberPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  deletedOrganizationMemberId?: Maybe<Scalars['ID']['output']>;
-  /** The `OrganizationMember` that was deleted by this mutation. */
-  organizationMember?: Maybe<OrganizationMember>;
-  /** An edge for our `OrganizationMember`. May be used by Relay 1. */
-  organizationMemberEdge?: Maybe<OrganizationMemberEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our delete `OrganizationMember` mutation. */
-export type DeleteOrganizationMemberPayloadOrganizationMemberEdgeArgs = {
-  orderBy?: Array<OrganizationMemberOrderBy>;
 };
 
 /** The output of our delete `Organization` mutation. */
@@ -3467,8 +3241,6 @@ export type ExternalDependencyPatch = {
   detectionSource?: InputMaybe<Scalars['String']['input']>;
   packageManager?: InputMaybe<Scalars['String']['input']>;
   packageName?: InputMaybe<Scalars['String']['input']>;
-  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   versionConstraint?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -3820,16 +3592,6 @@ export type MergeBatchHavingVarianceSampleInput = {
   updatedAt?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** An input for mutations affecting `MergeBatch` */
-export type MergeBatchInput = {
-  ciStatus?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  repositoryId: Scalars['UUID']['input'];
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  speculativeBranch?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-};
-
 /** Methods to use when ordering `MergeBatch`. */
 export enum MergeBatchOrderBy {
   CiStatusAsc = 'CI_STATUS_ASC',
@@ -3888,16 +3650,6 @@ export enum MergeBatchOrderBy {
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
-
-/** Represents an update to a `MergeBatch`. Fields that are set will be updated. */
-export type MergeBatchPatch = {
-  ciStatus?: InputMaybe<Scalars['String']['input']>;
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  speculativeBranch?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-};
 
 /** A filter to be used against many `MergeQueueEntry` object types. All fields are combined with a logical ‘and.’ */
 export type MergeBatchToManyMergeQueueEntryFilter = {
@@ -4283,21 +4035,6 @@ export type MergeQueueEntryHavingVarianceSampleInput = {
   updatedAt?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** An input for mutations affecting `MergeQueueEntry` */
-export type MergeQueueEntryInput = {
-  batchId?: InputMaybe<Scalars['UUID']['input']>;
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  enqueuedAt?: InputMaybe<Scalars['Datetime']['input']>;
-  position?: InputMaybe<Scalars['Int']['input']>;
-  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
-  repositoryId: Scalars['UUID']['input'];
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  stackId?: InputMaybe<Scalars['UUID']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
-  targetBranch?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-};
-
 export type MergeQueueEntryMaxAggregateFilter = {
   position?: InputMaybe<IntFilter>;
 };
@@ -4346,21 +4083,6 @@ export enum MergeQueueEntryOrderBy {
   UpdatedAtAsc = 'UPDATED_AT_ASC',
   UpdatedAtDesc = 'UPDATED_AT_DESC'
 }
-
-/** Represents an update to a `MergeQueueEntry`. Fields that are set will be updated. */
-export type MergeQueueEntryPatch = {
-  batchId?: InputMaybe<Scalars['UUID']['input']>;
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  enqueuedAt?: InputMaybe<Scalars['Datetime']['input']>;
-  position?: InputMaybe<Scalars['Int']['input']>;
-  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
-  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  stackId?: InputMaybe<Scalars['UUID']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
-  targetBranch?: InputMaybe<Scalars['String']['input']>;
-  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-};
 
 /** Result of processing a single merge queue entry. */
 export type MergeQueueEntryResult = {
@@ -4446,14 +4168,8 @@ export type Mutation = {
   createChange?: Maybe<CreateChangePayload>;
   /** Creates a single `ExternalDependency`. */
   createExternalDependency?: Maybe<CreateExternalDependencyPayload>;
-  /** Creates a single `MergeBatch`. */
-  createMergeBatch?: Maybe<CreateMergeBatchPayload>;
-  /** Creates a single `MergeQueueEntry`. */
-  createMergeQueueEntry?: Maybe<CreateMergeQueueEntryPayload>;
   /** Creates a single `Organization`. */
   createOrganization?: Maybe<CreateOrganizationPayload>;
-  /** Creates a single `OrganizationMember`. */
-  createOrganizationMember?: Maybe<CreateOrganizationMemberPayload>;
   /**
    * Create a personal access token for the authenticated user.
    * The plaintext token is returned once in the payload and never again.
@@ -4463,8 +4179,6 @@ export type Mutation = {
   createProject?: Maybe<CreateProjectPayload>;
   /** Creates a single `ProjectRepository`. */
   createProjectRepository?: Maybe<CreateProjectRepositoryPayload>;
-  /** Creates a single `PullRequest`. */
-  createPullRequest?: Maybe<CreatePullRequestPayload>;
   /** Creates a single `PullRequestComment`. */
   createPullRequestComment?: Maybe<CreatePullRequestCommentPayload>;
   /** Creates a single `PullRequestReview`. */
@@ -4493,6 +4207,12 @@ export type Mutation = {
   createTopicPullRequest?: Maybe<CreateTopicPullRequestPayload>;
   /** Creates a single `VerificationCheck`. */
   createVerificationCheck?: Maybe<CreateVerificationCheckPayload>;
+  /**
+   * Create (or find) a repository owned by a workspace, for a first-party
+   * product acting with a member's token (sent in the X-Arbor-Member-Token
+   * header). The product is granted write on this repository only.
+   */
+  createWorkspaceRepository?: Maybe<CreateRepositoryWithGitPayload>;
   /** Deletes a single `Agent` using a unique key. */
   deleteAgent?: Maybe<DeleteAgentPayload>;
   /** Deletes a single `BranchProtectionRule` using a unique key. */
@@ -4501,14 +4221,8 @@ export type Mutation = {
   deleteChange?: Maybe<DeleteChangePayload>;
   /** Deletes a single `ExternalDependency` using a unique key. */
   deleteExternalDependency?: Maybe<DeleteExternalDependencyPayload>;
-  /** Deletes a single `MergeBatch` using a unique key. */
-  deleteMergeBatch?: Maybe<DeleteMergeBatchPayload>;
-  /** Deletes a single `MergeQueueEntry` using a unique key. */
-  deleteMergeQueueEntry?: Maybe<DeleteMergeQueueEntryPayload>;
   /** Deletes a single `Organization` using a unique key. */
   deleteOrganization?: Maybe<DeleteOrganizationPayload>;
-  /** Deletes a single `OrganizationMember` using a unique key. */
-  deleteOrganizationMember?: Maybe<DeleteOrganizationMemberPayload>;
   /** Deletes a single `PersonalAccessToken` using a unique key. */
   deletePersonalAccessToken?: Maybe<DeletePersonalAccessTokenPayload>;
   /** Deletes a single `Project` using a unique key. */
@@ -4605,6 +4319,20 @@ export type Mutation = {
    * closed-beta tester application. Requires accepting the beta terms.
    */
   submitTesterApplication?: Maybe<SubmitTesterApplicationPayload>;
+  /**
+   * Move a repository to another workspace. Takes an owner or admin of the
+   * workspace it is in (or the owner of a personal repository) who is also
+   * an owner or admin of the target. History and collaborators stay, the
+   * caller becomes its owner, and its old clone path and links keep working.
+   */
+  transferRepository?: Maybe<TransferWorkspaceRepositoryPayload>;
+  /**
+   * Move a repository a first-party product manages to another workspace,
+   * for a member (token in the X-Arbor-Member-Token header) who is an owner
+   * or admin of both. History, collaborators and the product's grant stay;
+   * the member becomes its owner, and its old clone path keeps working.
+   */
+  transferWorkspaceRepository?: Maybe<TransferWorkspaceRepositoryPayload>;
   /** Updates a single `Agent` using a unique key and a patch. */
   updateAgent?: Maybe<UpdateAgentPayload>;
   /** Updates a single `BranchProtectionRule` using a unique key and a patch. */
@@ -4613,14 +4341,8 @@ export type Mutation = {
   updateChange?: Maybe<UpdateChangePayload>;
   /** Updates a single `ExternalDependency` using a unique key and a patch. */
   updateExternalDependency?: Maybe<UpdateExternalDependencyPayload>;
-  /** Updates a single `MergeBatch` using a unique key and a patch. */
-  updateMergeBatch?: Maybe<UpdateMergeBatchPayload>;
-  /** Updates a single `MergeQueueEntry` using a unique key and a patch. */
-  updateMergeQueueEntry?: Maybe<UpdateMergeQueueEntryPayload>;
   /** Updates a single `Organization` using a unique key and a patch. */
   updateOrganization?: Maybe<UpdateOrganizationPayload>;
-  /** Updates a single `OrganizationMember` using a unique key and a patch. */
-  updateOrganizationMember?: Maybe<UpdateOrganizationMemberPayload>;
   /** Updates a single `Project` using a unique key and a patch. */
   updateProject?: Maybe<UpdateProjectPayload>;
   /** Updates a single `ProjectRepository` using a unique key and a patch. */
@@ -4685,26 +4407,8 @@ export type MutationCreateExternalDependencyArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateMergeBatchArgs = {
-  input: CreateMergeBatchInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateMergeQueueEntryArgs = {
-  input: CreateMergeQueueEntryInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateOrganizationArgs = {
   input: CreateOrganizationInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateOrganizationMemberArgs = {
-  input: CreateOrganizationMemberInput;
 };
 
 
@@ -4727,12 +4431,6 @@ export type MutationCreateProjectArgs = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type MutationCreateProjectRepositoryArgs = {
   input: CreateProjectRepositoryInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreatePullRequestArgs = {
-  input: CreatePullRequestInput;
 };
 
 
@@ -4809,6 +4507,12 @@ export type MutationCreateVerificationCheckArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationCreateWorkspaceRepositoryArgs = {
+  input: CreateWorkspaceRepositoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteAgentArgs = {
   input: DeleteAgentInput;
 };
@@ -4833,26 +4537,8 @@ export type MutationDeleteExternalDependencyArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteMergeBatchArgs = {
-  input: DeleteMergeBatchInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteMergeQueueEntryArgs = {
-  input: DeleteMergeQueueEntryInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationDeleteOrganizationArgs = {
   input: DeleteOrganizationInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteOrganizationMemberArgs = {
-  input: DeleteOrganizationMemberInput;
 };
 
 
@@ -5025,6 +4711,18 @@ export type MutationSubmitTesterApplicationArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
+export type MutationTransferRepositoryArgs = {
+  input: TransferRepositoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
+export type MutationTransferWorkspaceRepositoryArgs = {
+  input: TransferWorkspaceRepositoryInput;
+};
+
+
+/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateAgentArgs = {
   input: UpdateAgentInput;
 };
@@ -5049,26 +4747,8 @@ export type MutationUpdateExternalDependencyArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateMergeBatchArgs = {
-  input: UpdateMergeBatchInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateMergeQueueEntryArgs = {
-  input: UpdateMergeQueueEntryInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
 export type MutationUpdateOrganizationArgs = {
   input: UpdateOrganizationInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationUpdateOrganizationMemberArgs = {
-  input: UpdateOrganizationMemberInput;
 };
 
 
@@ -5244,7 +4924,6 @@ export type Organization = Node & {
   repositoryRelationshipTypes: RepositoryRelationshipTypeConnection;
   rowId: Scalars['UUID']['output'];
   slug?: Maybe<Scalars['String']['output']>;
-  subscriptionId?: Maybe<Scalars['String']['output']>;
   /** Reads and enables pagination through a set of `Topic`. */
   topics: TopicConnection;
   updatedAt: Scalars['Datetime']['output'];
@@ -5354,8 +5033,6 @@ export type OrganizationCondition = {
   rowId?: InputMaybe<Scalars['UUID']['input']>;
   /** Checks for equality with the object’s `slug` field. */
   slug?: InputMaybe<Scalars['String']['input']>;
-  /** Checks for equality with the object’s `subscriptionId` field. */
-  subscriptionId?: InputMaybe<Scalars['String']['input']>;
   /** Checks for equality with the object’s `updatedAt` field. */
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
 };
@@ -5406,8 +5083,6 @@ export type OrganizationDistinctCountAggregates = {
   rowId?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of slug across the matching connection */
   slug?: Maybe<Scalars['BigInt']['output']>;
-  /** Distinct count of subscriptionId across the matching connection */
-  subscriptionId?: Maybe<Scalars['BigInt']['output']>;
   /** Distinct count of updatedAt across the matching connection */
   updatedAt?: Maybe<Scalars['BigInt']['output']>;
 };
@@ -5469,8 +5144,6 @@ export type OrganizationFilter = {
   rowId?: InputMaybe<UuidFilter>;
   /** Filter by the object’s `slug` field. */
   slug?: InputMaybe<StringFilter>;
-  /** Filter by the object’s `subscriptionId` field. */
-  subscriptionId?: InputMaybe<StringFilter>;
   /** Filter by the object’s `topics` relation. */
   topics?: InputMaybe<OrganizationToManyTopicFilter>;
   /** Some related `topics` exist. */
@@ -5493,7 +5166,6 @@ export enum OrganizationGroupBy {
   Description = 'DESCRIPTION',
   Name = 'NAME',
   Slug = 'SLUG',
-  SubscriptionId = 'SUBSCRIPTION_ID',
   UpdatedAt = 'UPDATED_AT',
   UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
   UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR'
@@ -5571,7 +5243,6 @@ export type OrganizationHavingVarianceSampleInput = {
 /** An input for mutations affecting `Organization` */
 export type OrganizationInput = {
   avatarUrl?: InputMaybe<Scalars['String']['input']>;
-  billingAccountId?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   deletedAt?: InputMaybe<Scalars['Datetime']['input']>;
   deletionReason?: InputMaybe<Scalars['String']['input']>;
@@ -5580,7 +5251,6 @@ export type OrganizationInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   rowId?: InputMaybe<Scalars['UUID']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  subscriptionId?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
@@ -5767,15 +5437,6 @@ export type OrganizationMemberHavingVarianceSampleInput = {
   syncedAt?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** An input for mutations affecting `OrganizationMember` */
-export type OrganizationMemberInput = {
-  organizationId: Scalars['UUID']['input'];
-  roles?: InputMaybe<Scalars['JSON']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  syncedAt?: InputMaybe<Scalars['Datetime']['input']>;
-  userId: Scalars['UUID']['input'];
-};
-
 /** Methods to use when ordering `OrganizationMember`. */
 export enum OrganizationMemberOrderBy {
   Natural = 'NATURAL',
@@ -5790,15 +5451,6 @@ export enum OrganizationMemberOrderBy {
   UserIdAsc = 'USER_ID_ASC',
   UserIdDesc = 'USER_ID_DESC'
 }
-
-/** Represents an update to a `OrganizationMember`. Fields that are set will be updated. */
-export type OrganizationMemberPatch = {
-  organizationId?: InputMaybe<Scalars['UUID']['input']>;
-  roles?: InputMaybe<Scalars['JSON']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  syncedAt?: InputMaybe<Scalars['Datetime']['input']>;
-  userId?: InputMaybe<Scalars['UUID']['input']>;
-};
 
 /** Methods to use when ordering `Organization`. */
 export enum OrganizationOrderBy {
@@ -5915,8 +5567,6 @@ export enum OrganizationOrderBy {
   RowIdDesc = 'ROW_ID_DESC',
   SlugAsc = 'SLUG_ASC',
   SlugDesc = 'SLUG_DESC',
-  SubscriptionIdAsc = 'SUBSCRIPTION_ID_ASC',
-  SubscriptionIdDesc = 'SUBSCRIPTION_ID_DESC',
   TopicsCountAsc = 'TOPICS_COUNT_ASC',
   TopicsCountDesc = 'TOPICS_COUNT_DESC',
   TopicsDistinctCountCreatedAtAsc = 'TOPICS_DISTINCT_COUNT_CREATED_AT_ASC',
@@ -5942,16 +5592,12 @@ export enum OrganizationOrderBy {
 /** Represents an update to a `Organization`. Fields that are set will be updated. */
 export type OrganizationPatch = {
   avatarUrl?: InputMaybe<Scalars['String']['input']>;
-  billingAccountId?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   deletedAt?: InputMaybe<Scalars['Datetime']['input']>;
   deletionReason?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  idpOrganizationId?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
-  subscriptionId?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
 };
 
@@ -6934,9 +6580,6 @@ export type ProjectPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  organizationId?: InputMaybe<Scalars['UUID']['input']>;
-  ownerId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
   visibility?: InputMaybe<Visibility>;
@@ -7159,9 +6802,6 @@ export enum ProjectRepositoryOrderBy {
 export type ProjectRepositoryPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   detectionSource?: InputMaybe<Scalars['String']['input']>;
-  projectId?: InputMaybe<Scalars['UUID']['input']>;
-  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 /** A filter to be used against many `ProjectRepository` object types. All fields are combined with a logical ‘and.’ */
@@ -7732,15 +7372,11 @@ export enum PullRequestCommentOrderBy {
 
 /** Represents an update to a `PullRequestComment`. Fields that are set will be updated. */
 export type PullRequestCommentPatch = {
-  authorId?: InputMaybe<Scalars['UUID']['input']>;
   body?: InputMaybe<Scalars['String']['input']>;
   commitSha?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   line?: InputMaybe<Scalars['Int']['input']>;
   path?: InputMaybe<Scalars['String']['input']>;
-  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
-  replyToId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   side?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
 };
@@ -8110,26 +7746,6 @@ export type PullRequestHavingVarianceSampleInput = {
   updatedAt?: InputMaybe<HavingDatetimeFilter>;
 };
 
-/** An input for mutations affecting `PullRequest` */
-export type PullRequestInput = {
-  authorId: Scalars['UUID']['input'];
-  authoredByAgentId?: InputMaybe<Scalars['UUID']['input']>;
-  closedAt?: InputMaybe<Scalars['Datetime']['input']>;
-  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  description?: InputMaybe<Scalars['String']['input']>;
-  mergeCommitSha?: InputMaybe<Scalars['String']['input']>;
-  mergedAt?: InputMaybe<Scalars['Datetime']['input']>;
-  mergedById?: InputMaybe<Scalars['UUID']['input']>;
-  number: Scalars['Int']['input'];
-  repositoryId: Scalars['UUID']['input'];
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  sourceBranch: Scalars['String']['input'];
-  state?: InputMaybe<Scalars['String']['input']>;
-  targetBranch: Scalars['String']['input'];
-  title: Scalars['String']['input'];
-  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-};
-
 export type PullRequestMaxAggregateFilter = {
   number?: InputMaybe<IntFilter>;
 };
@@ -8343,19 +7959,9 @@ export enum PullRequestOrderBy {
 
 /** Represents an update to a `PullRequest`. Fields that are set will be updated. */
 export type PullRequestPatch = {
-  authorId?: InputMaybe<Scalars['UUID']['input']>;
-  authoredByAgentId?: InputMaybe<Scalars['UUID']['input']>;
-  closedAt?: InputMaybe<Scalars['Datetime']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  mergeCommitSha?: InputMaybe<Scalars['String']['input']>;
-  mergedAt?: InputMaybe<Scalars['Datetime']['input']>;
-  mergedById?: InputMaybe<Scalars['UUID']['input']>;
-  number?: InputMaybe<Scalars['Int']['input']>;
-  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   sourceBranch?: InputMaybe<Scalars['String']['input']>;
-  state?: InputMaybe<Scalars['String']['input']>;
   targetBranch?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
@@ -8636,9 +8242,6 @@ export enum PullRequestReviewOrderBy {
 export type PullRequestReviewPatch = {
   body?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
-  reviewerId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   state?: InputMaybe<Scalars['String']['input']>;
   submittedAt?: InputMaybe<Scalars['Datetime']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
@@ -8796,8 +8399,14 @@ export type Query = Node & {
   /** Reads a single `MergeQueueEntry` using its globally unique `ID`. */
   mergeQueueEntryById?: Maybe<MergeQueueEntry>;
   /**
-   * Returns the authenticated caller's own closed-beta tester application, or
-   * null when they have not applied.
+   * Where a repository that moved away from this path (an old workspace
+   * slug or username, and slug) lives now. Null when nothing moved away from
+   * it, a repository still lives there, or the caller may not read it.
+   */
+  movedRepository?: Maybe<RepositoryLocation>;
+  /**
+   * Returns the authenticated caller's own closed-beta tester application,
+   * or null when they have not applied.
    */
   myTesterApplication?: Maybe<MyTesterApplication>;
   /** Fetches an object given its globally unique `ID`. */
@@ -8913,6 +8522,12 @@ export type Query = Node & {
   stackMergeability?: Maybe<StackMergeabilityResult>;
   /** Reads and enables pagination through a set of `Stack`. */
   stacks?: Maybe<StackConnection>;
+  /** Get a single `TesterApplication`. */
+  testerApplication?: Maybe<TesterApplication>;
+  /** Reads a single `TesterApplication` using its globally unique `ID`. */
+  testerApplicationById?: Maybe<TesterApplication>;
+  /** Reads and enables pagination through a set of `TesterApplication`. */
+  testerApplications?: Maybe<TesterApplicationConnection>;
   /** Get a single `Topic`. */
   topic?: Maybe<Topic>;
   /** Reads a single `Topic` using its globally unique `ID`. */
@@ -9086,6 +8701,13 @@ export type QueryMergeQueueEntryArgs = {
 /** The root query type which gives access points into the data universe. */
 export type QueryMergeQueueEntryByIdArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryMovedRepositoryArgs = {
+  ownerSlug: Scalars['String']['input'];
+  repoSlug: Scalars['String']['input'];
 };
 
 
@@ -9456,6 +9078,31 @@ export type QueryStacksArgs = {
   last?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<StackOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTesterApplicationArgs = {
+  rowId: Scalars['UUID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTesterApplicationByIdArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryTesterApplicationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<TesterApplicationCondition>;
+  filter?: InputMaybe<TesterApplicationFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TesterApplicationOrderBy>>;
 };
 
 
@@ -10035,9 +9682,7 @@ export enum RepositoryCollaboratorOrderBy {
 export type RepositoryCollaboratorPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   permission?: InputMaybe<Permission>;
-  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
-  userId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 /**
@@ -10292,6 +9937,15 @@ export type RepositoryHavingVariancePopulationInput = {
 export type RepositoryHavingVarianceSampleInput = {
   createdAt?: InputMaybe<HavingDatetimeFilter>;
   updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Where a repository lives. */
+export type RepositoryLocation = {
+  __typename?: 'RepositoryLocation';
+  /** The owning workspace's slug, or the owner's username. */
+  ownerSlug: Scalars['String']['output'];
+  /** The repository slug. */
+  repoSlug: Scalars['String']['output'];
 };
 
 /** Methods to use when ordering `Repository`. */
@@ -10659,9 +10313,6 @@ export type RepositoryPatch = {
   defaultBranch?: InputMaybe<Scalars['String']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  organizationId?: InputMaybe<Scalars['UUID']['input']>;
-  ownerId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
   visibility?: InputMaybe<Visibility>;
@@ -11220,8 +10871,6 @@ export enum RepositoryRelationshipMetadatumOrderBy {
 export type RepositoryRelationshipMetadatumPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   key?: InputMaybe<Scalars['String']['input']>;
-  relationshipId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   value?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -11280,10 +10929,6 @@ export type RepositoryRelationshipPatch = {
   confidence?: InputMaybe<Scalars['Float']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   detectionSource?: InputMaybe<Scalars['String']['input']>;
-  relationshipTypeId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  sourceRepositoryId?: InputMaybe<Scalars['UUID']['input']>;
-  targetRepositoryId?: InputMaybe<Scalars['UUID']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
   versionConstraint?: InputMaybe<Scalars['String']['input']>;
 };
@@ -11615,8 +11260,6 @@ export type RepositoryRelationshipTypePatch = {
   description?: InputMaybe<Scalars['String']['input']>;
   isDirected?: InputMaybe<Scalars['Boolean']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  organizationId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 /** A filter to be used against many `RepositoryRelationship` object types. All fields are combined with a logical ‘and.’ */
@@ -12208,13 +11851,9 @@ export enum StackOrderBy {
 
 /** Represents an update to a `Stack`. Fields that are set will be updated. */
 export type StackPatch = {
-  authorId?: InputMaybe<Scalars['UUID']['input']>;
-  authoredByAgentId?: InputMaybe<Scalars['UUID']['input']>;
   baseBranch?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  repositoryId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
@@ -12403,6 +12042,277 @@ export type Subscription = {
 export type SubscriptionPullRequestCommentChangedArgs = {
   pullRequestId: Scalars['UUID']['input'];
 };
+
+export type TesterApplication = Node & {
+  __typename?: 'TesterApplication';
+  answers: Scalars['JSON']['output'];
+  createdAt: Scalars['Datetime']['output'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  id: Scalars['ID']['output'];
+  ndaAccepted: Scalars['Boolean']['output'];
+  ndaAcceptedAt?: Maybe<Scalars['Datetime']['output']>;
+  ndaVersion?: Maybe<Scalars['String']['output']>;
+  reviewerNote?: Maybe<Scalars['String']['output']>;
+  rowId: Scalars['UUID']['output'];
+  status: Scalars['String']['output'];
+  updatedAt: Scalars['Datetime']['output'];
+  /** Reads a single `User` that is related to this `TesterApplication`. */
+  user?: Maybe<User>;
+  userId: Scalars['UUID']['output'];
+};
+
+export type TesterApplicationAggregates = {
+  __typename?: 'TesterApplicationAggregates';
+  /** Distinct count aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  distinctCount?: Maybe<TesterApplicationDistinctCountAggregates>;
+  keys?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+};
+
+/** A filter to be used against aggregates of `TesterApplication` object types. */
+export type TesterApplicationAggregatesFilter = {
+  /** Distinct count aggregate over matching `TesterApplication` objects. */
+  distinctCount?: InputMaybe<TesterApplicationDistinctCountAggregateFilter>;
+  /** A filter that must pass for the relevant `TesterApplication` object to be included within the aggregate. */
+  filter?: InputMaybe<TesterApplicationFilter>;
+};
+
+/**
+ * A condition to be used against `TesterApplication` object types. All fields are
+ * tested for equality and combined with a logical ‘and.’
+ */
+export type TesterApplicationCondition = {
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `ndaAccepted` field. */
+  ndaAccepted?: InputMaybe<Scalars['Boolean']['input']>;
+  /** Checks for equality with the object’s `ndaAcceptedAt` field. */
+  ndaAcceptedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `ndaVersion` field. */
+  ndaVersion?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `reviewerNote` field. */
+  reviewerNote?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `rowId` field. */
+  rowId?: InputMaybe<Scalars['UUID']['input']>;
+  /** Checks for equality with the object’s `status` field. */
+  status?: InputMaybe<Scalars['String']['input']>;
+  /** Checks for equality with the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['UUID']['input']>;
+};
+
+/** A connection to a list of `TesterApplication` values. */
+export type TesterApplicationConnection = {
+  __typename?: 'TesterApplicationConnection';
+  /** Aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  aggregates?: Maybe<TesterApplicationAggregates>;
+  /** A list of edges which contains the `TesterApplication` and cursor to aid in pagination. */
+  edges: Array<TesterApplicationEdge>;
+  /** Grouped aggregates across the matching connection (ignoring before/after/first/last/offset) */
+  groupedAggregates?: Maybe<Array<TesterApplicationAggregates>>;
+  /** A list of `TesterApplication` objects. */
+  nodes: Array<TesterApplication>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `TesterApplication` you could get from the connection. */
+  totalCount: Scalars['Int']['output'];
+};
+
+
+/** A connection to a list of `TesterApplication` values. */
+export type TesterApplicationConnectionGroupedAggregatesArgs = {
+  groupBy: Array<TesterApplicationGroupBy>;
+  having?: InputMaybe<TesterApplicationHavingInput>;
+};
+
+export type TesterApplicationDistinctCountAggregateFilter = {
+  answers?: InputMaybe<BigIntFilter>;
+  createdAt?: InputMaybe<BigIntFilter>;
+  ndaAccepted?: InputMaybe<BigIntFilter>;
+  ndaAcceptedAt?: InputMaybe<BigIntFilter>;
+  ndaVersion?: InputMaybe<BigIntFilter>;
+  reviewerNote?: InputMaybe<BigIntFilter>;
+  rowId?: InputMaybe<BigIntFilter>;
+  status?: InputMaybe<BigIntFilter>;
+  updatedAt?: InputMaybe<BigIntFilter>;
+  userId?: InputMaybe<BigIntFilter>;
+};
+
+export type TesterApplicationDistinctCountAggregates = {
+  __typename?: 'TesterApplicationDistinctCountAggregates';
+  /** Distinct count of answers across the matching connection */
+  answers?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of createdAt across the matching connection */
+  createdAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of ndaAccepted across the matching connection */
+  ndaAccepted?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of ndaAcceptedAt across the matching connection */
+  ndaAcceptedAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of ndaVersion across the matching connection */
+  ndaVersion?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of reviewerNote across the matching connection */
+  reviewerNote?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of rowId across the matching connection */
+  rowId?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of status across the matching connection */
+  status?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of updatedAt across the matching connection */
+  updatedAt?: Maybe<Scalars['BigInt']['output']>;
+  /** Distinct count of userId across the matching connection */
+  userId?: Maybe<Scalars['BigInt']['output']>;
+};
+
+/** A `TesterApplication` edge in the connection. */
+export type TesterApplicationEdge = {
+  __typename?: 'TesterApplicationEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']['output']>;
+  /** The `TesterApplication` at the end of the edge. */
+  node: TesterApplication;
+};
+
+/** A filter to be used against `TesterApplication` object types. All fields are combined with a logical ‘and.’ */
+export type TesterApplicationFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<TesterApplicationFilter>>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `ndaAccepted` field. */
+  ndaAccepted?: InputMaybe<BooleanFilter>;
+  /** Filter by the object’s `ndaAcceptedAt` field. */
+  ndaAcceptedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `ndaVersion` field. */
+  ndaVersion?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<TesterApplicationFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<TesterApplicationFilter>>;
+  /** Filter by the object’s `reviewerNote` field. */
+  reviewerNote?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `rowId` field. */
+  rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `status` field. */
+  status?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `updatedAt` field. */
+  updatedAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `user` relation. */
+  user?: InputMaybe<UserFilter>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<UuidFilter>;
+};
+
+/** Grouping methods for `TesterApplication` for usage during aggregation. */
+export enum TesterApplicationGroupBy {
+  Answers = 'ANSWERS',
+  CreatedAt = 'CREATED_AT',
+  CreatedAtTruncatedToDay = 'CREATED_AT_TRUNCATED_TO_DAY',
+  CreatedAtTruncatedToHour = 'CREATED_AT_TRUNCATED_TO_HOUR',
+  NdaAccepted = 'NDA_ACCEPTED',
+  NdaAcceptedAt = 'NDA_ACCEPTED_AT',
+  NdaAcceptedAtTruncatedToDay = 'NDA_ACCEPTED_AT_TRUNCATED_TO_DAY',
+  NdaAcceptedAtTruncatedToHour = 'NDA_ACCEPTED_AT_TRUNCATED_TO_HOUR',
+  NdaVersion = 'NDA_VERSION',
+  ReviewerNote = 'REVIEWER_NOTE',
+  Status = 'STATUS',
+  UpdatedAt = 'UPDATED_AT',
+  UpdatedAtTruncatedToDay = 'UPDATED_AT_TRUNCATED_TO_DAY',
+  UpdatedAtTruncatedToHour = 'UPDATED_AT_TRUNCATED_TO_HOUR',
+  UserId = 'USER_ID'
+}
+
+export type TesterApplicationHavingAverageInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  ndaAcceptedAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TesterApplicationHavingDistinctCountInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  ndaAcceptedAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Conditions for `TesterApplication` aggregates. */
+export type TesterApplicationHavingInput = {
+  AND?: InputMaybe<Array<TesterApplicationHavingInput>>;
+  OR?: InputMaybe<Array<TesterApplicationHavingInput>>;
+  average?: InputMaybe<TesterApplicationHavingAverageInput>;
+  distinctCount?: InputMaybe<TesterApplicationHavingDistinctCountInput>;
+  max?: InputMaybe<TesterApplicationHavingMaxInput>;
+  min?: InputMaybe<TesterApplicationHavingMinInput>;
+  stddevPopulation?: InputMaybe<TesterApplicationHavingStddevPopulationInput>;
+  stddevSample?: InputMaybe<TesterApplicationHavingStddevSampleInput>;
+  sum?: InputMaybe<TesterApplicationHavingSumInput>;
+  variancePopulation?: InputMaybe<TesterApplicationHavingVariancePopulationInput>;
+  varianceSample?: InputMaybe<TesterApplicationHavingVarianceSampleInput>;
+};
+
+export type TesterApplicationHavingMaxInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  ndaAcceptedAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TesterApplicationHavingMinInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  ndaAcceptedAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TesterApplicationHavingStddevPopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  ndaAcceptedAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TesterApplicationHavingStddevSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  ndaAcceptedAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TesterApplicationHavingSumInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  ndaAcceptedAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TesterApplicationHavingVariancePopulationInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  ndaAcceptedAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+export type TesterApplicationHavingVarianceSampleInput = {
+  createdAt?: InputMaybe<HavingDatetimeFilter>;
+  ndaAcceptedAt?: InputMaybe<HavingDatetimeFilter>;
+  updatedAt?: InputMaybe<HavingDatetimeFilter>;
+};
+
+/** Methods to use when ordering `TesterApplication`. */
+export enum TesterApplicationOrderBy {
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  Natural = 'NATURAL',
+  NdaAcceptedAsc = 'NDA_ACCEPTED_ASC',
+  NdaAcceptedAtAsc = 'NDA_ACCEPTED_AT_ASC',
+  NdaAcceptedAtDesc = 'NDA_ACCEPTED_AT_DESC',
+  NdaAcceptedDesc = 'NDA_ACCEPTED_DESC',
+  NdaVersionAsc = 'NDA_VERSION_ASC',
+  NdaVersionDesc = 'NDA_VERSION_DESC',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  ReviewerNoteAsc = 'REVIEWER_NOTE_ASC',
+  ReviewerNoteDesc = 'REVIEWER_NOTE_DESC',
+  RowIdAsc = 'ROW_ID_ASC',
+  RowIdDesc = 'ROW_ID_DESC',
+  StatusAsc = 'STATUS_ASC',
+  StatusDesc = 'STATUS_DESC',
+  UpdatedAtAsc = 'UPDATED_AT_ASC',
+  UpdatedAtDesc = 'UPDATED_AT_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
 
 export type Topic = Node & {
   __typename?: 'Topic';
@@ -12695,9 +12605,6 @@ export enum TopicOrderBy {
 export type TopicPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
-  organizationId?: InputMaybe<Scalars['UUID']['input']>;
-  ownerId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
@@ -12907,9 +12814,6 @@ export enum TopicPullRequestOrderBy {
 /** Represents an update to a `TopicPullRequest`. Fields that are set will be updated. */
 export type TopicPullRequestPatch = {
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
-  pullRequestId?: InputMaybe<Scalars['UUID']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
-  topicId?: InputMaybe<Scalars['UUID']['input']>;
 };
 
 /** Whether a topic can submit all-or-nothing, and the members blocking it. */
@@ -12931,6 +12835,48 @@ export type TopicToManyTopicPullRequestFilter = {
   none?: InputMaybe<TopicPullRequestFilter>;
   /** Some related `TopicPullRequest` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<TopicPullRequestFilter>;
+};
+
+/** Input for moving a repository to another workspace. */
+export type TransferRepositoryInput = {
+  /** Run every check and change nothing. */
+  dryRun?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The repository row ID. */
+  rowId: Scalars['UUID']['input'];
+  /** The workspace to move it to, as its identity-provider organization id. */
+  toIdpOrganizationId: Scalars['String']['input'];
+};
+
+/**
+ * Input for moving a workspace repository to another workspace on a
+ * member's behalf.
+ */
+export type TransferWorkspaceRepositoryInput = {
+  /** Run every check and change nothing. */
+  dryRun?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The workspace the repository is in, as its identity-provider organization id. */
+  fromIdpOrganizationId: Scalars['String']['input'];
+  /** The repository slug. */
+  slug: Scalars['String']['input'];
+  /** The workspace to move it to, as its identity-provider organization id. */
+  toIdpOrganizationId: Scalars['String']['input'];
+};
+
+/** Result of moving a workspace repository. */
+export type TransferWorkspaceRepositoryPayload = {
+  __typename?: 'TransferWorkspaceRepositoryPayload';
+  /** Error message, if the move failed. */
+  error?: Maybe<Scalars['String']['output']>;
+  /** The target workspace's slug. */
+  organizationSlug?: Maybe<Scalars['String']['output']>;
+  /** The clone path owner after the move. */
+  ownerUsername?: Maybe<Scalars['String']['output']>;
+  /** The clone path owner before the move, still served as a redirect. */
+  previousOwnerUsername?: Maybe<Scalars['String']['output']>;
+  /** The repository row ID. */
+  rowId?: Maybe<Scalars['UUID']['output']>;
+  /** The repository slug. */
+  slug?: Maybe<Scalars['String']['output']>;
 };
 
 /** A Git tree (directory). */
@@ -13121,74 +13067,6 @@ export type UpdateExternalDependencyPayloadExternalDependencyEdgeArgs = {
   orderBy?: Array<ExternalDependencyOrderBy>;
 };
 
-/** All input for the `updateMergeBatch` mutation. */
-export type UpdateMergeBatchInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** An object where the defined keys will be set on the `MergeBatch` being updated. */
-  patch: MergeBatchPatch;
-  rowId: Scalars['UUID']['input'];
-};
-
-/** The output of our update `MergeBatch` mutation. */
-export type UpdateMergeBatchPayload = {
-  __typename?: 'UpdateMergeBatchPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `MergeBatch` that was updated by this mutation. */
-  mergeBatch?: Maybe<MergeBatch>;
-  /** An edge for our `MergeBatch`. May be used by Relay 1. */
-  mergeBatchEdge?: Maybe<MergeBatchEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our update `MergeBatch` mutation. */
-export type UpdateMergeBatchPayloadMergeBatchEdgeArgs = {
-  orderBy?: Array<MergeBatchOrderBy>;
-};
-
-/** All input for the `updateMergeQueueEntry` mutation. */
-export type UpdateMergeQueueEntryInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** An object where the defined keys will be set on the `MergeQueueEntry` being updated. */
-  patch: MergeQueueEntryPatch;
-  rowId: Scalars['UUID']['input'];
-};
-
-/** The output of our update `MergeQueueEntry` mutation. */
-export type UpdateMergeQueueEntryPayload = {
-  __typename?: 'UpdateMergeQueueEntryPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `MergeQueueEntry` that was updated by this mutation. */
-  mergeQueueEntry?: Maybe<MergeQueueEntry>;
-  /** An edge for our `MergeQueueEntry`. May be used by Relay 1. */
-  mergeQueueEntryEdge?: Maybe<MergeQueueEntryEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our update `MergeQueueEntry` mutation. */
-export type UpdateMergeQueueEntryPayloadMergeQueueEntryEdgeArgs = {
-  orderBy?: Array<MergeQueueEntryOrderBy>;
-};
-
 /** All input for the `updateOrganization` mutation. */
 export type UpdateOrganizationInput = {
   /**
@@ -13199,40 +13077,6 @@ export type UpdateOrganizationInput = {
   /** An object where the defined keys will be set on the `Organization` being updated. */
   patch: OrganizationPatch;
   rowId: Scalars['UUID']['input'];
-};
-
-/** All input for the `updateOrganizationMember` mutation. */
-export type UpdateOrganizationMemberInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']['input']>;
-  /** An object where the defined keys will be set on the `OrganizationMember` being updated. */
-  patch: OrganizationMemberPatch;
-  rowId: Scalars['UUID']['input'];
-};
-
-/** The output of our update `OrganizationMember` mutation. */
-export type UpdateOrganizationMemberPayload = {
-  __typename?: 'UpdateOrganizationMemberPayload';
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']['output']>;
-  /** The `OrganizationMember` that was updated by this mutation. */
-  organizationMember?: Maybe<OrganizationMember>;
-  /** An edge for our `OrganizationMember`. May be used by Relay 1. */
-  organizationMemberEdge?: Maybe<OrganizationMemberEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our update `OrganizationMember` mutation. */
-export type UpdateOrganizationMemberPayloadOrganizationMemberEdgeArgs = {
-  orderBy?: Array<OrganizationMemberOrderBy>;
 };
 
 /** The output of our update `Organization` mutation. */
@@ -13795,6 +13639,8 @@ export type User = {
   /** Reads and enables pagination through a set of `PullRequestReview`. */
   reviewedPullRequestReviews: PullRequestReviewConnection;
   rowId: Scalars['UUID']['output'];
+  /** Reads and enables pagination through a set of `TesterApplication`. */
+  testerApplications: TesterApplicationConnection;
   /** Reads and enables pagination through a set of `Topic`. */
   topicsByOwnerId: TopicConnection;
   updatedAt: Scalars['Datetime']['output'];
@@ -13922,6 +13768,18 @@ export type UserReviewedPullRequestReviewsArgs = {
 };
 
 
+export type UserTesterApplicationsArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  condition?: InputMaybe<TesterApplicationCondition>;
+  filter?: InputMaybe<TesterApplicationFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<TesterApplicationOrderBy>>;
+};
+
+
 export type UserTopicsByOwnerIdArgs = {
   after?: InputMaybe<Scalars['Cursor']['input']>;
   before?: InputMaybe<Scalars['Cursor']['input']>;
@@ -14000,6 +13858,10 @@ export type UserFilter = {
   reviewedPullRequestReviewsExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `rowId` field. */
   rowId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `testerApplications` relation. */
+  testerApplications?: InputMaybe<UserToManyTesterApplicationFilter>;
+  /** Some related `testerApplications` exist. */
+  testerApplicationsExist?: InputMaybe<Scalars['Boolean']['input']>;
   /** Filter by the object’s `topicsByOwnerId` relation. */
   topicsByOwnerId?: InputMaybe<UserToManyTopicFilter>;
   /** Some related `topicsByOwnerId` exist. */
@@ -14313,6 +14175,28 @@ export enum UserOrderBy {
   ReviewedPullRequestReviewsDistinctCountUpdatedAtDesc = 'REVIEWED_PULL_REQUEST_REVIEWS_DISTINCT_COUNT_UPDATED_AT_DESC',
   RowIdAsc = 'ROW_ID_ASC',
   RowIdDesc = 'ROW_ID_DESC',
+  TesterApplicationsCountAsc = 'TESTER_APPLICATIONS_COUNT_ASC',
+  TesterApplicationsCountDesc = 'TESTER_APPLICATIONS_COUNT_DESC',
+  TesterApplicationsDistinctCountAnswersAsc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_ANSWERS_ASC',
+  TesterApplicationsDistinctCountAnswersDesc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_ANSWERS_DESC',
+  TesterApplicationsDistinctCountCreatedAtAsc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_CREATED_AT_ASC',
+  TesterApplicationsDistinctCountCreatedAtDesc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_CREATED_AT_DESC',
+  TesterApplicationsDistinctCountNdaAcceptedAsc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_NDA_ACCEPTED_ASC',
+  TesterApplicationsDistinctCountNdaAcceptedAtAsc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_NDA_ACCEPTED_AT_ASC',
+  TesterApplicationsDistinctCountNdaAcceptedAtDesc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_NDA_ACCEPTED_AT_DESC',
+  TesterApplicationsDistinctCountNdaAcceptedDesc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_NDA_ACCEPTED_DESC',
+  TesterApplicationsDistinctCountNdaVersionAsc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_NDA_VERSION_ASC',
+  TesterApplicationsDistinctCountNdaVersionDesc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_NDA_VERSION_DESC',
+  TesterApplicationsDistinctCountReviewerNoteAsc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_REVIEWER_NOTE_ASC',
+  TesterApplicationsDistinctCountReviewerNoteDesc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_REVIEWER_NOTE_DESC',
+  TesterApplicationsDistinctCountRowIdAsc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_ROW_ID_ASC',
+  TesterApplicationsDistinctCountRowIdDesc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_ROW_ID_DESC',
+  TesterApplicationsDistinctCountStatusAsc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_STATUS_ASC',
+  TesterApplicationsDistinctCountStatusDesc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_STATUS_DESC',
+  TesterApplicationsDistinctCountUpdatedAtAsc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_UPDATED_AT_ASC',
+  TesterApplicationsDistinctCountUpdatedAtDesc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_UPDATED_AT_DESC',
+  TesterApplicationsDistinctCountUserIdAsc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_USER_ID_ASC',
+  TesterApplicationsDistinctCountUserIdDesc = 'TESTER_APPLICATIONS_DISTINCT_COUNT_USER_ID_DESC',
   TopicsByOwnerIdCountAsc = 'TOPICS_BY_OWNER_ID_COUNT_ASC',
   TopicsByOwnerIdCountDesc = 'TOPICS_BY_OWNER_ID_COUNT_DESC',
   TopicsByOwnerIdDistinctCountCreatedAtAsc = 'TOPICS_BY_OWNER_ID_DISTINCT_COUNT_CREATED_AT_ASC',
@@ -14343,7 +14227,6 @@ export type UserPatch = {
   bio?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
 };
@@ -14454,6 +14337,18 @@ export type UserToManyStackFilter = {
   none?: InputMaybe<StackFilter>;
   /** Some related `Stack` matches the filter criteria. All fields are combined with a logical ‘and.’ */
   some?: InputMaybe<StackFilter>;
+};
+
+/** A filter to be used against many `TesterApplication` object types. All fields are combined with a logical ‘and.’ */
+export type UserToManyTesterApplicationFilter = {
+  /** Aggregates across related `TesterApplication` match the filter criteria. */
+  aggregates?: InputMaybe<TesterApplicationAggregatesFilter>;
+  /** Every related `TesterApplication` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  every?: InputMaybe<TesterApplicationFilter>;
+  /** No related `TesterApplication` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  none?: InputMaybe<TesterApplicationFilter>;
+  /** Some related `TesterApplication` matches the filter criteria. All fields are combined with a logical ‘and.’ */
+  some?: InputMaybe<TesterApplicationFilter>;
 };
 
 /** A filter to be used against many `Topic` object types. All fields are combined with a logical ‘and.’ */
@@ -14751,12 +14646,10 @@ export enum VerificationCheckOrderBy {
 /** Represents an update to a `VerificationCheck`. Fields that are set will be updated. */
 export type VerificationCheckPatch = {
   category?: InputMaybe<Scalars['String']['input']>;
-  changeId?: InputMaybe<Scalars['UUID']['input']>;
   createdAt?: InputMaybe<Scalars['Datetime']['input']>;
   detailsUrl?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   required?: InputMaybe<Scalars['Boolean']['input']>;
-  rowId?: InputMaybe<Scalars['UUID']['input']>;
   status?: InputMaybe<Scalars['String']['input']>;
   summary?: InputMaybe<Scalars['String']['input']>;
   updatedAt?: InputMaybe<Scalars['Datetime']['input']>;
@@ -14988,7 +14881,6 @@ export type OpenPullRequestInput = {
 /** An input for mutations affecting `Organization` */
 export type OrganizationInput = {
   avatarUrl?: string | null | undefined;
-  billingAccountId?: string | null | undefined;
   createdAt?: Date | null | undefined;
   deletedAt?: Date | null | undefined;
   deletionReason?: string | null | undefined;
@@ -14997,7 +14889,6 @@ export type OrganizationInput = {
   name?: string | null | undefined;
   rowId?: string | null | undefined;
   slug?: string | null | undefined;
-  subscriptionId?: string | null | undefined;
   updatedAt?: Date | null | undefined;
 };
 
@@ -15076,15 +14967,11 @@ export type PullRequestCommentInput = {
 
 /** Represents an update to a `PullRequestComment`. Fields that are set will be updated. */
 export type PullRequestCommentPatch = {
-  authorId?: string | null | undefined;
   body?: string | null | undefined;
   commitSha?: string | null | undefined;
   createdAt?: Date | null | undefined;
   line?: number | null | undefined;
   path?: string | null | undefined;
-  pullRequestId?: string | null | undefined;
-  replyToId?: string | null | undefined;
-  rowId?: string | null | undefined;
   side?: string | null | undefined;
   updatedAt?: Date | null | undefined;
 };
@@ -15117,9 +15004,6 @@ export type RepositoryPatch = {
   defaultBranch?: string | null | undefined;
   description?: string | null | undefined;
   name?: string | null | undefined;
-  organizationId?: string | null | undefined;
-  ownerId?: string | null | undefined;
-  rowId?: string | null | undefined;
   slug?: string | null | undefined;
   updatedAt?: Date | null | undefined;
   visibility?: Visibility | null | undefined;
@@ -15153,6 +15037,16 @@ export type SubmitTesterApplicationInput = {
   ndaAccepted: boolean;
   /** The version of the beta terms the applicant accepted. */
   ndaVersion: string;
+};
+
+/** Input for moving a repository to another workspace. */
+export type TransferRepositoryInput = {
+  /** Run every check and change nothing. */
+  dryRun?: boolean | null | undefined;
+  /** The repository row ID. */
+  rowId: string;
+  /** The workspace to move it to, as its identity-provider organization id. */
+  toIdpOrganizationId: string;
 };
 
 /** All input for the `updatePullRequestComment` mutation. */
@@ -15468,6 +15362,14 @@ export type CommitFileDiffQueryVariables = Exact<{
 
 export type CommitFileDiffQuery = { repositories: { nodes: Array<{ rowId: string, commit: { oid: string, fileDiff: { path: string, status: DiffStatus, isBinary: boolean, oldText: string | null, newText: string | null } | null } | null }> } | null };
 
+export type MovedRepositoryQueryVariables = Exact<{
+  ownerSlug: string;
+  repoSlug: string;
+}>;
+
+
+export type MovedRepositoryQuery = { movedRepository: { ownerSlug: string, repoSlug: string } | null };
+
 export type RepositoriesQueryVariables = Exact<{
   userId: string;
   limit?: number | null | undefined;
@@ -15504,6 +15406,13 @@ export type RepositoryWithBranchesQuery = { repositories: { nodes: Array<{ rowId
           | { oid: string, messageHeadline: string, committedDate: Date | null, author: { name: string | null } | null }
           | Record<PropertyKey, never>
          | null } | null }> } | null };
+
+export type TransferRepositoryMutationVariables = Exact<{
+  input: TransferRepositoryInput;
+}>;
+
+
+export type TransferRepositoryMutation = { transferRepository: { slug: string | null, ownerUsername: string | null, organizationSlug: string | null, error: string | null } | null };
 
 export type WorkspaceRepositoriesQueryVariables = Exact<{
   workspaceSlug: string;
@@ -18080,6 +17989,96 @@ useSuspenseInfiniteCommitFileDiffQuery.getKey = (variables: CommitFileDiffQueryV
 
 useCommitFileDiffQuery.fetcher = (variables: CommitFileDiffQueryVariables, options?: RequestInit['headers']) => graphqlFetch<CommitFileDiffQuery, CommitFileDiffQueryVariables>(CommitFileDiffDocument, variables, options);
 
+export const MovedRepositoryDocument = new TypedDocumentString(`
+    query MovedRepository($ownerSlug: String!, $repoSlug: String!) {
+  movedRepository(ownerSlug: $ownerSlug, repoSlug: $repoSlug) {
+    ownerSlug
+    repoSlug
+  }
+}
+    `);
+
+export const useMovedRepositoryQuery = <
+      TData = MovedRepositoryQuery,
+      TError = unknown
+    >(
+      variables: MovedRepositoryQueryVariables,
+      options?: Omit<UseQueryOptions<MovedRepositoryQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<MovedRepositoryQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<MovedRepositoryQuery, TError, TData>(
+      {
+    queryKey: ['MovedRepository', variables],
+    queryFn: graphqlFetch<MovedRepositoryQuery, MovedRepositoryQueryVariables>(MovedRepositoryDocument, variables),
+    ...options
+  }
+    )};
+
+useMovedRepositoryQuery.getKey = (variables: MovedRepositoryQueryVariables) => ['MovedRepository', variables];
+
+export const useSuspenseMovedRepositoryQuery = <
+      TData = MovedRepositoryQuery,
+      TError = unknown
+    >(
+      variables: MovedRepositoryQueryVariables,
+      options?: Omit<UseSuspenseQueryOptions<MovedRepositoryQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseQueryOptions<MovedRepositoryQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseQuery<MovedRepositoryQuery, TError, TData>(
+      {
+    queryKey: ['MovedRepository', variables],
+    queryFn: graphqlFetch<MovedRepositoryQuery, MovedRepositoryQueryVariables>(MovedRepositoryDocument, variables),
+    ...options
+  }
+    )};
+
+useSuspenseMovedRepositoryQuery.getKey = (variables: MovedRepositoryQueryVariables) => ['MovedRepository', variables];
+
+export const useInfiniteMovedRepositoryQuery = <
+      TData = InfiniteData<MovedRepositoryQuery>,
+      TError = unknown
+    >(
+      variables: MovedRepositoryQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<MovedRepositoryQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<MovedRepositoryQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<MovedRepositoryQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['MovedRepository.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<MovedRepositoryQuery, MovedRepositoryQueryVariables>(MovedRepositoryDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useInfiniteMovedRepositoryQuery.getKey = (variables: MovedRepositoryQueryVariables) => ['MovedRepository.infinite', variables];
+
+export const useSuspenseInfiniteMovedRepositoryQuery = <
+      TData = InfiniteData<MovedRepositoryQuery>,
+      TError = unknown
+    >(
+      variables: MovedRepositoryQueryVariables,
+      options: Omit<UseSuspenseInfiniteQueryOptions<MovedRepositoryQuery, TError, TData>, 'queryKey'> & { queryKey?: UseSuspenseInfiniteQueryOptions<MovedRepositoryQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useSuspenseInfiniteQuery<MovedRepositoryQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['MovedRepository.infinite', variables],
+      queryFn: (metaData) => graphqlFetch<MovedRepositoryQuery, MovedRepositoryQueryVariables>(MovedRepositoryDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
+
+useSuspenseInfiniteMovedRepositoryQuery.getKey = (variables: MovedRepositoryQueryVariables) => ['MovedRepository.infinite', variables];
+
+
+useMovedRepositoryQuery.fetcher = (variables: MovedRepositoryQueryVariables, options?: RequestInit['headers']) => graphqlFetch<MovedRepositoryQuery, MovedRepositoryQueryVariables>(MovedRepositoryDocument, variables, options);
+
 export const RepositoriesDocument = new TypedDocumentString(`
     query Repositories($userId: UUID!, $limit: Int) {
   repositories(
@@ -18541,6 +18540,35 @@ useSuspenseInfiniteRepositoryWithBranchesQuery.getKey = (variables: RepositoryWi
 
 
 useRepositoryWithBranchesQuery.fetcher = (variables: RepositoryWithBranchesQueryVariables, options?: RequestInit['headers']) => graphqlFetch<RepositoryWithBranchesQuery, RepositoryWithBranchesQueryVariables>(RepositoryWithBranchesDocument, variables, options);
+
+export const TransferRepositoryDocument = new TypedDocumentString(`
+    mutation TransferRepository($input: TransferRepositoryInput!) {
+  transferRepository(input: $input) {
+    slug
+    ownerUsername
+    organizationSlug
+    error
+  }
+}
+    `);
+
+export const useTransferRepositoryMutation = <
+      TError = unknown,
+      TContext = unknown
+    >(options?: UseMutationOptions<TransferRepositoryMutation, TError, TransferRepositoryMutationVariables, TContext>) => {
+    
+    return useMutation<TransferRepositoryMutation, TError, TransferRepositoryMutationVariables, TContext>(
+      {
+    mutationKey: ['TransferRepository'],
+    mutationFn: (variables?: TransferRepositoryMutationVariables) => graphqlFetch<TransferRepositoryMutation, TransferRepositoryMutationVariables>(TransferRepositoryDocument, variables)(),
+    ...options
+  }
+    )};
+
+useTransferRepositoryMutation.getKey = () => ['TransferRepository'];
+
+
+useTransferRepositoryMutation.fetcher = (variables: TransferRepositoryMutationVariables, options?: RequestInit['headers']) => graphqlFetch<TransferRepositoryMutation, TransferRepositoryMutationVariables>(TransferRepositoryDocument, variables, options);
 
 export const WorkspaceRepositoriesDocument = new TypedDocumentString(`
     query WorkspaceRepositories($workspaceSlug: String!) {

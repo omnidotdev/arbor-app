@@ -15,7 +15,10 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { DeleteRepositoryDialog } from "@/components/repository";
+import {
+  DeleteRepositoryDialog,
+  TransferRepositoryDialog,
+} from "@/components/repository";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -26,6 +29,7 @@ import {
   useDeleteRepositoryMutation,
   useDiscoverDependenciesMutation,
   useRenameRepositoryMutation,
+  useTransferRepositoryMutation,
   useUpdateRepositoryMutation,
 } from "@/generated/graphql";
 import { API_BASE_URL } from "@/lib/config/env.config";
@@ -33,6 +37,7 @@ import { getCurrentAuthHeaders } from "@/lib/graphql/graphqlClientFactory";
 import repositoryBySlugOptions from "@/lib/options/repositoryBySlug.options";
 import generateSlug from "@/lib/util/generateSlug";
 import { getRepositoryAccess } from "@/lib/util/repositoryAccess";
+import { transferTargets } from "@/lib/util/transferTargets";
 
 import type { RepositoryPatch } from "@/generated/graphql";
 
@@ -92,6 +97,16 @@ function RepositorySettingsPage() {
   const [description, setDescription] = useState("");
   const [renameError, setRenameError] = useState<string | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showTransferDialog, setShowTransferDialog] = useState(false);
+  const [transferError, setTransferError] = useState<string | null>(null);
+
+  // Workspaces the repository can move into: the user's others where they are
+  // an owner or admin, and only when they may take it out of this one
+  const { canMoveOut, targets } = transferTargets({
+    organizations: session?.organizations ?? [],
+    currentOrganizationId: repository?.organization?.idpOrganizationId ?? null,
+    isOwner: !!repository && repository.owner?.rowId === session?.user?.rowId,
+  });
 
   useEffect(() => {
     if (!repository) return;
@@ -158,6 +173,33 @@ function RepositorySettingsPage() {
     onSuccess: () => {
       navigate({ to: "/repositories" });
     },
+  });
+
+  const transferMutation = useMutation({
+    mutationKey: useTransferRepositoryMutation.getKey(),
+    mutationFn: (toIdpOrganizationId: string) =>
+      useTransferRepositoryMutation.fetcher({
+        input: { rowId: repository!.rowId, toIdpOrganizationId },
+      })(),
+    onSuccess: (result) => {
+      const moved = result.transferRepository;
+      if (!moved || moved.error) {
+        setTransferError(
+          moved?.error ?? "The repository couldn't be moved. Please try again.",
+        );
+        return;
+      }
+      setShowTransferDialog(false);
+      navigate({
+        to: "/@{$workspaceSlug}/$repoSlug/~/settings",
+        params: {
+          workspaceSlug: moved.organizationSlug ?? moved.ownerUsername ?? owner,
+          repoSlug: moved.slug ?? repo,
+        },
+      });
+    },
+    onError: () =>
+      setTransferError("The repository couldn't be moved. Please try again."),
   });
 
   const [discoverMessage, setDiscoverMessage] = useState<string | null>(null);
@@ -673,6 +715,30 @@ function RepositorySettingsPage() {
             {bpError && <p className="text-destructive text-sm">{bpError}</p>}
           </section>
 
+          {canMoveOut && targets.length > 0 && (
+            <section className="space-y-4 rounded-lg border p-6">
+              <div>
+                <h2 className="font-semibold text-lg">
+                  Move to another workspace
+                </h2>
+                <p className="text-muted-foreground text-sm">
+                  Move this repository, with its history and collaborators, to
+                  another workspace you own or administer. Its old links and
+                  clone URL keep working.
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setTransferError(null);
+                  setShowTransferDialog(true);
+                }}
+              >
+                Move repository
+              </Button>
+            </section>
+          )}
+
           {/* Danger zone */}
           <section className="space-y-4 rounded-lg border border-destructive/50 p-6">
             <div>
@@ -691,6 +757,22 @@ function RepositorySettingsPage() {
             </Button>
           </section>
         </div>
+      )}
+
+      {repository && showTransferDialog && (
+        <TransferRepositoryDialog
+          isOpen
+          onClose={() => setShowTransferDialog(false)}
+          onTransfer={(target) => {
+            setTransferError(null);
+            transferMutation.mutate(target.id);
+          }}
+          repositoryName={repository.name}
+          currentWorkspace={`@${owner}`}
+          targets={targets}
+          isTransferring={transferMutation.isPending}
+          error={transferError}
+        />
       )}
 
       {repository && (
