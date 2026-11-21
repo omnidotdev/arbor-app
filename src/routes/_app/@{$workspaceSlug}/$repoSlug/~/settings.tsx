@@ -1,3 +1,4 @@
+import { NativeSelect } from "@omnidotdev/thornberry/native-select";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
@@ -560,11 +561,12 @@ function RepositorySettingsPage() {
                 The branch shown by default and targeted by new pull requests.
               </p>
             </div>
-            <select
+            <NativeSelect
               value={repository.defaultBranch ?? ""}
               disabled={updateMutation.isPending || branches.length === 0}
               onChange={(e) => setDefaultBranch(e.target.value)}
-              className="flex h-10 w-full max-w-xs rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              size="lg"
+              className="w-full max-w-xs"
             >
               {/* Keep the stored default selectable even if the ref list has not
                   loaded or no longer contains it */}
@@ -579,7 +581,7 @@ function RepositorySettingsPage() {
                   {branch.name}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </section>
 
           {/* Dependencies */}

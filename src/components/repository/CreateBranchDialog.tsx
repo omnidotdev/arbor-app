@@ -1,3 +1,4 @@
+import { NativeSelect } from "@omnidotdev/thornberry/native-select";
 import { GitBranch, X } from "lucide-react";
 import { useState } from "react";
 
@@ -87,11 +88,11 @@ export function CreateBranchDialog({
               >
                 Source branch
               </label>
-              <select
+              <NativeSelect
                 id="source-branch"
                 value={sourceBranch}
                 onChange={(e) => setSourceBranch(e.target.value)}
-                className="w-full rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full"
               >
                 {branches.map((branch) => (
                   <option key={branch.name} value={branch.name}>
@@ -99,7 +100,7 @@ export function CreateBranchDialog({
                     {branch.isDefault ? " (default)" : ""}
                   </option>
                 ))}
-              </select>
+              </NativeSelect>
             </div>
           </div>
 

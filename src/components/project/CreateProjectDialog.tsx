@@ -1,3 +1,4 @@
+import { NativeSelect } from "@omnidotdev/thornberry/native-select";
 import { Boxes, Globe, Lock, X } from "lucide-react";
 import { useState } from "react";
 
@@ -100,11 +101,11 @@ export function CreateProjectDialog({
                 >
                   Owner
                 </label>
-                <select
+                <NativeSelect
                   id="project-owner"
                   value={owner}
                   onChange={(e) => setOwner(e.target.value)}
-                  className="w-full rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full"
                 >
                   <option value="personal">Personal account</option>
                   {organizations.map((org) => (
@@ -112,7 +113,7 @@ export function CreateProjectDialog({
                       {org.name}
                     </option>
                   ))}
-                </select>
+                </NativeSelect>
               </div>
             )}
 

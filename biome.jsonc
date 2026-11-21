@@ -27,7 +27,12 @@
       "a11y": {
         "useSemanticElements": "off",
         "noStaticElementInteractions": "off",
-        "useKeyWithClickEvents": "off"
+        "useKeyWithClickEvents": "off",
+        // Thornberry's NativeSelect renders a real <select>, so a wrapping label labels it
+        "noLabelWithoutControl": {
+          "level": "error",
+          "options": { "inputComponents": ["NativeSelect"] }
+        }
       },
       "correctness": {
         "noUnusedImports": { "fix": "safe", "options": {}, "level": "error" }
