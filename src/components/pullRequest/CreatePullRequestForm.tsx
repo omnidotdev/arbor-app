@@ -1,3 +1,4 @@
+import { NativeSelect } from "@omnidotdev/thornberry/native-select";
 import { GitBranch, GitPullRequest } from "lucide-react";
 import { useState } from "react";
 
@@ -59,32 +60,32 @@ export function CreatePullRequestForm({
           <div className="flex items-center gap-2">
             <GitBranch className="h-4 w-4 text-muted-foreground" />
             <span className="text-sm">base:</span>
-            <select
+            <NativeSelect
               value={targetBranch}
               onChange={(e) => setTargetBranch(e.target.value)}
-              className="rounded-md border bg-background px-2 py-1 text-sm"
+              size="sm"
             >
               {branches.map((branch) => (
                 <option key={branch.name} value={branch.name}>
                   {branch.name}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </div>
           <span className="text-muted-foreground">←</span>
           <div className="flex items-center gap-2">
             <span className="text-sm">compare:</span>
-            <select
+            <NativeSelect
               value={sourceBranch}
               onChange={(e) => setSourceBranch(e.target.value)}
-              className="rounded-md border bg-background px-2 py-1 text-sm"
+              size="sm"
             >
               {branches.map((branch) => (
                 <option key={branch.name} value={branch.name}>
                   {branch.name}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </div>
         </div>
         {sourceBranch === targetBranch && (

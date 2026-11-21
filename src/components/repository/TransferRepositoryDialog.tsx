@@ -1,3 +1,4 @@
+import { NativeSelect } from "@omnidotdev/thornberry/native-select";
 import { ArrowRightLeft, X } from "lucide-react";
 import { useState } from "react";
 
@@ -86,9 +87,9 @@ export function TransferRepositoryDialog({
         >
           Move to
         </label>
-        <select
+        <NativeSelect
           id="transfer-target"
-          className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+          className="w-full"
           value={targetId}
           onChange={(e) => setTargetId(e.target.value)}
           disabled={isTransferring}
@@ -98,7 +99,7 @@ export function TransferRepositoryDialog({
               {t.name} (@{t.slug})
             </option>
           ))}
-        </select>
+        </NativeSelect>
 
         <ul className="mt-4 list-disc space-y-1 pl-5 text-muted-foreground text-sm">
           <li>
