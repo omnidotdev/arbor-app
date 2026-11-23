@@ -1,3 +1,5 @@
+import { Button } from "@omnidotdev/thornberry/button";
+import { Input } from "@omnidotdev/thornberry/input";
 import {
   useMutation,
   useQueryClient,
@@ -8,8 +10,6 @@ import { Boxes, Globe, Lock, Plus, Search } from "lucide-react";
 import { useState } from "react";
 
 import { CreateProjectDialog } from "@/components/project";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Visibility,
   useCreateProjectMutation,

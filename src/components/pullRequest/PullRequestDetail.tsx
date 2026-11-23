@@ -1,3 +1,4 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import {
   Bot,
   GitBranch,
@@ -6,8 +7,6 @@ import {
   MessageSquare,
   User,
 } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 
 interface PullRequestDetailProps {
   id: string;

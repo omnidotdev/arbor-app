@@ -1,3 +1,5 @@
+import { Button } from "@omnidotdev/thornberry/button";
+import { Input } from "@omnidotdev/thornberry/input";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
@@ -14,8 +16,6 @@ import {
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useCreateStackMutation } from "@/generated/graphql";
 import repositoryWithBranchesOptions from "@/lib/options/repositoryWithBranches.options";
 import stacksOptions from "@/lib/options/stacks.options";

@@ -1,11 +1,11 @@
+import { Button } from "@omnidotdev/thornberry/button";
+import { Input } from "@omnidotdev/thornberry/input";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Check, Copy, KeyRound, Trash2, TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   PersonalAccessTokenPermission,
   useCreatePersonalAccessTokenMutation,
@@ -246,7 +246,7 @@ function TokensPage() {
             </div>
 
             <Button
-              variant="secondary"
+              variant="muted"
               size="sm"
               onClick={() => {
                 setNewToken(null);

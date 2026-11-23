@@ -5,12 +5,12 @@ import {
   AvatarRoot,
 } from "@omnidotdev/thornberry/avatar";
 import { Badge } from "@omnidotdev/thornberry/badge";
+import { Button } from "@omnidotdev/thornberry/button";
+import { Input } from "@omnidotdev/thornberry/input";
 import { Link, createFileRoute, useRouter } from "@tanstack/react-router";
 import { Building2, Plus, RefreshCw, Search, Users } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import signIn from "@/lib/auth/signIn";
 import { ACCOUNT_URL } from "@/lib/config/env.config";
 import { fetchFreshSession, signOutLocal } from "@/server/functions/auth";

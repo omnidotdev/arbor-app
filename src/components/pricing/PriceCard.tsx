@@ -1,4 +1,13 @@
 import { workspacesUrl } from "@omnidotdev/providers/react";
+import { Button } from "@omnidotdev/thornberry/button";
+import {
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardRoot,
+  CardTitle,
+} from "@omnidotdev/thornberry/card";
 import {
   useNavigate,
   useRouteContext,
@@ -12,15 +21,6 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import signIn from "@/lib/auth/signIn";
 import { upgradePlanUrl } from "@/lib/billing/hubLinks";
 import { ACCOUNT_URL, BASE_URL, hasBilling } from "@/lib/config/env.config";
@@ -194,7 +194,7 @@ export const PriceCard = ({
   };
 
   return (
-    <Card
+    <CardRoot
       className={cn(
         "relative flex flex-1 flex-col border-2",
         isTeamTier && "border-primary bg-primary/5 shadow-lg shadow-primary/20",
@@ -250,7 +250,7 @@ export const PriceCard = ({
         {showDropdown ? (
           <div className="relative w-full" ref={menuRef}>
             <Button
-              variant={isTeamTier ? "default" : "outline"}
+              variant={isTeamTier ? "solid" : "outline"}
               size="lg"
               className="w-full font-semibold"
               onClick={handleClick}
@@ -326,7 +326,7 @@ export const PriceCard = ({
           </div>
         ) : noWorkspacePlanUrl ? (
           <Button
-            variant={isTeamTier ? "default" : "outline"}
+            variant={isTeamTier ? "solid" : "outline"}
             size="lg"
             className="w-full font-semibold"
             asChild
@@ -335,7 +335,7 @@ export const PriceCard = ({
           </Button>
         ) : (
           <Button
-            variant={isTeamTier ? "default" : "outline"}
+            variant={isTeamTier ? "solid" : "outline"}
             size="lg"
             className="w-full font-semibold"
             onClick={handleClick}
@@ -344,6 +344,6 @@ export const PriceCard = ({
           </Button>
         )}
       </CardFooter>
-    </Card>
+    </CardRoot>
   );
 };

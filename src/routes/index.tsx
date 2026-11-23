@@ -1,3 +1,4 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import {
   Link,
   createFileRoute,
@@ -18,7 +19,6 @@ import {
 } from "lucide-react";
 
 import { ApplicantCount } from "@/components/beta/ApplicantCount";
-import { Button } from "@/components/ui/button";
 import signIn from "@/lib/auth/signIn";
 import { BASE_URL } from "@/lib/config/env.config";
 

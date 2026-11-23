@@ -5,9 +5,9 @@ import {
   AvatarImage,
   AvatarRoot,
 } from "@omnidotdev/thornberry/avatar";
+import { Button } from "@omnidotdev/thornberry/button";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { CommentComposer } from "./CommentComposer";
 import { formatTimestamp } from "./reviewTypes";
 

@@ -1,8 +1,7 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import { NativeSelect } from "@omnidotdev/thornberry/native-select";
 import { ArrowRightLeft, X } from "lucide-react";
 import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
 
 /** A workspace the repository can move into */
 export interface TransferTarget {

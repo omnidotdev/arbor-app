@@ -1,10 +1,10 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useState } from "react";
 import { z } from "zod";
 
 import { PriceCard } from "@/components/pricing";
-import { Button } from "@/components/ui/button";
 import { BASE_URL } from "@/lib/config/env.config";
 import pricesOptions from "@/lib/options/prices.options";
 import createMetaTags from "@/lib/util/createMetaTags";

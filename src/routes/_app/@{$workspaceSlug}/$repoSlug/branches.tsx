@@ -1,3 +1,4 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
@@ -12,7 +13,6 @@ import {
 import { useState } from "react";
 
 import { BranchList, CreateBranchDialog } from "@/components/repository";
-import { Button } from "@/components/ui/button";
 import { API_BASE_URL } from "@/lib/config/env.config";
 import { getCurrentAuthHeaders } from "@/lib/graphql/graphqlClientFactory";
 import { graphqlFetch } from "@/lib/graphql/graphqlFetch";

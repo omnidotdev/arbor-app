@@ -1,7 +1,7 @@
 import { AppFooter } from "@omnidotdev/thornberry/app-footer";
+import { Button } from "@omnidotdev/thornberry/button";
 import { TreePine } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import app from "@/lib/config/app.config";
 
 import type { SVGProps } from "react";

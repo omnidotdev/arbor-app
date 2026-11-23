@@ -1,10 +1,10 @@
+import { Button } from "@omnidotdev/thornberry/button";
+import { Input } from "@omnidotdev/thornberry/input";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowLeftIcon } from "lucide-react";
 import { useState } from "react";
 
 import { ApplicantCount } from "@/components/beta/ApplicantCount";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   useMyTesterApplicationQuery,
   useSubmitTesterApplicationMutation,

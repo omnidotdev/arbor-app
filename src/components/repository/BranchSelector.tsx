@@ -1,7 +1,6 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import { ChevronDown, GitBranch } from "lucide-react";
 import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
 
 interface Branch {
   name: string;

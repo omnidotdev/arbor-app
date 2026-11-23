@@ -1,11 +1,10 @@
 "use client";
 
+import { Button } from "@omnidotdev/thornberry/button";
 import { Check, Copy, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import { codeToHtml } from "shiki";
 import { toast } from "sonner";
-
-import { Button } from "@/components/ui/button";
 
 interface FileViewerProps {
   content: string;

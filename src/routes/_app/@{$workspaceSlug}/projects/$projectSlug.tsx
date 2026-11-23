@@ -1,3 +1,4 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
@@ -18,7 +19,6 @@ import {
   AddRepositoryToProjectDialog,
   ProjectVersionDriftPanel,
 } from "@/components/project";
-import { Button } from "@/components/ui/button";
 import {
   useAddProjectRepositoryMutation,
   useOrganizationsQuery,
