@@ -1,6 +1,5 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import { GitBranch, Trash2 } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 
 interface Branch {
   name: string;

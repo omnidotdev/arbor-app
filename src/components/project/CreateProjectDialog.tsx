@@ -1,9 +1,8 @@
+import { Button } from "@omnidotdev/thornberry/button";
+import { Input } from "@omnidotdev/thornberry/input";
 import { NativeSelect } from "@omnidotdev/thornberry/native-select";
 import { Boxes, Globe, Lock, X } from "lucide-react";
 import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 interface Organization {
   rowId: string;

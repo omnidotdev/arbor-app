@@ -1,3 +1,5 @@
+import { Button } from "@omnidotdev/thornberry/button";
+import { Input } from "@omnidotdev/thornberry/input";
 import { NativeSelect } from "@omnidotdev/thornberry/native-select";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -20,8 +22,6 @@ import {
   DeleteRepositoryDialog,
   TransferRepositoryDialog,
 } from "@/components/repository";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Visibility,
   useBranchProtectionRulesQuery,
@@ -530,7 +530,7 @@ function RepositorySettingsPage() {
             <div className="flex gap-2">
               <Button
                 variant={
-                  repository.visibility === "public" ? "default" : "outline"
+                  repository.visibility === "public" ? "solid" : "outline"
                 }
                 size="sm"
                 disabled={updateMutation.isPending}
@@ -541,7 +541,7 @@ function RepositorySettingsPage() {
               </Button>
               <Button
                 variant={
-                  repository.visibility === "private" ? "default" : "outline"
+                  repository.visibility === "private" ? "solid" : "outline"
                 }
                 size="sm"
                 disabled={updateMutation.isPending}

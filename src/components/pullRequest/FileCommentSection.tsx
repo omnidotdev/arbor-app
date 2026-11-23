@@ -1,8 +1,8 @@
 "use client";
 
+import { Button } from "@omnidotdev/thornberry/button";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { CommentComposer } from "./CommentComposer";
 import { CommentThread } from "./CommentThread";
 import { buildCommentTrees } from "./reviewTypes";

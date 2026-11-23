@@ -1,9 +1,9 @@
 "use client";
 
+import { Button } from "@omnidotdev/thornberry/button";
 import { Check, MessageSquare, X } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { formatTimestamp, reviewStateMeta } from "./reviewTypes";
 
@@ -119,7 +119,7 @@ export function ReviewSummaryBar({
               <Button
                 key={option.value}
                 type="button"
-                variant={isActive ? "secondary" : "ghost"}
+                variant={isActive ? "muted" : "ghost"}
                 size="sm"
                 className={cn("border", isActive && "border-primary")}
                 onClick={() => setSelected(option.value)}

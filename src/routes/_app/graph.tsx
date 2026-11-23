@@ -1,10 +1,10 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Filter, Network, RefreshCw } from "lucide-react";
 import { useState } from "react";
 
 import { GraphTierUpgradePrompt, GraphView } from "@/components/graph";
-import { Button } from "@/components/ui/button";
 import { useRepositoryGraphQuery } from "@/generated/graphql";
 import { getGraphTierRequirement } from "@/lib/util/graphTier";
 import { pluralize } from "@/lib/util/pluralize";
@@ -114,7 +114,7 @@ function GraphPage() {
               <Button
                 key={type.rowId}
                 variant={
-                  selectedTypes.includes(type.name) ? "default" : "outline"
+                  selectedTypes.includes(type.name) ? "solid" : "outline"
                 }
                 size="sm"
                 onClick={() => toggleType(type.name)}

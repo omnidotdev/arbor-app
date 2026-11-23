@@ -31,7 +31,8 @@ const DiscordIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@omnidotdev/thornberry/button";
+
 import signIn from "@/lib/auth/signIn";
 import signOut from "@/lib/auth/signOut";
 import app from "@/lib/config/app.config";

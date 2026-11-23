@@ -1,3 +1,5 @@
+import { Button } from "@omnidotdev/thornberry/button";
+import { Input } from "@omnidotdev/thornberry/input";
 import {
   useMutation,
   useQueryClient,
@@ -22,8 +24,6 @@ import {
   CreateRepositoryDialog,
   DeleteRepositoryDialog,
 } from "@/components/repository";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   useDeleteRepositoryMutation,
   useObserverQuery,
@@ -238,7 +238,7 @@ function RepositoriesPage() {
           </div>
           <div className="space-x-2">
             <Button
-              variant={viewType === "list" ? "secondary" : "ghost"}
+              variant={viewType === "list" ? "muted" : "ghost"}
               size="sm"
               onClick={() => setViewType("list")}
             >
@@ -246,7 +246,7 @@ function RepositoriesPage() {
               List View
             </Button>
             <Button
-              variant={viewType === "graph" ? "secondary" : "ghost"}
+              variant={viewType === "graph" ? "muted" : "ghost"}
               size="sm"
               onClick={() => setViewType("graph")}
             >

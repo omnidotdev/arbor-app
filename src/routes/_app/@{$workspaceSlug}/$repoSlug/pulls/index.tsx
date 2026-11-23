@@ -1,3 +1,4 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import { useQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
@@ -13,7 +14,6 @@ import { useState } from "react";
 import { z } from "zod";
 
 import { PullRequestList } from "@/components/pullRequest";
-import { Button } from "@/components/ui/button";
 import { graphqlFetch } from "@/lib/graphql/graphqlFetch";
 import pullRequestsOptions from "@/lib/options/pullRequests.options";
 
@@ -254,7 +254,7 @@ function PullRequestsPage() {
           {(["open", "closed", "merged", "all"] as const).map((filterState) => (
             <Button
               key={filterState}
-              variant={currentFilter === filterState ? "default" : "outline"}
+              variant={currentFilter === filterState ? "solid" : "outline"}
               size="sm"
               onClick={() => setCurrentFilter(filterState)}
             >

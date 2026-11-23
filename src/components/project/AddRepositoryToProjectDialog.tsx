@@ -1,8 +1,7 @@
+import { Button } from "@omnidotdev/thornberry/button";
+import { Input } from "@omnidotdev/thornberry/input";
 import { GitBranch, Globe, Lock, Search, X } from "lucide-react";
 import { useState } from "react";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 export interface SelectableRepository {
   rowId: string;

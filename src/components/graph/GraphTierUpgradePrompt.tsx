@@ -1,8 +1,8 @@
+import { Button } from "@omnidotdev/thornberry/button";
+import { CardRoot } from "@omnidotdev/thornberry/card";
 import { Link } from "@tanstack/react-router";
 import { Lock } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 import type { GraphTierRequirement } from "@/lib/util/graphTier";
@@ -28,7 +28,7 @@ export function GraphTierUpgradePrompt({
   const { plan, message } = requirement;
 
   return (
-    <Card
+    <CardRoot
       className={cn("flex flex-col items-start gap-3 p-5 text-left", className)}
     >
       <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-2.5 py-0.5 font-medium text-primary text-xs">
@@ -53,6 +53,6 @@ export function GraphTierUpgradePrompt({
           View {plan} plan
         </Link>
       </Button>
-    </Card>
+    </CardRoot>
   );
 }

@@ -1,3 +1,4 @@
+import { Button } from "@omnidotdev/thornberry/button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
@@ -24,7 +25,6 @@ import {
   ReadmeDisplay,
   RepositoryBlastRadiusPanel,
 } from "@/components/repository";
-import { Button } from "@/components/ui/button";
 import {
   useDeleteRepositoryMutation,
   useRepositoriesQuery,
