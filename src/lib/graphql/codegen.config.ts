@@ -11,7 +11,7 @@ const LOCAL_SCHEMA_PATH = "../arbor-api/src/generated/graphql/schema.graphql";
  * Shared plugins across the generated GraphQL Codegen artifacts.
  */
 const sharedPlugins: GraphQLCodegenConfig["plugins"] = [
-  "typescript",
+  // NB: typescript-operations v6+ emits the schema input types and enums it needs, so the `typescript` plugin is not listed (it would emit them a second time)
   "typescript-operations",
   {
     add: {
@@ -25,6 +25,9 @@ const sharedPlugins: GraphQLCodegenConfig["plugins"] = [
  * Shared configuration across each of the generated GraphQL Codegen artifacts.
  */
 const sharedConfig: GraphQLCodegenConfig["config"] = {
+  // keep schema enums as runtime enums (the `typescript` plugin's output) so
+  // code can reference their members as values
+  enumType: "native",
   scalars: {
     Date: "Date",
     Datetime: "Date",
