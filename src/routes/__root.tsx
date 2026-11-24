@@ -79,7 +79,7 @@ export const Route = createRootRouteWithContext<{
   canAccessArbor: boolean;
 }>()({
   beforeLoad: async () => {
-    const { session, authDegraded } = await fetchSession();
+    const { session, authDegraded, authBaseUrl } = await fetchSession();
     const typedSession = session as ExtendedSession | null;
     const { isMaintenanceMode } = await fetchMaintenanceMode({
       data: {
@@ -97,6 +97,7 @@ export const Route = createRootRouteWithContext<{
     return {
       session: typedSession,
       authDegraded,
+      authBaseUrl,
       isMaintenanceMode,
       canAccessArbor,
     };

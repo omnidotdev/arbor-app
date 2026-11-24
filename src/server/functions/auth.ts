@@ -39,7 +39,13 @@ const loadSession = async (forceRefreshOrgs = false) => {
   // organizations empty. This is distinct from a genuinely workspace-less user
   // (who has a valid access token), and the workspaces page uses it to prompt a
   // re-login instead of the silent "No workspaces yet" empty state
-  return { session, authDegraded: isSessionDegraded(session) };
+  return {
+    session,
+    authDegraded: isSessionDegraded(session),
+    // Identity provider base URL, so the browser can check its Omni session
+    // (the client bundle carries no build-time auth config)
+    authBaseUrl: AUTH_BASE_URL as string | undefined,
+  };
 };
 
 /**
