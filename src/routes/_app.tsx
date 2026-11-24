@@ -1,8 +1,10 @@
+import { useIdentitySync } from "@omnidotdev/providers/react";
 import { SidebarInset, SidebarProvider } from "@omnidotdev/thornberry/sidebar";
 import { Outlet, createFileRoute, redirect } from "@tanstack/react-router";
 import { useMemo } from "react";
 
 import AppSidebar from "@/components/layout/AppSidebar";
+import { followSignOut, followSwitch } from "@/lib/auth/followIdentity";
 import { ensureBetaAccess } from "@/lib/beta/betaAccess";
 import app from "@/lib/config/app.config";
 import { EventsProvider } from "@/providers/EventsProvider";
@@ -39,7 +41,16 @@ export const Route = createFileRoute("/_app")({
 });
 
 function AuthenticatedLayout() {
-  const { session } = Route.useRouteContext();
+  const { session, authBaseUrl } = Route.useRouteContext();
+
+  // Stay signed in as the same account as Omni: follow a switch or sign-out
+  // made in another app
+  useIdentitySync({
+    authBaseUrl,
+    subject: session?.user?.identityProviderId,
+    onSignedOut: followSignOut,
+    onSwitched: followSwitch,
+  });
 
   // Workspaces come from JWT org claims, not a DB query, so the list always
   // reflects the user's Omni org membership
