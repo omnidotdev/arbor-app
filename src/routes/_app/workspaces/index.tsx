@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import signIn from "@/lib/auth/signIn";
+import useHubLoginHint from "@/lib/auth/useHubLoginHint";
 import { ACCOUNT_URL } from "@/lib/config/env.config";
 import { fetchFreshSession, signOutLocal } from "@/server/functions/auth";
 
@@ -47,16 +48,17 @@ function WorkspacesPage() {
   const { organizations: workspaces, authDegraded } = Route.useLoaderData();
 
   const [searchQuery, setSearchQuery] = useState("");
+  const loginHint = useHubLoginHint();
 
   // Workspace membership lifecycle lives on the account hub workspaces console;
   // returns "" when the hub URL is unconfigured, so the manageUrl guards below
   // degrade to no link rather than a dead one
-  const manageUrl = workspacesUrl(ACCOUNT_URL);
+  const manageUrl = workspacesUrl(ACCOUNT_URL, { loginHint });
 
   // The account hub owns workspace creation; link out to it. Rendered only when
   // the hub URL is configured (optional env), so a missing config degrades to
   // no button rather than a dead link.
-  const newWorkspaceHref = workspacesUrl(ACCOUNT_URL);
+  const newWorkspaceHref = workspacesUrl(ACCOUNT_URL, { loginHint });
   const NewWorkspaceLink = newWorkspaceHref
     ? () => (
         <Button asChild>

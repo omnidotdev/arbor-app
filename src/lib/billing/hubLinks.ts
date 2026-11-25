@@ -6,9 +6,10 @@ import type { HubPlanInterval } from "@omnidotdev/providers/react";
  * Plans are bought and managed on the Omni account hub, the one place every
  * product sells plans. Arbor shows its own pricing, but its plan and billing
  * actions link to the hub, which confirms the plan (names and prices from
- * Aether), runs checkout or the billing portal, and returns here. Each link is
- * empty when no account hub is configured, so the action is hidden rather than
- * dead
+ * Aether), runs checkout or the billing portal, and returns here. Each link
+ * carries the signed-in account's subject as `loginHint`, so the hub opens as
+ * the same account. Each link is empty when no account hub is configured, so
+ * the action is hidden rather than dead
  */
 
 const PRODUCT = "arbor";
@@ -49,7 +50,14 @@ export const upgradePlanUrl = (
     plan,
     interval,
     workspaceSlug,
-  }: { plan: string; interval: HubPlanInterval; workspaceSlug?: string },
+    loginHint,
+  }: {
+    plan: string;
+    interval: HubPlanInterval;
+    workspaceSlug?: string;
+    /** The signed-in account's subject */
+    loginHint?: string | null;
+  },
 ): string => {
   const origin = appOrigin(baseUrl);
 
@@ -63,6 +71,7 @@ export const upgradePlanUrl = (
       : origin
         ? `${origin}/pricing`
         : undefined,
+    loginHint,
   });
 };
 
@@ -71,14 +80,18 @@ export const upgradePlanUrl = (
  * invoices) on the account hub, returning to the workspace's dashboard
  * @param accountBaseUrl - Account hub base URL
  * @param baseUrl - Arbor's base URL, for the return
+ * @param workspaceSlug - Workspace whose plan to manage
+ * @param loginHint - The signed-in account's subject
  */
 export const manageSubscriptionUrl = (
   accountBaseUrl: string | undefined,
   baseUrl: string | undefined,
   workspaceSlug: string,
+  loginHint?: string | null,
 ): string =>
   hubManageUrl(accountBaseUrl, {
     product: PRODUCT,
     workspace: workspaceSlug,
     returnUrl: workspaceReturnUrl(baseUrl, workspaceSlug),
+    loginHint,
   });

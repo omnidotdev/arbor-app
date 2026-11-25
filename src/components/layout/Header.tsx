@@ -51,6 +51,8 @@ export function Header() {
 
   const { session } = useRouteContext({ from: "__root__" });
   const isAuthenticated = !!session?.user?.rowId;
+  // Hub links open the hub as the account Arbor is signed in as
+  const loginHint = session?.user?.identityProviderId;
 
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -172,7 +174,7 @@ export function Header() {
               </div>
               {ACCOUNT_URL && (
                 <a
-                  href={accountUrl(ACCOUNT_URL)}
+                  href={accountUrl(ACCOUNT_URL, { loginHint })}
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Manage account"
@@ -279,7 +281,7 @@ export function Header() {
                   <>
                     {ACCOUNT_URL && (
                       <a
-                        href={accountUrl(ACCOUNT_URL)}
+                        href={accountUrl(ACCOUNT_URL, { loginHint })}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
