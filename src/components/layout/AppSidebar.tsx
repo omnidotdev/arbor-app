@@ -43,6 +43,7 @@ import { useEffect } from "react";
 
 import WorkspaceSwitcher from "@/components/layout/WorkspaceSwitcher";
 import signOut from "@/lib/auth/signOut";
+import useHubLoginHint from "@/lib/auth/useHubLoginHint";
 import app from "@/lib/config/app.config";
 import { ACCOUNT_URL } from "@/lib/config/env.config";
 import { useTheme } from "@/providers/ThemeProvider";
@@ -69,6 +70,7 @@ const AppSidebar = ({ user, ...rest }: Props) => {
   });
 
   const displayName = user?.name || user?.email || "Account";
+  const loginHint = useHubLoginHint();
   const initial = displayName.trim().charAt(0).toUpperCase() || "?";
 
   // On mobile the sheet trigger sits at the top right, so open the sidebar from
@@ -182,7 +184,7 @@ const AppSidebar = ({ user, ...rest }: Props) => {
                   {ACCOUNT_URL && (
                     <MenuItem asChild value="manage-account">
                       <a
-                        href={accountUrl(ACCOUNT_URL)}
+                        href={accountUrl(ACCOUNT_URL, { loginHint })}
                         target="_blank"
                         rel="noopener noreferrer"
                       >

@@ -25,6 +25,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { useWorkspaceRepositoriesQuery } from "@/generated/graphql";
+import useHubLoginHint from "@/lib/auth/useHubLoginHint";
 import { manageSubscriptionUrl } from "@/lib/billing/hubLinks";
 import { ACCOUNT_URL, BASE_URL } from "@/lib/config/env.config";
 import { getOrganizationBySlug } from "@/server/functions/organizations";
@@ -64,6 +65,7 @@ const integrations = [
 function WorkspaceDetailPage() {
   const { workspaceSlug } = Route.useParams();
   const orgContext = useWorkspace();
+  const loginHint = useHubLoginHint();
 
   const claimWorkspace = orgContext?.workspaces.find(
     (org) => org.slug === workspaceSlug || org.id === workspaceSlug,
@@ -94,7 +96,7 @@ function WorkspaceDetailPage() {
   // Billing is per-workspace: the workspace's Arbor plan is managed on the
   // Omni account hub, which returns here
   const billingUrl = workspaceSlug
-    ? manageSubscriptionUrl(ACCOUNT_URL, BASE_URL, workspaceSlug)
+    ? manageSubscriptionUrl(ACCOUNT_URL, BASE_URL, workspaceSlug, loginHint)
     : "";
 
   return (

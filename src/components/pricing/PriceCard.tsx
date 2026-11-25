@@ -22,6 +22,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import signIn from "@/lib/auth/signIn";
+import useHubLoginHint from "@/lib/auth/useHubLoginHint";
 import { upgradePlanUrl } from "@/lib/billing/hubLinks";
 import { ACCOUNT_URL, BASE_URL, hasBilling } from "@/lib/config/env.config";
 import capitalizeFirstLetter from "@/lib/util/capitalizeFirstLetter";
@@ -98,6 +99,9 @@ export const PriceCard = ({
 
   const interval = price.recurring?.interval === "year" ? "year" : "month";
 
+  // Hub links open the hub as the account Arbor is signed in as
+  const loginHint = useHubLoginHint();
+
   // The account hub's confirm step for this plan, for a workspace or (none
   // given) letting the hub ask
   const planUrl = (workspaceSlug?: string) =>
@@ -105,10 +109,11 @@ export const PriceCard = ({
       plan: tier,
       interval,
       workspaceSlug,
+      loginHint,
     });
 
   // A new workspace is created on the account hub's workspaces console
-  const newWorkspaceUrl = workspacesUrl(ACCOUNT_URL);
+  const newWorkspaceUrl = workspacesUrl(ACCOUNT_URL, { loginHint });
 
   // Paid plans are sold only when billing and the account hub are configured
   const canBuyPlan = hasBilling && !!planUrl();

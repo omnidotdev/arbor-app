@@ -60,6 +60,19 @@ describe("upgradePlanUrl", () => {
     });
   });
 
+  test("opens the hub as the signed-in account", () => {
+    expect(
+      params(
+        upgradePlanUrl(HUB, ARBOR, {
+          plan: "pro",
+          interval: "month",
+          workspaceSlug: "acme",
+          loginHint: "user-123",
+        }),
+      ),
+    ).toHaveProperty("login_hint", "user-123");
+  });
+
   test("lets the hub ask for the workspace and returns to pricing", () => {
     expect(
       params(upgradePlanUrl(HUB, ARBOR, { plan: "team", interval: "year" })),
@@ -98,6 +111,12 @@ describe("manageSubscriptionUrl", () => {
       manage: "1",
       return: `${ARBOR}/@acme`,
     });
+  });
+
+  test("opens the hub as the signed-in account", () => {
+    expect(
+      params(manageSubscriptionUrl(HUB, ARBOR, "acme", "user-123")),
+    ).toHaveProperty("login_hint", "user-123");
   });
 
   test("is empty when no account hub is configured", () => {
