@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "bun@1.3.14",
+  "packageManager": "bun@1.4.5",
   "scripts": {
     "release": "changeset publish",
     "dev": "concurrently --kill-others --names \"GRAPHQL-CODEGEN,CLIENT\" -c \"bgBlue.bold,bgMagenta.bold\" \"bun run graphql:generate:watch\" \"bun dev:vite\"",
@@ -32,7 +32,7 @@
     "@tanstack/react-router": "^1.170.16",
     "@tanstack/react-router-ssr-query": "^1.167.1",
     "@tanstack/react-start": "^1.168.26",
-    "better-auth": "1.7.16",
+    "better-auth": "1.7.28",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -56,7 +56,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.1",
+    "@biomejs/biome": "2.6.9",
     "@changesets/changelog-github": "^1.0.0",
     "@changesets/cli": "^3.0.1",
     "@graphql-codegen/add": "^7.0.1",
@@ -91,7 +91,7 @@
     "vite-tsconfig-paths": "^6.1.1"
   },
   "overrides": {
-    "@tanstack/query-core": "5.101.1"
+    "@tanstack/query-core": "5.108.4"
   },
   "trustedDependencies": [
     "@parcel/watcher",
