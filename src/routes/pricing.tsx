@@ -33,7 +33,7 @@ export const FREE_PRICE: Price = {
     marketing_features: [
       { name: "Unlimited public and private repositories" },
       { name: "Per-repository dependency graph" },
-      { name: "Up to 5 collaborators per repository" },
+      { name: "Unlimited collaborators" },
       { name: "1 GB storage" },
       { name: "Community support" },
     ],
